@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Train With Buse</title>
+  <meta name="description" content="">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<style>
+:root{
+  --cream:#FDF6F0;--cream-deep:#F5EBE0;--rose:#C1848B;--rose-dark:#9B6B6F;
+  --charcoal:#2D2A2E;--charcoal-light:#4A4548;--warm-white:#FFFAF7;
+  --gold:#C8A96E;--nude:#D4A89A;--radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white);color:var(--charcoal);min-height:100vh;overflow-x:hidden}
+
+/* ── NAV ── */
+.nav{background:rgba(253,246,240,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--cream-deep);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:200}
+.nav-left{display:flex;align-items:center;gap:20px}
+.hamburger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:6px;transition:opacity .3s}
+.hamburger:hover{opacity:.5}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--charcoal)}
+.nav-logo{display:flex;flex-direction:column;line-height:1;text-decoration:none}
+.nav-logo-eyebrow{font-family:'Cormorant Garamond',serif;font-size:9px;font-weight:300;letter-spacing:5px;text-transform:uppercase;color:var(--charcoal-light)}
+.nav-logo-main{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;letter-spacing:3px;color:var(--charcoal)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.user-pill{font-size:12px;color:var(--charcoal-light);letter-spacing:1px;padding:6px 14px;border:1px solid var(--cream-deep);border-radius:50px}
+.lang-wrap{position:relative}
+.lang-btn{display:flex;align-items:center;gap:5px;background:none;border:1.5px solid var(--cream-deep);padding:6px 12px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:var(--charcoal-light);transition:border-color .3s}
+.lang-btn:hover{border-color:var(--gold)}
+.lang-drop{display:none;position:absolute;top:40px;right:0;background:white;border:1px solid var(--cream-deep);border-radius:12px;padding:6px 0;box-shadow:0 12px 40px rgba(200,160,155,.2);z-index:300;min-width:110px}
+.lang-drop.open{display:flex;flex-direction:column}
+.lang-drop a{padding:10px 20px;text-decoration:none;color:var(--charcoal-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.lang-drop a:hover{background:var(--cream)}
+.lang-drop a.active{color:var(--rose);font-weight:500}
+.btn-out{background:none;border:1.5px solid var(--cream-deep);padding:6px 14px;border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:var(--charcoal-light);transition:all .3s}
+.btn-out:hover{border-color:var(--rose);color:var(--rose)}
+
+/* ── SIDEBAR ── */
+.sb-overlay{position:fixed;inset:0;background:rgba(45,42,46,.5);backdrop-filter:blur(6px);z-index:400;opacity:0;pointer-events:none;transition:opacity .3s}
+.sb-overlay.open{opacity:1;pointer-events:all}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:380px;background:white;z-index:500;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);overflow-y:auto;display:flex;flex-direction:column}
+.sidebar.open{transform:translateX(0)}
+.sb-top{padding:26px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--cream-deep)}
+.sb-close{background:none;border:none;cursor:pointer;font-size:20px;color:var(--charcoal-light);transition:color .3s}
+.sb-close:hover{color:var(--charcoal)}
+.sb-user{display:flex;align-items:center;gap:14px}
+.sb-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--rose));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;color:white;font-weight:600;flex-shrink:0}
+.sb-user-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500}
+.sb-user-email{font-size:11px;color:var(--nude);margin-top:2px}
+.sb-section{padding:14px 0;border-bottom:1px solid var(--cream-deep)}
+.sb-section-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);padding:0 28px;margin-bottom:4px}
+.sb-item{display:flex;align-items:center;gap:14px;padding:12px 28px;cursor:pointer;transition:background .2s;text-decoration:none;color:var(--charcoal)}
+.sb-item:hover{background:var(--cream)}
+.sb-item-icon{width:36px;height:36px;border-radius:10px;background:var(--cream-deep);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sb-item-label{font-size:14px}
+.sb-item-sub{font-size:11px;color:var(--nude);margin-top:1px}
+.sb-item-arrow{margin-left:auto;color:var(--nude)}
+.sb-foot{padding:22px 28px;margin-top:auto}
+.sb-logout{width:100%;padding:13px;background:none;border:1.5px solid var(--cream-deep);border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:var(--charcoal-light);transition:all .3s}
+.sb-logout:hover{border-color:var(--rose);color:var(--rose)}
+
+/* ── PAGE ── */
+.page{max-width:1080px;margin:0 auto;padding:0 40px 100px}
+
+/* ── HERO SECTION ── */
+.hero{padding:64px 0 48px;border-bottom:1px solid var(--cream-deep);margin-bottom:0}
+.hero-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;line-height:.95;margin-bottom:12px;letter-spacing:-2px}
+.hero-name em{font-style:italic;color:var(--rose);font-weight:300}
+.hero-name .star{font-size:48px;vertical-align:middle;opacity:.4;margin-left:8px}
+.hero-date{font-size:13px;color:var(--charcoal-light);letter-spacing:2px;text-transform:uppercase}
+
+/* ── MOTTO ── */
+.motto-section{padding:52px 0;border-bottom:1px solid var(--cream-deep)}
+.motto-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--nude);margin-bottom:20px}
+.motto-quote{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;font-style:italic;line-height:1.25;color:var(--charcoal);max-width:780px;position:relative;padding-left:28px}
+.motto-quote::before{content:'"';position:absolute;left:0;top:-8px;font-size:64px;color:var(--cream-deep);font-style:normal;line-height:1}
+
+/* ── MID ROW: substack + cycle ── */
+.mid-row{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid var(--cream-deep);margin-bottom:0}
+
+/* SUBSTACK */
+.substack-section{padding:40px 48px 40px 0;border-right:1px solid var(--cream-deep)}
+.substack-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--nude);margin-bottom:16px}
+.substack-inner{display:flex;gap:16px;align-items:flex-start}
+.substack-thumb{width:72px;height:72px;border-radius:14px;background:linear-gradient(135deg,#FF6719,#FF8C00);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.substack-text-wrap{flex:1;min-width:0}
+.substack-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;line-height:1.3;margin-bottom:6px}
+.substack-desc{font-size:12px;color:var(--charcoal-light);line-height:1.5;margin-bottom:12px}
+.substack-link{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:gap .3s}
+.substack-link:hover{gap:10px}
+.substack-empty{font-size:13px;color:var(--nude);font-style:italic}
+
+/* CYCLE */
+.cycle-section{padding:40px 0 40px 48px}
+.cycle-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--nude);margin-bottom:16px}
+.cycle-phase-display{display:flex;align-items:flex-start;gap:16px}
+.cycle-emoji-big{font-size:44px;line-height:1;flex-shrink:0}
+.cycle-info{}
+.cycle-phase-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;margin-bottom:4px}
+.cycle-day-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.cycle-desc{font-size:13px;color:var(--charcoal-light);line-height:1.6;margin-bottom:12px}
+.cycle-moon-row{display:flex;align-items:center;gap:10px}
+.cycle-moon-text{font-size:12px;color:var(--nude)}
+.cycle-setup-link{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:opacity .3s}
+.cycle-setup-link:hover{opacity:.6}
+.cycle-not-set{text-align:left}
+.cycle-not-set-text{font-size:13px;color:var(--charcoal-light);margin-bottom:14px;line-height:1.6}
+.btn-setup{background:var(--charcoal);color:white;border:none;padding:10px 24px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.btn-setup:hover{background:var(--rose-dark)}
+
+/* ── UPCOMING CLASSES BANNER ── */
+.upcoming-banner{background:var(--rose);color:white;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;border-radius:0;margin:0 -40px;position:relative;overflow:hidden;display:none}
+.upcoming-banner::before{content:'';position:absolute;right:-20px;top:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.08)}
+.upcoming-banner::after{content:'';position:absolute;right:60px;bottom:-40px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)}
+.upcoming-left{position:relative;z-index:1}
+.upcoming-eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;opacity:.7;margin-bottom:8px}
+.upcoming-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;margin-bottom:6px}
+.upcoming-sub{font-size:13px;opacity:.8;line-height:1.5}
+.upcoming-right{position:relative;z-index:1;flex-shrink:0}
+.btn-zoom{background:white;color:var(--rose);border:none;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:500;text-decoration:none;display:inline-block;transition:all .3s}
+.btn-zoom:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.3)}
+.upcoming-pulse{display:inline-block;width:8px;height:8px;background:rgba(255,255,255,.9);border-radius:50%;margin-right:8px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* ── PROGRAMS CTA ── */
+.programs-cta{display:flex;align-items:center;justify-content:space-between;padding:44px 0;border-bottom:1px solid var(--cream-deep);text-decoration:none;color:var(--charcoal);transition:all .3s;cursor:pointer}
+.programs-cta:hover .programs-arrow{transform:translateX(8px)}
+.programs-cta:hover .programs-title{color:var(--rose)}
+.programs-left{}
+.programs-eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--nude);margin-bottom:10px}
+.programs-title{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;line-height:1;transition:color .3s;letter-spacing:-1px}
+.programs-title em{font-style:italic}
+.programs-sub{font-size:13px;color:var(--charcoal-light);margin-top:8px;letter-spacing:.5px}
+.programs-arrow{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;color:var(--cream-deep);transition:all .4s;line-height:1}
+
+/* ── TODAY'S WORKOUT ── */
+.workout-strip{padding:32px 0;border-bottom:1px solid var(--cream-deep);display:none}
+.workout-inner{display:flex;align-items:center;gap:28px}
+.workout-color-tag{width:5px;height:48px;border-radius:3px;flex-shrink:0}
+.workout-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--nude);margin-bottom:4px}
+.workout-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;margin-bottom:2px}
+.workout-sub{font-size:12px;color:var(--charcoal-light)}
+.workout-link{margin-left:auto;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);text-decoration:none;display:flex;align-items:center;gap:6px;flex-shrink:0;transition:gap .3s}
+.workout-link:hover{gap:10px}
+
+/* ── LIVE COUNTER ── */
+.counter-section{padding:80px 0 40px;text-align:center;border-top:1px solid var(--cream-deep)}
+.counter-eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--nude);margin-bottom:28px}
+.counter-row{display:flex;align-items:baseline;justify-content:center;gap:20px;margin-bottom:16px}
+.counter-num{font-family:'Cormorant Garamond',serif;font-size:120px;font-weight:300;line-height:1;color:var(--charcoal);letter-spacing:-4px;transition:all .4s cubic-bezier(.34,1.4,.64,1)}
+.counter-num.bump{color:var(--rose)}
+.counter-plus-minus{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--cream-deep);display:flex;flex-direction:column;gap:0;line-height:.8}
+.counter-pm{cursor:default;transition:all .3s;display:block}
+.counter-pm.up{color:var(--gold);animation:flash .4s ease}
+.counter-pm.down{color:var(--rose);animation:flash .4s ease}
+@keyframes flash{0%{transform:scale(1.3)}100%{transform:scale(1)}}
+.counter-label-text{font-size:14px;color:var(--charcoal-light);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.counter-live-dot{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--nude)}
+.live-dot{width:7px;height:7px;background:#4ade80;border-radius:50%;animation:pulseLive 2s infinite}
+@keyframes pulseLive{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+
+/* ── MODALS ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(45,42,46,.65);backdrop-filter:blur(8px);z-index:600;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex;animation:mfade .3s ease}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+.modal{background:white;border-radius:24px;width:92%;max-width:680px;max-height:88vh;overflow-y:auto;animation:mpop .35s cubic-bezier(.34,1.3,.64,1) both;display:flex;flex-direction:column}
+@keyframes mpop{from{transform:scale(.93);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-h{padding:36px 44px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-shrink:0}
+.modal-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:400;line-height:1.1}
+.modal-x{background:none;border:1.5px solid var(--cream-deep);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--charcoal-light);transition:all .3s;flex-shrink:0;margin-top:6px}
+.modal-x:hover{border-color:var(--rose);color:var(--rose)}
+.modal-b{padding:24px 44px 44px}
+.modal-divider{height:1px;background:var(--cream-deep);margin:22px 0}
+
+/* Form elements */
+.fg{margin-bottom:20px}
+.flabel{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--charcoal-light);margin-bottom:7px;display:block}
+.finput{width:100%;padding:13px 16px;border:1.5px solid var(--cream-deep);border-radius:var(--radius);font-family:'Outfit',sans-serif;font-size:14px;font-weight:300;color:var(--charcoal);background:var(--warm-white);outline:none;transition:border-color .3s}
+.finput:focus{border-color:var(--gold)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.btn-primary{background:var(--charcoal);color:white;border:none;padding:14px 32px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.btn-primary:hover{background:var(--rose-dark);transform:translateY(-1px)}
+.btn-full{width:100%}
+
+/* Notes */
+.note-item{padding:18px 0;border-bottom:1px solid var(--cream-deep)}
+.note-item:last-child{border-bottom:none}
+.note-date{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--nude);margin-bottom:6px}
+.note-text{font-size:14px;color:var(--charcoal);line-height:1.7}
+.note-del{float:right;background:none;border:none;cursor:pointer;font-size:12px;color:var(--nude);transition:color .3s}
+.note-del:hover{color:var(--rose)}
+.note-ta{width:100%;padding:14px;border:1.5px solid var(--cream-deep);border-radius:var(--radius);font-family:'Outfit',sans-serif;font-size:14px;font-weight:300;color:var(--charcoal);resize:vertical;min-height:100px;outline:none;transition:border-color .3s;margin-bottom:12px}
+.note-ta:focus{border-color:var(--gold)}
+
+/* FAQ accordion */
+.faq-item{padding:22px 0;border-bottom:1px solid var(--cream-deep)}
+.faq-q{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.faq-arr{font-size:20px;color:var(--nude);transition:transform .3s;flex-shrink:0}
+.faq-q.open .faq-arr{transform:rotate(90deg)}
+.faq-a{font-size:14px;color:var(--charcoal-light);line-height:1.8;display:none;padding-top:14px}
+.faq-a.open{display:block}
+
+/* Legal text */
+.legal{font-size:14px;color:var(--charcoal-light);line-height:1.9}
+.legal h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--charcoal);margin:28px 0 10px}
+.legal h3:first-child{margin-top:0}
+.legal p{margin-bottom:14px}
+.legal a{color:var(--rose);text-decoration:none}
+.legal ul{padding-left:20px;margin-bottom:14px}
+.legal ul li{margin-bottom:8px}
+
+/* Panel lists */
+.plist{display:flex;flex-direction:column;gap:0}
+.pitem{padding:16px 0;border-bottom:1px solid var(--cream-deep);display:flex;align-items:center;gap:14px}
+.pitem:last-child{border-bottom:none}
+.pitem-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pitem-info{flex:1}
+.pitem-title{font-size:15px;font-weight:400;margin-bottom:2px}
+.pitem-sub{font-size:12px;color:var(--nude)}
+.pempty{padding:40px 0;text-align:center;color:var(--nude);font-size:15px;font-style:italic;font-family:'Cormorant Garamond',serif}
+
+/* Fav list */
+.fav-item{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--cream-deep);cursor:pointer;transition:opacity .2s}
+.fav-item:hover{opacity:.7}
+.fav-item:last-child{border-bottom:none}
+.fav-remove{margin-left:auto;background:none;border:none;cursor:pointer;font-size:14px;color:var(--nude);transition:color .3s;padding:4px}
+.fav-remove:hover{color:var(--rose)}
+
+/* Birthday popup */
+.bday-overlay{display:none;position:fixed;inset:0;background:rgba(45,42,46,.85);backdrop-filter:blur(12px);z-index:800;align-items:center;justify-content:center}
+.bday-overlay.open{display:flex;animation:mfade .4s ease}
+.bday-card{background:white;border-radius:28px;padding:60px 52px;text-align:center;max-width:460px;width:90%;animation:mpop .5s cubic-bezier(.34,1.4,.64,1) both}
+.bday-emoji{font-size:68px;margin-bottom:20px;animation:bounce .6s ease .3s both}
+@keyframes bounce{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.bday-title{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:300;line-height:1.1;margin-bottom:14px}
+.bday-title em{font-style:italic;color:var(--rose)}
+.bday-text{font-size:15px;color:var(--charcoal-light);line-height:1.7;margin-bottom:32px}
+.bday-btn{background:var(--charcoal);color:white;border:none;padding:16px 36px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.bday-btn:hover{background:var(--rose-dark)}
+
+/* Buse popup */
+.buse-pop{display:none;position:fixed;bottom:32px;right:32px;z-index:700}
+.buse-pop.open{display:block;animation:slideUp .4s cubic-bezier(.34,1.4,.64,1) both}
+@keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.buse-pop-inner{background:var(--charcoal);color:white;border-radius:20px;padding:26px 28px;max-width:300px;box-shadow:0 20px 60px rgba(45,42,46,.3);position:relative}
+.buse-pop-x{position:absolute;top:14px;right:14px;background:none;border:none;color:rgba(255,255,255,.4);font-size:16px;cursor:pointer;transition:color .3s}
+.buse-pop-x:hover{color:white}
+.buse-pop-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.buse-pop-title{font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:8px}
+.buse-pop-text{font-size:13px;opacity:.8;line-height:1.6;margin-bottom:16px}
+.buse-pop-btn{background:var(--gold);color:var(--charcoal);border:none;padding:9px 20px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:500}
+
+/* Spinner */
+.spin-wrap{display:flex;align-items:center;justify-content:center;min-height:60px}
+.spinner{width:26px;height:26px;border:2px solid var(--cream-deep);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:800px){
+  .nav{padding:0 20px}.page{padding:0 20px 80px}
+  .hero-name{font-size:52px}.motto-quote{font-size:28px}
+  .mid-row{grid-template-columns:1fr}
+  .substack-section{border-right:none;padding:32px 0;border-bottom:1px solid var(--cream-deep)}
+  .cycle-section{padding:32px 0}
+  .programs-title{font-size:36px}.counter-num{font-size:80px}
+  .sidebar{width:100%}
+  .modal-h{padding:24px 24px 0}.modal-b{padding:20px 24px 36px}
+  .upcoming-banner{margin:0;border-radius:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-top">
+    <div class="sb-user">
+      <div class="sb-avatar" id="sbAvatar">B</div>
+      <div>
+        <div class="sb-user-name" id="sbName">—</div>
+        <div class="sb-user-email" id="sbEmail">—</div>
+      </div>
+    </div>
+    <button class="sb-close" onclick="closeSidebar()">✕</button>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-title" id="sb_myAccount">My Account</div>
+    <div class="sb-item" onclick="openModal('profileModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div><div class="sb-item-label" id="sb_profile">Personal Info</div><div class="sb-item-sub" id="sb_profileSub">Age, height, weight, goals</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+    <div class="sb-item" onclick="openModal('notesModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+      <div><div class="sb-item-label" id="sb_notes">My Notes</div><div class="sb-item-sub" id="sb_notesSub">Journal & body tracking</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+    <div class="sb-item" onclick="openModal('favsModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+      <div><div class="sb-item-label" id="sb_favs">Favorites</div><div class="sb-item-sub" id="sb_favsSub">Saved lessons</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+    <div class="sb-item" onclick="openModal('completedModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div><div class="sb-item-label" id="sb_completed">Completed Lessons</div><div class="sb-item-sub" id="sbCompletedSub">—</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+    <div class="sb-item" onclick="openModal('remainingModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <div><div class="sb-item-label" id="sb_remaining">Remaining Lessons</div><div class="sb-item-sub" id="sbRemainingSub">—</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+    <div class="sb-item" onclick="openModal('invoicesModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+      <div><div class="sb-item-label" id="sb_invoices">My Invoices</div><div class="sb-item-sub" id="sb_invoicesSub">Purchase history</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+    <div class="sb-item" id="upcomingItem" onclick="openModal('upcomingModal')" style="display:none">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div><div class="sb-item-label" id="sb_upcoming">Upcoming Classes</div><div class="sb-item-sub" id="sb_upcomingSub">Your live schedule</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-title" id="sb_labsTitle">The Lab</div>
+    <a class="sb-item" href="programs.html">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14l-2-2 5-5"/><path d="M11 4l2 2-5 5"/></svg></div>
+      <div><div class="sb-item-label" id="sb_discoverLabs">Discover Labs</div><div class="sb-item-sub" id="sb_discoverLabsSub">Explore all programs</div></div>
+      <span class="sb-item-arrow">›</span>
+    </a>
+    <div class="sb-item" onclick="openModal('purchasesModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v10l3 7H6l3-7V3z"/><line x1="6" y1="14" x2="18" y2="14"/></svg></div>
+      <div><div class="sb-item-label" id="sb_myPurchases">My Lab Purchases</div><div class="sb-item-sub" id="sb_myPurchasesSub">Your active labs</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-title" id="sb_liveTitle">Live Classes</div>
+    <div class="sb-item" onclick="openModal('liveClassesModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+      <div><div class="sb-item-label" id="sb_liveClasses">Live Classes</div><div class="sb-item-sub" id="sb_liveClassesSub">Join Booty, Flex, Power & Core</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-title" id="sb_support">Support</div>
+    <div class="sb-item" onclick="openModal('faqModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+      <div><div class="sb-item-label">FAQ</div><div class="sb-item-sub" id="sb_faqSub">Frequently asked questions</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+    <a class="sb-item" href="mailto:hello@trainwithbuse.com">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+      <div><div class="sb-item-label" id="sb_contact">Contact</div><div class="sb-item-sub">hello@trainwithbuse.com</div></div>
+      <span class="sb-item-arrow">›</span>
+    </a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-section-title" id="sb_legal">Legal</div>
+    <div class="sb-item" onclick="openModal('rulesModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
+      <div><div class="sb-item-label" id="sb_rules">Terms of Use</div><div class="sb-item-sub" id="sb_rulesSub">Course usage rules</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+    <div class="sb-item" onclick="openModal('privacyModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+      <div><div class="sb-item-label" id="sb_privacy">Privacy & Security</div><div class="sb-item-sub" id="sb_privacySub">Data protection</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+  </div>
+
+  <div class="sb-foot">
+    <button class="sb-logout" id="sbLogoutBtn" onclick="logout()">Sign Out</button>
+  </div>
+</aside>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-left">
+    <button class="hamburger" onclick="openSidebar()"><span></span><span></span><span></span></button>
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-eyebrow">Train With</span>
+      <span class="nav-logo-main">BUSE</span>
+    </a>
+  </div>
+  <div class="nav-right">
+    <span class="user-pill" id="userName">—</span>
+    <div class="lang-wrap">
+      <button class="lang-btn" onclick="this.nextElementSibling.classList.toggle('open')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> <span id="langLabel">EN</span>
+      </button>
+      <div class="lang-drop" id="langDrop">
+        <a onclick="setLang('en');return false">English</a>
+        <a onclick="setLang('tr');return false">Türkçe</a>
+        <a onclick="setLang('de');return false">Deutsch</a>
+      </div>
+    </div>
+    <button class="btn-out" id="logoutBtn" onclick="logout()">Sign Out</button>
+  </div>
+</nav>
+
+<!-- ── PAGE ── -->
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow" id="heroEyebrow">Member Portal</div>
+    <div class="hero-name" id="heroName">Welcome, <em>loading...</em> <span class="star">✦</span></div>
+    <div class="hero-date" id="heroDate">—</div>
+  </section>
+
+  <!-- MOTTO -->
+  <section class="motto-section">
+    <div class="motto-label" id="mottoLabel">Daily Motto</div>
+    <div class="motto-quote" id="mottoText">—</div>
+  </section>
+
+  <!-- UPCOMING CLASSES BANNER (shown if user has group) -->
+  <div class="upcoming-banner" id="upcomingBanner">
+    <div class="upcoming-left">
+      <div class="upcoming-eyebrow"><span class="upcoming-pulse"></span><span id="upcomingEyebrow">Live Class</span></div>
+      <div class="upcoming-title" id="upcomingTitle">You have a class today</div>
+      <div class="upcoming-sub" id="upcomingSub">Check your email for the Zoom link and schedule</div>
+    </div>
+    <div class="upcoming-right">
+      <a class="btn-zoom" id="zoomBtn" href="#" target="_blank">Join Zoom →</a>
+    </div>
+  </div>
+
+  <!-- TODAY'S WORKOUT -->
+  <div class="workout-strip" id="workoutStrip">
+    <div class="workout-inner">
+      <div class="workout-color-tag" id="workoutColorTag"></div>
+      <div>
+        <div class="workout-eyebrow" id="workoutEyebrow">Continue Your Program</div>
+        <div class="workout-title" id="workoutTitle">—</div>
+        <div class="workout-sub" id="workoutSub">—</div>
+      </div>
+      <a class="workout-link" id="workoutLink" href="#">Go →</a>
+    </div>
+  </div>
+
+  <!-- MID ROW: Substack + Cycle -->
+  <div class="mid-row">
+    <div class="substack-section">
+      <div class="substack-label" id="substackLabel">Today's Read</div>
+      <div id="substackContent"><div class="spin-wrap"><div class="spinner"></div></div></div>
+    </div>
+    <div class="cycle-section">
+      <div class="cycle-label" id="cycleLabel">Cycle Tracker</div>
+      <div id="cycleContent"><div class="spin-wrap"><div class="spinner"></div></div></div>
+    </div>
+  </div>
+
+  <!-- PROGRAMS CTA -->
+  <a class="programs-cta" href="programs.html">
+    <div class="programs-left">
+      <div class="programs-eyebrow" id="progEyebrow">My Space</div>
+      <div class="programs-title" id="progTitle">My <em>Programs</em></div>
+      <div class="programs-sub" id="progSub">Continue where you left off</div>
+    </div>
+    <div class="programs-arrow">→</div>
+  </a>
+
+  <!-- LIVE COUNTER -->
+  <section class="counter-section">
+    <div class="counter-eyebrow" id="counterEyebrow">Right Now</div>
+    <div class="counter-row">
+      <div class="counter-plus-minus">
+        <span class="counter-pm" id="pmUp">▲</span>
+        <span class="counter-pm" id="pmDown">▼</span>
+      </div>
+      <div class="counter-num" id="counterNum">—</div>
+    </div>
+    <div class="counter-label-text" id="counterLabel">people are training with Buse right now</div>
+    <div class="counter-live-dot"><span class="live-dot"></span><span id="counterLive">Live</span></div>
+  </section>
+
+</div><!-- /page -->
+
+<!-- ══════ MODALS ══════ -->
+
+<!-- PROFILE -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_profileTag">My Account</div><div class="modal-title" id="m_profileTitle">Personal Info</div></div>
+      <button class="modal-x" onclick="closeModal('profileModal')">✕</button>
+    </div>
+    <div class="modal-b">
+      <div class="frow"><div class="fg"><label class="flabel" id="lbl_fn">First Name</label><input class="finput" id="p_fn" type="text"></div><div class="fg"><label class="flabel" id="lbl_ln">Last Name</label><input class="finput" id="p_ln" type="text"></div></div>
+      <div class="frow"><div class="fg"><label class="flabel" id="lbl_dob">Date of Birth</label><input class="finput" id="p_dob" type="date"></div><div class="fg"><label class="flabel" id="lbl_gender">Gender</label><select class="finput" id="p_gender"><option value="">—</option><option value="female" id="opt_f">Female</option><option value="male" id="opt_m">Male</option><option value="other" id="opt_o">Other</option></select></div></div>
+      <div class="frow3"><div class="fg"><label class="flabel" id="lbl_h">Height (cm)</label><input class="finput" id="p_h" type="number"></div><div class="fg"><label class="flabel" id="lbl_w">Weight (kg)</label><input class="finput" id="p_w" type="number"></div><div class="fg"><label class="flabel" id="lbl_age">Age</label><input class="finput" id="p_age" type="number" readonly style="background:var(--cream);color:var(--nude)"></div></div>
+      <div class="fg"><label class="flabel" id="lbl_goal">My Goal</label><input class="finput" id="p_goal" type="text"></div>
+      <div class="fg"><label class="flabel" id="lbl_level">Fitness Level</label><select class="finput" id="p_level"><option value="">—</option><option value="beginner" id="opt_beg">Beginner</option><option value="intermediate" id="opt_int">Intermediate</option><option value="advanced" id="opt_adv">Advanced</option></select></div>
+      <div class="fg"><label class="flabel" id="lbl_health">Health Notes</label><textarea class="finput note-ta" id="p_health" style="min-height:70px"></textarea></div>
+      <div class="fg"><label class="flabel" id="lbl_inj">Injuries / Limitations</label><textarea class="finput note-ta" id="p_inj" style="min-height:70px"></textarea></div>
+      <button class="btn-primary btn-full" id="saveProfileBtn" onclick="saveProfile()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTES -->
+<div class="modal-overlay" id="notesModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_notesTag">Journal</div><div class="modal-title" id="m_notesTitle">My Notes</div></div>
+      <button class="modal-x" onclick="closeModal('notesModal')">✕</button>
+    </div>
+    <div class="modal-b">
+      <textarea class="note-ta" id="noteInput" style="width:100%;margin-bottom:12px"></textarea>
+      <button class="btn-primary btn-full" id="saveNoteBtn" onclick="saveNote()">Save Note</button>
+      <div class="modal-divider"></div>
+      <div id="notesList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FAVORITES -->
+<div class="modal-overlay" id="favsModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_favsTag">Saved</div><div class="modal-title" id="m_favsTitle">Favorites</div></div>
+      <button class="modal-x" onclick="closeModal('favsModal')">✕</button>
+    </div>
+    <div class="modal-b" id="favsBody"></div>
+  </div>
+</div>
+
+<!-- COMPLETED -->
+<div class="modal-overlay" id="completedModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_completedTag">Progress</div><div class="modal-title" id="m_completedTitle">Completed Lessons</div></div>
+      <button class="modal-x" onclick="closeModal('completedModal')">✕</button>
+    </div>
+    <div class="modal-b" id="completedBody"></div>
+  </div>
+</div>
+
+<!-- REMAINING -->
+<div class="modal-overlay" id="remainingModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_remainingTag">Overview</div><div class="modal-title" id="m_remainingTitle">Remaining Lessons</div></div>
+      <button class="modal-x" onclick="closeModal('remainingModal')">✕</button>
+    </div>
+    <div class="modal-b" id="remainingBody"></div>
+  </div>
+</div>
+
+<!-- INVOICES -->
+<div class="modal-overlay" id="invoicesModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_invoicesTag">Billing</div><div class="modal-title" id="m_invoicesTitle">My Invoices</div></div>
+      <button class="modal-x" onclick="closeModal('invoicesModal')">✕</button>
+    </div>
+    <div class="modal-b" id="invoicesBody"></div>
+  </div>
+</div>
+
+<!-- PURCHASES / MY LABS -->
+<div class="modal-overlay" id="purchasesModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_purchasesTag">The Lab</div><div class="modal-title" id="m_purchasesTitle">My Lab Purchases</div></div>
+      <button class="modal-x" onclick="closeModal('purchasesModal')">✕</button>
+    </div>
+    <div class="modal-b" id="purchasesBody"></div>
+  </div>
+</div>
+
+<!-- LIVE CLASSES -->
+<div class="modal-overlay" id="liveClassesModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_liveTag">Live</div><div class="modal-title" id="m_liveTitle">Live Classes</div></div>
+      <button class="modal-x" onclick="closeModal('liveClassesModal')">✕</button>
+    </div>
+    <div class="modal-b" id="liveClassesBody"></div>
+  </div>
+</div>
+
+<!-- UPCOMING -->
+<div class="modal-overlay" id="upcomingModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_upcomingTag">Schedule</div><div class="modal-title" id="m_upcomingTitle">Upcoming Classes</div></div>
+      <button class="modal-x" onclick="closeModal('upcomingModal')">✕</button>
+    </div>
+    <div class="modal-b"><p class="legal" id="upcomingText">—</p></div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="modal-overlay" id="faqModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_faqTag">Help</div><div class="modal-title">FAQ</div></div>
+      <button class="modal-x" onclick="closeModal('faqModal')">✕</button>
+    </div>
+    <div class="modal-b" id="faqBody"></div>
+  </div>
+</div>
+
+<!-- RULES -->
+<div class="modal-overlay" id="rulesModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_rulesTag">Legal</div><div class="modal-title" id="m_rulesTitle">Terms of Use</div></div>
+      <button class="modal-x" onclick="closeModal('rulesModal')">✕</button>
+    </div>
+    <div class="modal-b"><div class="legal" id="rulesText"></div></div>
+  </div>
+</div>
+
+<!-- PRIVACY -->
+<div class="modal-overlay" id="privacyModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_privacyTag">Legal</div><div class="modal-title" id="m_privacyTitle">Privacy</div></div>
+      <button class="modal-x" onclick="closeModal('privacyModal')">✕</button>
+    </div>
+    <div class="modal-b"><div class="legal" id="privacyText"></div></div>
+  </div>
+</div>
+
+<!-- CYCLE SETUP -->
+<div class="modal-overlay" id="cycleSetupModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_cycleTag">Tracker</div><div class="modal-title" id="m_cycleTitle">Set Up Your Cycle</div></div>
+      <button class="modal-x" onclick="closeModal('cycleSetupModal')">✕</button>
+    </div>
+    <div class="modal-b">
+      <div class="fg"><label class="flabel" id="lbl_cycleStart">Last Period Start Date</label><input class="finput" id="cycleStart" type="date"></div>
+      <div class="fg"><label class="flabel" id="lbl_cycleLen">Average Cycle Length (days)</label><input class="finput" id="cycleLen" type="number" value="28" min="21" max="45"></div>
+      <button class="btn-primary btn-full" id="saveCycleBtn" onclick="saveCycle()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- BIRTHDAY -->
+<div class="bday-overlay" id="bdayOverlay">
+  <div class="bday-card">
+    <div class="bday-emoji"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+    <div class="bday-title" id="bdayTitle">Happy Birthday, <em>you!</em></div>
+    <p class="bday-text" id="bdayText">—</p>
+    <button class="bday-btn" id="bdayBtn" onclick="closeBday()">Thank you ✦</button>
+  </div>
+</div>
+
+<!-- BUSE POPUP -->
+<div class="buse-pop" id="busePop">
+  <div class="buse-pop-inner">
+    <button class="buse-pop-x" onclick="closeBusePop()">✕</button>
+    <div class="buse-pop-tag" id="busePopTag">Message from Buse</div>
+    <div class="buse-pop-title" id="busePopTitle">—</div>
+    <div class="buse-pop-text" id="busePopText">—</div>
+    <button class="buse-pop-btn" id="busePopBtn" onclick="closeBusePop()">Got it ✦</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════
+// TRANSLATIONS
+// ══════════════════════════════
+const T={
+en:{
+  logout:'Sign Out',heroEyebrow:'Member Portal',mottoLabel:'Daily Motto',
+  substackLabel:"Today's Read",cycleLabel:'Cycle Tracker',counterEyebrow:'Right Now',
+  counterLabel:'people are training with Buse right now',counterLive:'Live',
+  progEyebrow:'My Space',progTitle:'My Programs',progSub:'Continue where you left off',
+  upcomingEyebrow:'Live Class',upcomingTitle:'You have a class - join now',
+  upcomingSub:'Check your email for today\'s Zoom link and schedule',zoomBtn:'Join Zoom ->',
+  workoutEyebrow:'Continue Your Program',workoutGoBtn:'Go ->',
+  sb_myAccount:'My Account',sb_profile:'Personal Info',sb_profileSub:'Age, height, weight, goals',
+  sb_notes:'My Notes',sb_notesSub:'Journal & body tracking',
+  sb_favs:'Favorites',sb_favsSub:'Saved lessons',
+  sb_completed:'Completed Lessons',sb_remaining:'Remaining Lessons',
+  sb_invoices:'My Invoices',sb_invoicesSub:'Purchase history',
+  sb_labsTitle:'The Lab',sb_discoverLabs:'Discover Labs',sb_discoverLabsSub:'Explore all programs',sb_myPurchases:'My Lab Purchases',sb_myPurchasesSub:'Your active labs',
+  sb_liveTitle:'Live Classes',sb_liveClasses:'Live Classes',sb_liveClassesSub:'Join Booty, Flex, Power & Core',
+  m_liveTag:'Live',m_liveTitle:'Live Classes',
+  liveJoin:'Join Now ->',livePurchase:'Join This Lab ->',livePerMonth:'/mo',
+  liveBootyDesc:'Shape and sculpt with targeted glute and hip work. Science-backed sequencing for real results.',
+  liveFlexDesc:'Deep mobility work guided by movement science. For bodies that want to move better, feel better.',
+  livePowerDesc:'Full body strength training - compound lifts, progressive overload, and nervous system priming.',
+  liveCoreDesc:'High-intensity core and metabolic conditioning. Burn, stabilise, and build from the inside out.',
+  liveSchedule:'Schedule',
+  m_purchasesTag:'The Lab',m_purchasesTitle:'My Lab Purchases',
+  noLabsYet:'No labs yet.',noLabsBtn:'Get Your First Lab ->',noLabsSub:'Step into the Lab and start your science-backed transformation.',labPurchasedOn:'Purchased on',labActive:'Active',
+  sb_upcoming:'Upcoming Classes',sb_upcomingSub:'Your live schedule',
+  sb_support:'Support',sb_faqSub:'Frequently asked questions',
+  sb_contact:'Contact',sb_legal:'Legal',
+  sb_rules:'Terms of Use',sb_rulesSub:'Course usage rules',
+  sb_privacy:'Privacy & Security',sb_privacySub:'Data protection',
+  m_profileTag:'My Account',m_profileTitle:'Personal Information',
+  lbl_fn:'First Name',lbl_ln:'Last Name',lbl_dob:'Date of Birth',lbl_gender:'Gender',
+  opt_f:'Female',opt_m:'Male',opt_o:'Other / Prefer not to say',
+  lbl_h:'Height (cm)',lbl_w:'Weight (kg)',lbl_age:'Age (auto)',
+  lbl_goal:'My Goal',lbl_level:'Fitness Level',
+  opt_beg:'Beginner',opt_int:'Intermediate',opt_adv:'Advanced',
+  lbl_health:'Health Notes',lbl_inj:'Injuries / Limitations',
+  m_notesTag:'Journal',m_notesTitle:'My Notes',
+  notePh:'How did you feel today? What changed in your body?',
+  saveNote:'Save Note',
+  m_favsTag:'Saved',m_favsTitle:'Favorites',
+  favEmpty:'No favorites yet. Heart a lesson to save it here.',
+  m_completedTag:'Progress',m_completedTitle:'Completed Lessons',
+  m_remainingTag:'Overview',m_remainingTitle:'Remaining Lessons',
+  m_invoicesTag:'Billing',m_invoicesTitle:'My Invoices',
+  m_upcomingTag:'Schedule',m_upcomingTitle:'Upcoming Classes',
+  upcomingModalText:'Your upcoming live group classes will appear here. Check your email for Zoom links and schedule updates.',
+  m_faqTag:'Help',m_rulesTag:'Legal',m_rulesTitle:'Terms of Use',
+  m_privacyTag:'Legal',m_privacyTitle:'Privacy & Security',
+  m_cycleTag:'Tracker',m_cycleTitle:'Set Up Your Cycle',
+  lbl_cycleStart:'Last Period Start Date',lbl_cycleLen:'Average Cycle Length (days)',
+  save:'Save',saved:'Saved ✓',
+  noProgress:'Start a program to see your progress here.',
+  noPurchases:'No purchases yet.',
+  substackLoading:'Loading latest article...',
+  substackEmpty:'No articles yet - check back soon.',
+  substackRead:'Read ->',
+  completedSub:(n)=>`${n} lessons completed`,
+  remainingSub:(n)=>`${n} lessons remaining`,
+  cycleSetupText:'Track your cycle for personalised training recommendations.',
+  cycleSetupBtn:'Set Up',
+  cycleDay:(n,len)=>`Day ${n} of ${len}`,
+  cycleEdit:'Edit',
+  busePopTag:'Message from Buse',busePopBtn:'Got it *',
+  bdayBtn:'Thank you *',
+  bdayText:'A very special day deserves a very special workout. Check your inbox - Buse has a surprise for you. 🎁',
+  bdayTitle:(name)=>`Happy Birthday, ${name}!`,
+  cyclePhases:{
+    menstrual:{name:'Menstrual Phase',desc:'Rest and restore. Your body is doing powerful work. Gentle movement and deep rest are your allies today.',color:'#C1848B',emoji:'🌑'},
+    follicular:{name:'Follicular Phase',desc:'Energy is rising. Your brain is sharp and your body is ready to build. Great time for new challenges.',color:'#C8A96E',emoji:'🌒'},
+    ovulation:{name:'Ovulation Phase',desc:'Peak power. You feel strong and magnetic. Take on your hardest workouts today - your body is at its peak.',color:'#9B6B6F',emoji:'🌕'},
+    luteal:{name:'Luteal Phase',desc:'Slow down and tune in. Strength work is good here - honour your need for rest in the second half.',color:'#D4A89A',emoji:'🌗'},
+  },
+  moonPhases:{new:'New Moon 🌑',waxingCrescent:'Waxing Crescent 🌒',firstQuarter:'First Quarter 🌓',waxingGibbous:'Waxing Gibbous 🌔',full:'Full Moon 🌕',waningGibbous:'Waning Gibbous 🌖',lastQuarter:'Last Quarter 🌗',waningCrescent:'Waning Crescent 🌘'},
+  mottos:[
+    'Your body is not a problem to be solved. It is a system to be understood.',
+    'Movement is medicine. Show up for yourself today.',
+    'Every rep is a conversation between your brain and your body.',
+    'Consistency is the only shortcut.',
+    'You are not starting over. You are starting from experience.',
+    'Strong is not a size. Strong is a practice.',
+    'The nervous system remembers everything. Trust the process.',
+    'Rest is not the absence of training. It is part of it.',
+    'What you do daily matters more than what you do occasionally.',
+    'Your body follows your mind. Train both.',
+  ],
+  faq:[
+    {q:'How do I access my courses?',a:'After purchase, your courses appear in "My Programs". Log in anytime to continue. Programs are sequential - each lesson unlocks after completing the previous one.'},
+    {q:'Can I use this on mobile?',a:'Yes! The platform works beautifully on all devices - phone, tablet, and desktop.'},
+    {q:'What if I miss a live class?',a:'Live group classes are not recorded. Check "Upcoming Classes" and your email for the full schedule.'},
+    {q:'How do I request a refund?',a:'We offer a 14-day satisfaction guarantee. Contact hello@trainwithbuse.com within 14 days of purchase.'},
+    {q:'Are programs suitable for beginners?',a:'Yes. Foundation Series (Level 1) programs are designed for people with no prior experience required.'},
+    {q:'Can I do multiple programs at once?',a:'We recommend one program at a time for best results. You can purchase multiples and switch at your own pace.'},
+    {q:'How does the cycle tracker work?',a:'Enter your last period start date and average cycle length. The tracker calculates your current phase and shows science-backed movement recommendations.'},
+    {q:'Is my data secure?',a:'Yes. All data is encrypted and stored securely via Supabase. Payments are processed exclusively by Stripe - we never see your card details.'},
+  ],
+  rules:`<h3>1. Access & Use</h3><p>All video content and materials are for your personal, non-commercial use only. You may not share, copy, redistribute, or resell any content.</p><h3>2. Account Security</h3><p>You are responsible for keeping your credentials confidential. Do not share your login with others. Each purchase grants access to one individual user only.</p><h3>3. Sequential Access</h3><p>Programs are designed to be completed in order. Sequential lesson access is enforced for your safety and optimal results.</p><h3>4. Content Protection</h3><p>Screen recording, downloading, or capturing any video content is strictly prohibited and may result in immediate account termination without refund.</p><h3>5. Live Classes</h3><p>Live group class sessions are not recorded. Joining Zoom links with accounts other than your registered email is not permitted.</p><h3>6. Refund Policy</h3><p>Refund requests must be submitted within 14 days of purchase via hello@trainwithbuse.com. Refunds are not available after the 14-day window or if more than 3 lessons have been completed.</p><h3>7. Termination</h3><p>Train With Buse reserves the right to suspend or terminate any account found in violation of these terms, with or without prior notice.</p><p>Questions? <a href="mailto:hello@trainwithbuse.com">hello@trainwithbuse.com</a></p>`,
+  privacy:`<h3>Data We Collect</h3><p>We collect the following to provide you with a personalised experience:</p><ul><li>Name and email address</li><li>Fitness profile (age, height, weight, goals, health notes)</li><li>Lesson progress and completion history</li><li>Cycle tracking data (stored locally on your device only - never sent to our servers)</li><li>Notes and journal entries (stored locally on your device only)</li></ul><h3>How We Use It</h3><p>Your data is used solely to operate the platform - to personalise your experience, track your progress, and communicate about your programs. We do not use your data for advertising.</p><h3>Storage & Security</h3><p>Profile and progress data is stored securely via Supabase with row-level security. Only you and Train With Buse administration can access your data. All data is encrypted in transit and at rest.</p><h3>Payments</h3><p>All payments are processed by Stripe. We do not store, see, or access your card details at any point.</p><h3>Third Parties</h3><p>We do not sell, rent, or share your personal data with any third parties for marketing or commercial purposes.</p><h3>Your Rights</h3><p>You may request a copy of your data, corrections, or complete deletion at any time by emailing <a href="mailto:hello@trainwithbuse.com">hello@trainwithbuse.com</a>. Deletion requests are processed within 30 days.</p>`,
+},
+tr:{
+  logout:'Cikis',heroEyebrow:'Uye Portali',mottoLabel:'Gunun Mottosu',
+  substackLabel:'Gunun Yazisi',cycleLabel:'Dongu Takibi',counterEyebrow:'Su An',
+  counterLabel:'kisi su an Buse ile antrenman yapiyor',counterLive:'Canli',
+  progEyebrow:'Alanim',progTitle:'Programlarim',progSub:'Kaldigin yerden devam et',
+  upcomingEyebrow:'Canli Ders',upcomingTitle:'Bugun bir dersin var',
+  upcomingSub:'Bugunun Zoom linki icin e-postani kontrol et',zoomBtn:"Zoom'a Katil ->",
+  workoutEyebrow:'Programa Devam Et',workoutGoBtn:'Git ->',
+  sb_myAccount:'Hesabim',sb_profile:'Kisisel Bilgiler',sb_profileSub:'Yas, boy, kilo, hedefler',
+  sb_notes:'Notlarim',sb_notesSub:'Gunluk & vucut takibi',
+  sb_favs:'Favorilerim',sb_favsSub:'Kaydedilen dersler',
+  sb_completed:'Tamamladigim Dersler',sb_remaining:'Kalan Derslerim',
+  sb_invoices:'Faturalarim',sb_invoicesSub:'Satin alma gecmisi',
+  sb_labsTitle:'The Lab',sb_discoverLabs:'Lablari Kesfet',sb_discoverLabsSub:'Tum programlari gor',
+  sb_myPurchases:'Lab Satin Alimlarim',sb_myPurchasesSub:'Aktif lablarim',
+  m_purchasesTag:'The Lab',m_purchasesTitle:'Lab Satin Alimlarim',
+  noLabsYet:'Henuz lab yok.',noLabsBtn:'Ilk Labini Edin ->',
+  noLabsSub:'The Lab e adim at ve bilim destekli donusumune basla.',
+  labPurchasedOn:'Satin alindi',labActive:'Aktif',
+  sb_liveTitle:'Canli Dersler',sb_liveClasses:'Canli Dersler',sb_liveClassesSub:'Booty, Flex, Power & Core',
+  m_liveTag:'Canli',m_liveTitle:'Canli Dersler',
+  liveJoin:'Katil ->',livePurchase:'Bu Laba Katil ->',livePerMonth:'/ay',
+  liveBootyDesc:'Hedefli gluteus calismasi ile gercek sonuclar.',
+  liveFlexDesc:'Hareket bilimi rehberliginde derin mobilite calismasi.',
+  livePowerDesc:'Tam vucut kuvvet antrenman programi.',
+  liveCoreDesc:'Yogun core ve metabolik kondisyon calismasi.',
+  liveSchedule:'Takvim',
+  sb_upcoming:'Gelecek Derslerim',sb_upcomingSub:'Canli ders takvimi',
+  sb_support:'Destek',sb_faqSub:'Sik sorulan sorular',
+  sb_contact:'Iletisim',sb_legal:'Yasal',
+  sb_rules:'Kullanim Kosullari',sb_rulesSub:'Ders kullanim kurallari',
+  sb_privacy:'Gizlilik & Guvenlik',sb_privacySub:'Veri koruma',
+  m_profileTag:'Hesabim',m_profileTitle:'Kisisel Bilgiler',
+  lbl_fn:'Ad',lbl_ln:'Soyad',lbl_dob:'Dogum Tarihi',lbl_gender:'Cinsiyet',
+  opt_f:'Kadin',opt_m:'Erkek',opt_o:'Diger',
+  lbl_h:'Boy (cm)',lbl_w:'Kilo (kg)',lbl_age:'Yas (otomatik)',
+  lbl_goal:'Hedefim',lbl_level:'Fitness Seviyesi',
+  opt_beg:'Baslangic',opt_int:'Orta',opt_adv:'Ileri',
+  lbl_health:'Saglik Notlari',lbl_inj:'Sakatlik / Kisitlamalar',
+  m_notesTag:'Gunluk',m_notesTitle:'Notlarim',
+  notePh:'Bugun nasil hissettin?',
+  saveNote:'Notu Kaydet',
+  m_favsTag:'Kaydedilenler',m_favsTitle:'Favorilerim',
+  favEmpty:'Henuz favori yok.',
+  m_completedTag:'Ilerleme',m_completedTitle:'Tamamladigim Dersler',
+  m_remainingTag:'Genel Bakis',m_remainingTitle:'Kalan Derslerim',
+  m_invoicesTag:'Faturalar',m_invoicesTitle:'Faturalarim',
+  m_upcomingTag:'Takvim',m_upcomingTitle:'Gelecek Derslerim',
+  upcomingModalText:'Yaklasan canli grup dersleriniz burada gorunecek.',
+  m_faqTag:'Yardim',m_rulesTag:'Yasal',m_rulesTitle:'Kullanim Kosullari',
+  m_privacyTag:'Yasal',m_privacyTitle:'Gizlilik & Guvenlik',
+  m_cycleTag:'Takip',m_cycleTitle:'Dongunu Kur',
+  lbl_cycleStart:'Son Regl Baslangic Tarihi',lbl_cycleLen:'Ortalama Dongu Uzunlugu (gun)',
+  save:'Kaydet',saved:'Kaydedildi ✓',
+  noProgress:'Bir programa baslayin.',
+  noPurchases:'Henuz satin alim yok.',
+  substackLoading:'Yukleniyor...',
+  substackEmpty:'Henuz yazi yok.',
+  substackRead:'Oku ->',
+  completedSub:(n)=>`${n} ders tamamlandi`,
+  remainingSub:(n)=>`${n} ders kaldi`,
+  cycleSetupText:'Kisilestirilmis antrenman onerileri icin dongunu takip et.',
+  cycleSetupBtn:'Kur',
+  cycleDay:(n,len)=>`${len} gunluk dongunun ${n}. gunu`,
+  cycleEdit:'Duzenle',
+  busePopTag:"Buse'den Mesaj",busePopBtn:'Anladim *',
+  bdayBtn:'Tesekkurler *',
+  bdayText:'Bu ozel gune ozel bir antrenman hak ediyorsun. Gelen kutunu kontrol et. 🎁',
+  bdayTitle:(name)=>`Iyi ki dogdun, ${name}!`,
+  cyclePhases:{
+    menstrual:{name:'Menstrual Faz',desc:'Dinlen ve yenile. Nazik hareket ve derin dinlenme en iyi arkadaslarin.',color:'#C1848B',emoji:'🌑'},
+    follicular:{name:'Folikuler Faz',desc:'Enerji yukseliyor. Yeni zorluklar icin harika bir zaman.',color:'#C8A96E',emoji:'🌒'},
+    ovulation:{name:'Ovulasyon Fazi',desc:'Zirve guc. En zorlu antrenmanlarina girin.',color:'#9B6B6F',emoji:'🌕'},
+    luteal:{name:'Luteal Faz',desc:'Yavasla ve icine don. Kuvvet antrenman bu fazda iyi calisir.',color:'#D4A89A',emoji:'🌗'},
+  },
+  moonPhases:{new:'Yeni Ay 🌑',waxingCrescent:'Hilal 🌒',firstQuarter:'Ilk Dordun 🌓',waxingGibbous:'Sisen Ay 🌔',full:'Dolunay 🌕',waningGibbous:'Azalan Ay 🌖',lastQuarter:'Son Dordun 🌗',waningCrescent:'Biten Hilal 🌘'},
+  mottos:[
+    'Bedenin cozulecek bir problem degil, anlasilacak bir sistem.',
+    'Hareket ilactir. Bugun kendin icin gel.',
+    'Her tekrar, beynin ve bedenin arasindaki bir konusmadir.',
+    'Tutarlilik tek kisayoldur.',
+    'Yeniden baslamiyorsun. Deneyimle basliyorsun.',
+    'Guclu olmak bir beden tipi degil, bir pratik.',
+    'Sinir sistemi her seyi hatirliyor. Surece guven.',
+    'Dinlenme, antrenmanin yoklugu degil. Onun bir parcasi.',
+    'Her gun yaptiklarinin, arada bir yaptiklarindan cok daha onemli.',
+    'Bedenin aklini takip eder. Ikisini birden egit.',
+  ],
+  faq:[
+    {q:'Kurslara nasil erisebilirim?',a:'Satin alma sonrasi kurslariniz Programlarim sayfasinda gorunur.'},
+    {q:'Mobilde kullanabilir miyim?',a:'Evet! Platform tum cihazlarda calisir.'},
+    {q:'Canli dersi kacirirsam ne olur?',a:'Canli dersler kaydedilmez. E-postani kontrol et.'},
+    {q:'Iade nasil alabilirim?',a:'14 gun icinde hello@trainwithbuse.com adresine yaz.'},
+    {q:'Programlar yeni baslayanlar icin uygun mu?',a:'Evet. Foundation Series programlari yeni baslayanlar icin tasarlanmistir.'},
+    {q:'Birden fazla program yapilabilir mi?',a:'En iyi sonuclar icin bir programa odaklanmanizi oneririz.'},
+    {q:'Dongu takibi nasil calisir?',a:'Son regl baslangic tarihinizi ve ortalama dongu uzunlugunuzu girin.'},
+    {q:'Verilerim guvende mi?',a:'Evet. Tum veriler Supabase araciligiyla sifrelenerek saklanir.'},
+  ],
+  rules:'<h3>Kullanim Kosullari</h3><p>Tum icerikler yalnizca kisisel kullanim icindir. Paylasilamaz veya satilamaz.</p><p>Soru icin: <a href="mailto:hello@trainwithbuse.com">hello@trainwithbuse.com</a></p>',
+  privacy:'<h3>Gizlilik</h3><p>Verileriniz guvenli sekilde saklanir. Odeme bilgileri Stripe tarafindan islenir.</p>',
+},
+
+de:{
+  logout:'Abmelden',heroEyebrow:'Mitgliederbereich',mottoLabel:'Tages-Motto',
+  substackLabel:'Heutiger Artikel',cycleLabel:'Zyklus-Tracker',counterEyebrow:'Gerade jetzt',
+  counterLabel:'Personen trainieren gerade mit Buse',counterLive:'Live',
+  progEyebrow:'Mein Bereich',progTitle:'Meine Programme',progSub:'Weitermachen wo du aufgehort hast',
+  upcomingEyebrow:'Live-Kurs',upcomingTitle:'Du hast heute einen Kurs',
+  upcomingSub:'Uberprufe deine E-Mails fur den Zoom-Link',zoomBtn:'Zoom beitreten ->',
+  workoutEyebrow:'Programm fortsetzen',workoutGoBtn:'Los ->',
+  sb_myAccount:'Mein Konto',sb_profile:'Personliche Daten',sb_profileSub:'Alter, Grosse, Gewicht, Ziele',
+  sb_notes:'Meine Notizen',sb_notesSub:'Tagebuch & Korpertracking',
+  sb_favs:'Favoriten',sb_favsSub:'Gespeicherte Lektionen',
+  sb_completed:'Abgeschlossene Lektionen',sb_remaining:'Verbleibende Lektionen',
+  sb_invoices:'Meine Rechnungen',sb_invoicesSub:'Kaufhistorie',
+  sb_labsTitle:'The Lab',sb_discoverLabs:'Labs entdecken',sb_discoverLabsSub:'Alle Programme erkunden',sb_myPurchases:'Meine Lab-Kaufe',sb_myPurchasesSub:'Deine aktiven Labs',
+  sb_liveTitle:'Live-Kurse',sb_liveClasses:'Live-Kurse',sb_liveClassesSub:'Booty, Flex, Power & Core',
+  m_liveTag:'Live',m_liveTitle:'Live-Kurse',
+  liveJoin:'Beitreten ->',livePurchase:'Diesem Lab beitreten ->',livePerMonth:'/Mo.',
+  liveBootyDesc:'Forme und gestalte mit gezielter Gesass- und Huftarbeit. Wissenschaftlich fundierte Sequenzierung fur echte Ergebnisse.',
+  liveFlexDesc:'Tiefe Mobilitatsarbeit gefuhrt von Bewegungswissenschaft. Fur Korper die sich besser bewegen wollen.',
+  livePowerDesc:'Ganzkorper-Krafttraining - Verbundubungen, progressive Uberlastung und Nervensystem-Priming.',
+  liveCoreDesc:'Hochintensives Core- und metabolisches Konditionstraining. Von innen nach aussen verbrennen und aufbauen.',
+  liveSchedule:'Stundenplan',
+  m_purchasesTag:'The Lab',m_purchasesTitle:'Meine Lab-Kaufe',
+  noLabsYet:'Noch keine Labs.',noLabsBtn:'Dein erstes Lab holen ->',noLabsSub:'Betritt das Lab und starte deine wissenschaftlich fundierte Transformation.',labPurchasedOn:'Gekauft am',labActive:'Aktiv',
+  sb_upcoming:'Kommende Kurse',sb_upcomingSub:'Dein Live-Stundenplan',
+  sb_support:'Support',sb_faqSub:'Haufig gestellte Fragen',
+  sb_contact:'Kontakt',sb_legal:'Rechtliches',
+  sb_rules:'Nutzungsbedingungen',sb_rulesSub:'Kursregeln',
+  sb_privacy:'Datenschutz',sb_privacySub:'Datenschutz',
+  m_profileTag:'Mein Konto',m_profileTitle:'Personliche Informationen',
+  lbl_fn:'Vorname',lbl_ln:'Nachname',lbl_dob:'Geburtsdatum',lbl_gender:'Geschlecht',
+  opt_f:'Weiblich',opt_m:'Mannlich',opt_o:'Divers',
+  lbl_h:'Grosse (cm)',lbl_w:'Gewicht (kg)',lbl_age:'Alter (automatisch)',
+  lbl_goal:'Mein Ziel',lbl_level:'Fitnesslevel',
+  opt_beg:'Anfanger',opt_int:'Mittelstufe',opt_adv:'Fortgeschritten',
+  lbl_health:'Gesundheitsnotizen',lbl_inj:'Verletzungen',
+  m_notesTag:'Tagebuch',m_notesTitle:'Meine Notizen',
+  notePh:'Wie hast du dich heute gefuhlt?',
+  saveNote:'Speichern',
+  m_favsTag:'Gespeichert',m_favsTitle:'Favoriten',
+  favEmpty:'Noch keine Favoriten.',
+  m_completedTag:'Fortschritt',m_completedTitle:'Abgeschlossene Lektionen',
+  m_remainingTag:'Ubersicht',m_remainingTitle:'Verbleibende Lektionen',
+  m_invoicesTag:'Abrechnung',m_invoicesTitle:'Meine Rechnungen',
+  m_upcomingTag:'Stundenplan',m_upcomingTitle:'Kommende Kurse',
+  upcomingModalText:'Deine kommenden Live-Kurse erscheinen hier.',
+  m_faqTag:'Hilfe',m_rulesTag:'Rechtliches',m_rulesTitle:'Nutzungsbedingungen',
+  m_privacyTag:'Rechtliches',m_privacyTitle:'Datenschutz',
+  m_cycleTag:'Tracker',m_cycleTitle:'Zyklus einrichten',
+  lbl_cycleStart:'Letzter Periodenstart',lbl_cycleLen:'Zykluslange (Tage)',
+  save:'Speichern',saved:'Gespeichert ✓',
+  noProgress:'Starte ein Programm um deinen Fortschritt zu sehen.',
+  noPurchases:'Noch keine Kaufe.',
+  substackLoading:'Lade neuesten Artikel...',
+  substackEmpty:'Noch keine Artikel - bald verfugbar.',
+  substackRead:'Lesen ->',
+  completedSub:(n)=>`${n} Lektionen abgeschlossen`,
+  remainingSub:(n)=>`${n} Lektionen verbleibend`,
+  cycleSetupText:'Tracke deinen Zyklus fur personalisierte Trainingsempfehlungen.',
+  cycleSetupBtn:'Einrichten',
+  cycleDay:(n,len)=>`Tag ${n} von ${len}`,
+  cycleEdit:'Bearbeiten',
+  busePopTag:'Nachricht von Buse',busePopBtn:'Verstanden *',
+  bdayBtn:'Danke schon *',
+  bdayText:'Ein besonderer Tag verdient ein besonderes Training. Schau in deinen Posteingang. 🎁',
+  bdayTitle:(name)=>`Herzlichen Gluckwunsch, ${name}!`,
+  cyclePhases:{
+    menstrual:{name:'Menstruationsphase',desc:'Ruhe und Erholung. Dein Korper leistet kraftvolle Arbeit. Sanfte Bewegung und tiefer Schlaf sind deine Verbundeten.',color:'#C1848B',emoji:'🌑'},
+    follicular:{name:'Follikelphase',desc:'Energie steigt. Gehirn ist scharf, Korper bereit. Tolle Zeit fur neue Herausforderungen.',color:'#C8A96E',emoji:'🌒'},
+    ovulation:{name:'Ovulationsphase',desc:'Hochste Kraft. Du fuhlst dich stark. Nimm heute dein hartestes Training an.',color:'#9B6B6F',emoji:'🌕'},
+    luteal:{name:'Lutealphase',desc:'Verlangsame. Krafttraining funktioniert hier gut - ehre auch dein Ruhebedurfnis.',color:'#D4A89A',emoji:'🌗'},
+  },
+  moonPhases:{new:'Neumond 🌑',waxingCrescent:'Zunehmende Sichel 🌒',firstQuarter:'Erstes Viertel 🌓',waxingGibbous:'Zunehmend 🌔',full:'Vollmond 🌕',waningGibbous:'Abnehmend 🌖',lastQuarter:'Letztes Viertel 🌗',waningCrescent:'Abnehmende Sichel 🌘'},
+  mottos:[
+    'Dein Korper ist kein Problem das gelost werden muss. Er ist ein System das verstanden werden will.',
+    'Bewegung ist Medizin. Komm heute fur dich.',
+    'Jede Wiederholung ist ein Gesprach zwischen Gehirn und Korper.',
+    'Konsequenz ist der einzige Abkurzungsweg.',
+    'Du fangst nicht von vorne an. Du fangst mit Erfahrung an.',
+    'Stark ist keine Grosse. Stark ist eine Praxis.',
+    'Das Nervensystem erinnert sich an alles. Vertraue dem Prozess.',
+    'Ruhe ist nicht die Abwesenheit von Training. Sie ist ein Teil davon.',
+    'Was du taglich tust, zahlt mehr als was du gelegentlich tust.',
+    'Dein Korper folgt deinem Geist. Trainiere beide.',
+  ],
+  faq:[
+    {q:'Wie greife ich auf meine Kurse zu?',a:'Nach dem Kauf erscheinen deine Kurse unter "Meine Programme". Jede Lektion schaltet sich nach der vorherigen frei.'},
+    {q:'Kann ich auf dem Handy zugreifen?',a:'Ja! Die Plattform funktioniert auf allen Geraten.'},
+    {q:'Was wenn ich einen Live-Kurs verpasse?',a:'Live-Kurse werden nicht aufgezeichnet. Uberprufe "Kommende Kurse" und deine E-Mails.'},
+    {q:'Wie erhalte ich eine Ruckerstattung?',a:'Schreibe innerhalb von 14 Tagen an hello@trainwithbuse.com.'},
+    {q:'Sind Programme fur Anfanger geeignet?',a:'Ja. Foundation-Programme sind fur Menschen ohne Vorkenntnisse konzipiert.'},
+    {q:'Kann ich mehrere Programme gleichzeitig machen?',a:'Wir empfehlen eines auf einmal fur beste Ergebnisse.'},
+    {q:'Wie funktioniert der Zyklus-Tracker?',a:'Gib Periodenstart und Zykluslange ein. Der Tracker berechnet deine aktuelle Phase.'},
+    {q:'Sind meine Daten sicher?',a:'Ja. Daten werden verschlusselt uber Supabase gespeichert. Zahlungen verarbeitet Stripe.'},
+  ],
+  rules:`<h3>1. Zugang und Nutzung</h3><p>Alle Inhalte sind nur fur den personlichen Gebrauch bestimmt.</p><h3>2. Kontosicherheit</h3><p>Zugangsdaten durfen nicht weitergegeben werden.</p><h3>3. Sequentieller Zugang</h3><p>Programme mussen der Reihe nach absolviert werden.</p><h3>4. Inhaltsschutz</h3><p>Bildschirmaufzeichnung ist verboten.</p><h3>5. Live-Kurse</h3><p>Werden nicht aufgezeichnet.</p><h3>6. Ruckerstattung</h3><p>Innerhalb von 14 Tagen bei hello@trainwithbuse.com.</p>`,
+  privacy:`<h3>Erhobene Daten</h3><ul><li>Name und E-Mail</li><li>Fitnessprofil</li><li>Lektionsfortschritt</li></ul><h3>Datenspeicherung</h3><p>Sicher uber Supabase. Zahlungen via Stripe. Wir sehen keine Kartendaten.</p><h3>Ihre Rechte</h3><p>Datenanfragen an <a href="mailto:hello@trainwithbuse.com">hello@trainwithbuse.com</a>.</p>`,
+}};
+
+// ══════════════════════════════
+// LANG
+// ══════════════════════════════
+let lang=localStorage.getItem('twb_lang')||'en';
+function setLang(l){
+  lang=l;localStorage.setItem('twb_lang',l);
+  document.getElementById('langLabel').textContent=l.toUpperCase();
+  document.querySelectorAll('.lang-drop a').forEach((a,i)=>a.classList.toggle('active',['en','tr','de'][i]===l));
+  document.getElementById('langDrop').classList.remove('open');
+  applyT();
+  if(window._loaded) renderAll();
+}
+function t(k){return T[lang]?.[k]||T.en[k]||k;}
+function applyT(){
+  const tl=T[lang];
+  const ids=['logout','heroEyebrow','mottoLabel','substackLabel','cycleLabel','counterEyebrow','counterLabel',
+    'counterLive','progEyebrow','progTitle','progSub','upcomingEyebrow','upcomingTitle','upcomingSub','zoomBtn',
+    'workoutEyebrow','sb_myAccount','sb_profile','sb_profileSub','sb_notes','sb_notesSub','sb_favs','sb_favsSub',
+    'sb_completed','sb_remaining','sb_invoices','sb_invoicesSub','sb_upcoming','sb_upcomingSub','sb_support',
+    'sb_labsTitle','sb_discoverLabs','sb_discoverLabsSub','sb_myPurchases','sb_myPurchasesSub','m_purchasesTag','m_purchasesTitle',
+    'sb_liveTitle','sb_liveClasses','sb_liveClassesSub','m_liveTag','m_liveTitle',
+    'sb_faqSub','sb_contact','sb_legal','sb_rules','sb_rulesSub','sb_privacy','sb_privacySub',
+    'm_profileTag','m_profileTitle','lbl_fn','lbl_ln','lbl_dob','lbl_gender','opt_f','opt_m','opt_o',
+    'lbl_h','lbl_w','lbl_age','lbl_goal','lbl_level','opt_beg','opt_int','opt_adv','lbl_health','lbl_inj',
+    'm_notesTag','m_notesTitle','m_favsTag','m_favsTitle','m_completedTag','m_completedTitle',
+    'm_remainingTag','m_remainingTitle','m_invoicesTag','m_invoicesTitle','m_upcomingTag','m_upcomingTitle',
+    'm_faqTag','m_rulesTag','m_rulesTitle','m_privacyTag','m_privacyTitle','m_cycleTag','m_cycleTitle',
+    'lbl_cycleStart','lbl_cycleLen'];
+  ids.forEach(k=>{const el=document.getElementById(k);if(el&&tl[k]!==undefined)el.textContent=tl[k];});
+  document.getElementById('logoutBtn').textContent=tl.logout;
+  document.getElementById('sbLogoutBtn').textContent=tl.logout;
+  const ni=document.getElementById('noteInput');if(ni)ni.placeholder=tl.notePh||'';
+  const spb=document.getElementById('saveProfileBtn');if(spb)spb.textContent=tl.save||'Save';
+  const snb=document.getElementById('saveNoteBtn');if(snb)snb.textContent=tl.saveNote||'Save Note';
+  const scb=document.getElementById('saveCycleBtn');if(scb)scb.textContent=tl.save||'Save';
+  document.documentElement.lang=lang;
+}
+applyT();
+document.getElementById('langLabel').textContent=lang.toUpperCase();
+document.querySelectorAll('.lang-drop a').forEach((a,i)=>a.classList.toggle('active',['en','tr','de'][i]===lang));
+document.addEventListener('click',e=>{if(!e.target.closest('.lang-wrap'))document.getElementById('langDrop').classList.remove('open');});
+
+// ══════════════════════════════
+// SIDEBAR
+// ══════════════════════════════
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sbOverlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sbOverlay').classList.remove('open');document.body.style.overflow='';}
+
+// ══════════════════════════════
+// MODALS
+// ══════════════════════════════
+function openModal(id){
+  closeSidebar();
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow='hidden';
+  if(id==='notesModal')renderNotes();
+  if(id==='favsModal')renderFavs();
+  if(id==='completedModal')renderCompleted();
+  if(id==='remainingModal')renderRemaining();
+  if(id==='invoicesModal')renderInvoices();
+  if(id==='purchasesModal')renderPurchases();
+  if(id==='liveClassesModal')renderLiveClasses();
+  if(id==='profileModal')loadProfile();
+  if(id==='faqModal')renderFAQ();
+  if(id==='rulesModal')document.getElementById('rulesText').innerHTML=T[lang].rules;
+  if(id==='privacyModal')document.getElementById('privacyText').innerHTML=T[lang].privacy;
+  if(id==='upcomingModal')document.getElementById('upcomingText').textContent=t('upcomingModalText');
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
+document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)closeModal(el.id);}));
+
+// ══════════════════════════════
+// AUTH
+// ══════════════════════════════
+const {createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let currentUser=null,_purchases=new Set(),_progress={},_purchasesRaw=[];
+
+sb.auth.getSession().then(({data:{session}})=>{
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  const name=currentUser.user_metadata?.full_name?.split(' ')[0]||currentUser.email?.split('@')[0]||'';
+  window._userName=name;
+  document.getElementById('userName').textContent=name;
+  document.getElementById('sbName').textContent=currentUser.user_metadata?.full_name||name;
+  document.getElementById('sbEmail').textContent=currentUser.email;
+  document.getElementById('sbAvatar').textContent=name.charAt(0).toUpperCase();
+  // Render independent sections immediately — no need to wait for Supabase
+  renderHero();
+  renderMotto();
+  renderSubstack();
+  renderCycle();
+  renderCounter();
+  // Then load Supabase data for purchases/progress
+  loadData();
+});
+
+async function loadData(){
+  const [{data:pur},{data:prog}]=await Promise.all([
+    sb.from('purchases').select('course_id,created_at').eq('user_id',currentUser.id),
+    sb.from('lesson_progress').select('course_id,lesson_id').eq('user_id',currentUser.id),
+  ]);
+  _purchasesRaw=pur||[];
+  _purchases=new Set(_purchasesRaw.map(p=>p.course_id));
+  _progress={};
+  (prog||[]).forEach(p=>{if(!_progress[p.course_id])_progress[p.course_id]=new Set();_progress[p.course_id].add(p.lesson_id);});
+  const totalDone=(prog||[]).length;
+  let totalLeft=0;
+  const liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  _purchases.forEach(id=>{if(!liveIds.includes(id)&&COURSES[id]&&COURSES[id].lessons.length>0){const d=_progress[id]?_progress[id].size:0;totalLeft+=COURSES[id].lessons.length-d;}});
+  document.getElementById('sbCompletedSub').textContent=t('completedSub')(totalDone);
+  document.getElementById('sbRemainingSub').textContent=t('remainingSub')(totalLeft);
+  if(liveIds.some(id=>_purchases.has(id)))document.getElementById('upcomingItem').style.display='flex';
+  window._loaded=true;
+  renderAll();
+  checkBirthday();
+  renderBusePop();
+}
+
+function renderAll(){applyT();renderHero();renderWorkout();renderUpcomingBanner();}
+
+// ══════════════════════════════
+// HERO
+// ══════════════════════════════
+function renderHero(){
+  const tl=T[lang];
+  const welcome={en:'Welcome,',tr:'Hos geldin,',de:'Willkommen,'}[lang];
+  document.getElementById('heroName').innerHTML=`${welcome} <em>${window._userName||''}</em> <span class="star">*</span>`;
+  const d=new Date();
+  document.getElementById('heroDate').textContent=d.toLocaleDateString(lang==='tr'?'tr-TR':lang==='de'?'de-DE':'en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();
+}
+
+// ══════════════════════════════
+// MOTTO
+// ══════════════════════════════
+function renderMotto(){
+  try{
+    const mottos=(T[lang]&&T[lang].mottos)?T[lang].mottos:T.en.mottos;
+    if(!mottos||!mottos.length)return;
+    const idx=new Date().getDate()%mottos.length;
+    const el=document.getElementById('mottoText');
+    if(el) el.textContent='"'+mottos[idx]+'"';
+  }catch(e){console.log('motto error',e);}
+}
+
+// ══════════════════════════════
+// SUBSTACK
+// ══════════════════════════════
+async function renderSubstack(){
+  const el=document.getElementById('substackContent');
+  const tl=T[lang];
+  try{
+    const res=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://trainwithbuse.substack.com/feed`);
+    const data=await res.json();
+    if(data.status==='ok'&&data.items?.length){
+      const item=data.items[0];
+      const desc=(item.description||'').replace(/<[^>]*>/g,'').trim().slice(0,100);
+      el.innerHTML=`
+        <div class="substack-inner">
+          <div class="substack-thumb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <div class="substack-text-wrap">
+            <div class="substack-title">${item.title}</div>
+            ${desc?`<div class="substack-desc">${desc}...</div>`:''}
+            <a href="${item.link}" target="_blank" class="substack-link">${tl.substackRead} <span>-></span></a>
+          </div>
+        </div>`;
+    }else{el.innerHTML=`<div class="substack-empty">${tl.substackEmpty}</div>`;}
+  }catch{el.innerHTML=`<div class="substack-empty">${tl.substackEmpty}</div>`;}
+}
+
+// ══════════════════════════════
+// CYCLE
+// ══════════════════════════════
+function getCycleData(){try{return JSON.parse(localStorage.getItem('twb_cycle_'+(currentUser?.id||''))||'null');}catch{return null;}}
+function renderCycle(){
+  const tl=T[lang];const el=document.getElementById('cycleContent');
+  // Hide cycle tracker for male users
+  try{
+    const profile=JSON.parse(localStorage.getItem('twb_profile_'+(currentUser?.id||''))||'{}');
+    if(profile.gender==='male'){
+      const section=document.querySelector('.cycle-section');
+      if(section) section.style.display='none';
+      // Expand substack to full width
+      const substackSection=document.querySelector('.substack-section');
+      if(substackSection){ substackSection.style.borderRight='none'; substackSection.style.paddingRight='0'; }
+      const midRow=document.querySelector('.mid-row');
+      if(midRow) midRow.style.gridTemplateColumns='1fr';
+      return;
+    }
+  }catch(e){}
+  const data=getCycleData();
+  if(!data?.startDate){
+    el.innerHTML=`<div class="cycle-not-set"><div style="font-size:40px;margin-bottom:12px">🌸</div><div class="cycle-not-set-text">${tl.cycleSetupText}</div><button class="btn-setup" onclick="openModal('cycleSetupModal')">${tl.cycleSetupBtn}</button></div>`;
+    return;
+  }
+  const start=new Date(data.startDate);
+  const cycleLen=parseInt(data.cycleLength)||28;
+  const diff=Math.floor((new Date()-start)/(864e5));
+  const dayOfCycle=(diff%cycleLen)+1;
+  let phase=dayOfCycle<=5?'menstrual':dayOfCycle<=13?'follicular':dayOfCycle<=16?'ovulation':'luteal';
+  const p=tl.cyclePhases[phase];
+  const moon=getMoonPhase();
+  el.innerHTML=`
+    <div class="cycle-phase-display">
+      <div class="cycle-emoji-big">${p.emoji}</div>
+      <div class="cycle-info">
+        <div class="cycle-day-label" style="color:${p.color}">${tl.cycleDay(dayOfCycle,cycleLen)}</div>
+        <div class="cycle-phase-name">${p.name}</div>
+        <div class="cycle-desc">${p.desc}</div>
+        <div class="cycle-moon-row">
+          <div class="cycle-moon-text">${moon}</div>
+          <button class="cycle-setup-link" onclick="openModal('cycleSetupModal')" style="margin-left:12px">${tl.cycleEdit}</button>
+        </div>
+      </div>
+    </div>`;
+}
+function getMoonPhase(){
+  const tl=T[lang];const mp=tl.moonPhases;
+  const diff=(new Date()-new Date('2000-01-06'))/(864e5);
+  const c=diff%29.53;
+  if(c<1.85)return mp.new;if(c<7.38)return mp.waxingCrescent;if(c<9.22)return mp.firstQuarter;
+  if(c<14.76)return mp.waxingGibbous;if(c<16.61)return mp.full;if(c<22.15)return mp.waningGibbous;
+  if(c<23.99)return mp.lastQuarter;return mp.waningCrescent;
+}
+function saveCycle(){
+  const s=document.getElementById('cycleStart').value;
+  const l=document.getElementById('cycleLen').value;
+  if(!s)return;
+  localStorage.setItem('twb_cycle_'+(currentUser?.id||''),JSON.stringify({startDate:s,cycleLength:l}));
+  closeModal('cycleSetupModal');renderCycle();
+}
+
+// ══════════════════════════════
+// COUNTER
+// ══════════════════════════════
+function renderCounter(){
+  let base=847+Math.floor(Math.random()*100);
+  const el=document.getElementById('counterNum');
+  el.textContent=base;
+  setInterval(()=>{
+    const d=Math.floor(Math.random()*9)-4;
+    base=Math.max(780,Math.min(1300,base+d));
+    el.textContent=base;
+    el.classList.add('bump');
+    const pmEl=document.getElementById(d>=0?'pmUp':'pmDown');
+    pmEl.classList.add(d>=0?'up':'down');
+    setTimeout(()=>{el.classList.remove('bump');pmEl.classList.remove('up','down');},400);
+  },2800);
+}
+
+// ══════════════════════════════
+// TODAY'S WORKOUT
+// ══════════════════════════════
+function renderWorkout(){
+  const tl=T[lang];
+  const _liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  const active=Object.entries(COURSES).find(([id,c])=>_purchases.has(id)&&!_liveIds.includes(id)&&c.lessons&&c.lessons.length>0&&(_progress[id]?_progress[id].size:0)<c.lessons.length);
+  if(!active)return;
+  const [id,course]=active;
+  const done=_progress[id]?_progress[id].size:0;
+  const next=course.lessons[done];
+  if(!next)return;
+  const strip=document.getElementById('workoutStrip');
+  strip.style.display='block';
+  document.getElementById('workoutColorTag').style.background=course.color;
+  document.getElementById('workoutEyebrow').textContent=tl.workoutEyebrow;
+  document.getElementById('workoutTitle').textContent=next.title;
+  document.getElementById('workoutSub').textContent=`${course.title} - ${next.duration}`;
+  const link=document.getElementById('workoutLink');
+  link.textContent=tl.workoutGoBtn;
+  link.href=`course.html?id=${id}&lesson=${next.id}`;
+}
+
+// ══════════════════════════════
+// UPCOMING BANNER
+// ══════════════════════════════
+function renderUpcomingBanner(){
+  const _lIds=['live-booty','live-flexibility','live-power','live-core'];
+  const ownedLive=_lIds.find(id=>_purchases.has(id));
+  if(!ownedLive)return;
+  const banner=document.getElementById('upcomingBanner');
+  banner.style.display='flex';
+  const tl=T[lang];
+  const c=COURSES[ownedLive];
+  document.getElementById('upcomingEyebrow').textContent=tl.upcomingEyebrow;
+  document.getElementById('upcomingTitle').textContent=c?c.title:tl.upcomingTitle;
+  document.getElementById('upcomingSub').textContent=c&&c.schedule?c.schedule[lang]||c.schedule.en:tl.upcomingSub;
+  document.getElementById('zoomBtn').textContent=tl.zoomBtn;
+  document.getElementById('zoomBtn').href=c&&c.zoomLink?c.zoomLink:'#';
+}
+
+// ══════════════════════════════
+// BIRTHDAY
+// ══════════════════════════════
+function checkBirthday(){
+  try{
+    const p=JSON.parse(localStorage.getItem('twb_profile_'+(currentUser?.id||''))||'{}');
+    if(!p.dob)return;
+    const d=new Date(p.dob);const now=new Date();
+    if(d.getDate()!==now.getDate()||d.getMonth()!==now.getMonth())return;
+    const key='twb_bday_'+now.getFullYear()+'_'+(currentUser?.id||'');
+    if(localStorage.getItem(key))return;
+    const tl=T[lang];const name=window._userName||'';
+    document.getElementById('bdayTitle').innerHTML=tl.bdayTitle(name);
+    document.getElementById('bdayText').textContent=tl.bdayText;
+    document.getElementById('bdayBtn').textContent=tl.bdayBtn;
+    setTimeout(()=>document.getElementById('bdayOverlay').classList.add('open'),800);
+    localStorage.setItem(key,'1');
+  }catch{}
+}
+function closeBday(){document.getElementById('bdayOverlay').classList.remove('open');}
+
+// ══════════════════════════════
+// BUSE POPUP
+// ══════════════════════════════
+const BUSE_MSG={
+  enabled:false,
+  title:{en:'A note from Buse',tr:'Buse\'den bir not',de:'Eine Notiz von Buse'},
+  text:{en:'This week, focus on breath during every movement. Your nervous system will thank you. 🌿',tr:'Bu hafta her harekette nefese odaklan. 🌿',de:'Diese Woche: Konzentriere dich bei jeder Bewegung auf den Atem. 🌿'}
+};
+function renderBusePop(){
+  if(!BUSE_MSG.enabled)return;
+  const key='twb_buse_'+BUSE_MSG.title.en.slice(0,6);
+  if(localStorage.getItem(key))return;
+  const tl=T[lang];
+  document.getElementById('busePopTag').textContent=tl.busePopTag;
+  document.getElementById('busePopTitle').textContent=BUSE_MSG.title[lang]||BUSE_MSG.title.en;
+  document.getElementById('busePopText').textContent=BUSE_MSG.text[lang]||BUSE_MSG.text.en;
+  document.getElementById('busePopBtn').textContent=tl.busePopBtn;
+  setTimeout(()=>document.getElementById('busePop').classList.add('open'),3000);
+}
+function closeBusePop(){document.getElementById('busePop').classList.remove('open');localStorage.setItem('twb_buse_'+BUSE_MSG.title.en.slice(0,6),'1');}
+
+// ══════════════════════════════
+// PROFILE
+// ══════════════════════════════
+function loadProfile(){
+  try{
+    const p=JSON.parse(localStorage.getItem('twb_profile_'+(currentUser?.id||''))||'{}');
+    ['fn','ln','dob','gender','h','w','goal','level','health','inj'].forEach(k=>{const el=document.getElementById('p_'+k);if(el&&p[k])el.value=p[k];});
+    if(p.dob)calcAge(p.dob);
+  }catch{}
+}
+document.getElementById('p_dob')?.addEventListener('change',e=>calcAge(e.target.value));
+function calcAge(dob){if(!dob)return;const age=Math.floor((new Date()-new Date(dob))/(864e5*365.25));const el=document.getElementById('p_age');if(el)el.value=age;}
+async function saveProfile(){
+  const p={};
+  ['fn','ln','dob','gender','h','w','goal','level','health','inj'].forEach(k=>{const el=document.getElementById('p_'+k);if(el)p[k]=el.value;});
+  localStorage.setItem('twb_profile_'+(currentUser?.id||''),JSON.stringify(p));
+  await sb.from('user_profiles').upsert({
+    user_id:currentUser.id,email:currentUser.email,
+    first_name:p.fn,last_name:p.ln,date_of_birth:p.dob||null,gender:p.gender,
+    height_cm:p.h?parseInt(p.h):null,weight_kg:p.w?parseFloat(p.w):null,
+    fitness_goal:p.goal,fitness_level:p.level,health_notes:p.health,injuries:p.inj,
+    updated_at:new Date().toISOString()
+  });
+  const btn=document.getElementById('saveProfileBtn');
+  btn.textContent=t('saved');
+  setTimeout(()=>{btn.textContent=t('save');closeModal('profileModal');checkBirthday();},1400);
+}
+
+// ══════════════════════════════
+// NOTES
+// ══════════════════════════════
+function getNotes(){try{return JSON.parse(localStorage.getItem('twb_notes_'+(currentUser?.id||''))||'[]');}catch{return [];}}
+function renderNotes(){
+  const notes=getNotes();const list=document.getElementById('notesList');
+  if(!notes.length){list.innerHTML='';return;}
+  list.innerHTML=notes.map((n,i)=>`
+    <div class="note-item">
+      <button class="note-del" onclick="deleteNote(${i})">✕</button>
+      <div class="note-date">${new Date(n.date).toLocaleDateString(lang==='tr'?'tr-TR':lang==='de'?'de-DE':'en-US',{day:'numeric',month:'long',year:'numeric'})}</div>
+      <div class="note-text">${n.text.replace(/\n/g,'<br>')}</div>
+    </div>`).join('');
+}
+function saveNote(){
+  const text=document.getElementById('noteInput').value.trim();if(!text)return;
+  const notes=getNotes();notes.unshift({text,date:new Date().toISOString()});
+  localStorage.setItem('twb_notes_'+(currentUser?.id||''),JSON.stringify(notes));
+  document.getElementById('noteInput').value='';renderNotes();
+}
+function deleteNote(i){const n=getNotes();n.splice(i,1);localStorage.setItem('twb_notes_'+(currentUser?.id||''),JSON.stringify(n));renderNotes();}
+
+// ══════════════════════════════
+// FAVORITES
+// ══════════════════════════════
+function getFavs(){try{return JSON.parse(localStorage.getItem('twb_favs_'+(currentUser?.id||''))||'[]');}catch{return [];}}
+function renderFavs(){
+  const favs=getFavs();const tl=T[lang];const body=document.getElementById('favsBody');
+  if(!favs.length){body.innerHTML=`<div class="pempty">${tl.favEmpty}</div>`;return;}
+  const sub=(tl.subtitles||{});
+  body.innerHTML=favs.map(id=>{
+    const c=COURSES[id];if(!c)return'';
+    return`<div class="fav-item" onclick="window.location.href='course.html?id=${id}'">
+      <div style="width:10px;height:10px;border-radius:50%;background:${c.color};flex-shrink:0"></div>
+      <div style="flex:1"><div style="font-size:15px">${c.title}</div><div style="font-size:12px;color:var(--nude);margin-top:2px">${sub[c.subtitleKey]||c.subtitle}</div></div>
+      <button class="fav-remove" onclick="event.stopPropagation();removeFav('${id}')">✕</button>
+    </div>`;
+  }).join('');
+}
+function removeFav(id){const f=getFavs().filter(x=>x!==id);localStorage.setItem('twb_favs_'+(currentUser?.id||''),JSON.stringify(f));renderFavs();}
+
+// ══════════════════════════════
+// COMPLETED / REMAINING / INVOICES
+// ══════════════════════════════
+function renderCompleted(){
+  const tl=T[lang];const body=document.getElementById('completedBody');const items=[];
+  const __liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  _purchases.forEach(id=>{if(__liveIds.includes(id)||!COURSES[id]||!COURSES[id].lessons.length)return;const c=COURSES[id];const done=_progress[id]?[..._progress[id]]:[];
+    done.forEach(lid=>{const l=c.lessons.find(x=>x.id===lid);if(l)items.push({course:c.title,lesson:l.title,color:c.color});});});
+  if(!items.length){body.innerHTML=`<div class="pempty">${tl.noProgress}</div>`;return;}
+  body.innerHTML=`<div class="plist">${items.map(item=>`<div class="pitem"><div class="pitem-dot" style="background:${item.color}"></div><div class="pitem-info"><div class="pitem-title">✓ ${item.lesson}</div><div class="pitem-sub">${item.course}</div></div></div>`).join('')}</div>`;
+}
+function renderRemaining(){
+  const tl=T[lang];const body=document.getElementById('remainingBody');const items=[];
+  const ___liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  _purchases.forEach(id=>{if(___liveIds.includes(id)||!COURSES[id]||!COURSES[id].lessons.length)return;const c=COURSES[id];const done=_progress[id]||new Set();
+    c.lessons.forEach(l=>{if(!done.has(l.id))items.push({course:c.title,lesson:l.title,color:c.color});});});
+  if(!items.length){body.innerHTML=`<div class="pempty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></div>`;return;}
+  body.innerHTML=`<div class="plist">${items.map(item=>`<div class="pitem"><div class="pitem-dot" style="background:${item.color}"></div><div class="pitem-info"><div class="pitem-title">${item.lesson}</div><div class="pitem-sub">${item.course}</div></div></div>`).join('')}</div>`;
+}
+function renderLiveClasses(){
+  const tl=T[lang];
+  const body=document.getElementById('liveClassesBody');
+  const liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  const descKeys={
+    'live-booty':'liveBootyDesc','live-flexibility':'liveFlexDesc',
+    'live-power':'livePowerDesc','live-core':'liveCoreDesc'
+  };
+  const emojis={'live-booty':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>','live-flexibility':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>','live-power':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>','live-core':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>'};
+
+  body.innerHTML=liveIds.map(id=>{
+    const c=COURSES[id];if(!c)return'';
+    const owned=_purchases.has(id);
+    const sched=c.schedule?c.schedule[lang]||c.schedule.en:'';
+    const desc=tl[descKeys[id]]||'';
+    return`<div style="padding:24px 0;border-bottom:1px solid var(--cream-deep)">
+      <div style="display:flex;align-items:flex-start;gap:16px;margin-bottom:12px">
+        <div style="width:48px;height:48px;border-radius:14px;background:${c.color}22;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${emojis[id]}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500">${c.title}</div>
+            ${owned?`<span style="background:rgba(200,169,110,.15);color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:20px">Active</span>`:''}
+          </div>
+          <div style="font-size:11px;color:${c.color};letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">${sched}</div>
+          <div style="font-size:13px;color:var(--charcoal-light);line-height:1.6;margin-bottom:14px">${desc}</div>
+          ${owned
+            ?`<a href="${c.zoomLink}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--charcoal);color:white;padding:10px 22px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none">${tl.liveJoin}</a>`
+            :`<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+                <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300">€${c.price}<span style="font-size:14px;color:var(--nude)">${tl.livePerMonth}</span></div>
+                <button onclick="buyLive('${id}')" style="background:var(--charcoal);color:white;border:none;padding:10px 22px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">${tl.livePurchase}</button>
+              </div>`
+          }
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function buyLive(courseId){
+  const links={
+    'live-booty':'https://buy.stripe.com/YOUR_BOOTY_LINK',
+    'live-flexibility':'https://buy.stripe.com/YOUR_FLEX_LINK',
+    'live-power':'https://buy.stripe.com/YOUR_POWER_LINK',
+    'live-core':'https://buy.stripe.com/YOUR_CORE_LINK',
+  };
+  const base=links[courseId];
+  if(!base||base.includes('YOUR')){alert('Payment link not configured yet.');return;}
+  const url=new URL(base);
+  url.searchParams.set('client_reference_id',currentUser.id);
+  window.open(url.toString(),'_blank');
+}
+
+function renderPurchases(){
+  const tl=T[lang];const body=document.getElementById('purchasesBody');
+
+  const _pLiveIds=['live-booty','live-flexibility','live-power','live-core'];
+  const labPurchases=_purchasesRaw.filter(p=>!_pLiveIds.includes(p.course_id));
+  if(!labPurchases.length){
+    body.innerHTML=`<div style="text-align:center;padding:48px 20px"><div style="margin-bottom:16px;display:flex;justify-content:center"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14l-2-2 5-5"/><path d="M11 4l2 2-5 5"/></svg></div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;font-style:italic;color:var(--charcoal);margin-bottom:10px">${tl.noLabsYet}</div><div style="font-size:14px;color:var(--charcoal-light);line-height:1.7;margin-bottom:28px;max-width:300px;margin-left:auto;margin-right:auto">${tl.noLabsSub}</div><a href="programs.html" onclick="closeModal('purchasesModal')" style="display:inline-block;background:var(--charcoal);color:white;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none">${tl.noLabsBtn}</a></div>`;
+    return;
+  }
+  body.innerHTML=`<div class="plist">${labPurchases.map(p=>{
+    const c=COURSES[p.course_id];
+    const done=_progress[p.course_id]?_progress[p.course_id].size:0;
+    const total=c?c.lessons.length:0;
+    const pct=total>0?Math.round((done/total)*100):0;
+    const date=new Date(p.created_at).toLocaleDateString(lang==='tr'?'tr-TR':lang==='de'?'de-DE':'en-US',{day:'numeric',month:'long',year:'numeric'});
+    return`<div class="pitem" style="flex-direction:column;align-items:flex-start;gap:10px;padding:20px 0">
+      <div style="display:flex;align-items:center;gap:12px;width:100%">
+        <div style="width:10px;height:10px;border-radius:50%;background:${c?c.color:'var(--nude)'};flex-shrink:0"></div>
+        <div style="flex:1">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500">${c?c.title:p.course_id}</div>
+          <div style="font-size:11px;color:var(--nude);letter-spacing:1px;margin-top:2px">${tl.labPurchasedOn} ${date}</div>
+        </div>
+        <span style="background:rgba(200,169,110,.15);color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:20px">${tl.labActive}</span>
+      </div>
+      ${total>0?`<div style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--charcoal-light);margin-bottom:5px"><span>${done}/${total}</span><span>${pct}%</span></div>
+        <div style="height:3px;background:var(--cream-deep);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${c.color},var(--rose));border-radius:2px"></div></div>
+      </div>`:''}
+    </div>`;
+  }).join('')}</div>`;
+}
+function renderInvoices(){
+  const tl=T[lang];const body=document.getElementById('invoicesBody');
+  if(!_purchasesRaw.length){body.innerHTML=`<div class="pempty">${tl.noPurchases}</div>`;return;}
+  body.innerHTML=`<div class="plist">${_purchasesRaw.map(p=>{const c=COURSES[p.course_id];
+    return`<div class="pitem"><div class="pitem-dot" style="background:${c?c.color:'var(--nude)'}"></div><div class="pitem-info"><div class="pitem-title">${c?c.title:p.course_id}</div><div class="pitem-sub">€${c?c.price:'-'} - ${new Date(p.created_at).toLocaleDateString()}</div></div></div>`;}).join('')}</div>`;
+}
+
+// ══════════════════════════════
+// FAQ
+// ══════════════════════════════
+function renderFAQ(){
+  document.getElementById('faqBody').innerHTML=T[lang].faq.map((f,i)=>`
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(${i})"><span>${f.q}</span><span class="faq-arr" id="fa${i}">›</span></div>
+      <div class="faq-a" id="faa${i}">${f.a}</div>
+    </div>`).join('');
+}
+function toggleFAQ(i){
+  const a=document.getElementById('faa'+i);const q=a.previousElementSibling;
+  const open=a.classList.toggle('open');q.classList.toggle('open',open);
+}
+
+async function logout(){await sb.auth.signOut();window.location.href='index.html';}
+</script>
+</body>
+</html>

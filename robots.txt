@@ -1,0 +1,59 @@
+User-agent: *
+Allow: /$
+Allow: /index.html
+Disallow: /tr.html
+Disallow: /de.html
+Disallow: /corporate.html
+Disallow: /corporate-de.html
+Disallow: /lab-system.html
+Disallow: /personal-training.html
+Disallow: /plans.html
+Disallow: /plans-tr.html
+Disallow: /plans-de.html
+Disallow: /quiz.html
+Disallow: /contact.html
+Disallow: /dashboard.html
+Disallow: /programs.html
+Disallow: /course.html
+Disallow: /login.html
+Disallow: /welcome.html
+Disallow: /policy.html
+Disallow: /policy-tr.html
+Disallow: /policy-de.html
+Disallow: /config.js
+
+# AI search crawlers — allow index page for GEO
+User-agent: GPTBot
+Allow: /$
+Allow: /index.html
+Disallow: /dashboard.html
+Disallow: /programs.html
+Disallow: /course.html
+Disallow: /welcome.html
+
+User-agent: Claude-Web
+Allow: /$
+Allow: /index.html
+Disallow: /dashboard.html
+
+User-agent: PerplexityBot
+Allow: /$
+Allow: /index.html
+Disallow: /dashboard.html
+
+User-agent: Googlebot
+Allow: /$
+Allow: /index.html
+Disallow: /tr.html
+Disallow: /de.html
+Disallow: /corporate.html
+Disallow: /corporate-de.html
+Disallow: /lab-system.html
+Disallow: /personal-training.html
+Disallow: /plans.html
+Disallow: /plans-tr.html
+Disallow: /plans-de.html
+Disallow: /quiz.html
+Disallow: /contact.html
+
+Sitemap: https://www.trainwithbuse.com/sitemap.xml

@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Your Lab — Free 2-Minute Training Quiz | Train With Buse</title>
+  <meta name="description" content="Take the free 2-minute quiz and discover which science-based training program is right for you.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://trainwithbuse.com/quiz.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Find Your Lab — Free Training Quiz">
+  <meta property="og:description" content="Answer 11 quick questions and get a personalised science-based training recommendation.">
+  <meta property="og:url" content="https://trainwithbuse.com/quiz.html">
+  <meta property="og:site_name" content="Train With Buse">
+  <meta property="og:image" content="https://trainwithbuse.com/Buse-main.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Find Your Lab — Free Training Quiz">
+  <meta name="twitter:description" content="Answer 11 quick questions and get a personalised science-based training recommendation.">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="favicon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blush: #E8B4B8;
+    --blush-light: #F5D5D8;
+    --nude: #D4A89A;
+    --cream: #FDF6F0;
+    --cream-deep: #F5EBE0;
+    --rose: #C1848B;
+    --rose-dark: #9B6B6F;
+    --charcoal: #2D2A2E;
+    --charcoal-light: #4A4548;
+    --warm-white: #FFFAF7;
+    --gold: #C8A96E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ========== TOP BAR ========== */
+  .quiz-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(253, 246, 240, 0.9);
+    backdrop-filter: blur(20px);
+  }
+
+  .quiz-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--charcoal);
+    text-decoration: none;
+    letter-spacing: 2px;
+  }
+
+  .quiz-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(45, 42, 46, 0.15);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: var(--charcoal);
+    font-size: 18px;
+  }
+
+  .quiz-close:hover {
+    background: var(--cream-deep);
+    border-color: var(--blush);
+  }
+
+  /* ========== PROGRESS BAR ========== */
+  .progress-container {
+    position: fixed;
+    top: 68px;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    padding: 0 24px;
+    background: rgba(253, 246, 240, 0.9);
+    backdrop-filter: blur(20px);
+    padding-bottom: 12px;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: var(--cream-deep);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blush), var(--rose));
+    border-radius: 4px;
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 0%;
+  }
+
+  .progress-text {
+    text-align: center;
+    font-size: 12px;
+    color: var(--charcoal-light);
+    margin-top: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* ========== QUIZ CONTAINER ========== */
+  .quiz-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+
+  /* ========== SLIDES ========== */
+  .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 24px 40px;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .slide.exit-left {
+    opacity: 0;
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+
+  .slide-inner {
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* ========== QUESTION STYLES ========== */
+  .question-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    display: block;
+    animation: bounceIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  }
+
+  @keyframes bounceIn {
+    from { opacity: 0; transform: scale(0.5) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .question-number {
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--rose);
+    margin-bottom: 12px;
+  }
+
+  .question-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+
+  .question-subtitle {
+    font-size: 15px;
+    color: var(--charcoal-light);
+    margin-bottom: 36px;
+    line-height: 1.5;
+  }
+
+  /* ========== OPTIONS ========== */
+  .options-grid {
+    display: grid;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .options-grid.cols-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .option-card {
+    background: white;
+    border: 2px solid rgba(232, 180, 184, 0.2);
+    border-radius: 16px;
+    padding: 20px 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .option-card:hover {
+    border-color: var(--blush);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(200, 160, 155, 0.2);
+  }
+
+  .option-card.selected {
+    border-color: var(--rose);
+    background: linear-gradient(135deg, rgba(232, 180, 184, 0.1), rgba(193, 132, 139, 0.08));
+    box-shadow: 0 4px 20px rgba(193, 132, 139, 0.2);
+  }
+
+  .option-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 22px;
+    height: 22px;
+    background: var(--rose);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .option-icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .option-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--charcoal);
+    line-height: 1.3;
+  }
+
+  .option-desc {
+    font-size: 12px;
+    color: var(--charcoal-light);
+    line-height: 1.4;
+  }
+
+  /* ========== WELCOME SLIDE ========== */
+  .welcome-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    color: var(--charcoal);
+  }
+
+  .welcome-title em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .welcome-desc {
+    font-size: 16px;
+    color: var(--charcoal-light);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .welcome-features {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .welcome-feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--charcoal-light);
+    font-weight: 400;
+  }
+
+  .welcome-feature span {
+    font-size: 18px;
+  }
+
+  .btn-start {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--charcoal);
+    color: white;
+    border: none;
+    padding: 18px 48px;
+    border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .btn-start:hover {
+    background: var(--charcoal-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(45, 42, 46, 0.3);
+  }
+
+  /* ========== LANGUAGE SELECT ========== */
+  .lang-options {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .lang-card {
+    width: 140px;
+    height: 120px;
+    background: white;
+    border: 2px solid rgba(232, 180, 184, 0.2);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .lang-card:hover {
+    border-color: var(--blush);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(200, 160, 155, 0.2);
+  }
+
+  .lang-card.selected {
+    border-color: var(--rose);
+    background: linear-gradient(135deg, rgba(232, 180, 184, 0.1), rgba(193, 132, 139, 0.08));
+  }
+
+  .lang-flag {
+    font-size: 36px;
+  }
+
+  .lang-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--charcoal);
+  }
+
+  /* ========== BACK BUTTON ========== */
+  .back-btn {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    border: 1px solid rgba(45, 42, 46, 0.12);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    color: var(--charcoal-light);
+    cursor: pointer;
+    transition: all 0.3s;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .back-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .back-btn:hover {
+    background: var(--cream-deep);
+    color: var(--charcoal);
+  }
+
+  /* ========== RESULT SLIDE ========== */
+  .result-card {
+    background: white;
+    border-radius: 24px;
+    padding: 40px 32px;
+    box-shadow: 0 8px 40px rgba(200, 160, 155, 0.15);
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .result-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--blush-light), var(--blush));
+    color: var(--charcoal);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .result-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .result-analysis {
+    font-size: 14px;
+    color: var(--charcoal-light);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    text-align: left;
+    padding: 20px;
+    background: var(--cream);
+    border-radius: 16px;
+  }
+
+  .result-plan {
+    text-align: left;
+    margin-bottom: 28px;
+  }
+
+  .result-plan-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 8px;
+  }
+
+  .result-plan-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin-bottom: 4px;
+  }
+
+  .result-plan-price {
+    font-size: 15px;
+    color: var(--charcoal-light);
+  }
+
+  .result-plan-price strong {
+    font-size: 22px;
+    color: var(--charcoal);
+    font-weight: 600;
+  }
+
+  .result-features {
+    text-align: left;
+    margin-bottom: 28px;
+  }
+
+  .result-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--charcoal-light);
+    border-bottom: 1px solid rgba(232, 180, 184, 0.15);
+  }
+
+  .result-feature:last-child { border-bottom: none; }
+
+  .result-feature-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blush-light), var(--blush));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .btn-result {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    background: var(--charcoal);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .btn-result:hover {
+    background: var(--charcoal-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(45, 42, 46, 0.3);
+  }
+
+  .btn-result-secondary {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: var(--rose);
+    border: 2px solid var(--blush);
+    border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .btn-result-secondary:hover {
+    background: var(--blush-light);
+    border-color: var(--rose);
+  }
+
+  .result-note {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--charcoal-light);
+  }
+
+  /* ========== MULTI SELECT CONTINUE ========== */
+  .multi-continue {
+    margin-top: 24px;
+    display: none;
+  }
+
+  .multi-continue.visible {
+    display: block;
+  }
+
+  .btn-continue {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--charcoal);
+    color: white;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .btn-continue:hover {
+    background: var(--charcoal-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(45, 42, 46, 0.3);
+  }
+
+  /* ========== PREGNANCY NOTE ========== */
+  .pregnancy-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(232, 180, 184, 0.12), rgba(193, 132, 139, 0.06));
+    border-radius: 12px;
+    margin-top: 16px;
+    text-align: left;
+  }
+
+  .pregnancy-note-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .pregnancy-note-text {
+    font-size: 13px;
+    color: var(--charcoal-light);
+    line-height: 1.5;
+  }
+
+  /* ========== MOBILE ========== */
+  @media (max-width: 600px) {
+    .welcome-title { font-size: 32px; }
+    .question-title { font-size: 26px; }
+    .options-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+    .option-card { padding: 16px 12px; }
+    .option-icon { font-size: 26px; }
+    .option-label { font-size: 13px; }
+    .welcome-features { gap: 16px; }
+    .lang-card { width: 110px; height: 100px; }
+    .result-card { padding: 28px 20px; }
+    .result-title { font-size: 24px; }
+    .slide { padding: 110px 16px 30px; }
+  }
+
+  @media (max-width: 380px) {
+    .options-grid.cols-2 { grid-template-columns: 1fr; }
+  }
+
+  .email-capture {
+    margin-top: 24px;
+    padding: 24px;
+    background: rgba(200,169,110,.06);
+    border: 1px solid rgba(200,169,110,.2);
+    border-radius: 16px;
+  }
+  .email-capture-tag {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold, #C8A96E);
+    margin-bottom: 8px;
+  }
+  .email-capture-title {
+    font-family: var(--font-serif, 'Playfair Display'), serif;
+    font-size: 18px;
+    color: var(--charcoal, #2D2A2E);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .email-capture-sub {
+    font-size: 12px;
+    color: var(--charcoal-light, #4A4548);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .email-capture-row {
+    display: flex;
+    gap: 8px;
+  }
+  .email-capture-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1.5px solid var(--cream-deep, #F5EBE0);
+    border-radius: 50px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--charcoal, #2D2A2E);
+    background: white;
+    outline: none;
+    transition: border-color .3s;
+  }
+  .email-capture-input:focus { border-color: var(--gold, #C8A96E); }
+  .email-capture-btn {
+    background: var(--charcoal, #2D2A2E);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .3s;
+  }
+  .email-capture-btn:hover { background: var(--rose-dark, #9B6B6F); }
+  .email-capture-success {
+    font-size: 13px;
+    color: #166534;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    display: none;
+  }
+  @media (max-width: 480px) {
+    .email-capture-row { flex-direction: column; }
+  }
+
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Find Your Lab — Free Training Quiz",
+  "description": "Take the free 2-minute quiz and discover which science-based training program is right for your body and goals.",
+  "url": "https://trainwithbuse.com/quiz.html",
+  "author": {"@id": "https://trainwithbuse.com/#buse"},
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://trainwithbuse.com"},
+      {"@type": "ListItem", "position": 2, "name": "Find Your Lab", "item": "https://trainwithbuse.com/quiz.html"}
+    ]
+  }
+}
+</script>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="quiz-topbar">
+  <a href="index.html" class="quiz-logo">BUSE</a>
+<a id="quizClose" href="index.html" class="quiz-close">✕</a>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-container" id="progressContainer" style="display:none">
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-text" id="progressText">Question 1 of 10</div>
+</div>
+
+<!-- BACK BUTTON -->
+<button class="back-btn" id="backBtn" onclick="goBack()">← Back</button>
+
+<!-- QUIZ -->
+<div class="quiz-container" id="quizContainer">
+
+  <!-- SLIDE 0: WELCOME -->
+  <div class="slide active" id="slide-0">
+    <div class="slide-inner">
+      <div style="margin-bottom:20px;display:flex;justify-content:center"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-1.07-4.81A3 3 0 1 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 1.07-4.81A3 3 0 1 0 14.5 2z"/></svg></div>
+      <h1 class="welcome-title">Find Your <em>Perfect</em> Plan</h1>
+      <p class="welcome-desc">Answer a few quick questions and I'll match you with the perfect Lab — your personal science-based training system.</p>
+      <div class="welcome-features">
+        <div class="welcome-feature"><span>⏱</span> Takes 2 min</div>
+        <div class="welcome-feature"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span> 100% personalized</div>
+        <div class="welcome-feature"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14l-2-2 5-5"/><path d="M11 4l2 2-5 5"/></svg></span> Science-backed</div>
+      </div>
+      <button class="btn-start" onclick="startQuiz()">Let's Start →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: LANGUAGE -->
+  <div class="slide" id="slide-1">
+    <div class="slide-inner">
+      <div class="question-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+      <div class="question-title">Choose your language</div>
+      <div class="question-subtitle">Select your preferred language for the quiz</div>
+      <div class="lang-options">
+        <div class="lang-card" onclick="selectLang('en', this)">
+          <div class="lang-flag">🇬🇧</div>
+          <div class="lang-name">English</div>
+        </div>
+        <div class="lang-card" onclick="selectLang('tr', this)">
+          <div class="lang-flag">🇹🇷</div>
+          <div class="lang-name">Türkçe</div>
+        </div>
+        <div class="lang-card" onclick="selectLang('de', this)">
+          <div class="lang-flag">🇩🇪</div>
+          <div class="lang-name">Deutsch</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDES 2-11 will be generated by JS -->
+  
+  <!-- RESULT SLIDE -->
+  <div class="slide" id="slide-result">
+    <div class="slide-inner">
+      <div class="result-card" id="resultCard">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ========== QUIZ DATA ==========
+const questions = {
+  en: [
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+      number: "QUESTION 1",
+      title: "What's your gender?",
+      subtitle: "This helps us personalize your plan",
+      key: "gender",
+      cols: 3,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><line x1="12" y1="15" x2="12" y2="22"/><line x1="9" y1="19" x2="15" y2="19"/></svg>', label: "Female", value: "female" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"/><line x1="14.5" y1="9.5" x2="21" y2="3"/><polyline points="16 3 21 3 21 8"/></svg>', label: "Male", value: "male" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="11" r="5"/><line x1="12" y1="16" x2="12" y2="22"/><line x1="9" y1="19" x2="15" y2="19"/><line x1="16.24" y1="6.76" x2="20" y2="3"/><line x1="16" y1="3" x2="20" y2="3"/><line x1="20" y1="3" x2="20" y2="7"/></svg>', label: "Other", value: "other" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M9 9c-2 3-2 7 0 9 1.5 1.5 3.5 2 6 1"/><path d="M12 14a4 3 0 0 1 4 3"/></svg>',
+      number: "QUESTION 2",
+      title: "Are you currently pregnant or postpartum?",
+      subtitle: "Your safety is our priority — we'll adjust your plan accordingly",
+      key: "pregnancy",
+      condition: (answers) => answers.gender === "female",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>', label: "No", value: "no" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M9 9c-2 3-2 7 0 9 1.5 1.5 3.5 2 6 1"/><path d="M12 14a4 3 0 0 1 4 3"/></svg>', label: "Yes, I'm pregnant", value: "pregnant" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="3"/><path d="M5 22h14a7 7 0 0 0-14 0z"/></svg>', label: "Yes, I recently gave birth (within 12 months)", value: "postpartum" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>', label: "I'm planning to get pregnant soon", value: "planning" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+      number: "QUESTION 2",
+      title: "What's your age range?",
+      subtitle: "Training intensity and recovery differ with age",
+      key: "age",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 1 3.8 8c-2.2-.2-3.6-1.1-4.3-2.1C12 10.2 12 8 14.1 6z"/></svg>', label: "18–25", value: "18-25" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', label: "26–35", value: "26-35" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "36–45", value: "36-45" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>', label: "45+", value: "45+" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+      number: "QUESTION 3",
+      title: "What's your main goal?",
+      subtitle: "Pick the one that resonates most with you right now",
+      key: "goal",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Lose weight & tone up", desc: "Burn fat, sculpt lean muscle", value: "lose" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Build muscle & strength", desc: "Get stronger, add muscle", value: "build" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M6 20l2.5-5 3.5 3 3.5-3 2.5 5"/><path d="M12 7v5"/></svg>', label: "Improve posture & mobility", desc: "Move better, feel better", value: "posture" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>', label: "Feel healthier & more energetic", desc: "Boost energy, reduce stress", value: "health" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+      number: "QUESTION 4",
+      title: "Which area do you want to focus on?",
+      subtitle: "We'll prioritize this in your training plan",
+      key: "focus",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Core & abs", value: "core" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>', label: "Glutes & legs", value: "glutes" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Upper body & arms", value: "upper" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="5" x2="6" y2="19"/><line x1="18" y1="5" x2="18" y2="19"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/><path d="M3 7h3M3 17h3M18 7h3M18 17h3"/></svg>', label: "Full body", value: "full" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+      number: "QUESTION 5",
+      title: "How active are you right now?",
+      subtitle: "Be honest — there's no wrong answer",
+      key: "activity",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5H6V11a2 2 0 0 0-4 0z"/><line x1="6" y1="19" x2="6" y2="21"/><line x1="18" y1="19" x2="18" y2="21"/></svg>', label: "Sedentary", desc: "Little to no exercise", value: "sedentary" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1"/><path d="M10 21l1.5-4.5 2 2L15 14"/><path d="M16 9.5l-2-3.5-4 1-3 4"/><path d="M8 21l1.5-4.5"/></svg>', label: "Lightly active", desc: "1–2 times per week", value: "light" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1"/><path d="M8 17.5l1.5-4 2.5 2 3-4.5 2.5 3.5"/><path d="M15 8l2.5-2 1.5 1.5"/><path d="M10 10l-3 1-1.5-2.5"/></svg>', label: "Moderately active", desc: "3–4 times per week", value: "moderate" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', label: "Very active", desc: "5+ times per week", value: "very" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>',
+      number: "QUESTION 6",
+      title: "What's your workout experience?",
+      subtitle: "This helps us set the right difficulty level",
+      key: "experience",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 1 3.8 8c-2.2-.2-3.6-1.1-4.3-2.1C12 10.2 12 8 14.1 6z"/></svg>', label: "Complete beginner", desc: "Never really worked out", value: "beginner" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>', label: "Tried but couldn't stay consistent", desc: "On-and-off relationship with fitness", value: "inconsistent" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>', label: "I work out sometimes", desc: "Know the basics, room to grow", value: "sometimes" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>', label: "I train regularly", desc: "Looking to level up", value: "regular" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      number: "QUESTION 7",
+      title: "Do you have any physical limitations?",
+      subtitle: "Select all that apply — we'll work around them safely",
+      key: "limitations",
+      multi: true,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h2v8l1 1 1-1V4h2"/><ellipse cx="12" cy="14" rx="4" ry="3"/><path d="M9 21h6"/></svg>', label: "Sensitive knees", value: "knees" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18h6"/><path d="M5 22h8"/><path d="M7 22v-4c0-3 2-5 5-5h4"/><path d="M16 13v5h2a2 2 0 0 0 0-4h-2"/></svg>', label: "Ankle issues", value: "ankles" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>', label: "Lower back pain", value: "back" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Shoulder problems", value: "shoulders" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M9 9c-2 3-2 7 0 9 1.5 1.5 3.5 2 6 1"/><path d="M12 14a4 3 0 0 1 4 3"/></svg>', label: "Pelvic floor weakness", value: "pelvic" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>', label: "None — I'm good!", value: "none" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+      number: "QUESTION 8",
+      title: "Where do you prefer to train?",
+      subtitle: "Your environment shapes your plan",
+      key: "location",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', label: "At home", value: "home" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="5" x2="6" y2="19"/><line x1="18" y1="5" x2="18" y2="19"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/><path d="M3 7h3M3 17h3M18 7h3M18 17h3"/></svg>', label: "At the gym", value: "gym" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 19h8"/><path d="M12 19v-6"/><path d="M5 13l7-7 7 7"/><path d="M7 10l5-5 5 5"/></svg>', label: "Outdoors", value: "outdoors" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M5 21h14"/><path d="M7 11l-2-3"/><path d="M17 11l2-3"/><path d="M7 11h10"/><path d="M9 11v6"/><path d="M15 11v6"/></svg>', label: "Doesn't matter", value: "any" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+      number: "QUESTION 9",
+      title: "Are you based in Berlin?",
+      subtitle: "This determines if we can meet in person",
+      key: "berlin",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>', label: "Yes, I'm in Berlin", value: "yes" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>', label: "No, I'm elsewhere", value: "no" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+      number: "QUESTION 10",
+      title: "What type of support works best for you?",
+      subtitle: "Everyone thrives differently",
+      key: "support",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>', label: "Private 1:1 coaching", desc: "Full attention, fully personalized", value: "private" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', label: "Group energy", desc: "Motivated by training with others", value: "group" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>', label: "Self-paced", desc: "Give me the plan, I'll handle it", value: "self" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+      number: "QUESTION 11",
+      title: "What's your investment preference?",
+      subtitle: "All our plans deliver real results — at every price point",
+      key: "budget",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l-4 6 10 12 10-12-4-6z"/><line x1="2" y1="9" x2="22" y2="9"/></svg>', label: "I want the best", desc: "Invest in myself fully", value: "premium" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 9l9-6 9 6"/><path d="M5 14l-2 7h18l-2-7"/><line x1="5" y1="14" x2="19" y2="14"/></svg>', label: "Something balanced", desc: "Quality at a fair price", value: "mid" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>', label: "Keep it affordable", desc: "Effective and budget-friendly", value: "budget" }
+      ]
+    }
+  ],
+  tr: [
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+      number: "SORU 1",
+      title: "Cinsiyetiniz nedir?",
+      subtitle: "Planınızı kişiselleştirmemize yardımcı olur",
+      key: "gender",
+      cols: 3,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><line x1="12" y1="15" x2="12" y2="22"/><line x1="9" y1="19" x2="15" y2="19"/></svg>', label: "Kadın", value: "female" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"/><line x1="14.5" y1="9.5" x2="21" y2="3"/><polyline points="16 3 21 3 21 8"/></svg>', label: "Erkek", value: "male" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="11" r="5"/><line x1="12" y1="16" x2="12" y2="22"/><line x1="9" y1="19" x2="15" y2="19"/><line x1="16.24" y1="6.76" x2="20" y2="3"/><line x1="16" y1="3" x2="20" y2="3"/><line x1="20" y1="3" x2="20" y2="7"/></svg>', label: "Diğer", value: "other" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M9 9c-2 3-2 7 0 9 1.5 1.5 3.5 2 6 1"/><path d="M12 14a4 3 0 0 1 4 3"/></svg>',
+      number: "SORU 2",
+      title: "Hamile misiniz veya yeni doğum yaptınız mı?",
+      subtitle: "Güvenliğiniz önceliğimiz — planınızı buna göre ayarlayacağız",
+      key: "pregnancy",
+      condition: (answers) => answers.gender === "female",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>', label: "Hayır", value: "no" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M9 9c-2 3-2 7 0 9 1.5 1.5 3.5 2 6 1"/><path d="M12 14a4 3 0 0 1 4 3"/></svg>', label: "Evet, hamileyim", value: "pregnant" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="3"/><path d="M5 22h14a7 7 0 0 0-14 0z"/></svg>', label: "Evet, yeni doğum yaptım (son 12 ay)", value: "postpartum" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>', label: "Hamilelik planlıyorum", value: "planning" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+      number: "SORU 2",
+      title: "Yaş aralığınız?",
+      subtitle: "Antrenman yoğunluğu ve toparlanma yaşa göre değişir",
+      key: "age",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 1 3.8 8c-2.2-.2-3.6-1.1-4.3-2.1C12 10.2 12 8 14.1 6z"/></svg>', label: "18–25", value: "18-25" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', label: "26–35", value: "26-35" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "36–45", value: "36-45" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>', label: "45+", value: "45+" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+      number: "SORU 3",
+      title: "Ana hedefiniz ne?",
+      subtitle: "Şu an size en çok hitap edeni seçin",
+      key: "goal",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Kilo vermek & sıkılaşmak", desc: "Yağ yakmak, kas formunu çizmek", value: "lose" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Kas yapmak & güçlenmek", desc: "Daha güçlü olmak, kas eklemek", value: "build" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M6 20l2.5-5 3.5 3 3.5-3 2.5 5"/><path d="M12 7v5"/></svg>', label: "Duruş & hareketliliği geliştirmek", desc: "Daha iyi hareket etmek", value: "posture" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>', label: "Daha sağlıklı & enerjik hissetmek", desc: "Enerjiyi artırmak, stresi azaltmak", value: "health" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+      number: "SORU 4",
+      title: "Hangi bölgeye odaklanmak istersiniz?",
+      subtitle: "Antrenman planınızda buraya öncelik vereceğiz",
+      key: "focus",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Karın & core", value: "core" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>', label: "Kalça & bacak", value: "glutes" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Üst vücut & kollar", value: "upper" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="5" x2="6" y2="19"/><line x1="18" y1="5" x2="18" y2="19"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/><path d="M3 7h3M3 17h3M18 7h3M18 17h3"/></svg>', label: "Tüm vücut", value: "full" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+      number: "SORU 5",
+      title: "Şu an ne kadar aktifsiniz?",
+      subtitle: "Dürüst olun — yanlış cevap yok",
+      key: "activity",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5H6V11a2 2 0 0 0-4 0z"/><line x1="6" y1="19" x2="6" y2="21"/><line x1="18" y1="19" x2="18" y2="21"/></svg>', label: "Hareketsiz", desc: "Hiç veya çok az egzersiz", value: "sedentary" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1"/><path d="M10 21l1.5-4.5 2 2L15 14"/><path d="M16 9.5l-2-3.5-4 1-3 4"/><path d="M8 21l1.5-4.5"/></svg>', label: "Hafif aktif", desc: "Haftada 1–2 kez", value: "light" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1"/><path d="M8 17.5l1.5-4 2.5 2 3-4.5 2.5 3.5"/><path d="M15 8l2.5-2 1.5 1.5"/><path d="M10 10l-3 1-1.5-2.5"/></svg>', label: "Orta aktif", desc: "Haftada 3–4 kez", value: "moderate" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', label: "Çok aktif", desc: "Haftada 5+ kez", value: "very" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>',
+      number: "SORU 6",
+      title: "Antrenman deneyiminiz ne düzeyde?",
+      subtitle: "Doğru zorluk seviyesini belirlememize yardımcı olur",
+      key: "experience",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 1 3.8 8c-2.2-.2-3.6-1.1-4.3-2.1C12 10.2 12 8 14.1 6z"/></svg>', label: "Tamamen yeni başlıyorum", desc: "Hiç düzenli spor yapmadım", value: "beginner" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>', label: "Denedim ama sürdüremedim", desc: "Sporla inişli çıkışlı bir ilişkim var", value: "inconsistent" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>', label: "Ara sıra yapıyorum", desc: "Temelleri biliyorum, gelişebilirim", value: "sometimes" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>', label: "Düzenli antrenman yapıyorum", desc: "Seviyemi yükseltmek istiyorum", value: "regular" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      number: "SORU 7",
+      title: "Fiziksel bir kısıtlamanız var mı?",
+      subtitle: "Geçerli olanların hepsini seçin — planınızı güvenli şekilde ayarlayacağız",
+      key: "limitations",
+      multi: true,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h2v8l1 1 1-1V4h2"/><ellipse cx="12" cy="14" rx="4" ry="3"/><path d="M9 21h6"/></svg>', label: "Hassas dizler", value: "knees" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18h6"/><path d="M5 22h8"/><path d="M7 22v-4c0-3 2-5 5-5h4"/><path d="M16 13v5h2a2 2 0 0 0 0-4h-2"/></svg>', label: "Ayak bileği sorunları", value: "ankles" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>', label: "Bel ağrısı", value: "back" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Omuz problemleri", value: "shoulders" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M9 9c-2 3-2 7 0 9 1.5 1.5 3.5 2 6 1"/><path d="M12 14a4 3 0 0 1 4 3"/></svg>', label: "Pelvik taban zayıflığı", value: "pelvic" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>', label: "Yok — her şey yolunda!", value: "none" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+      number: "SORU 8",
+      title: "Nerede antrenman yapmayı tercih edersiniz?",
+      subtitle: "Ortamınız planınızı şekillendirir",
+      key: "location",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', label: "Evde", value: "home" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="5" x2="6" y2="19"/><line x1="18" y1="5" x2="18" y2="19"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/><path d="M3 7h3M3 17h3M18 7h3M18 17h3"/></svg>', label: "Spor salonunda", value: "gym" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 19h8"/><path d="M12 19v-6"/><path d="M5 13l7-7 7 7"/><path d="M7 10l5-5 5 5"/></svg>', label: "Açık havada", value: "outdoors" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M5 21h14"/><path d="M7 11l-2-3"/><path d="M17 11l2-3"/><path d="M7 11h10"/><path d="M9 11v6"/><path d="M15 11v6"/></svg>', label: "Fark etmez", value: "any" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+      number: "SORU 9",
+      title: "Berlin'de misiniz?",
+      subtitle: "Yüz yüze buluşabilir miyiz belirlememiz için",
+      key: "berlin",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>', label: "Evet, Berlin'deyim", value: "yes" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>', label: "Hayır, başka yerdeyim", value: "no" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+      number: "SORU 10",
+      title: "Sizin için en iyi destek türü hangisi?",
+      subtitle: "Herkes farklı ortamda gelişir",
+      key: "support",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>', label: "Birebir özel koçluk", desc: "Tam ilgi, tamamen kişisel", value: "private" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', label: "Grup enerjisi", desc: "Birlikte antrenman motivasyonu", value: "group" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>', label: "Kendi hızımda", desc: "Planı ver, ben hallederim", value: "self" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+      number: "SORU 11",
+      title: "Yatırım tercihiniz ne?",
+      subtitle: "Tüm planlarımız gerçek sonuç verir — her bütçeye uygun",
+      key: "budget",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l-4 6 10 12 10-12-4-6z"/><line x1="2" y1="9" x2="22" y2="9"/></svg>', label: "En iyisini istiyorum", desc: "Kendime tam yatırım", value: "premium" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 9l9-6 9 6"/><path d="M5 14l-2 7h18l-2-7"/><line x1="5" y1="14" x2="19" y2="14"/></svg>', label: "Dengeli bir şey", desc: "Kalite, uygun fiyat", value: "mid" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>', label: "Uygun fiyatlı olsun", desc: "Etkili ve bütçe dostu", value: "budget" }
+      ]
+    }
+  ],
+  de: [
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+      number: "FRAGE 1",
+      title: "Was ist dein Geschlecht?",
+      subtitle: "Das hilft uns, deinen Plan zu personalisieren",
+      key: "gender",
+      cols: 3,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><line x1="12" y1="15" x2="12" y2="22"/><line x1="9" y1="19" x2="15" y2="19"/></svg>', label: "Weiblich", value: "female" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"/><line x1="14.5" y1="9.5" x2="21" y2="3"/><polyline points="16 3 21 3 21 8"/></svg>', label: "Männlich", value: "male" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="11" r="5"/><line x1="12" y1="16" x2="12" y2="22"/><line x1="9" y1="19" x2="15" y2="19"/><line x1="16.24" y1="6.76" x2="20" y2="3"/><line x1="16" y1="3" x2="20" y2="3"/><line x1="20" y1="3" x2="20" y2="7"/></svg>', label: "Andere", value: "other" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M9 9c-2 3-2 7 0 9 1.5 1.5 3.5 2 6 1"/><path d="M12 14a4 3 0 0 1 4 3"/></svg>',
+      number: "FRAGE 2",
+      title: "Bist du schwanger oder hast kürzlich entbunden?",
+      subtitle: "Deine Sicherheit hat Priorität — wir passen deinen Plan entsprechend an",
+      key: "pregnancy",
+      condition: (answers) => answers.gender === "female",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>', label: "Nein", value: "no" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M9 9c-2 3-2 7 0 9 1.5 1.5 3.5 2 6 1"/><path d="M12 14a4 3 0 0 1 4 3"/></svg>', label: "Ja, ich bin schwanger", value: "pregnant" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="3"/><path d="M5 22h14a7 7 0 0 0-14 0z"/></svg>', label: "Ja, ich habe kürzlich entbunden (innerhalb von 12 Monaten)", value: "postpartum" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>', label: "Ich plane eine Schwangerschaft", value: "planning" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+      number: "FRAGE 2",
+      title: "In welcher Altersgruppe bist du?",
+      subtitle: "Trainingsintensität und Erholung unterscheiden sich je nach Alter",
+      key: "age",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 1 3.8 8c-2.2-.2-3.6-1.1-4.3-2.1C12 10.2 12 8 14.1 6z"/></svg>', label: "18–25", value: "18-25" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', label: "26–35", value: "26-35" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "36–45", value: "36-45" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>', label: "45+", value: "45+" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+      number: "FRAGE 3",
+      title: "Was ist dein Hauptziel?",
+      subtitle: "Wähle das, was dich gerade am meisten anspricht",
+      key: "goal",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Abnehmen & straffen", desc: "Fett verbrennen, schlanke Muskeln formen", value: "lose" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Muskeln aufbauen & stärker werden", desc: "Stärker werden, Muskelmasse aufbauen", value: "build" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M6 20l2.5-5 3.5 3 3.5-3 2.5 5"/><path d="M12 7v5"/></svg>', label: "Haltung & Beweglichkeit verbessern", desc: "Besser bewegen, besser fühlen", value: "posture" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>', label: "Gesünder & energiegeladener fühlen", desc: "Energie steigern, Stress reduzieren", value: "health" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+      number: "FRAGE 4",
+      title: "Auf welchen Bereich möchtest du dich konzentrieren?",
+      subtitle: "Wir priorisieren das in deinem Trainingsplan",
+      key: "focus",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Core & Bauch", value: "core" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>', label: "Po & Beine", value: "glutes" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Oberkörper & Arme", value: "upper" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="5" x2="6" y2="19"/><line x1="18" y1="5" x2="18" y2="19"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/><path d="M3 7h3M3 17h3M18 7h3M18 17h3"/></svg>', label: "Ganzkörper", value: "full" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+      number: "FRAGE 5",
+      title: "Wie aktiv bist du derzeit?",
+      subtitle: "Sei ehrlich — es gibt keine falsche Antwort",
+      key: "activity",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5H6V11a2 2 0 0 0-4 0z"/><line x1="6" y1="19" x2="6" y2="21"/><line x1="18" y1="19" x2="18" y2="21"/></svg>', label: "Kaum aktiv", desc: "Wenig oder kein Sport", value: "sedentary" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1"/><path d="M10 21l1.5-4.5 2 2L15 14"/><path d="M16 9.5l-2-3.5-4 1-3 4"/><path d="M8 21l1.5-4.5"/></svg>', label: "Leicht aktiv", desc: "1–2 Mal pro Woche", value: "light" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1"/><path d="M8 17.5l1.5-4 2.5 2 3-4.5 2.5 3.5"/><path d="M15 8l2.5-2 1.5 1.5"/><path d="M10 10l-3 1-1.5-2.5"/></svg>', label: "Mäßig aktiv", desc: "3–4 Mal pro Woche", value: "moderate" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', label: "Sehr aktiv", desc: "5+ Mal pro Woche", value: "very" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>',
+      number: "FRAGE 6",
+      title: "Wie ist deine Trainingserfahrung?",
+      subtitle: "Das hilft uns, den richtigen Schwierigkeitsgrad festzulegen",
+      key: "experience",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 1 3.8 8c-2.2-.2-3.6-1.1-4.3-2.1C12 10.2 12 8 14.1 6z"/></svg>', label: "Kompletter Anfänger", desc: "Noch nie richtig trainiert", value: "beginner" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>', label: "Versucht, aber nicht durchgehalten", desc: "Sport und ich hatten Höhen und Tiefen", value: "inconsistent" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>', label: "Ich trainiere manchmal", desc: "Kenne die Grundlagen, kann noch wachsen", value: "sometimes" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>', label: "Ich trainiere regelmäßig", desc: "Möchte mein Level steigern", value: "regular" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      number: "FRAGE 7",
+      title: "Hast du körperliche Einschränkungen?",
+      subtitle: "Wähle alles aus, was zutrifft — wir passen deinen Plan sicher an",
+      key: "limitations",
+      multi: true,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h2v8l1 1 1-1V4h2"/><ellipse cx="12" cy="14" rx="4" ry="3"/><path d="M9 21h6"/></svg>', label: "Empfindliche Knie", value: "knees" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18h6"/><path d="M5 22h8"/><path d="M7 22v-4c0-3 2-5 5-5h4"/><path d="M16 13v5h2a2 2 0 0 0 0-4h-2"/></svg>', label: "Knöchelprobleme", value: "ankles" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>', label: "Rückenschmerzen", value: "back" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Schulterprobleme", value: "shoulders" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M9 9c-2 3-2 7 0 9 1.5 1.5 3.5 2 6 1"/><path d="M12 14a4 3 0 0 1 4 3"/></svg>', label: "Beckenbodenschwäche", value: "pelvic" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>', label: "Keine — alles gut!", value: "none" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+      number: "FRAGE 8",
+      title: "Wo trainierst du am liebsten?",
+      subtitle: "Dein Umfeld beeinflusst deinen Plan",
+      key: "location",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', label: "Zu Hause", value: "home" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="5" x2="6" y2="19"/><line x1="18" y1="5" x2="18" y2="19"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/><path d="M3 7h3M3 17h3M18 7h3M18 17h3"/></svg>', label: "Im Fitnessstudio", value: "gym" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 19h8"/><path d="M12 19v-6"/><path d="M5 13l7-7 7 7"/><path d="M7 10l5-5 5 5"/></svg>', label: "Draußen", value: "outdoors" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M5 21h14"/><path d="M7 11l-2-3"/><path d="M17 11l2-3"/><path d="M7 11h10"/><path d="M9 11v6"/><path d="M15 11v6"/></svg>', label: "Egal", value: "any" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+      number: "FRAGE 9",
+      title: "Bist du in Berlin?",
+      subtitle: "Das bestimmt, ob wir uns persönlich treffen können",
+      key: "berlin",
+      cols: 2,
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>', label: "Ja, ich bin in Berlin", value: "yes" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>', label: "Nein, ich bin woanders", value: "no" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+      number: "FRAGE 10",
+      title: "Welche Art von Unterstützung passt am besten zu dir?",
+      subtitle: "Jeder entwickelt sich in unterschiedlichen Umgebungen",
+      key: "support",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>', label: "Privates 1:1 Coaching", desc: "Volle Aufmerksamkeit, komplett personalisiert", value: "private" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', label: "Gruppenenergie", desc: "Motiviert durch gemeinsames Training", value: "group" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>', label: "In meinem eigenen Tempo", desc: "Gib mir den Plan, ich mache den Rest", value: "self" }
+      ]
+    },
+    {
+      icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+      number: "FRAGE 11",
+      title: "Was ist deine Investitionspräferenz?",
+      subtitle: "Alle unsere Pläne liefern echte Ergebnisse — für jedes Budget",
+      key: "budget",
+      options: [
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l-4 6 10 12 10-12-4-6z"/><line x1="2" y1="9" x2="22" y2="9"/></svg>', label: "Ich will das Beste", desc: "Voll in mich investieren", value: "premium" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 9l9-6 9 6"/><path d="M5 14l-2 7h18l-2-7"/><line x1="5" y1="14" x2="19" y2="14"/></svg>', label: "Etwas Ausgewogenes", desc: "Qualität zum fairen Preis", value: "mid" },
+        { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>', label: "Bezahlbar halten", desc: "Effektiv und budgetfreundlich", value: "budget" }
+      ]
+    }
+  ]
+};
+
+// ========== RESULT TEMPLATES ==========
+const results = {
+  en: {
+    inperson: {
+      badge: "YOUR PERFECT MATCH",
+      title: "In-Person Personal Training",
+      price: "€95",
+      pricePer: "per session",
+      features: [
+        "1:1 sessions in Berlin with Buse",
+        "Custom training plan built for your body",
+        "Real-time form correction & feedback",
+        "Neuroscience-backed training methods",
+        "Nutrition guidance included"
+      ],
+      cta: "Book a Free 15-Min Call",
+      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+    },
+    online: {
+      badge: "YOUR PERFECT MATCH",
+      title: "1:1 Online Coaching",
+      price: "€199",
+      pricePer: "per month",
+      features: [
+        "Fully personalized training program",
+        "Weekly video check-ins with Buse",
+        "Custom nutrition plan",
+        "24/7 WhatsApp support",
+        "Monthly plan adjustments"
+      ],
+      cta: "Book a Free 15-Min Call",
+      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+    },
+    group: {
+      badge: "YOUR LAB MATCH",
+      title: "Live Lab Classes",
+      price: "from €29",
+      pricePer: "per month",
+      features: [
+        "Booty Lab — Tue & Thu, live with Buse",
+        "Flexibility Lab — Sunday sessions",
+        "Power Lab — Mon & Wed strength training",
+        "Core & Burn Lab — high intensity, twice weekly",
+        "Full dashboard access included"
+      ],
+      cta: "Enter The Lab System →",
+      link: "welcome.html"
+    },
+    movement: {
+      badge: "YOUR LAB MATCH",
+      title: "Movement Lab",
+      price: "€49",
+      pricePer: "per level",
+      features: [
+        "3 levels — Foundation, Intermediate & Advanced",
+        "12 sequential lessons per level",
+        "Rewire your nervous system's movement patterns",
+        "Science-backed bodyweight training",
+        "Personal dashboard to track your progress"
+      ],
+      cta: "Enter The Lab System →",
+      link: "welcome.html"
+    },
+    sculpt: {
+      badge: "YOUR LAB MATCH",
+      title: "Sculpt Lab",
+      price: "€49",
+      pricePer: "per level",
+      features: [
+        "3 levels — Foundation, Intermediate & Advanced",
+        "Precision sculpting guided by movement science",
+        "Shape, define and strengthen with intention",
+        "Sequential lessons that build on each other",
+        "Personal dashboard to track every session"
+      ],
+      cta: "Enter The Lab System →",
+      link: "welcome.html"
+    },
+    strength: {
+      badge: "YOUR LAB MATCH",
+      title: "Strength Lab",
+      price: "€49",
+      pricePer: "per level",
+      features: [
+        "3 levels — Foundation, Intermediate & Advanced",
+        "Neural drive & progressive overload principles",
+        "Functional strength from the ground up",
+        "12 sequential lessons per level",
+        "Full progress tracking in your dashboard"
+      ],
+      cta: "Enter The Lab System →",
+      link: "welcome.html"
+    },
+    program: {
+      badge: "YOUR LAB MATCH",
+      title: "Movement Lab — Start Here",
+      price: "€49",
+      pricePer: "Foundation Level",
+      features: [
+        "12 sequential science-based lessons",
+        "Rewire how your body moves",
+        "Train at your own pace",
+        "Personal dashboard with progress tracking",
+        "Cycle tracker, daily motto & more"
+      ],
+      cta: "Enter The Lab System →",
+      link: "welcome.html"
+    },
+    callCta: "Not sure? Book a free 15-min call",
+    pregnancyNote: "As a mom-to-be / new mom, your plan prioritizes safe core recovery, pelvic floor strengthening, and gradual return to full training. 1:1 coaching is strongly recommended for your safety."
+  },
+  tr: {
+    inperson: {
+      badge: "SİZE EN UYGUN PLAN",
+      title: "Yüz Yüze Kişisel Antrenman",
+      price: "€95",
+      pricePer: "seans başına",
+      features: [
+        "Berlin'de Buse ile birebir seanslar",
+        "Vücudunuza özel antrenman planı",
+        "Anlık form düzeltme & geri bildirim",
+        "Nörobilim destekli antrenman yöntemleri",
+        "Beslenme rehberliği dahil"
+      ],
+      cta: "Ücretsiz 15 Dk Görüşme",
+      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+    },
+    online: {
+      badge: "SİZE EN UYGUN PLAN",
+      title: "1:1 Online Koçluk",
+      price: "€199",
+      pricePer: "aylık",
+      features: [
+        "Tamamen kişiselleştirilmiş antrenman programı",
+        "Haftalık video görüşmeleri",
+        "Özel beslenme planı",
+        "7/24 WhatsApp desteği",
+        "Aylık plan güncellemeleri"
+      ],
+      cta: "Ücretsiz 15 Dk Görüşme",
+      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+    },
+    group: {
+      badge: "SENIN LABIN",
+      title: "Canlı Lab Dersleri",
+      price: "€29'dan başlayan",
+      pricePer: "aylık",
+      features: [
+        "Booty Lab — Salı & Perşembe, Buse ile canlı",
+        "Flexibility Lab — Pazar seansları",
+        "Power Lab — Pazartesi & Çarşamba kuvvet antrenmanı",
+        "Core & Burn Lab — yüksek yoğunluk, haftada 2 kez",
+        "Tam dashboard erişimi dahil"
+      ],
+      cta: "Lab Sistemine Gir →",
+      link: "welcome.html"
+    },
+    movement: {
+      badge: "SENIN LABIN",
+      title: "Movement Lab",
+      price: "€49",
+      pricePer: "seviye başına",
+      features: [
+        "3 seviye — Başlangıç, Orta & İleri",
+        "Seviye başına 12 sıralı ders",
+        "Sinir sisteminizin hareket kalıplarını yeniden yapılandırın",
+        "Bilim destekli vücut ağırlığı antrenmanı",
+        "İlerlemenizi takip etmek için kişisel dashboard"
+      ],
+      cta: "Lab Sistemine Gir →",
+      link: "welcome.html"
+    },
+    sculpt: {
+      badge: "SENIN LABIN",
+      title: "Sculpt Lab",
+      price: "€49",
+      pricePer: "seviye başına",
+      features: [
+        "3 seviye — Başlangıç, Orta & İleri",
+        "Hareket bilimi rehberliğinde hassas şekillendirme",
+        "12 sıralı ders — her biri bir öncekinin üzerine inşa edilir",
+        "Kişisel dashboard ile her seansı takip edin"
+      ],
+      cta: "Lab Sistemine Gir →",
+      link: "welcome.html"
+    },
+    strength: {
+      badge: "SENIN LABIN",
+      title: "Strength Lab",
+      price: "€49",
+      pricePer: "seviye başına",
+      features: [
+        "3 seviye — Başlangıç, Orta & İleri",
+        "Nöral aktivasyon & ilerleyici aşırı yük prensipleri",
+        "Temelden fonksiyonel kuvvet",
+        "Seviye başına 12 sıralı ders"
+      ],
+      cta: "Lab Sistemine Gir →",
+      link: "welcome.html"
+    },
+    program: {
+      badge: "SENIN LABIN",
+      title: "Movement Lab — Buradan Başla",
+      price: "€49",
+      pricePer: "Başlangıç Seviyesi",
+      features: [
+        "12 sıralı bilim temelli ders",
+        "Bedeninizin hareket ediş biçimini yeniden yapılandırın",
+        "Kendi hızınızda antrenman yapın",
+        "İlerleme takipli kişisel dashboard",
+        "Döngü takibi, günlük motto ve daha fazlası"
+      ],
+      cta: "Lab Sistemine Gir →",
+      link: "welcome.html"
+    },
+    callCta: "Emin değil misin? Ücretsiz 15 dk görüşme yap",
+    pregnancyNote: "Anne adayı / yeni anne olarak, planınız güvenli core toparlanması, pelvik taban güçlendirmesi ve kademeli antrenmana dönüş öncelikli olacak. Güvenliğiniz için birebir koçluk önerilir."
+  },
+  de: {
+    inperson: {
+      badge: "DEIN PERFEKTER PLAN",
+      title: "Personal Training vor Ort",
+      price: "€95",
+      pricePer: "pro Einheit",
+      features: [
+        "1:1 Sessions in Berlin mit Buse",
+        "Individueller Trainingsplan für deinen Körper",
+        "Echtzeit-Formkorrektur & Feedback",
+        "Neurowissenschaftlich fundierte Methoden",
+        "Ernährungsberatung inklusive"
+      ],
+      cta: "Kostenloses 15-Min Gespräch buchen",
+      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+    },
+    online: {
+      badge: "DEIN PERFEKTER PLAN",
+      title: "1:1 Online Coaching",
+      price: "€199",
+      pricePer: "pro Monat",
+      features: [
+        "Voll personalisiertes Trainingsprogramm",
+        "Wöchentliche Video-Gespräche mit Buse",
+        "Individueller Ernährungsplan",
+        "24/7 WhatsApp Support",
+        "Monatliche Plananpassungen"
+      ],
+      cta: "Kostenloses 15-Min Gespräch buchen",
+      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+    },
+    group: {
+      badge: "DEIN LAB",
+      title: "Live Lab Kurse",
+      price: "ab €29",
+      pricePer: "pro Monat",
+      features: [
+        "Booty Lab — Di & Do, live mit Buse",
+        "Flexibility Lab — Sonntags-Sessions",
+        "Power Lab — Mo & Mi Krafttraining",
+        "Core & Burn Lab — hohe Intensität, zweimal wöchentlich",
+        "Voller Dashboard-Zugang inklusive"
+      ],
+      cta: "Lab System betreten →",
+      link: "welcome.html"
+    },
+    movement: {
+      badge: "DEIN LAB",
+      title: "Movement Lab",
+      price: "€49",
+      pricePer: "pro Level",
+      features: [
+        "3 Level — Einsteiger, Mittelstufe & Fortgeschritten",
+        "12 sequentielle Lektionen pro Level",
+        "Bewegungsmuster deines Nervensystems neu programmieren",
+        "Wissenschaftlich fundiertes Körpergewichtstraining",
+        "Persönliches Dashboard zur Fortschrittsverfolgung"
+      ],
+      cta: "Lab System betreten →",
+      link: "welcome.html"
+    },
+    sculpt: {
+      badge: "DEIN LAB",
+      title: "Sculpt Lab",
+      price: "€49",
+      pricePer: "pro Level",
+      features: [
+        "3 Level — Einsteiger, Mittelstufe & Fortgeschritten",
+        "Präzises Sculpting geleitet von Bewegungswissenschaft",
+        "12 sequentielle Lektionen die aufeinander aufbauen",
+        "Persönliches Dashboard"
+      ],
+      cta: "Lab System betreten →",
+      link: "welcome.html"
+    },
+    strength: {
+      badge: "DEIN LAB",
+      title: "Strength Lab",
+      price: "€49",
+      pricePer: "pro Level",
+      features: [
+        "3 Level — Einsteiger, Mittelstufe & Fortgeschritten",
+        "Neuronaler Antrieb & progressive Überlastung",
+        "Funktionelle Kraft von Grund auf",
+        "12 sequentielle Lektionen pro Level"
+      ],
+      cta: "Lab System betreten →",
+      link: "welcome.html"
+    },
+    program: {
+      badge: "DEIN LAB",
+      title: "Movement Lab — Starte hier",
+      price: "€49",
+      pricePer: "Einsteiger-Level",
+      features: [
+        "12 sequentielle wissenschaftliche Lektionen",
+        "Trainiere in deinem eigenen Tempo",
+        "Persönliches Dashboard mit Fortschrittsverfolgung",
+        "Zyklus-Tracker, Tagesmotto & mehr"
+      ],
+      cta: "Lab System betreten →",
+      link: "welcome.html"
+    },
+    callCta: "Nicht sicher? Buche ein kostenloses 15-Min Gespräch",
+    pregnancyNote: "Als werdende / frischgebackene Mama priorisiert dein Plan sichere Core-Erholung, Beckenbodenstärkung und schrittweise Rückkehr zum Training. 1:1 Coaching wird für deine Sicherheit empfohlen."
+  }
+};
+
+// ========== STATE ==========
+let currentSlide = 0;
+let lang = new URLSearchParams(window.location.search).get('lang') || 'en';
+let answers = {};
+let slideHistory = [];
+let activeQuestions = [];
+let totalQuestions = 0;
+
+// ========== FUNCTIONS ==========
+function startQuiz() {
+  // If lang was set via URL param, skip language selection
+  if (new URLSearchParams(window.location.search).get('lang')) {
+    buildQuestionSlides();
+    goToSlide(2);
+  } else {
+    goToSlide(1);
+  }
+}
+function selectLang(selectedLang, el) {
+  lang = selectedLang;
+  document.querySelectorAll('.lang-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  
+  // Build question slides
+  buildQuestionSlides();
+  
+  setTimeout(() => {
+    goToSlide(2);
+  }, 400);
+}
+
+function buildQuestionSlides() {
+  // Remove old question slides
+  document.querySelectorAll('.slide.question-slide').forEach(s => s.remove());
+  
+  const qs = questions[lang];
+  activeQuestions = qs;
+  totalQuestions = qs.filter(q => !q.condition).length; // Count non-conditional
+  
+  let slideIndex = 2;
+  qs.forEach((q, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'slide question-slide';
+    slide.id = `slide-${slideIndex}`;
+    slide.dataset.questionIndex = i;
+    slide.dataset.questionKey = q.key;
+    if (q.condition) slide.dataset.conditional = 'true';
+    
+    const colsClass = q.cols === 2 ? 'cols-2' : q.cols === 3 ? 'cols-2' : '';
+    
+    let optionsHTML = q.options.map(opt => `
+      <div class="option-card" onclick="${q.multi ? `toggleOption(this, '${q.key}', '${opt.value}', ${slideIndex})` : `selectOption(this, '${q.key}', '${opt.value}', ${slideIndex})`}">
+        <div class="option-icon">${opt.icon}</div>
+        <div class="option-label">${opt.label}</div>
+        ${opt.desc ? `<div class="option-desc">${opt.desc}</div>` : ''}
+      </div>
+    `).join('');
+    
+    const continueLabel = lang === 'tr' ? 'Devam →' : lang === 'de' ? 'Weiter →' : 'Continue →';
+    const multiBtn = q.multi ? `<div class="multi-continue" id="multi-continue-${slideIndex}"><button class="btn-continue" onclick="advanceFromSlide(${slideIndex})">${continueLabel}</button></div>` : '';
+    
+    slide.innerHTML = `
+      <div class="slide-inner">
+        <div class="question-icon">${q.icon}</div>
+        <div class="question-number">${q.number}</div>
+        <div class="question-title">${q.title}</div>
+        <div class="question-subtitle">${q.subtitle}</div>
+        <div class="options-grid ${colsClass}">
+          ${optionsHTML}
+        </div>
+        ${multiBtn}
+      </div>
+    `;
+    
+    // Insert before result slide
+    const resultSlide = document.getElementById('slide-result');
+    resultSlide.parentNode.insertBefore(slide, resultSlide);
+    slideIndex++;
+  });
+}
+
+function toggleOption(el, key, value, slideIndex) {
+  // "None" clears all others, selecting anything else clears "none"
+  if (value === 'none') {
+    el.parentNode.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    answers[key] = ['none'];
+  } else {
+    // Deselect "none" if it was selected
+    el.parentNode.querySelectorAll('.option-card').forEach(c => {
+      if (c.querySelector('.option-label').textContent.includes('None') || 
+          c.querySelector('.option-label').textContent.includes('Yok') ||
+          c.querySelector('.option-label').textContent.includes('Keine')) {
+        c.classList.remove('selected');
+      }
+    });
+    
+    el.classList.toggle('selected');
+    
+    // Collect all selected values
+    const selected = [];
+    el.parentNode.querySelectorAll('.option-card.selected').forEach(c => {
+      const onclick = c.getAttribute('onclick');
+      const match = onclick.match(/'([^']+)'\s*,\s*(\d+)\)$/);
+      if (match) selected.push(match[1]);
+    });
+    answers[key] = selected.length > 0 ? selected : [];
+  }
+  
+  // Show/hide continue button
+  const continueBtn = document.getElementById(`multi-continue-${slideIndex}`);
+  if (continueBtn) {
+    if (answers[key] && answers[key].length > 0) {
+      continueBtn.classList.add('visible');
+    } else {
+      continueBtn.classList.remove('visible');
+    }
+  }
+}
+
+function selectOption(el, key, value, slideIndex) {
+  // Visual selection
+  el.parentNode.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  
+  // Store answer
+  answers[key] = value;
+  
+  // Auto-advance after short delay
+  setTimeout(() => {
+    advanceFromSlide(slideIndex);
+  }, 500);
+}
+
+function advanceFromSlide(currentSlideIndex) {
+  const allSlides = document.querySelectorAll('.slide.question-slide');
+  const currentSlideEl = document.getElementById(`slide-${currentSlideIndex}`);
+  const currentQIndex = parseInt(currentSlideEl.dataset.questionIndex);
+  
+  // Find next valid slide
+  let nextSlideEl = null;
+  const qs = questions[lang];
+  
+  for (let i = currentQIndex + 1; i < qs.length; i++) {
+    const q = qs[i];
+    if (q.condition && !q.condition(answers)) {
+      continue; // Skip conditional questions that don't apply
+    }
+    // Find the slide element for this question
+    const slides = document.querySelectorAll('.slide.question-slide');
+    for (const s of slides) {
+      if (parseInt(s.dataset.questionIndex) === i) {
+        nextSlideEl = s;
+        break;
+      }
+    }
+    break;
+  }
+  
+  if (nextSlideEl) {
+    const nextId = parseInt(nextSlideEl.id.replace('slide-', ''));
+    goToSlide(nextId);
+  } else {
+    showResult();
+  }
+}
+
+function goToSlide(targetIndex) {
+  const current = document.querySelector('.slide.active');
+  if (current) {
+    slideHistory.push(parseInt(current.id.replace('slide-', '').replace('result', '-1')));
+    current.classList.remove('active');
+    current.classList.add('exit-left');
+    setTimeout(() => current.classList.remove('exit-left'), 600);
+  }
+  
+  const target = document.getElementById(`slide-${targetIndex}`);
+  if (target) {
+    currentSlide = targetIndex;
+    target.classList.add('active');
+  }
+  
+  updateProgress();
+  updateBackButton();
+}
+
+function goBack() {
+  if (slideHistory.length === 0) return;
+  
+  const current = document.querySelector('.slide.active');
+  if (current) {
+    current.classList.remove('active');
+    current.style.transform = 'translateX(100%)';
+    current.style.opacity = '0';
+    setTimeout(() => {
+      current.style.transform = '';
+      current.style.opacity = '';
+    }, 600);
+  }
+  
+  const prevIndex = slideHistory.pop();
+  const prevId = prevIndex === -1 ? 'result' : prevIndex;
+  const prev = document.getElementById(`slide-${prevId}`);
+  if (prev) {
+    prev.style.transform = 'translateX(-100%)';
+    prev.style.opacity = '0';
+    prev.classList.add('active');
+    requestAnimationFrame(() => {
+      prev.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+      prev.style.transform = 'translateX(0)';
+      prev.style.opacity = '1';
+      setTimeout(() => {
+        prev.style.transition = '';
+        prev.style.transform = '';
+        prev.style.opacity = '';
+      }, 600);
+    });
+    currentSlide = prevIndex;
+  }
+  
+  updateProgress();
+  updateBackButton();
+}
+
+function updateProgress() {
+  const container = document.getElementById('progressContainer');
+  const fill = document.getElementById('progressFill');
+  const text = document.getElementById('progressText');
+  
+  if (currentSlide <= 1) {
+    container.style.display = 'none';
+    return;
+  }
+  
+  container.style.display = 'block';
+  
+  // Count answered questions
+  const qs = questions[lang] || questions.en;
+  const applicableQs = qs.filter(q => !q.condition || (q.condition && q.condition(answers)));
+  const total = applicableQs.length;
+  
+  // Figure out which question we're on
+  const activeSlide = document.querySelector('.slide.active.question-slide');
+  let currentQ = 0;
+  if (activeSlide) {
+    const qIndex = parseInt(activeSlide.dataset.questionIndex);
+    let count = 0;
+    for (let i = 0; i <= qIndex; i++) {
+      const q = qs[i];
+      if (!q.condition || (q.condition && q.condition(answers))) {
+        count++;
+      }
+    }
+    currentQ = count;
+  }
+  
+  const pct = Math.min((currentQ / total) * 100, 100);
+  fill.style.width = pct + '%';
+  
+  const qLabel = lang === 'tr' ? `Soru ${currentQ} / ${total}` : lang === 'de' ? `Frage ${currentQ} von ${total}` : `Question ${currentQ} of ${total}`;
+  text.textContent = qLabel;
+}
+
+function updateBackButton() {
+  const btn = document.getElementById('backBtn');
+  if (currentSlide > 0 && slideHistory.length > 0) {
+    btn.classList.add('visible');
+    btn.textContent = lang === 'tr' ? '← Geri' : lang === 'de' ? '← Zurück' : '← Back';
+  } else {
+    btn.classList.remove('visible');
+  }
+}
+
+function showResult() {
+  const plan = determinePlan();
+  const r = results[lang][plan];
+  const isPregnant = answers.pregnancy === 'pregnant' || answers.pregnancy === 'postpartum' || answers.pregnancy === 'planning';
+  
+  // Build analysis text
+  const analysis = buildAnalysis();
+  
+  let pregnancyHTML = '';
+  if (isPregnant) {
+    pregnancyHTML = `
+      <div class="pregnancy-note">
+        <div class="pregnancy-note-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="3"/><path d="M12 9v6"/><path d="M9 12h6"/><path d="M9 21v-4"/><path d="M15 21v-4"/></svg></div>
+        <div class="pregnancy-note-text">${results[lang].pregnancyNote}</div>
+      </div>
+    `;
+  }
+  
+  const featuresHTML = r.features.map(f => `
+    <div class="result-feature">
+      <div class="result-feature-icon">✓</div>
+      <span>${f}</span>
+    </div>
+  `).join('');
+  
+  const callLabel = results[lang].callCta;
+  
+  document.getElementById('resultCard').innerHTML = `
+    <div class="result-badge">${r.badge}</div>
+    <div class="result-title">${r.title}</div>
+    <div class="result-analysis">${analysis}</div>
+    ${pregnancyHTML}
+    <div class="result-plan" style="margin-top:24px">
+      <div class="result-plan-label">${lang === 'tr' ? 'YATIRIM' : lang === 'de' ? 'INVESTITION' : 'INVESTMENT'}</div>
+      <div class="result-plan-price"><strong>${r.price}</strong> ${r.pricePer}</div>
+    </div>
+    <div class="result-features">
+      ${featuresHTML}
+    </div>
+    <a href="${r.link}" class="btn-result" target="_blank">${r.cta}</a>
+    ${plan !== 'program' ? '' : `<a href="https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b" class="btn-result-secondary" target="_blank">${callLabel}</a>`}
+    ${(plan === 'program' || plan === 'movement' || plan === 'sculpt' || plan === 'strength' || plan === 'group') ? '' : `<a href="welcome.html" class="btn-result-secondary" style="margin-top:8px">${lang === 'tr' ? 'Veya Lab Sistemine gir' : lang === 'de' ? 'Oder Lab System betreten' : 'Or enter the Lab System'}</a>`}
+    <div class="email-capture" id="emailCapture">
+      <div class="email-capture-tag">${lang === 'tr' ? 'Ücretsiz' : lang === 'de' ? 'Kostenlos' : 'Free'}</div>
+      <div class="email-capture-title">${lang === 'tr' ? 'Sonucunu kaydet & haftalık bilim ipuçları al' : lang === 'de' ? 'Ergebnis speichern & wöchentliche Tipps erhalten' : 'Save your result & get weekly science tips'}</div>
+      <div class="email-capture-sub">${lang === 'tr' ? 'Buse sana özel hareket bilimi ipuçları göndersin.' : lang === 'de' ? 'Buse schickt dir persönliche Bewegungswissenschafts-Tipps.' : "Buse will send you personalised movement science tips — no spam, ever."}</div>
+      <div class="email-capture-row">
+        <input class="email-capture-input" type="email" id="quizEmail" placeholder="${lang === 'tr' ? 'E-posta adresin' : lang === 'de' ? 'Deine E-Mail-Adresse' : 'Your email address'}">
+        <button class="email-capture-btn" onclick="submitQuizEmail('${plan}', '${r.title}')">${lang === 'tr' ? 'Gönder →' : lang === 'de' ? 'Senden →' : 'Send →'}</button>
+      </div>
+      <div class="email-capture-success" id="emailSuccess">
+        ${lang === 'tr' ? '✓ Kaydedildi! Yakında senden haber alacağım.' : lang === 'de' ? '✓ Gespeichert! Ich melde mich bald bei dir.' : '✓ Saved! I will be in touch soon. — Buse'}
+      </div>
+    </div>
+    <div class="result-note">${lang === 'tr' ? '🌸 Tüm planlar bilimsel temelli, Buse tarafından tasarlanmış' : lang === 'de' ? '🌸 Alle Pläne sind wissenschaftlich fundiert und von Buse entwickelt' : '🌸 All plans are science-backed and designed by Buse'}</div>
+  `;
+  
+  // Show result slide
+  const current = document.querySelector('.slide.active');
+  if (current) {
+    slideHistory.push(parseInt(current.id.replace('slide-', '')));
+    current.classList.remove('active');
+    current.classList.add('exit-left');
+    setTimeout(() => current.classList.remove('exit-left'), 600);
+  }
+  
+  const resultSlide = document.getElementById('slide-result');
+  resultSlide.classList.add('active');
+  currentSlide = 'result';
+  
+  // Update progress to 100%
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressText').textContent = lang === 'tr' ? 'Analiz tamamlandı ✓' : lang === 'de' ? 'Analyse abgeschlossen ✓' : 'Analysis complete ✓';
+  
+  updateBackButton();
+}
+
+function determinePlan() {
+  const isPregnant = answers.pregnancy === 'pregnant' || answers.pregnancy === 'postpartum' || answers.pregnancy === 'planning';
+  
+  // Pregnant/postpartum → always 1:1
+  if (isPregnant) {
+    return answers.berlin === 'yes' ? 'inperson' : 'online';
+  }
+  
+  // Group preference → live labs
+  if (answers.support === 'group') {
+    return 'group';
+  }
+  
+  // Private + Berlin + premium → in person
+  if (answers.support === 'private') {
+    if (answers.berlin === 'yes') {
+      return answers.budget === 'budget' ? 'online' : 'inperson';
+    }
+    return 'online';
+  }
+  
+  // Self-paced → match to specific lab based on goal & focus
+  if (answers.support === 'self' || answers.budget === 'budget' || answers.budget === 'mid') {
+    if (answers.goal === 'posture' || answers.focus === 'full') return 'movement';
+    if (answers.goal === 'lose' || answers.focus === 'glutes' || answers.focus === 'core') return 'sculpt';
+    if (answers.goal === 'build' || answers.focus === 'upper') return 'strength';
+    return 'movement'; // default lab
+  }
+  
+  // Premium budget → 1:1
+  return answers.berlin === 'yes' ? 'inperson' : 'online';
+}
+
+function buildAnalysis() {
+  const ageMap = { '18-25': '18–25', '26-35': '26–35', '36-45': '36–45', '45+': '45+' };
+  const age = ageMap[answers.age] || '';
+  
+  if (lang === 'tr') {
+    const goalMap = { lose: 'sıkılaşma ve kilo verme', build: 'kas yapma ve güçlenme', posture: 'duruş ve hareketlilik', health: 'genel sağlık ve enerji' };
+    const focusMap = { core: 'karın & core', glutes: 'kalça & bacak', upper: 'üst vücut & kollar', full: 'tüm vücut' };
+    const actMap = { sedentary: 'hareketsiz', light: 'hafif aktif', moderate: 'orta aktif', very: 'çok aktif' };
+    const expMap = { beginner: 'yeni başlayan', inconsistent: 'düzensiz', sometimes: 'ara sıra antrenman yapan', regular: 'düzenli antrenman yapan' };
+    
+    return `${age} yaş aralığında, <strong>${actMap[answers.activity] || ''}</strong> bir ${expMap[answers.experience] || ''} olarak, ana hedefiniz <strong>${goalMap[answers.goal] || ''}</strong> ve odak noktanız <strong>${focusMap[answers.focus] || ''}</strong>.${answers.limitations && !answers.limitations.includes('none') ? ' Planınızı ' + answers.limitations.map(l => ({knees:'diz hassasiyeti',ankles:'ayak bileği sorunları',back:'bel ağrısı',shoulders:'omuz kısıtlamaları',pelvic:'pelvik taban ihtiyaçları'})[l]).filter(Boolean).join(', ') + ' göz önünde bulundurarak ayarlayacağız.' : ''} Size en uygun planı belirledik.`;
+  } else {
+    const goalMap = { lose: 'weight loss & toning', build: 'muscle building & strength', posture: 'posture & mobility', health: 'overall health & energy' };
+    const focusMap = { core: 'core & abs', glutes: 'glutes & legs', upper: 'upper body & arms', full: 'full body' };
+    const actMap = { sedentary: 'sedentary', light: 'lightly active', moderate: 'moderately active', very: 'very active' };
+    const expMap = { beginner: 'complete beginner', inconsistent: 'on-and-off exerciser', sometimes: 'occasional trainer', regular: 'regular trainer' };
+    
+    return `As a <strong>${actMap[answers.activity] || ''}</strong> ${age} year old ${expMap[answers.experience] || ''}, your main goal is <strong>${goalMap[answers.goal] || ''}</strong> with a focus on <strong>${focusMap[answers.focus] || ''}</strong>.${answers.limitations && !answers.limitations.includes('none') ? ' We\'ll adapt your plan to work around your ' + answers.limitations.map(l => ({knees:'knee sensitivity',ankles:'ankle issues',back:'lower back pain',shoulders:'shoulder limitations',pelvic:'pelvic floor needs'})[l]).filter(Boolean).join(', ') + '.' : ''} We've identified the perfect plan for you.`;
+  }
+  
+  if (lang === 'de') {
+    const goalMap = { lose: 'Abnehmen & Straffen', build: 'Muskelaufbau & Kraft', posture: 'Haltung & Beweglichkeit', health: 'Gesundheit & Energie' };
+    const focusMap = { core: 'Core & Bauch', glutes: 'Po & Beine', upper: 'Oberkörper & Arme', full: 'Ganzkörper' };
+    const actMap = { sedentary: 'kaum aktive', light: 'leicht aktive', moderate: 'mäßig aktive', very: 'sehr aktive' };
+    const expMap = { beginner: 'komplette Anfängerin', inconsistent: 'unregelmäßige Trainerin', sometimes: 'gelegentliche Trainerin', regular: 'regelmäßige Trainerin' };
+    
+    return `Als <strong>${actMap[answers.activity] || ''}</strong> ${age}-jährige ${expMap[answers.experience] || ''} ist dein Hauptziel <strong>${goalMap[answers.goal] || ''}</strong> mit Fokus auf <strong>${focusMap[answers.focus] || ''}</strong>.${answers.limitations && !answers.limitations.includes('none') ? ' Wir passen deinen Plan an deine ' + answers.limitations.map(l => ({knees:'Knieempfindlichkeit',ankles:'Knöchelprobleme',back:'Rückenschmerzen',shoulders:'Schulterbeschränkungen',pelvic:'Beckenbodenbedürfnisse'})[l]).filter(Boolean).join(', ') + ' an.' : ''} Wir haben den perfekten Plan für dich gefunden.`;
+  }
+}
+// Set close button to correct language homepage
+(function() {
+  const urlLang = new URLSearchParams(window.location.search).get('lang');
+  const closeBtn = document.getElementById('quizClose');
+  if (closeBtn) {
+    if (urlLang === 'tr') closeBtn.href = 'tr.html';
+    else if (urlLang === 'de') closeBtn.href = 'de.html';
+  }
+})();
+
+// Quiz email capture — sends lead data to Formspree
+async function submitQuizEmail(plan, planTitle) {
+  const emailEl = document.getElementById('quizEmail');
+  const email = emailEl ? emailEl.value.trim() : '';
+  if (!email || !email.includes('@')) {
+    if (emailEl) emailEl.style.borderColor = '#C1848B';
+    return;
+  }
+  const btn = document.querySelector('.email-capture-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '...'; }
+  
+  try {
+    await fetch('https://formspree.io/f/mnjbpvbl', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        quiz_result: planTitle,
+        quiz_plan_key: plan,
+        language: lang,
+        source: 'quiz_result',
+        _subject: 'New Quiz Lead — Train With Buse: ' + planTitle
+      })
+    });
+    const row = document.querySelector('.email-capture-row');
+    const success = document.getElementById('emailSuccess');
+    if (row) row.style.display = 'none';
+    if (success) success.style.display = 'block';
+  } catch(e) {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = lang === 'tr' ? 'Gondir ->' : lang === 'de' ? 'Senden ->' : 'Send ->';
+    }
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datenschutzrichtlinie — Train With Buse</title>
+  <meta name="description" content="">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="favicon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blush: #E8B4B8;
+    --blush-light: #F5D5D8;
+    --nude: #D4A89A;
+    --cream: #FDF6F0;
+    --cream-deep: #F5EBE0;
+    --rose: #C1848B;
+    --rose-dark: #9B6B6F;
+    --charcoal: #2D2A2E;
+    --charcoal-light: #4A4548;
+    --warm-white: #FFFAF7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+  }
+
+  /* ========== TOPBAR ========== */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 20px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(253, 246, 240, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .topbar-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--charcoal);
+    text-decoration: none;
+    letter-spacing: 3px;
+  }
+
+  .topbar-back {
+    text-decoration: none;
+    color: var(--charcoal-light);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+  }
+
+  .topbar-back:hover { color: var(--rose); }
+
+  /* ========== LAYOUT ========== */
+  .policy-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 120px 40px 80px;
+    gap: 60px;
+    min-height: 100vh;
+  }
+
+  /* ========== SIDEBAR NAV ========== */
+  .policy-sidebar {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+  }
+
+  .policy-nav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .policy-nav a {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--charcoal-light);
+    border-radius: 10px;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+  }
+
+  .policy-nav a:hover {
+    background: var(--cream-deep);
+    color: var(--charcoal);
+  }
+
+  .policy-nav a.active {
+    background: white;
+    color: var(--rose);
+    font-weight: 500;
+    border-left-color: var(--rose);
+    box-shadow: 0 2px 12px rgba(200, 160, 155, 0.1);
+  }
+
+  /* ========== CONTENT ========== */
+  .policy-content {
+    min-width: 0;
+  }
+
+  .policy-section {
+    display: none;
+  }
+
+  .policy-section.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .policy-header {
+    margin-bottom: 40px;
+  }
+
+  .policy-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+
+  .policy-header h1 em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .policy-updated {
+    font-size: 13px;
+    color: var(--charcoal-light);
+  }
+
+  .policy-body h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin: 36px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(232, 180, 184, 0.2);
+  }
+
+  .policy-body h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin: 24px 0 10px;
+  }
+
+  .policy-body p {
+    font-size: 14px;
+    color: var(--charcoal-light);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  .policy-body ul {
+    margin: 12px 0 20px 20px;
+    font-size: 14px;
+    color: var(--charcoal-light);
+    line-height: 1.8;
+  }
+
+  .policy-body ul li {
+    margin-bottom: 8px;
+  }
+
+  .policy-body a {
+    color: var(--rose);
+    text-decoration: none;
+  }
+
+  .policy-body a:hover {
+    text-decoration: underline;
+  }
+
+  .policy-body strong {
+    color: var(--charcoal);
+    font-weight: 600;
+  }
+
+  .policy-highlight {
+    background: white;
+    border-left: 3px solid var(--rose);
+    padding: 16px 20px;
+    border-radius: 0 12px 12px 0;
+    margin: 20px 0;
+    font-size: 14px;
+    color: var(--charcoal-light);
+    line-height: 1.7;
+  }
+
+  /* ========== CONTACT BOX ========== */
+  .contact-box {
+    background: var(--charcoal);
+    border-radius: 20px;
+    padding: 32px;
+    margin-top: 40px;
+    text-align: center;
+  }
+
+  .contact-box h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    color: var(--cream);
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+
+  .contact-box p {
+    font-size: 14px;
+    color: rgba(253, 246, 240, 0.5);
+    margin-bottom: 16px;
+  }
+
+  .contact-box a {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--blush), var(--rose));
+    color: var(--charcoal);
+    padding: 12px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+
+  .contact-box a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(232, 180, 184, 0.3);
+  }
+
+  /* ========== FOOTER ========== */
+  .policy-footer {
+    text-align: center;
+    padding: 40px;
+    font-size: 13px;
+    color: var(--charcoal-light);
+    border-top: 1px solid rgba(232, 180, 184, 0.15);
+  }
+
+  .policy-footer a {
+    color: var(--rose);
+    text-decoration: none;
+  }
+
+  /* ========== MOBILE ========== */
+  @media (max-width: 768px) {
+    .topbar { padding: 16px 24px; }
+
+    .policy-layout {
+      grid-template-columns: 1fr;
+      padding: 100px 24px 60px;
+      gap: 0;
+    }
+
+    .policy-sidebar {
+      position: relative;
+      top: 0;
+      margin-bottom: 32px;
+    }
+
+    .policy-nav {
+      flex-direction: row;
+      overflow-x: auto;
+      gap: 8px;
+      padding-bottom: 8px;
+    }
+
+    .policy-nav a {
+      white-space: nowrap;
+      border-left: none;
+      border-bottom: 3px solid transparent;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 13px;
+    }
+
+    .policy-nav a.active {
+      border-left-color: transparent;
+      border-bottom-color: var(--rose);
+    }
+
+    .policy-header h1 { font-size: 32px; }
+    .policy-body h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="de.html" class="topbar-logo">BUSE</a>
+  <a href="de.html" class="topbar-back">← Zurück zur Startseite</a>
+</div>
+
+<!-- LAYOUT -->
+<div class="policy-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="policy-sidebar">
+    <nav>
+      <ul class="policy-nav">
+        <li><a href="#privacy" class="active" onclick="showSection('privacy', this)">Datenschutz</a></li>
+        <li><a href="#terms" onclick="showSection('terms', this)">AGB</a></li>
+        <li><a href="#cancellation" onclick="showSection('cancellation', this)">Stornierung</a></li>
+        <li><a href="#sessions" onclick="showSection('sessions', this)">Sessionregeln</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="policy-content">
+
+    <!-- ==================== PRIVACY POLICY ==================== -->
+    <div class="policy-section active" id="privacy">
+      <div class="policy-header">
+        <h1>Datenschutz<em>erklärung</em></h1>
+        <p class="policy-updated">Letzte Aktualisierung: Februar 2026</p>
+      </div>
+      <div class="policy-body">
+        <p>Deine Privatsphäre ist uns wichtig. Diese Datenschutzerklärung erklärt, welche personenbezogenen Daten Train With Buse ("wir", "uns") erhebt, wenn du unsere Website (trainwithbuse.com) nutzt, Dienstleistungen buchst, Programme kaufst oder mit uns kommunizierst — und wie wir diese Daten verarbeiten.</p>
+
+        <p>Durch die Nutzung unserer Website oder Dienstleistungen stimmst du den in dieser Erklärung beschriebenen Praktiken zu.</p>
+
+        <h2>1. Welche Daten wir erheben</h2>
+
+        <h3>Daten, die du direkt bereitstellst</h3>
+        <ul>
+          <li><strong>Contact information:</strong> name, email address, phone number — when you book a session, subscribe to our newsletter, or send us a message.</li>
+          <li><strong>Health & fitness information:</strong> age, gender, fitness level, goals, physical limitations, pregnancy status — when you take our quiz or begin a training program. This helps us create a safe and effective plan for you.</li>
+          <li><strong>Payment information:</strong> processed securely by third-party providers (Calendly, Payhip). We never store your credit card details directly.</li>
+        </ul>
+
+        <h3>Automatisch erhobene Daten</h3>
+        <ul>
+          <li><strong>Usage data:</strong> pages visited, time on site, referral source — collected via Cloudflare analytics.</li>
+          <li><strong>Device data:</strong> browser type, operating system, screen size, IP address.</li>
+        </ul>
+
+        <div class="policy-highlight">
+          Wir verkaufen deine persönlichen Daten niemals an Dritte.
+        </div>
+
+        <h2>2. Wie wir deine Daten verwenden</h2>
+        <ul>
+          <li>To provide and personalize our training services</li>
+          <li>To process bookings and payments</li>
+          <li>To communicate with you about your sessions and programs</li>
+          <li>To send you our newsletter (only if you opt in — you can unsubscribe anytime)</li>
+          <li>To improve our website and services</li>
+          <li>To ensure your safety during training (health data)</li>
+        </ul>
+
+        <h2>3. Drittanbieter</h2>
+        <p>We use the following services that may process your data:</p>
+        <ul>
+          <li><strong>Calendly</strong> — for booking sessions</li>
+          <li><strong>Payhip</strong> — for program purchases and payments</li>
+          <li><strong>Cloudflare</strong> — for website hosting and analytics</li>
+          <li><strong>Formspree</strong> — for newsletter signup forms</li>
+          <li><strong>Substack</strong> — for blog and newsletter delivery</li>
+        </ul>
+        <p>Each of these services has their own privacy policy. We encourage you to review them.</p>
+
+        <h2>4. Datenspeicherung</h2>
+        <p>We keep your personal data for as long as necessary to provide our services and fulfill legal obligations. If you request deletion, we will remove your data within 30 days, except where we are legally required to retain it.</p>
+
+        <h2>5. Deine Rechte</h2>
+        <p>Under GDPR (as we are based in Berlin, Germany), you have the right to:</p>
+        <ul>
+          <li>Access the personal data we hold about you</li>
+          <li>Correct inaccurate data</li>
+          <li>Request deletion of your data</li>
+          <li>Restrict or object to processing</li>
+          <li>Data portability</li>
+          <li>Withdraw consent at any time</li>
+        </ul>
+        <p>To exercise any of these rights, contact us at <a href="/cdn-cgi/l/email-protection#2e464b4242416e5a5c4f474059475a464c5b5d4b004d4143"><span class="__cf_email__" data-cfemail="254d4049494a655157444c4b524c514d475056400b464a48">[email&#160;protected]</span></a>.</p>
+
+        <h2>6. Cookies</h2>
+        <p>Our website uses minimal cookies necessary for functionality (Cloudflare, Calendly embed). We do not use advertising cookies or trackers. No data is sold to ad networks.</p>
+
+        <h2>7. Datenschutz für Minderjährige</h2>
+        <p>Our services are not intended for anyone under 18. We do not knowingly collect data from minors.</p>
+
+        <h2>8. Änderungen dieser Erklärung</h2>
+        <p>We may update this policy from time to time. Changes will be posted on this page with an updated revision date.</p>
+
+        <div class="contact-box">
+          <h3>Fragen zu deinen Daten?</h3>
+          <p>Wir helfen dir gerne bei allen datenschutzbezogenen Fragen.</p>
+          <a href="/cdn-cgi/l/email-protection#86eee3eaeae9c6f2f4e7efe8f1eff2eee4f3f5e3a8e5e9eb">Kontakt</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TERMS & CONDITIONS ==================== -->
+    <div class="policy-section" id="terms">
+      <div class="policy-header">
+        <h1>Allgemeine <em>Geschäftsbedingungen</em></h1>
+        <p class="policy-updated">Letzte Aktualisierung: Februar 2026</p>
+      </div>
+      <div class="policy-body">
+        <p>These Terms and Conditions ("Terms") govern your use of the Train With Buse website and services. By using our website, booking a session, or purchasing a program, you agree to these Terms.</p>
+
+        <h2>1. About Us</h2>
+        <p>Train With Buse is a personal training and coaching service operated by Buse, a certified sports scientist (MSc Movement Science, MBA, NASM-CPT) based in Berlin, Germany, operating under the Kleinunternehmerregelung (small business regulation).</p>
+
+        <h2>2. Services</h2>
+        <p>We offer the following services:</p>
+        <ul>
+          <li><strong>1:1 Online Coaching</strong> — personalized training programs with ongoing remote support (€199/month)</li>
+          <li><strong>In-Person Personal Training</strong> — 1:1 sessions in Berlin (€95/session)</li>
+          <li><strong>Online Group Classes</strong> — live group training sessions (€49/month)</li>
+          <li><strong>Digital Programs</strong> — pre-recorded video programs available for purchase (pricing varies)</li>
+        </ul>
+        <p>Prices are subject to change. Current pricing is always displayed on our website and at the point of purchase.</p>
+
+        <h2>3. Bookings & Payments</h2>
+        <ul>
+          <li>Sessions are booked through Calendly and confirmed via email.</li>
+          <li>Payment for digital programs is processed through Payhip.</li>
+          <li>Monthly subscriptions (Online Coaching, Group Classes) are billed on a recurring basis.</li>
+          <li>All prices are in EUR and include applicable taxes (MwSt exempt under Kleinunternehmerregelung §19 UStG).</li>
+        </ul>
+
+        <h2>4. Health Disclaimer</h2>
+        <div class="policy-highlight">
+          Our training programs are designed for educational and fitness purposes only. They are not a substitute for professional medical advice, diagnosis, or treatment. Always consult your physician before starting any new exercise program, especially if you are pregnant, postpartum, or have pre-existing health conditions.
+        </div>
+        <p>By participating in our services, you acknowledge that exercise carries inherent risks and you accept full responsibility for your physical wellbeing during training.</p>
+
+        <h2>5. Intellectual Property</h2>
+        <p>All content on trainwithbuse.com — including text, images, videos, programs, and training materials — is owned by Train With Buse and protected by copyright. You may not reproduce, distribute, or resell any content without written permission.</p>
+        <p>Purchased programs are licensed for personal use only. Sharing login credentials or redistributing program content is prohibited.</p>
+
+        <h2>6. Digital Programs</h2>
+        <ul>
+          <li>Digital programs are delivered immediately upon purchase.</li>
+          <li>Due to the digital nature of the product, refunds are handled on a case-by-case basis (see Cancellation Policy).</li>
+          <li>You receive lifetime access to the program version you purchased.</li>
+        </ul>
+
+        <h2>7. Limitation of Liability</h2>
+        <p>To the fullest extent permitted by law, Train With Buse shall not be liable for any indirect, incidental, or consequential damages arising from the use of our services or website. Our total liability is limited to the amount you paid for the specific service in question.</p>
+
+        <h2>8. Governing Law</h2>
+        <p>These Terms are governed by the laws of the Federal Republic of Germany. Any disputes shall be resolved in the courts of Berlin.</p>
+
+        <h2>9. Changes to These Terms</h2>
+        <p>We may update these Terms from time to time. Continued use of our services after changes constitutes acceptance of the new Terms.</p>
+
+        <div class="contact-box">
+          <h3>Fragen zu unseren Bedingungen?</h3>
+          <p>Melde dich gerne — wir klären alles, was du wissen möchtest.</p>
+          <a href="/cdn-cgi/l/email-protection#aac2cfc6c6c5eaded8cbc3c4ddc3dec2c8dfd9cf84c9c5c7">Kontakt</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== CANCELLATION POLICY ==================== -->
+    <div class="policy-section" id="cancellation">
+      <div class="policy-header">
+        <h1>Stornierungs<em>bedingungen</em></h1>
+        <p class="policy-updated">Letzte Aktualisierung: Februar 2026</p>
+      </div>
+      <div class="policy-body">
+        <p>We understand that life happens. Here's how cancellations and refunds work for each of our services.</p>
+
+        <h2>1:1 Online Coaching (€199/month)</h2>
+        <ul>
+          <li>Cancel anytime before your next billing cycle — no questions asked.</li>
+          <li>Cancellation takes effect at the end of the current billing period.</li>
+          <li>No partial month refunds for early cancellation.</li>
+          <li>To cancel, send an email to <a href="/cdn-cgi/l/email-protection#7018151c1c1f30040211191e07190418120503155e131f1d"><span class="__cf_email__" data-cfemail="056d6069696a457177646c6b726c716d677076602b666a68">[email&#160;protected]</span></a> or let me know during a check-in.</li>
+        </ul>
+
+        <h2>In-Person Sessions (€95/session)</h2>
+        <div class="policy-highlight">
+          <strong>24-hour rule:</strong> Please cancel or reschedule at least 24 hours before your session. Late cancellations or no-shows will be charged the full session fee.
+        </div>
+        <ul>
+          <li>Reschedule anytime up to 24 hours before your session via Calendly or by messaging me directly.</li>
+          <li>If I need to cancel, you'll be offered a reschedule or full refund.</li>
+          <li>Emergencies are handled on a case-by-case basis — just communicate with me.</li>
+        </ul>
+
+        <h2>Group Classes (€49/month)</h2>
+        <ul>
+          <li>Cancel anytime before your next billing cycle.</li>
+          <li>No refunds for missed classes — but all sessions have replay access.</li>
+          <li>To cancel, email <a href="/cdn-cgi/l/email-protection#630b060f0f0c231711020a0d140a170b011610064d000c0e"><span class="__cf_email__" data-cfemail="1e767b7272715e6a6c7f777069776a767c6b6d7b307d7173">[email&#160;protected]</span></a>.</li>
+        </ul>
+
+        <h2>Digital Programs (e.g. Sculpt & Strengthen — €79)</h2>
+        <ul>
+          <li>Due to immediate digital delivery, all sales are generally final.</li>
+          <li>If you experience technical issues preventing access, contact us and we'll resolve it.</li>
+          <li>Refund requests made within 14 days of purchase will be reviewed individually — if you haven't accessed more than 20% of the content, we'll issue a full refund.</li>
+        </ul>
+
+        <div class="contact-box">
+          <h3>Stornieren oder verschieben?</h3>
+          <p>Kein Stress — melde dich einfach und wir regeln das.</p>
+          <a href="/cdn-cgi/l/email-protection#39515c555556794d4b5850574e504d515b4c4a5c175a5654">Kontakt</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SESSION RULES ==================== -->
+    <div class="policy-section" id="sessions">
+      <div class="policy-header">
+        <h1>Session<em>regeln</em></h1>
+        <p class="policy-updated">Letzte Aktualisierung: Februar 2026</p>
+      </div>
+      <div class="policy-body">
+        <p>To get the most out of our time together, here are some guidelines for all training sessions.</p>
+
+        <h2>Before Your Session</h2>
+        <ul>
+          <li>Wear comfortable workout clothing and appropriate shoes.</li>
+          <li>Have water available throughout the session.</li>
+          <li>Eat a light meal at least 1–2 hours before training.</li>
+          <li>Inform me of any injuries, pain, or health changes before we start.</li>
+          <li>For online sessions: ensure a stable internet connection, enough space to move, and your camera on (so I can check your form).</li>
+        </ul>
+
+        <h2>During Your Session</h2>
+        <ul>
+          <li>Sessions are 60 minutes unless otherwise agreed.</li>
+          <li>Communicate openly — tell me if something hurts, feels wrong, or if you need a break.</li>
+          <li>I'll push you, but your safety always comes first. We train smart, not reckless.</li>
+          <li>Be present — minimize phone use during the session.</li>
+        </ul>
+
+        <h2>After Your Session</h2>
+        <ul>
+          <li>Follow any recovery recommendations I give you.</li>
+          <li>Track your progress if applicable (I'll guide you on how).</li>
+          <li>Reach out if you experience any unusual pain or discomfort post-session.</li>
+        </ul>
+
+        <h2>In-Person Sessions (Berlin)</h2>
+        <ul>
+          <li>Sessions can take place at your home, a gym, or an outdoor location — we decide together.</li>
+          <li>If training at your home, please ensure enough clear space (approximately 2x2 meters).</li>
+          <li>I bring any equipment we need for home sessions.</li>
+          <li>Parking costs (if applicable) are not included in the session fee.</li>
+        </ul>
+
+        <h2>Online Sessions</h2>
+        <ul>
+          <li>We use Zoom or Google Meet — I'll send you the link before the session.</li>
+          <li>If you experience technical difficulties, let me know immediately so we can reschedule if needed.</li>
+          <li>Sessions are not recorded unless you request it and give consent.</li>
+        </ul>
+
+        <h2>Pregnancy & Postpartum</h2>
+        <div class="policy-highlight">
+          If you are pregnant, recently postpartum, or planning to become pregnant, please let me know before we begin. I will adapt all exercises for your safety. A doctor's clearance is recommended before starting or continuing a training program during pregnancy or postpartum recovery.
+        </div>
+
+        <h2>Medical Conditions</h2>
+        <p>If you have any pre-existing medical conditions (heart conditions, diabetes, joint issues, etc.), please disclose them before your first session. This information is kept strictly confidential and is only used to ensure your safety during training.</p>
+
+        <div class="contact-box">
+          <h3>Noch Fragen bevor wir starten?</h3>
+          <p>Frag ruhig — ich möchte, dass du dich wohl und vorbereitet fühlst.</p>
+          <a href="/cdn-cgi/l/email-protection#a0c8c5cccccfe0d4d2c1c9ced7c9d4c8c2d5d3c58ec3cfcd">Kontakt</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="policy-footer">
+  <p>© 2026 Train With Buse. Alle Rechte vorbehalten. · <a href="de.html">Startseite</a></p>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function showSection(id

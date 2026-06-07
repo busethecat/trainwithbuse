@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Train With Buse</title>
+  <meta name="description" content="">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<style>
+  :root {
+    --blush:#E8B4B8;--nude:#D4A89A;--cream:#FDF6F0;--cream-deep:#F5EBE0;
+    --rose:#C1848B;--rose-dark:#9B6B6F;--charcoal:#2D2A2E;--charcoal-light:#4A4548;
+    --warm-white:#FFFAF7;--gold:#C8A96E;--radius:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--cream);min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  body::before{content:'';position:absolute;top:-20%;right:-10%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(232,180,184,.25) 0%,transparent 70%);pointer-events:none}
+  body::after{content:'';position:absolute;bottom:-10%;left:-5%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,.15) 0%,transparent 70%);pointer-events:none}
+  .top-bar{position:fixed;top:0;left:0;right:0;padding:20px 40px;display:flex;justify-content:space-between;align-items:center;z-index:10}
+  .back-link{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--charcoal-light);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .3s}
+  .back-link:hover{color:var(--rose)}
+  .back-link svg{width:15px;height:15px}
+  .lang-switcher{display:flex;align-items:center;gap:4px;background:rgba(45,42,46,.06);border-radius:50px;padding:4px;margin-left:8px}
+  .lang-pill{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:7px 14px;border-radius:50px;color:var(--charcoal-light);transition:all .25s}
+  .lang-pill:hover{color:var(--charcoal);background:rgba(45,42,46,.07)}
+  .lang-pill-active{background:white;color:var(--charcoal);font-weight:500;box-shadow:0 1px 4px rgba(45,42,46,.1)}
+  .lang-pill-active:hover{background:white}
+  .card{background:white;border-radius:24px;padding:52px 44px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(200,160,155,.15);position:relative;z-index:1;animation:fadeUp .6s ease forwards}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  .logo-eyebrow{font-family:'Cormorant Garamond',serif;font-size:11px;font-weight:300;letter-spacing:6px;text-transform:uppercase;color:var(--charcoal-light);text-align:center;margin-bottom:3px}
+  .logo-main{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;letter-spacing:3px;color:var(--charcoal);text-align:center;margin-bottom:4px}
+  .logo-sub{text-align:center;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:36px}
+  .tabs{display:flex;border-bottom:1px solid var(--cream-deep);margin-bottom:32px}
+  .tab{flex:1;padding:12px;text-align:center;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--charcoal-light);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .3s;background:none;border-left:none;border-right:none;border-top:none;font-family:'Outfit',sans-serif}
+  .tab.active{color:var(--charcoal);border-bottom-color:var(--gold)}
+  .form-group{margin-bottom:18px}
+  label{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--charcoal-light);margin-bottom:7px}
+  input{width:100%;padding:13px 18px;border:1.5px solid var(--cream-deep);border-radius:var(--radius);font-family:'Outfit',sans-serif;font-size:15px;font-weight:300;color:var(--charcoal);background:var(--warm-white);outline:none;transition:border-color .3s}
+  input:focus{border-color:var(--gold)}
+  .btn{width:100%;padding:15px;background:var(--charcoal);color:white;border:none;border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:6px}
+  .btn:hover{background:var(--rose-dark);transform:translateY(-1px)}
+  .btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+  .divider{text-align:center;margin:20px 0;position:relative;font-size:12px;color:var(--nude);letter-spacing:1px}
+  .divider::before,.divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--cream-deep)}
+  .divider::before{left:0}.divider::after{right:0}
+  .btn-google{width:100%;padding:13px;background:white;border:1.5px solid var(--cream-deep);border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .3s;color:var(--charcoal)}
+  .btn-google:hover{border-color:var(--gold);transform:translateY(-1px)}
+  .msg{padding:11px 15px;border-radius:10px;font-size:13px;margin-top:14px;display:none}
+  .msg.error{background:#fef2f2;color:#c0392b;border:1px solid #fecaca}
+  .msg.success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+  .form-section{display:none}.form-section.active{display:block}
+  .forgot{text-align:right;margin-top:-8px;margin-bottom:18px}
+  .forgot a{font-size:12px;color:var(--nude);text-decoration:none;transition:color .3s}
+  .forgot a:hover{color:var(--rose)}
+  @media(max-width:500px){.card{padding:40px 24px;margin:80px 16px 20px}.top-bar{padding:16px 20px}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    <span data-i18n="back">Back</span>
+  </a>
+  <div class="lang-switcher">
+    <a href="index.html" class="lang-pill lang-pill-active">EN</a>
+    <a href="tr.html" class="lang-pill">TR</a>
+    <a href="de.html" class="lang-pill">DE</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="logo-eyebrow">Train With</div>
+  <div class="logo-main">BUSE</div>
+  <div class="logo-sub" data-i18n="portal">Member Portal</div>
+
+  <div class="tabs">
+    <button class="tab active" id="tabLogin" onclick="switchTab('login')" data-i18n="signin">Sign In</button>
+    <button class="tab" id="tabSignup" onclick="switchTab('signup')" data-i18n="register">Register</button>
+  </div>
+
+  <div id="loginForm" class="form-section active">
+    <div class="form-group">
+      <label data-i18n="emailLabel">E-mail</label>
+      <input type="email" id="loginEmail" placeholder="hello@example.com">
+    </div>
+    <div class="form-group">
+      <label data-i18n="passwordLabel">Password</label>
+      <input type="password" id="loginPassword" placeholder="••••••••">
+    </div>
+    <div class="forgot"><a href="#" onclick="showForgot();return false" data-i18n="forgot">Forgot password?</a></div>
+    <button class="btn" id="loginBtn" onclick="handleLogin()" data-i18n="signinBtn">Sign In</button>
+    <div class="divider" data-i18n="or">or</div>
+    <button class="btn-google" onclick="handleGoogle()">
+      <svg width="17" height="17" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      <span data-i18n="googleBtn">Continue with Google</span>
+    </button>
+    <div id="loginMsg" class="msg"></div>
+  </div>
+
+  <div id="signupForm" class="form-section">
+    <div class="form-group">
+      <label data-i18n="fullname">Full Name</label>
+      <input type="text" id="signupName" data-i18n-ph="namePh" placeholder="Your name">
+    </div>
+    <div class="form-group">
+      <label data-i18n="emailLabel">E-mail</label>
+      <input type="email" id="signupEmail" placeholder="hello@example.com">
+    </div>
+    <div class="form-group">
+      <label data-i18n="passwordLabel">Password</label>
+      <input type="password" id="signupPassword" data-i18n-ph="passwordPh" placeholder="Min. 8 characters">
+    </div>
+    <button class="btn" id="signupBtn" onclick="handleSignup()" data-i18n="createAccount">Create Account</button>
+    <div class="divider" data-i18n="or">or</div>
+    <button class="btn-google" onclick="handleGoogle()">
+      <svg width="17" height="17" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      <span data-i18n="googleBtn">Continue with Google</span>
+    </button>
+    <div id="signupMsg" class="msg"></div>
+  </div>
+</div>
+
+<script>
+const T = {
+  en: {
+    back:'Back', portal:'Member Portal', signin:'Sign In', register:'Register',
+    emailLabel:'E-mail', passwordLabel:'Password', fullname:'Full Name',
+    namePh:'Your name', passwordPh:'Min. 8 characters',
+    forgot:'Forgot password?', signinBtn:'Sign In', or:'or',
+    googleBtn:'Continue with Google', createAccount:'Create Account',
+    errFields:'Please fill in all fields.', errPassword:'Password must be at least 8 characters.',
+    errLogin:'Invalid email or password.',
+    successSignup:'✓ Account created! Check your email to confirm.',
+    successForgot:'✓ Password reset link sent to your email.',
+    errEmailFirst:'Please enter your email address first.',
+    loginLoading:'Signing in...', signupLoading:'Creating account...',
+  },
+  tr: {
+    back:'Ana Sayfa', portal:'Üye Portalı', signin:'Giriş Yap', register:'Kayıt Ol',
+    emailLabel:'E-posta', passwordLabel:'Şifre', fullname:'Ad Soyad',
+    namePh:'Adın ve soyadın', passwordPh:'En az 8 karakter',
+    forgot:'Şifremi unuttum', signinBtn:'Giriş Yap', or:'veya',
+    googleBtn:'Google ile devam et', createAccount:'Hesap Oluştur',
+    errFields:'Lütfen tüm alanları doldurun.', errPassword:'Şifre en az 8 karakter olmalı.',
+    errLogin:'Hatalı e-posta veya şifre.',
+    successSignup:'✓ Hesabın oluşturuldu! E-postanı kontrol et.',
+    successForgot:'✓ Şifre sıfırlama linki e-postana gönderildi.',
+    errEmailFirst:'Önce e-posta adresini gir.',
+    loginLoading:'Giriş yapılıyor...', signupLoading:'Hesap oluşturuluyor...',
+  },
+  de: {
+    back:'Startseite', portal:'Mitgliederbereich', signin:'Anmelden', register:'Registrieren',
+    emailLabel:'E-Mail', passwordLabel:'Passwort', fullname:'Vollständiger Name',
+    namePh:'Dein Name', passwordPh:'Mind. 8 Zeichen',
+    forgot:'Passwort vergessen?', signinBtn:'Anmelden', or:'oder',
+    googleBtn:'Mit Google fortfahren', createAccount:'Konto erstellen',
+    errFields:'Bitte alle Felder ausfüllen.', errPassword:'Passwort muss mind. 8 Zeichen haben.',
+    errLogin:'Ungültige E-Mail oder Passwort.',
+    successSignup:'✓ Konto erstellt! Bitte E-Mail bestätigen.',
+    successForgot:'✓ Passwort-Reset-Link wurde gesendet.',
+    errEmailFirst:'Bitte zuerst E-Mail-Adresse eingeben.',
+    loginLoading:'Anmeldung läuft...', signupLoading:'Konto wird erstellt...',
+  }
+};
+
+let lang = localStorage.getItem('twb_lang') || 'en';
+
+function setLang(l) {
+  lang = l; localStorage.setItem('twb_lang', l);
+  applyTranslations();
+}
+
+function t(k) { return T[lang]?.[k] || T.en[k] || k; }
+
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = t(el.dataset.i18nPh));
+  document.documentElement.lang = lang;
+}
+
+applyTranslations();
+
+// Auth
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+sb.auth.getSession().then(({ data: { session } }) => { if (session) window.location.href = 'dashboard.html'; });
+
+function switchTab(tab) {
+  document.getElementById('tabLogin').classList.toggle('active', tab==='login');
+  document.getElementById('tabSignup').classList.toggle('active', tab==='signup');
+  document.getElementById('loginForm').classList.toggle('active', tab==='login');
+  document.getElementById('signupForm').classList.toggle('active', tab==='signup');
+}
+
+function showMsg(id, text, type) {
+  const el = document.getElementById(id);
+  el.textContent = text; el.className = `msg ${type}`; el.style.display = 'block';
+}
+
+async function handleLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) return showMsg('loginMsg', t('errFields'), 'error');
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true; btn.textContent = t('loginLoading');
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) { showMsg('loginMsg', t('errLogin'), 'error'); btn.disabled = false; btn.textContent = t('signinBtn'); }
+  else window.location.href = 'dashboard.html';
+}
+
+async function handleSignup() {
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  if (!name || !email || !password) return showMsg('signupMsg', t('errFields'), 'error');
+  if (password.length < 8) return showMsg('signupMsg', t('errPassword'), 'error');
+  const btn = document.getElementById('signupBtn');
+  btn.disabled = true; btn.textContent = t('signupLoading');
+  const { error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name } } });
+  if (error) showMsg('signupMsg', error.message, 'error');
+  else showMsg('signupMsg', t('successSignup'), 'success');
+  btn.disabled = false; btn.textContent = t('createAccount');
+}
+
+async function handleGoogle() {
+  await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + '/dashboard.html' } });
+}
+
+function showForgot() {
+  const email = document.getElementById('loginEmail').value.trim();
+  if (!email) return showMsg('loginMsg', t('errEmailFirst'), 'error');
+  sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/login.html' })
+    .then(() => showMsg('loginMsg', t('successForgot'), 'success'));
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (document.getElementById('loginForm').classList.contains('active')) handleLogin();
+  else handleSignup();
+});
+</script>
+</body>
+</html>

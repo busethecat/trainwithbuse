@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1:1 Personal Training — Train With Buse</title>
+  <meta name="description" content="Private in-person training in Berlin and 1:1 online coaching worldwide. Neuroscience-backed, fully personalized — with sports scientist Buse Kosif.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="favicon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blush: #E8B4B8;
+  --blush-light: #F5D5D8;
+  --nude: #D4A89A;
+  --cream: #FDF6F0;
+  --cream-deep: #F5EBE0;
+  --rose: #C1848B;
+  --rose-dark: #9B6B6F;
+  --charcoal: #2D2A2E;
+  --charcoal-light: #4A4548;
+  --warm-white: #FFFAF7;
+  --gold: #C8A96E;
+  --gold-light: #E6D5AA;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  color: var(--charcoal);
+  background: var(--warm-white);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+h1,h2,h3,h4 { font-family: 'Cormorant Garamond', serif; font-weight: 400; line-height: 1.15; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 1000;
+  padding: 20px 60px;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: all 0.4s ease;
+  background: rgba(253,246,240,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 2px 20px rgba(200,160,155,.08);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 600; color: var(--charcoal);
+  text-decoration: none; letter-spacing: 3px;
+}
+.nav-back {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--charcoal-light); text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-back:hover { color: var(--rose); }
+.nav-back svg { transition: transform 0.3s; }
+.nav-back:hover svg { transform: translateX(-3px); }
+.nav-book {
+  background: var(--charcoal); color: var(--cream);
+  padding: 11px 26px; border-radius: 50px;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none; transition: all 0.3s; font-family: 'Outfit', sans-serif;
+}
+.nav-book:hover { background: var(--rose-dark); transform: translateY(-1px); }
+
+/* HERO */
+.hero {
+  padding: 160px 60px 100px;
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 80px; align-items: center;
+}
+.hero-eyebrow {
+  font-size: 11px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before { content:''; width: 32px; height: 1px; background: var(--gold); }
+.hero h1 {
+  font-size: clamp(48px, 5.5vw, 78px);
+  color: var(--charcoal); margin-bottom: 28px;
+  font-weight: 300; letter-spacing: -2px; line-height: .95;
+}
+.hero h1 em { font-style: italic; color: var(--rose); }
+.hero-desc {
+  font-size: 16px; color: var(--charcoal-light);
+  max-width: 480px; margin-bottom: 40px; line-height: 1.85;
+}
+.hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-dark {
+  background: var(--charcoal); color: var(--cream);
+  padding: 16px 36px; border-radius: 50px;
+  font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+  text-decoration: none; font-family: 'Outfit', sans-serif;
+  transition: all 0.3s;
+}
+.btn-dark:hover { background: var(--rose-dark); transform: translateY(-2px); }
+.btn-outline {
+  background: transparent; color: var(--charcoal);
+  padding: 15px 32px; border-radius: 50px;
+  border: 1.5px solid rgba(45,42,46,.2);
+  font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+  text-decoration: none; font-family: 'Outfit', sans-serif;
+  transition: all 0.3s;
+}
+.btn-outline:hover { border-color: var(--charcoal); transform: translateY(-2px); }
+
+/* Hero right — credential pills */
+.hero-credentials {
+  display: flex; flex-direction: column; gap: 14px;
+}
+.cred-pill {
+  background: white; border: 1px solid rgba(232,180,184,.2);
+  border-radius: 16px; padding: 20px 28px;
+  display: flex; align-items: center; gap: 16px;
+  box-shadow: 0 4px 20px rgba(200,160,155,.08);
+  transition: all 0.3s;
+}
+.cred-pill:hover { transform: translateX(6px); box-shadow: 0 8px 30px rgba(200,160,155,.15); }
+.cred-icon {
+  width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.cred-icon.gold { background: rgba(200,169,110,.1); }
+.cred-icon.rose { background: rgba(193,132,139,.1); }
+.cred-icon.dark { background: rgba(45,42,46,.05); }
+.cred-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.cred-text { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--charcoal); }
+
+/* DIVIDER */
+.divider {
+  max-width: 1100px; margin: 0 auto; padding: 0 60px;
+  height: 1px; background: linear-gradient(to right, transparent, rgba(200,169,110,.2), transparent);
+}
+
+/* TWO OPTIONS */
+.options-section {
+  padding: 100px 0; background: var(--warm-white);
+}
+.options-inner { max-width: 1100px; margin: 0 auto; padding: 0 60px; }
+.section-header { text-align: center; margin-bottom: 72px; }
+.section-tag {
+  font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 4.5vw, 60px);
+  font-weight: 300; color: var(--charcoal); letter-spacing: -1px;
+}
+.section-title em { font-style: italic; color: var(--rose); }
+
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+
+/* Online card */
+.option-card {
+  border-radius: 28px; padding: 52px 48px;
+  position: relative; overflow: hidden;
+  transition: all 0.4s;
+}
+.option-card:hover { transform: translateY(-6px); }
+.option-card.light {
+  background: white; border: 1px solid rgba(232,180,184,.15);
+  box-shadow: 0 4px 30px rgba(200,160,155,.08);
+}
+.option-card.light:hover { box-shadow: 0 20px 60px rgba(200,160,155,.18); }
+.option-card.dark {
+  background: var(--charcoal);
+  box-shadow: 0 4px 30px rgba(45,42,46,.15);
+}
+.option-card.dark:hover { box-shadow: 0 20px 60px rgba(45,42,46,.3); }
+.card-glow {
+  position: absolute; top: -40px; right: -40px;
+  width: 220px; height: 220px; border-radius: 50%;
+  pointer-events: none;
+}
+.card-badge {
+  display: inline-block; font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 20px;
+  padding: 6px 14px; border-radius: 50px;
+}
+.badge-gold { background: rgba(200,169,110,.1); color: var(--gold); }
+.badge-gold-dark { background: rgba(200,169,110,.15); color: var(--gold); }
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px; font-weight: 300; margin-bottom: 16px;
+  line-height: 1.05; letter-spacing: -.5px;
+}
+.card-title.light-text { color: var(--charcoal); }
+.card-title.dark-text { color: white; }
+.card-desc { font-size: 14px; line-height: 1.85; margin-bottom: 32px; }
+.card-desc.light-text { color: var(--charcoal-light); }
+.card-desc.dark-text { color: rgba(255,255,255,.55); }
+
+.features { display: flex; flex-direction: column; gap: 11px; margin-bottom: 40px; }
+.feature { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; }
+.feature.light-text { color: var(--charcoal-light); }
+.feature.dark-text { color: rgba(255,255,255,.65); }
+.feature-dot {
+  width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.fd-gold { background: rgba(200,169,110,.15); }
+.fd-gold-dark { background: rgba(200,169,110,.12); }
+
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 32px;
+}
+.card-footer.light-border { border-top: 1px solid rgba(232,180,184,.15); }
+.card-footer.dark-border { border-top: 1px solid rgba(255,255,255,.07); }
+.price-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px; font-weight: 300; line-height: 1;
+}
+.price-num.light { color: var(--charcoal); }
+.price-num.dark { color: white; }
+.price-sub { font-size: 11px; letter-spacing: 1px; margin-top: 4px; }
+.price-sub.light { color: var(--nude); }
+.price-sub.dark { color: rgba(255,255,255,.3); }
+.cta-btn {
+  padding: 15px 30px; border-radius: 50px; border: none; cursor: pointer;
+  font-family: 'Outfit', sans-serif; font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; text-decoration: none; transition: all 0.3s;
+  display: inline-block;
+}
+.cta-btn.dark-btn { background: var(--charcoal); color: white; }
+.cta-btn.dark-btn:hover { background: var(--rose-dark); transform: translateY(-2px); }
+.cta-btn.gold-btn { background: var(--gold); color: var(--charcoal); font-weight: 500; }
+.cta-btn.gold-btn:hover { opacity: .85; transform: translateY(-2px); }
+
+/* PROCESS */
+.process-section { padding: 100px 0; background: var(--cream); }
+.process-inner { max-width: 1100px; margin: 0 auto; padding: 0 60px; }
+.process-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 32px; margin-top: 64px; }
+.process-step {
+  position: relative; padding: 36px 28px;
+  background: white; border-radius: 20px;
+  border: 1px solid rgba(232,180,184,.12);
+  box-shadow: 0 4px 20px rgba(200,160,155,.06);
+}
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px; font-weight: 300; color: rgba(200,169,110,.2);
+  line-height: 1; margin-bottom: 20px;
+}
+.step-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; color: var(--charcoal); margin-bottom: 10px;
+}
+.step-desc { font-size: 13px; color: var(--charcoal-light); line-height: 1.75; }
+
+/* FAQ */
+.faq-section { padding: 100px 0; background: var(--warm-white); }
+.faq-inner { max-width: 800px; margin: 0 auto; padding: 0 60px; }
+.faq-item {
+  border-bottom: 1px solid rgba(232,180,184,.15); padding: 28px 0; cursor: pointer;
+}
+.faq-q {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 21px; color: var(--charcoal);
+}
+.faq-icon { font-size: 20px; color: var(--gold); transition: transform .3s; flex-shrink: 0; margin-left: 16px; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-a {
+  font-size: 14px; color: var(--charcoal-light); line-height: 1.85;
+  max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s;
+  padding-top: 0;
+}
+.faq-item.open .faq-a { max-height: 200px; padding-top: 16px; }
+
+/* FINAL CTA STRIP */
+.final-cta {
+  background: var(--charcoal); padding: 100px 60px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.final-cta::before {
+  content: ''; position: absolute; top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 800px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(193,132,139,.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.final-cta h2 {
+  font-size: clamp(40px,5vw,68px); font-weight: 300; color: white;
+  margin-bottom: 20px; letter-spacing: -1px;
+}
+.final-cta h2 em { font-style: italic; color: var(--rose); }
+.final-cta p { font-size: 16px; color: rgba(255,255,255,.45); max-width: 500px; margin: 0 auto 48px; line-height: 1.8; }
+.final-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-gold {
+  background: var(--gold); color: var(--charcoal);
+  padding: 18px 48px; border-radius: 50px;
+  font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+  text-decoration: none; font-family: 'Outfit', sans-serif; font-weight: 500;
+  transition: all 0.3s;
+}
+.btn-gold:hover { opacity: .85; transform: translateY(-2px); }
+.btn-ghost {
+  background: transparent; color: rgba(255,255,255,.6);
+  padding: 17px 40px; border-radius: 50px;
+  border: 1px solid rgba(255,255,255,.15);
+  font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase;
+  text-decoration: none; font-family: 'Outfit', sans-serif;
+  transition: all 0.3s;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,.4); color: white; }
+
+/* FOOTER MINI */
+.footer-mini {
+  background: var(--charcoal); padding: 32px 60px;
+  border-top: 1px solid rgba(255,255,255,.05);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+}
+.footer-mini span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px; }
+.footer-mini a { font-size: 12px; color: rgba(255,255,255,.3); text-decoration: none; transition: color .3s; }
+.footer-mini a:hover { color: var(--gold); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* MOBILE */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  .hero { grid-template-columns: 1fr; padding: 120px 24px 60px; gap: 40px; }
+  .options-inner, .process-inner, .faq-inner { padding: 0 24px; }
+  .options-grid { grid-template-columns: 1fr; }
+  .option-card { padding: 36px 28px; }
+  .process-steps { grid-template-columns: 1fr 1fr; }
+  .final-cta { padding: 72px 24px; }
+  .footer-mini { padding: 24px; flex-direction: column; text-align: center; }
+}
+@media (max-width: 600px) {
+  .process-steps { grid-template-columns: 1fr; }
+  .hero-ctas { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">BUSE</a>
+  <a href="index.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Home
+  </a>
+  <a href="index.html#booking" class="nav-book">Book 1:1 →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">Personal Training</div>
+    <h1>Train with someone<br>who knows the <em>science.</em></h1>
+    <p class="hero-desc">Two ways to work with me — one fully online from anywhere in the world, one face-to-face in Berlin. Both built around your neurology, your goals, your life.</p>
+    <div class="hero-ctas">
+      <a href="index.html#booking" class="btn-dark">Book a Free Call →</a>
+      <a href="#options" class="btn-outline">See Options ↓</a>
+    </div>
+  </div>
+  <div class="hero-credentials">
+    <div class="cred-pill reveal">
+      <div class="cred-icon gold">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <div>
+        <div class="cred-label">Certified</div>
+        <div class="cred-text">NASM-CPT · NSCA-CPSS</div>
+      </div>
+    </div>
+    <div class="cred-pill reveal" style="transition-delay:.1s">
+      <div class="cred-icon rose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C1848B" stroke-width="1.5"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+      </div>
+      <div>
+        <div class="cred-label">Academic</div>
+        <div class="cred-text">MSc Movement Science · MBA · Charité Berlin</div>
+      </div>
+    </div>
+    <div class="cred-pill reveal" style="transition-delay:.2s">
+      <div class="cred-icon dark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A4548" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </div>
+      <div>
+        <div class="cred-label">Experience</div>
+        <div class="cred-text">12+ years · 1,000+ clients</div>
+      </div>
+    </div>
+    <div class="cred-pill reveal" style="transition-delay:.3s">
+      <div class="cred-icon gold">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <div>
+        <div class="cred-label">Approach</div>
+        <div class="cred-text">Neuroscience-backed · Fully personalized</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- OPTIONS -->
+<section class="options-section" id="options">
+  <div class="options-inner">
+    <div class="section-header reveal">
+      <div class="section-tag">Two Ways to Work Together</div>
+      <h2 class="section-title">Choose your <em>path.</em></h2>
+    </div>
+
+    <div class="options-grid">
+
+      <!-- ONLINE -->
+      <div class="option-card light reveal">
+        <div class="card-glow" style="background: radial-gradient(circle, rgba(200,169,110,.06) 0%, transparent 70%);"></div>
+        <div class="card-badge badge-gold">Remote · Worldwide</div>
+        <h3 class="card-title light-text">1:1 Online<br>Coaching</h3>
+        <p class="card-desc light-text">Your own program, your own coach, your own science. Personalized programming built around your neurology, your body, your life — with Buse available every step of the way.</p>
+        
+        <div class="features">
+          <div class="feature light-text">
+            <div class="feature-dot fd-gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            Custom training program built for your body
+          </div>
+          <div class="feature light-text">
+            <div class="feature-dot fd-gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            Weekly video check-ins with Buse
+          </div>
+          <div class="feature light-text">
+            <div class="feature-dot fd-gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            Nutrition & lifestyle guidance included
+          </div>
+          <div class="feature light-text">
+            <div class="feature-dot fd-gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            WhatsApp support between sessions
+          </div>
+          <div class="feature light-text">
+            <div class="feature-dot fd-gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            Monthly movement assessment & reprogramming
+          </div>
+          <div class="feature light-text">
+            <div class="feature-dot fd-gold"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            Access to The Lab System included
+          </div>
+        </div>
+
+        <div class="card-footer light-border">
+          <div>
+            <div class="price-num light">€199</div>
+            <div class="price-sub light">/month</div>
+          </div>
+          <a href="index.html#booking" class="cta-btn dark-btn">Get Started →</a>
+        </div>
+      </div>
+
+      <!-- IN-PERSON -->
+      <div class="option-card dark reveal" style="transition-delay:.1s">
+        <div class="card-glow" style="background: radial-gradient(circle, rgba(193,132,139,.1) 0%, transparent 70%);"></div>
+        <div class="card-badge badge-gold-dark">Berlin · Premium</div>
+        <h3 class="card-title dark-text">In-Person<br>Training</h3>
+        <p class="card-desc dark-text">The full Buse experience. Hands-on coaching, real-time form correction, and the kind of energy that only comes from training together. Referral-only for maximum focus and results.</p>
+        
+        <div class="features">
+          <div class="feature dark-text">
+            <div class="feature-dot fd-gold-dark"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            50-min private sessions in Berlin
+          </div>
+          <div class="feature dark-text">
+            <div class="feature-dot fd-gold-dark"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            Monthly movement assessments
+          </div>
+          <div class="feature dark-text">
+            <div class="feature-dot fd-gold-dark"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            Neuroscience-backed programming
+          </div>
+          <div class="feature dark-text">
+            <div class="feature-dot fd-gold-dark"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            Digital training records included
+          </div>
+          <div class="feature dark-text">
+            <div class="feature-dot fd-gold-dark"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            Real-time form correction & cueing
+          </div>
+          <div class="feature dark-text">
+            <div class="feature-dot fd-gold-dark"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            Available as single sessions or packs
+          </div>
+        </div>
+
+        <div class="card-footer dark-border">
+          <div>
+            <div class="price-num dark">€150+</div>
+            <div class="price-sub dark">/session</div>
+          </div>
+          <a href="index.html#booking" class="cta-btn gold-btn">Book Session →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section">
+  <div class="process-inner">
+    <div class="section-header reveal">
+      <div class="section-tag">How It Works</div>
+      <h2 class="section-title">From first contact<br>to <em>real results.</em></h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="step-num">01</div>
+        <div class="step-title">Free Intro Call</div>
+        <p class="step-desc">15–20 minutes. We talk about your goals, your history, your life. No commitment needed. Just a conversation.</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:.1s">
+        <div class="step-num">02</div>
+        <div class="step-title">Movement Assessment</div>
+        <p class="step-desc">I analyze how your body moves, where your nervous system is at, and what patterns we need to address first.</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:.2s">
+        <div class="step-num">03</div>
+        <div class="step-title">Custom Program</div>
+        <p class="step-desc">Your program is built entirely around your neurology, goals, and schedule. No templates. No copy-paste plans.</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:.3s">
+        <div class="step-num">04</div>
+        <div class="step-title">Train & Evolve</div>
+        <p class="step-desc">We train, I adjust in real time, and the program evolves with you every single week. Results that last.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <div class="section-header reveal">
+      <div class="section-tag">Questions</div>
+      <h2 class="section-title">Common <em>questions.</em></h2>
+    </div>
+    <div class="faq-item reveal" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Do I need to be in Berlin for in-person training? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Yes — in-person sessions are held in Berlin. If you're outside Berlin, 1:1 Online Coaching is the perfect alternative with the same level of personalization and access to Buse.</div>
+    </div>
+    <div class="faq-item reveal" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What equipment do I need for online coaching? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Nothing mandatory. Programs are designed around what you have access to — whether that's a full gym, a set of dumbbells, or just your bodyweight at home.</div>
+    </div>
+    <div class="faq-item reveal" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Is in-person training really referral-only? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Yes. I keep my in-person client roster intentionally small to give each client full attention. That said, you can still reach out — spots occasionally open up and I'll add you to the waitlist.</div>
+    </div>
+    <div class="faq-item reveal" onclick="this.classList.toggle('open')">
+      <div class="faq-q">How is this different from a regular personal trainer? <span class="faq-icon">+</span></div>
+      <div class="faq-a">I bring a sports science MSc, an NSCA-CPSS certification, and ongoing research work at Charité Berlin to every session. Programming is grounded in neuroscience and movement science — not just reps and sets.</div>
+    </div>
+    <div class="faq-item reveal" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Can I combine online coaching with The Lab System? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Absolutely — Lab System access is included with online coaching. Many clients use the Lab programs to train independently between their coaching sessions.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>Ready to start<br>training <em>smarter?</em></h2>
+  <p>Book a free 15-minute intro call. No pressure, no pitch — just a conversation about what's possible.</p>
+  <div class="final-btns">
+    <a href="index.html#booking" class="btn-gold">Book Free Intro Call →</a>
+    <a href="index.html" class="btn-ghost">Explore Everything ↗</a>
+  </div>
+</section>
+
+<div class="footer-mini">
+  <span>© 2026 Buse Kosif · Train With Buse</span>
+  <div style="display:flex;gap:24px;">
+    <a href="index.html">Home</a>
+    <a href="lab-system.html">The Lab System</a>
+    <a href="mailto:hello@trainwithbuse.com">hello@trainwithbuse.com</a>
+    <a href="policy.html">Privacy</a>
+  </div>
+</div>
+
+<script>
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+revealEls.forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>

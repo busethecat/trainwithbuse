@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course — Train With Buse</title>
+  <meta name="description" content="">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<style>
+  :root {
+    --blush:#E8B4B8;--nude:#D4A89A;--cream:#FDF6F0;--cream-deep:#F5EBE0;
+    --rose:#C1848B;--rose-dark:#9B6B6F;--charcoal:#2D2A2E;--charcoal-light:#4A4548;
+    --warm-white:#FFFAF7;--gold:#C8A96E;--radius:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white);color:var(--charcoal);min-height:100vh}
+
+  /* TOP NAV */
+  .top-nav{background:white;border-bottom:1px solid var(--cream-deep);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+  .nav-left{display:flex;align-items:center;gap:20px}
+  .back-btn{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--charcoal-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:color .3s}
+  .back-btn:hover{color:var(--rose)}
+  .back-btn svg{width:15px;height:15px}
+  .nav-divider{width:1px;height:20px;background:var(--cream-deep)}
+  .nav-logo-wrap{display:flex;flex-direction:column;line-height:1;text-decoration:none}
+  .nav-logo-eyebrow{font-family:'Cormorant Garamond',serif;font-size:8px;font-weight:300;letter-spacing:4px;text-transform:uppercase;color:var(--charcoal-light)}
+  .nav-logo-main{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;letter-spacing:2px;color:var(--charcoal)}
+  .course-nav-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:var(--charcoal-light)}
+
+  .nav-right{display:flex;align-items:center;gap:16px}
+  .nav-progress-wrap{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--charcoal-light)}
+  .nav-progress-bar{width:140px;height:4px;background:var(--cream-deep);border-radius:2px;overflow:hidden}
+  .nav-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--rose));border-radius:2px;transition:width .6s ease}
+
+  /* LANG SWITCHER */
+  .lang-switcher{display:flex;align-items:center;gap:4px;background:rgba(45,42,46,.06);border-radius:50px;padding:4px;margin-left:8px}
+  .lang-pill{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:7px 14px;border-radius:50px;color:var(--charcoal-light);transition:all .25s}
+  .lang-pill:hover{color:var(--charcoal);background:rgba(45,42,46,.07)}
+  .lang-pill-active{background:white;color:var(--charcoal);font-weight:500;box-shadow:0 1px 4px rgba(45,42,46,.1)}
+  .lang-pill-active:hover{background:white}
+
+  /* LAYOUT */
+  .layout{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 64px)}
+
+  /* SIDEBAR */
+  .sidebar{background:white;border-right:1px solid var(--cream-deep);overflow-y:auto;height:calc(100vh - 64px);position:sticky;top:64px}
+  .sidebar-header{padding:24px 22px 18px;border-bottom:1px solid var(--cream-deep)}
+  .sidebar-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+  .sidebar-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;margin-bottom:14px}
+  .sidebar-progress-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--charcoal-light);margin-bottom:5px}
+  .sidebar-progress-bar{height:5px;background:var(--cream-deep);border-radius:3px;overflow:hidden}
+  .sidebar-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--rose));border-radius:3px;transition:width .6s ease}
+
+  /* LESSON LIST */
+  .lesson-list{padding:8px 0}
+  .lesson-item{display:flex;align-items:center;gap:12px;padding:13px 22px;cursor:pointer;transition:background .2s;border-left:3px solid transparent}
+  .lesson-item:hover:not(.locked){background:var(--cream)}
+  .lesson-item.active{background:var(--cream);border-left-color:var(--gold)}
+  .lesson-item.locked{opacity:.4;cursor:not-allowed}
+  .lesson-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;background:var(--cream-deep);color:var(--charcoal-light);transition:all .3s}
+  .lesson-item.completed .lesson-num{background:linear-gradient(135deg,var(--gold),var(--rose));color:white}
+  .lesson-item.active .lesson-num{background:var(--charcoal);color:white}
+  .lesson-info{flex:1;min-width:0}
+  .lesson-name{font-size:13px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+  .lesson-item.active .lesson-name{font-weight:500}
+  .lesson-dur{font-size:11px;color:var(--nude);letter-spacing:1px}
+  .lock-svg{width:13px;height:13px;flex-shrink:0;color:var(--charcoal-light)}
+
+  /* CONTENT */
+  .content-area{display:flex;flex-direction:column}
+  .video-wrap{background:#1a1818;position:relative;padding-top:56.25%;width:100%}
+  .video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+  .video-placeholder{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,.4);gap:14px;font-size:12px;letter-spacing:3px;text-transform:uppercase}
+  .video-placeholder svg{width:44px;height:44px;opacity:.25}
+
+  .lesson-detail{padding:36px 48px;flex:1}
+  .lesson-detail-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .lesson-detail-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;margin-bottom:28px;line-height:1.3}
+  .lesson-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+
+  .btn-complete{background:var(--charcoal);color:white;border:none;padding:14px 30px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:10px}
+  .btn-complete:hover{background:var(--rose-dark);transform:translateY(-1px)}
+  .btn-complete.done{background:linear-gradient(135deg,var(--gold),var(--rose));pointer-events:none}
+  .btn-next{background:none;border:1.5px solid var(--cream-deep);padding:14px 26px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;color:var(--charcoal);display:none;align-items:center;gap:8px}
+  .btn-next:hover{border-color:var(--gold)}
+  .btn-next.visible{display:flex}
+
+  /* CELEBRATION */
+  .celebration{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(45,42,46,.85);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center}
+  .celebration.visible{display:flex;animation:fadeIn .4s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .celebration-card{background:white;border-radius:28px;padding:52px 44px;text-align:center;max-width:420px;width:90%;box-shadow:0 40px 80px rgba(0,0,0,.3);animation:popUp .5s cubic-bezier(.34,1.56,.64,1) both;position:relative;overflow:hidden}
+  @keyframes popUp{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+  .celebration-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at center,rgba(200,169,110,.07) 0%,transparent 60%);pointer-events:none}
+  .celeb-icon{font-size:52px;margin-bottom:18px;animation:bounce .6s ease .3s both}
+  @keyframes bounce{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .celeb-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:var(--charcoal);margin-bottom:10px}
+  .celeb-title em{color:var(--rose);font-style:italic}
+  .celeb-text{font-size:14px;color:var(--charcoal-light);line-height:1.7;margin-bottom:28px}
+  .celeb-btns{display:flex;flex-direction:column;gap:10px}
+  .btn-next-lesson{background:var(--charcoal);color:white;border:none;padding:15px 30px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+  .btn-next-lesson:hover{background:var(--rose-dark)}
+  .btn-close-celeb{background:none;border:none;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--nude);cursor:pointer;padding:8px;transition:color .3s}
+  .btn-close-celeb:hover{color:var(--charcoal)}
+
+  /* CONFETTI */
+  .confetti-container{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:999;overflow:hidden}
+  .confetti-piece{position:absolute;top:-10px;animation:confettiFall linear forwards;border-radius:2px}
+  @keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg)}}
+
+  .loading-state{display:flex;align-items:center;justify-content:center;min-height:400px;flex-direction:column;gap:14px;color:var(--charcoal-light);font-size:12px;letter-spacing:2px}
+  .spinner{width:30px;height:30px;border:2px solid var(--cream-deep);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  @media(max-width:800px){
+    .layout{grid-template-columns:1fr}
+    .sidebar{height:auto;position:relative;top:0;border-right:none;border-bottom:1px solid var(--cream-deep);max-height:260px}
+    .lesson-detail{padding:24px 20px}
+    .top-nav{padding:0 16px}
+    .nav-progress-wrap{display:none}
+    .nav-divider,.course-nav-title{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-left">
+    <a href="dashboard.html" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      <span id="backLabel">Back</span>
+    </a>
+    <div class="nav-divider"></div>
+    <a href="index.html" class="nav-logo-wrap">
+      <span class="nav-logo-eyebrow">Train With</span>
+      <span class="nav-logo-main">BUSE</span>
+    </a>
+    <span class="course-nav-title" id="courseNavTitle">—</span>
+  </div>
+  <div class="nav-right">
+    <div class="nav-progress-wrap">
+      <span id="navProgressText">0/12</span>
+      <div class="nav-progress-bar"><div class="nav-progress-fill" id="navProgressFill" style="width:0%"></div></div>
+    </div>
+    <div class="lang-switcher">
+      <a href="index.html" class="lang-pill lang-pill-active">EN</a>
+      <a href="tr.html" class="lang-pill">TR</a>
+      <a href="de.html" class="lang-pill">DE</a>
+    </div>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-tag" id="sidebarTag">—</div>
+      <div class="sidebar-title" id="sidebarTitle">Loading...</div>
+      <div class="sidebar-progress-meta">
+        <span id="progressText">0 / 12</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="lesson-list" id="lessonList"></div>
+  </aside>
+
+  <div class="content-area" id="contentArea">
+    <div class="loading-state"><div class="spinner"></div><span id="loadingLabel">Loading</span></div>
+  </div>
+</div>
+
+<!-- CELEBRATION -->
+<div class="celebration" id="celebration">
+  <div class="celebration-card">
+    <div class="celeb-icon" id="celebIcon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+    <div class="celeb-title" id="celebTitle">Well done!</div>
+    <p class="celeb-text" id="celebText">Keep going — you're doing amazing.</p>
+    <div class="celeb-btns">
+      <button class="btn-next-lesson" id="celebNextBtn">Next Lesson →</button>
+      <button class="btn-close-celeb" id="celebCloseBtn" onclick="closeCelebration()">Not now</button>
+    </div>
+  </div>
+</div>
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+// ============================================================
+// TRANSLATIONS
+// ============================================================
+const T = {
+  en: {
+    back:'Back', loading:'Loading',
+    lessonOf:'Lesson', of:'of',
+    completeLesson:'Mark Complete', completed:'✓ Completed',
+    nextLesson:'Next Lesson →', backToDashboard:'Back to Dashboard →',
+    notNow:'Not now',
+    celebTitleMid:'Well done,', celebTitleMidSuffix:'keep going!',
+    celebTitleFinal:'You did it,', celebTitleFinalSuffix:'amazing!',
+    celebMessages:[
+      'Every step makes you stronger. Keep going.',
+      'Your brain and body are recording this. Don\'t stop.',
+      'Perfect — your nervous system just learned a new movement pattern.',
+      'This commitment changes everything. Proud of you.',
+      'One more lesson done. Don\'t lose the momentum.',
+    ],
+    celebFinalText:'You have completed the entire program. The discipline and determination you\'ve shown on this journey is truly something to be proud of.',
+  },
+  tr: {
+    back:'Geri', loading:'Yükleniyor',
+    lessonOf:'Ders', of:'/',
+    completeLesson:'Dersi Tamamla', completed:'✓ Tamamlandı',
+    nextLesson:'Sonraki Derse Geç →', backToDashboard:'Dashboard\'a Dön →',
+    notNow:'Şimdi değil',
+    celebTitleMid:'Harika iş,', celebTitleMidSuffix:'devam et!',
+    celebTitleFinal:'Tebrikler,', celebTitleFinalSuffix:'başardın!',
+    celebMessages:[
+      'Her adım seni daha güçlü kılıyor. Harika gidiyorsun.',
+      'Beynin ve bedenin bu çalışmayı kaydediyor. Devam et.',
+      'Mükemmel! Sinir sistemi yeni bir hareket örüntüsü öğrendi.',
+      'Bu kararlılık her şeyi değiştiriyor. Gurur verici.',
+      'Bir ders daha! Momentumu kaybetme.',
+    ],
+    celebFinalText:'Bu programı tamamen bitirdin! Bu yolculukta gösterdiğin disiplin ve kararlılık için gurur duymalısın.',
+  },
+  de: {
+    back:'Zurück', loading:'Laden',
+    lessonOf:'Lektion', of:'von',
+    completeLesson:'Abschließen', completed:'✓ Abgeschlossen',
+    nextLesson:'Nächste Lektion →', backToDashboard:'Zurück zum Dashboard →',
+    notNow:'Nicht jetzt',
+    celebTitleMid:'Gut gemacht,', celebTitleMidSuffix:'weiter so!',
+    celebTitleFinal:'Geschafft,', celebTitleFinalSuffix:'fantastisch!',
+    celebMessages:[
+      'Jeder Schritt macht dich stärker. Weiter so.',
+      'Dein Gehirn und Körper speichern das. Nicht aufhören.',
+      'Perfekt — dein Nervensystem hat ein neues Bewegungsmuster gelernt.',
+      'Dieses Engagement verändert alles. Stolz auf dich.',
+      'Eine weitere Lektion geschafft. Behalte den Schwung.',
+    ],
+    celebFinalText:'Du hast das gesamte Programm abgeschlossen! Der Einsatz und die Entschlossenheit auf dieser Reise sind wirklich bewundernswert.',
+  }
+};
+
+let lang = localStorage.getItem('twb_lang') || 'en';
+
+function setLang(l) {
+  lang = l; localStorage.setItem('twb_lang', l);
+  applyStaticTranslations();
+  if (window._courseLoaded) renderLesson(currentLessonId);
+}
+
+function t(k) { return T[lang]?.[k] || T.en[k] || k; }
+
+function applyStaticTranslations() {
+  document.getElementById('backLabel').textContent = t('back');
+  document.getElementById('loadingLabel').textContent = t('loading');
+  document.getElementById('celebCloseBtn').textContent = t('notNow');
+  document.documentElement.lang = lang;
+}
+
+applyStaticTranslations();
+
+// ============================================================
+// COURSE LOGIC
+// ============================================================
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const params = new URLSearchParams(window.location.search);
+const courseId = params.get('id');
+
+let currentUser = null;
+let course = null;
+let completedLessons = new Set();
+let currentLessonId = 1;
+
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (!session) { window.location.href = 'login.html'; return; }
+  currentUser = session.user;
+  init();
+});
+
+async function init() {
+  if (!courseId || !COURSES[courseId]) { window.location.href = 'dashboard.html'; return; }
+
+  const { data: purchase } = await sb.from('purchases').select('id').eq('user_id', currentUser.id).eq('course_id', courseId).maybeSingle();
+  if (!purchase) { window.location.href = 'dashboard.html'; return; }
+
+  course = COURSES[courseId];
+
+  const { data: progressData } = await sb.from('lesson_progress').select('lesson_id').eq('user_id', currentUser.id).eq('course_id', courseId);
+  completedLessons = new Set((progressData||[]).map(p => p.lesson_id));
+
+  const nextIncomplete = course.lessons.find(l => !completedLessons.has(l.id));
+  currentLessonId = nextIncomplete ? nextIncomplete.id : 1;
+
+  const lessonParam = parseInt(params.get('lesson'));
+  if (lessonParam >= 1 && lessonParam <= course.lessons.length) {
+    if (lessonParam === 1 || completedLessons.has(lessonParam - 1) || completedLessons.has(lessonParam)) {
+      currentLessonId = lessonParam;
+    }
+  }
+
+  document.getElementById('courseNavTitle').textContent = course.title;
+  document.getElementById('sidebarTag').textContent = course.subtitle;
+  document.getElementById('sidebarTitle').textContent = course.title;
+
+  window._courseLoaded = true;
+  updateProgress();
+  renderSidebar();
+  renderLesson(currentLessonId);
+}
+
+function updateProgress() {
+  const total = course.lessons.length;
+  const done = completedLessons.size;
+  const pct = Math.round((done/total)*100);
+  const tl = T[lang];
+  document.getElementById('progressText').textContent = `${done} ${tl.of} ${total}`;
+  document.getElementById('progressPct').textContent = `${pct}%`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+  document.getElementById('navProgressText').textContent = `${done}/${total}`;
+  document.getElementById('navProgressFill').style.width = `${pct}%`;
+}
+
+function renderSidebar() {
+  document.getElementById('lessonList').innerHTML = course.lessons.map(lesson => {
+    const isCompleted = completedLessons.has(lesson.id);
+    const isActive = lesson.id === currentLessonId;
+    const isLocked = lesson.id > 1 && !completedLessons.has(lesson.id-1) && !isCompleted;
+    return `
+      <div class="lesson-item ${isCompleted?'completed':''} ${isActive?'active':''} ${isLocked?'locked':''}"
+           onclick="${isLocked ? 'shakeLocked()' : `goToLesson(${lesson.id})`}">
+        <div class="lesson-num">${isCompleted ? '✓' : lesson.id}</div>
+        <div class="lesson-info">
+          <div class="lesson-name">${lesson.title}</div>
+          <div class="lesson-dur">${lesson.duration}</div>
+        </div>
+        ${isLocked ? `<svg class="lock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function renderLesson(lessonId) {
+  currentLessonId = lessonId;
+  const lesson = course.lessons.find(l => l.id === lessonId);
+  if (!lesson) return;
+
+  const isCompleted = completedLessons.has(lessonId);
+  const hasNext = lessonId < course.lessons.length;
+  const tl = T[lang];
+
+  const videoEmbed = lesson.videoId && lesson.videoId !== 'YOUR_VIDEO_ID'
+    ? `<iframe src="https://www.youtube.com/embed/${lesson.videoId}?rel=0&modestbranding=1" allowfullscreen></iframe>`
+    : `<div class="video-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Video coming soon</span>
+       </div>`;
+
+  document.getElementById('contentArea').innerHTML = `
+    <div class="video-wrap">${videoEmbed}</div>
+    <div class="lesson-detail">
+      <div class="lesson-detail-tag">${tl.lessonOf} ${lessonId} ${tl.of} ${course.lessons.length}</div>
+      <h1 class="lesson-detail-title">${lesson.title}</h1>
+      <div class="lesson-actions">
+        <button class="btn-complete ${isCompleted?'done':''}" id="completeBtn" onclick="markComplete(${lessonId})">
+          ${isCompleted ? tl.completed : tl.completeLesson}
+        </button>
+        ${hasNext && isCompleted ? `<button class="btn-next visible" onclick="goToLesson(${lessonId+1})">${tl.nextLesson}</button>` : ''}
+      </div>
+    </div>`;
+
+  renderSidebar();
+  setTimeout(() => {
+    const active = document.querySelector('.lesson-item.active');
+    if (active) active.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }, 100);
+
+  const url = new URL(window.location);
+  url.searchParams.set('lesson', lessonId);
+  window.history.pushState({}, '', url);
+  window.scrollTo(0, 0);
+}
+
+async function markComplete(lessonId) {
+  if (completedLessons.has(lessonId)) return;
+  await sb.from('lesson_progress').upsert({
+    user_id: currentUser.id, course_id: courseId, lesson_id: lessonId,
+    completed_at: new Date().toISOString()
+  });
+  completedLessons.add(lessonId);
+  updateProgress();
+  renderLesson(lessonId);
+  const isFinal = lessonId === course.lessons.length;
+  showCelebration(lessonId, isFinal);
+  if (isFinal) launchConfetti();
+}
+
+function showCelebration(lessonId, isFinal) {
+  const tl = T[lang];
+  const hasNext = lessonId < course.lessons.length;
+  const nextBtn = document.getElementById('celebNextBtn');
+
+  if (isFinal) {
+    document.getElementById('celebIcon').innerHTML = '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>';
+    document.getElementById('celebTitle').innerHTML = `${tl.celebTitleFinal} <em>${tl.celebTitleFinalSuffix}</em>`;
+    document.getElementById('celebText').textContent = tl.celebFinalText;
+    nextBtn.textContent = tl.backToDashboard;
+    nextBtn.onclick = () => window.location.href = 'dashboard.html';
+  } else {
+    const msgs = tl.celebMessages;
+    const icons = ['<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5z"/></svg>','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>','🌸','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>'];
+    document.getElementById('celebIcon').innerHTML = icons[lessonId % icons.length];
+    document.getElementById('celebTitle').innerHTML = `${tl.celebTitleMid} <em>${tl.celebTitleMidSuffix}</em>`;
+    document.getElementById('celebText').textContent = msgs[lessonId % msgs.length];
+    nextBtn.textContent = tl.nextLesson;
+    nextBtn.onclick = goToNextLesson;
+  }
+  document.getElementById('celebration').classList.add('visible');
+}
+
+function goToNextLesson() {
+  closeCelebration();
+  const next = currentLessonId + 1;
+  if (next <= course.lessons.length) goToLesson(next);
+  else window.location.href = 'dashboard.html';
+}
+
+function closeCelebration() { document.getElementById('celebration').classList.remove('visible'); }
+
+function goToLesson(lessonId) {
+  if (lessonId > 1 && !completedLessons.has(lessonId-1) && !completedLessons.has(lessonId)) { shakeLocked(); return; }
+  renderLesson(lessonId);
+}
+
+function shakeLocked() {
+  document.querySelectorAll('.lesson-item.locked').forEach(el => {
+    el.style.animation = 'shake .4s ease';
+    setTimeout(() => el.style.animation = '', 400);
+  });
+}
+
+function launchConfetti() {
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#C8A96E','#E8B4B8','#C1848B','#9B6B6F','#E6D5AA'];
+  for (let i = 0; i < 80; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.cssText = `left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*2+2}s;animation-delay:${Math.random()}s;width:${Math.random()*8+4}px;height:${Math.random()*8+4}px`;
+    container.appendChild(p);
+    setTimeout(() => p.remove(), 4000);
+  }
+}
+
+const style = document.createElement('style');
+style.textContent = `@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>

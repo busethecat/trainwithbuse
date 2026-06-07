@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Programs — Train With Buse</title>
+  <meta name="description" content="">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<style>
+:root{
+  --cream:#FDF6F0;--cream-deep:#F5EBE0;--rose:#C1848B;--rose-dark:#9B6B6F;
+  --charcoal:#2D2A2E;--charcoal-light:#4A4548;--warm-white:#FFFAF7;
+  --gold:#C8A96E;--nude:#D4A89A;--radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white);color:var(--charcoal);min-height:100vh}
+
+/* NAV */
+.nav{background:rgba(253,246,240,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--cream-deep);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100}
+.nav-left{display:flex;align-items:center;gap:20px}
+.back-btn{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--charcoal-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:color .3s}
+.back-btn:hover{color:var(--rose)}
+.back-btn svg{width:15px;height:15px}
+.nav-divider{width:1px;height:20px;background:var(--cream-deep)}
+.nav-logo{display:flex;flex-direction:column;line-height:1;text-decoration:none}
+.nav-logo-eyebrow{font-family:'Cormorant Garamond',serif;font-size:9px;font-weight:300;letter-spacing:5px;text-transform:uppercase;color:var(--charcoal-light)}
+.nav-logo-main{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;letter-spacing:3px;color:var(--charcoal)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.lang-wrap{position:relative}
+.lang-btn{display:flex;align-items:center;gap:5px;background:none;border:1.5px solid var(--cream-deep);padding:6px 12px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:var(--charcoal-light);transition:border-color .3s}
+.lang-btn:hover{border-color:var(--gold)}
+.lang-drop{display:none;position:absolute;top:40px;right:0;background:white;border:1px solid var(--cream-deep);border-radius:12px;padding:6px 0;box-shadow:0 12px 40px rgba(200,160,155,.2);z-index:300;min-width:110px}
+.lang-drop.open{display:flex;flex-direction:column}
+.lang-drop a{padding:10px 20px;text-decoration:none;color:var(--charcoal-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.lang-drop a:hover{background:var(--cream)}
+.lang-drop a.active{color:var(--rose);font-weight:500}
+.btn-out{background:none;border:1.5px solid var(--cream-deep);padding:6px 14px;border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:var(--charcoal-light);transition:all .3s}
+.btn-out:hover{border-color:var(--rose);color:var(--rose)}
+
+/* PAGE */
+.page{max-width:1080px;margin:0 auto;padding:0 40px 100px}
+
+/* HERO */
+.hero{padding:56px 0 44px;border-bottom:1px solid var(--cream-deep)}
+.hero-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:300;line-height:.95;letter-spacing:-2px}
+.hero-title em{font-style:italic;color:var(--rose)}
+
+/* SECTION */
+.section{padding:48px 0;border-bottom:1px solid var(--cream-deep)}
+.section:last-child{border-bottom:none}
+.section-eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--nude);margin-bottom:32px}
+
+/* PROGRESS OVERVIEW */
+.progress-overview{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0;margin-bottom:40px}
+.prog-stat{padding:24px 0;border-right:1px solid var(--cream-deep)}
+.prog-stat:last-child{border-right:none}
+.prog-stat:first-child{padding-left:0}
+.prog-stat+.prog-stat{padding-left:32px}
+.prog-stat-num{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;line-height:1;color:var(--charcoal);margin-bottom:4px}
+.prog-stat-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--nude)}
+
+/* COURSE ROWS */
+.course-rows{display:flex;flex-direction:column;gap:0}
+.course-row{display:flex;align-items:center;gap:28px;padding:28px 0;border-bottom:1px solid var(--cream-deep);text-decoration:none;color:var(--charcoal);transition:all .3s;cursor:pointer}
+.course-row:last-child{border-bottom:none}
+.course-row:hover{opacity:.7}
+.course-row:hover .course-row-arrow{transform:translateX(6px);color:var(--rose)}
+.course-row-color{width:5px;height:52px;border-radius:3px;flex-shrink:0}
+.course-row-info{flex:1;min-width:0}
+.course-row-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--nude);margin-bottom:4px}
+.course-row-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;margin-bottom:8px}
+.course-row-progress{display:flex;align-items:center;gap:14px}
+.course-row-bar{flex:1;max-width:200px;height:3px;background:var(--cream-deep);border-radius:2px;overflow:hidden}
+.course-row-fill{height:100%;border-radius:2px;transition:width .6s ease}
+.course-row-pct{font-size:12px;color:var(--charcoal-light);letter-spacing:1px}
+.course-row-meta{font-size:12px;color:var(--nude);letter-spacing:1px;text-align:right;flex-shrink:0}
+.course-row-cta{font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+.course-row-arrow{font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--cream-deep);transition:all .35s;flex-shrink:0}
+
+/* GROUP CARD */
+.group-banner{background:var(--charcoal);color:white;border-radius:20px;padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:32px}
+.group-banner h3{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;margin-bottom:6px}
+.group-banner p{font-size:13px;opacity:.7;line-height:1.6}
+.btn-zoom{background:var(--gold);color:var(--charcoal);border:none;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:500;text-decoration:none;display:inline-block;transition:all .3s;white-space:nowrap}
+.btn-zoom:hover{transform:translateY(-2px)}
+
+/* STORE GRID */
+.store-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.store-card{border:1.5px solid var(--cream-deep);border-radius:20px;overflow:hidden;transition:all .3s;animation:fadeUp .5s ease both}
+.store-card:hover{border-color:var(--nude);transform:translateY(-3px);box-shadow:0 12px 40px rgba(200,160,155,.15)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.store-card-header{height:90px;display:flex;align-items:flex-end;padding:18px 22px;position:relative;overflow:hidden}
+.store-card-header::before{content:'';position:absolute;inset:0;opacity:.1;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(255,255,255,.4) 8px,rgba(255,255,255,.4) 16px)}
+.store-badge{background:rgba(255,255,255,.25);backdrop-filter:blur(8px);padding:4px 12px;border-radius:20px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:white;border:1px solid rgba(255,255,255,.3)}
+.store-lock{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.15);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+.store-lock svg{width:12px;height:12px;color:white}
+.store-body{padding:20px 22px}
+.store-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;margin-bottom:3px}
+.store-sub{font-size:11px;color:var(--nude);letter-spacing:1px;margin-bottom:14px}
+.store-price{font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:4px}
+.store-price span{font-size:15px}
+.store-desc{font-size:12px;color:var(--charcoal-light);line-height:1.6;margin-bottom:18px}
+.btn-buy{width:100%;padding:12px;background:var(--charcoal);color:white;border:none;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.btn-buy:hover{background:var(--rose-dark)}
+
+/* EMPTY STATE */
+.empty{padding:60px 0;text-align:center}
+.empty-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;font-style:italic;color:var(--nude);margin-bottom:12px}
+.empty-sub{font-size:14px;color:var(--charcoal-light)}
+
+.spin-wrap{display:flex;align-items:center;justify-content:center;min-height:200px}
+.spinner{width:28px;height:28px;border:2px solid var(--cream-deep);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:800px){
+  .nav{padding:0 20px}.page{padding:0 20px 60px}
+  .hero-title{font-size:48px}
+  .store-grid{grid-template-columns:1fr}
+  .course-row{flex-wrap:wrap}
+  .course-row-meta{text-align:left}
+  .group-banner{flex-direction:column;padding:24px}
+  .progress-overview{grid-template-columns:1fr 1fr}
+  .prog-stat{border-right:none;border-bottom:1px solid var(--cream-deep);padding:20px 0}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-left">
+    <a href="dashboard.html" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      <span id="backLabel">Back</span>
+    </a>
+    <div class="nav-divider"></div>
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-eyebrow">Train With</span>
+      <span class="nav-logo-main">BUSE</span>
+    </a>
+  </div>
+  <div class="nav-right">
+    <div class="lang-wrap">
+      <button class="lang-btn" onclick="this.nextElementSibling.classList.toggle('open')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> <span id="langLabel">EN</span>
+      </button>
+      <div class="lang-drop" id="langDrop">
+        <a onclick="setLang('en');return false">English</a>
+        <a onclick="setLang('tr');return false">Türkçe</a>
+        <a onclick="setLang('de');return false">Deutsch</a>
+      </div>
+    </div>
+    <button class="btn-out" id="logoutBtn" onclick="logout()">Sign Out</button>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="hero">
+    <div class="hero-eyebrow" id="heroEyebrow">My Space</div>
+    <div class="hero-title" id="heroTitle">My <em>Programs</em></div>
+  </div>
+  <div id="content"><div class="spin-wrap"><div class="spinner"></div></div></div>
+</div>
+
+<script>
+const T={
+  en:{
+    logout:'Sign Out', back:'Back', heroEyebrow:'My Space',
+    heroTitle:'My Programs', myPrograms:'Active Programs',
+    discover:'Discover More', noPrograms:'No programs yet.',
+    noProgramsSub:'Explore below and start your journey.',
+    lessonsCompleted:'lessons completed', lessonsRemaining:'lessons remaining',
+    totalLessons:'total lessons',
+    start:'Start →', continue:'Continue →', completed:'Completed ✓',
+    storeDesc:'12 lessons · Sequential progress · Completion certificate',
+    perMonth:'/mo', buy:'Purchase',
+    groupTitle:'Group Classes', groupDesc:'Live sessions twice a week via Zoom.',
+    joinZoom:'Join Zoom →',
+    liveTitle:'Live Classes',liveLabel:'Live',
+    subtitles:{foundation:'Foundation Series',intermediate:'Intermediate Series',advanced:'Advanced Series',live:'Live Sessions'},
+    catLabels:{movement:'Movement',sculpt:'Sculpt',strength:'Strength',group:'Live'},
+  },
+  tr:{
+    logout:'Çıkış', back:'Geri', heroEyebrow:'Alanım',
+    heroTitle:'Programlarım', myPrograms:'Aktif Programlar',
+    discover:'Daha Fazlasını Keşfet', noPrograms:'Henüz program yok.',
+    noProgramsSub:'Aşağıya göz at ve yolculuğuna başla.',
+    lessonsCompleted:'ders tamamlandı', lessonsRemaining:'ders kaldı',
+    totalLessons:'toplam ders',
+    start:'Başla →', continue:'Devam Et →', completed:'Tamamlandı ✓',
+    storeDesc:'12 ders · Sıralı ilerleme · Tamamlanma sertifikası',
+    perMonth:'/ay', buy:'Satın Al',
+    groupTitle:'Grup Dersleri', groupDesc:'Haftada 2 kez canlı ders, Zoom üzerinden.',
+    joinZoom:'Zoom\'a Katıl →',
+    liveTitle:'Canlı Dersler',liveLabel:'Canlı',
+    subtitles:{foundation:'Başlangıç Serisi',intermediate:'Orta Seviye',advanced:'İleri Seviye',live:'Canlı Dersler'},
+    catLabels:{movement:'Movement',sculpt:'Sculpt',strength:'Strength',group:'Canlı'},
+  },
+  de:{
+    logout:'Abmelden', back:'Zurück', heroEyebrow:'Mein Bereich',
+    heroTitle:'Meine Programme', myPrograms:'Aktive Programme',
+    discover:'Mehr entdecken', noPrograms:'Noch keine Programme.',
+    noProgramsSub:'Entdecke unten und beginne deine Reise.',
+    lessonsCompleted:'Lektionen abgeschlossen', lessonsRemaining:'Lektionen verbleibend',
+    totalLessons:'Lektionen gesamt',
+    start:'Starten →', continue:'Weiter →', completed:'Abgeschlossen ✓',
+    storeDesc:'12 Lektionen · Sequentieller Fortschritt · Abschlusszertifikat',
+    perMonth:'/Mo.', buy:'Kaufen',
+    groupTitle:'Gruppenklassen', groupDesc:'Live-Kurse zweimal pro Woche via Zoom.',
+    joinZoom:'Zoom beitreten →',
+    liveTitle:'Live-Kurse',liveLabel:'Live',
+    subtitles:{foundation:'Einsteiger-Serie',intermediate:'Mittelstufe',advanced:'Fortgeschrittene',live:'Live-Kurse'},
+    catLabels:{movement:'Movement',sculpt:'Sculpt',strength:'Strength',group:'Live'},
+  }
+};
+
+let lang=localStorage.getItem('twb_lang')||'en';
+function setLang(l){
+  lang=l;localStorage.setItem('twb_lang',l);
+  document.getElementById('langLabel').textContent=l.toUpperCase();
+  document.querySelectorAll('.lang-drop a').forEach((a,i)=>a.classList.toggle('active',['en','tr','de'][i]===l));
+  document.getElementById('langDrop').classList.remove('open');
+  applyT();
+  if(window._loaded) render();
+}
+function t(k){return T[lang]?.[k]||T.en[k]||k;}
+function applyT(){
+  const tl=T[lang];
+  document.getElementById('backLabel').textContent=tl.back;
+  document.getElementById('logoutBtn').textContent=tl.logout;
+  document.getElementById('heroEyebrow').textContent=tl.heroEyebrow;
+  document.getElementById('heroTitle').innerHTML=lang==='tr'?`<em>Programlarım</em>`:lang==='de'?`Meine <em>Programme</em>`:`My <em>Programs</em>`;
+  document.documentElement.lang=lang;
+}
+applyT();
+document.getElementById('langLabel').textContent=lang.toUpperCase();
+document.querySelectorAll('.lang-drop a').forEach((a,i)=>a.classList.toggle('active',['en','tr','de'][i]===lang));
+document.addEventListener('click',e=>{if(!e.target.closest('.lang-wrap'))document.getElementById('langDrop').classList.remove('open');});
+
+const {createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let currentUser=null,_purchases=new Set(),_progress={},_purchasesRaw=[];
+
+sb.auth.getSession().then(({data:{session}})=>{
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  loadData();
+});
+
+async function loadData(){
+  const [{data:pur},{data:prog}]=await Promise.all([
+    sb.from('purchases').select('course_id,created_at').eq('user_id',currentUser.id),
+    sb.from('lesson_progress').select('course_id,lesson_id').eq('user_id',currentUser.id),
+  ]);
+  _purchasesRaw=pur||[];
+  _purchases=new Set(_purchasesRaw.map(p=>p.course_id));
+  _progress={};
+  (prog||[]).forEach(p=>{if(!_progress[p.course_id])_progress[p.course_id]=new Set();_progress[p.course_id].add(p.lesson_id);});
+  window._loaded=true;
+  render();
+}
+
+function render(){
+  const tl=T[lang];
+  const content=document.getElementById('content');
+  const liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  const myCourses=Object.entries(COURSES).filter(([id])=>_purchases.has(id)&&!liveIds.includes(id));
+  const storeCourses=Object.entries(COURSES).filter(([id])=>!_purchases.has(id)&&!liveIds.includes(id));
+  const myLives=liveIds.filter(id=>_purchases.has(id));
+  const storeLives=liveIds.filter(id=>!_purchases.has(id));
+
+  // Stats
+  let totalDone=0,totalLeft=0,totalAll=0;
+  myCourses.forEach(([id,c])=>{
+    const done=_progress[id]?_progress[id].size:0;
+    totalDone+=done;totalLeft+=c.lessons.length-done;totalAll+=c.lessons.length;
+  });
+
+  let html='';
+
+  // MY PROGRAMS
+  if(myCourses.length>0||myLives.length>0){
+    html+=`<div class="section">`;
+    html+=`<div class="section-eyebrow">${tl.myPrograms}</div>`;
+
+    // Stats row
+    if(myCourses.length>0||myLives.length>0){
+      html+=`<div class="progress-overview">
+        <div class="prog-stat"><div class="prog-stat-num">${totalDone}</div><div class="prog-stat-label">${tl.lessonsCompleted}</div></div>
+        <div class="prog-stat"><div class="prog-stat-num">${totalLeft}</div><div class="prog-stat-label">${tl.lessonsRemaining}</div></div>
+        <div class="prog-stat"><div class="prog-stat-num">${totalAll}</div><div class="prog-stat-label">${tl.totalLessons}</div></div>
+      </div>`;
+    }
+
+    // Course rows
+    html+=`<div class="course-rows">`;
+    myCourses.forEach(([id,course])=>{
+      const done=_progress[id]?_progress[id].size:0;
+      const total=course.lessons.length;
+      const pct=total>0?Math.round((done/total)*100):0;
+      const sub=tl.subtitles[course.subtitleKey]||course.subtitle;
+      const cta=pct===0?tl.start:pct===100?tl.completed:tl.continue;
+      html+=`
+        <a class="course-row" href="course.html?id=${id}">
+          <div class="course-row-color" style="background:${course.color}"></div>
+          <div class="course-row-info">
+            <div class="course-row-eyebrow">${tl.catLabels[course.category]||course.category} · ${sub}</div>
+            <div class="course-row-title">${course.title}</div>
+            <div class="course-row-progress">
+              <div class="course-row-bar"><div class="course-row-fill" style="width:${pct}%;background:linear-gradient(90deg,${course.color},var(--rose))"></div></div>
+              <div class="course-row-pct">${pct}%</div>
+            </div>
+          </div>
+          <div class="course-row-meta">
+            <div>${done}/${total}</div>
+            <div class="course-row-cta" style="color:${pct===100?'var(--gold)':'var(--rose)'}">${cta}</div>
+          </div>
+          <div class="course-row-arrow">→</div>
+        </a>`;
+    });
+    html+=`</div>`;
+
+    // Group banner
+    if(myLives.length>0){
+      const emojis={'live-booty':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>','live-flexibility':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>','live-power':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>','live-core':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>'};
+      html+=`<div style="margin-top:32px">
+        <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--nude);margin-bottom:20px">${tl.liveTitle}</div>
+        <div style="display:flex;flex-direction:column;gap:0">`;
+      myLives.forEach(id=>{
+        const c=COURSES[id];if(!c)return;
+        const sched=c.schedule?c.schedule[lang]||c.schedule.en:'';
+        html+=`<div style="display:flex;align-items:center;gap:20px;padding:20px 0;border-bottom:1px solid var(--cream-deep)">
+          <div style="width:40px;height:40px;border-radius:12px;background:${c.color}22;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${emojis[id]}</div>
+          <div style="flex:1">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;margin-bottom:2px">${c.title}</div>
+            <div style="font-size:11px;color:${c.color};letter-spacing:1px">${sched}</div>
+          </div>
+          <a href="${c.zoomLink}" target="_blank" class="btn-zoom" style="padding:10px 22px;font-size:11px">${tl.joinZoom}</a>
+        </div>`;
+      });
+      html+=`</div></div>`;
+    }
+
+    html+=`</div>`;
+  } else {
+    html+=`<div class="section"><div class="empty"><div class="empty-title">${tl.noPrograms}</div><div class="empty-sub">${tl.noProgramsSub}</div></div></div>`;
+  }
+
+  // DISCOVER / STORE
+  if(storeCourses.length>0||storeLives.length>0){
+    html+=`<div class="section"><div class="section-eyebrow">${tl.discover}</div><div class="store-grid">`;
+
+    storeCourses.forEach(([id,course],i)=>{
+      const label=tl.catLabels[course.category]||course.category;
+      const sub=tl.subtitles[course.subtitleKey]||course.subtitle;
+      html+=`
+        <div class="store-card" style="animation-delay:${i*.06}s">
+          <div class="store-card-header" style="background:linear-gradient(135deg,${course.color}cc,${course.color}77)">
+            <span class="store-badge">${label}</span>
+            <div class="store-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+          </div>
+          <div class="store-body">
+            <div class="store-title">${course.title}</div>
+            <div class="store-sub">${sub}</div>
+            <div class="store-price"><span>€</span>${course.price}</div>
+            <div class="store-desc">${tl.storeDesc}</div>
+            <button class="btn-buy" onclick="buyCourse('${id}')">${tl.buy}</button>
+          </div>
+        </div>`;
+    });
+
+    if(storeLives.length>0){
+      const emojis={'live-booty':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>','live-flexibility':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>','live-power':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>','live-core':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>'};
+      storeLives.forEach((id,i)=>{
+        const c=COURSES[id];if(!c)return;
+        const sched=c.schedule?c.schedule[lang]||c.schedule.en:'';
+        html+=`<div class="store-card" style="animation-delay:${(storeCourses.length+i)*.06}s">
+          <div class="store-card-header" style="background:linear-gradient(135deg,${c.color}cc,${c.color}77)">
+            <span class="store-badge">${tl.liveLabel}</span>
+            <div class="store-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+          </div>
+          <div class="store-body">
+            <div style="font-size:20px;margin-bottom:4px">${emojis[id]}</div>
+            <div class="store-title">${c.title}</div>
+            <div class="store-sub">${sched}</div>
+            <div class="store-price"><span>€</span>${c.price}<span style="font-size:13px;color:var(--nude)">${tl.perMonth}</span></div>
+            <div class="store-desc">${tl.storeDesc}</div>
+            <button class="btn-buy" onclick="buyCourse('${id}')">${tl.buy}</button>
+          </div>
+        </div>`;
+      });
+    }
+
+    html+=`</div></div>`;
+  }
+
+  content.innerHTML=html;
+}
+
+async function buyCourse(courseId){
+  const links={
+    'movement-lab-1':'https://buy.stripe.com/YOUR_LINK_ML1',
+    'movement-lab-2':'https://buy.stripe.com/YOUR_LINK_ML2',
+    'movement-lab-3':'https://buy.stripe.com/YOUR_LINK_ML3',
+    'sculpt-lab-1':'https://buy.stripe.com/YOUR_LINK_SL1',
+    'sculpt-lab-2':'https://buy.stripe.com/YOUR_LINK_SL2',
+    'sculpt-lab-3':'https://buy.stripe.com/YOUR_LINK_SL3',
+    'strength-lab-1':'https://buy.stripe.com/YOUR_LINK_ST1',
+    'strength-lab-2':'https://buy.stripe.com/YOUR_LINK_ST2',
+    'strength-lab-3':'https://buy.stripe.com/YOUR_LINK_ST3',
+    'group-classes':'https://buy.stripe.com/YOUR_LINK_GROUP',
+  };
+  const base=links[courseId];
+  if(!base||base.includes('YOUR_LINK')){alert('Payment link not configured yet.');return;}
+  const url=new URL(base);
+  url.searchParams.set('client_reference_id',currentUser.id);
+  window.open(url.toString(),'_blank');
+}
+
+async function logout(){await sb.auth.signOut();window.location.href='index.html';}
+</script>
+</body>
+</html>

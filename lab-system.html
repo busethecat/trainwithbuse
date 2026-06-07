@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lab System — The World's First Science-Based Training Ecosystem | Train With Buse</title>
+  <meta name="description" content="The Lab System is the world's first training platform built on movement science and neuroscience. Movement Lab, Sculpt Lab, Strength Lab, Metabolic Lab — each targeting a different mechanism of your body, together bringing you to your best self.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://trainwithbuse.com/lab-system.html">
+  <meta property="og:title" content="The Lab System — Train With Buse">
+  <meta property="og:description" content="Not a fitness app. Not just videos. A complete science-based training ecosystem built on neuroscience, movement science, and 12 years of expertise.">
+  <meta property="og:url" content="https://trainwithbuse.com/lab-system.html">
+  <meta property="og:image" content="https://trainwithbuse.com/Buse-main.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:#FDF6F0;--cream-deep:#F5EBE0;--rose:#C1848B;--rose-dark:#9B6B6F;
+      --charcoal:#2D2A2E;--charcoal-light:#4A4548;--warm-white:#FFFAF7;
+      --gold:#C8A96E;--nude:#D4A89A;
+      --movement:#C8A96E;--sculpt:#C1848B;--strength:#9B6B6F;--metabolic:#D4A89A;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white);color:var(--charcoal);overflow-x:hidden;}
+
+    /* NAV */
+    .nav{background:rgba(253,246,240,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--cream-deep);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100;}
+    .nav-left{display:flex;align-items:center;gap:20px;}
+    .back-link{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--charcoal-light);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .3s;}
+    .back-link:hover{color:var(--rose);}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:3px;text-decoration:none;color:var(--charcoal);}
+    .lang-wrap{position:relative;}
+    .lang-btn{display:flex;align-items:center;gap:5px;background:none;border:1.5px solid var(--cream-deep);padding:6px 12px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:var(--charcoal-light);transition:border-color .3s;}
+    .lang-btn:hover{border-color:var(--gold);}
+    .lang-drop{display:none;position:absolute;top:40px;right:0;background:white;border:1px solid var(--cream-deep);border-radius:12px;padding:6px 0;box-shadow:0 12px 40px rgba(200,160,155,.2);z-index:300;min-width:110px;}
+    .lang-drop.open{display:flex;flex-direction:column;}
+    .lang-drop a{padding:10px 20px;text-decoration:none;color:var(--charcoal-light);font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .2s;}
+    .lang-drop a:hover{background:var(--cream);}
+    .lang-drop a.active{color:var(--rose);font-weight:500;}
+
+    /* HERO */
+    .hero{background:var(--charcoal);padding:100px 0 80px;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;top:-100px;right:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(193,132,139,.1) 0%,transparent 70%);pointer-events:none;}
+    .hero::after{content:'';position:absolute;bottom:-80px;left:-60px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,.08) 0%,transparent 70%);pointer-events:none;}
+    .hero-inner{max-width:900px;margin:0 auto;padding:0 40px;text-align:center;position:relative;z-index:1;}
+    .hero-tag{display:inline-block;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;border-bottom:1px solid rgba(200,169,110,.3);padding-bottom:12px;}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;line-height:.9;letter-spacing:-3px;color:white;margin-bottom:20px;}
+    .hero-title em{font-style:italic;color:var(--rose);}
+    .hero-subtitle{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;font-style:italic;color:rgba(255,255,255,.45);margin-bottom:48px;line-height:1.5;}
+    .hero-quote{max-width:640px;margin:0 auto 48px;font-size:17px;color:rgba(255,255,255,.6);line-height:1.9;}
+    .hero-quote strong{color:white;font-weight:400;}
+    .hero-cta{display:inline-block;background:var(--gold);color:var(--charcoal);padding:18px 48px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;box-shadow:0 0 40px rgba(200,169,110,.2);}
+    .hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(200,169,110,.35);}
+
+    /* PROBLEM SECTION */
+    .section{max-width:1000px;margin:0 auto;padding:80px 40px;}
+    .section-tag{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+    .section-h2{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;line-height:1;letter-spacing:-1px;color:var(--charcoal);margin-bottom:24px;}
+    .section-h2 em{font-style:italic;color:var(--rose);}
+    .section-p{font-size:16px;color:var(--charcoal-light);line-height:1.9;margin-bottom:20px;max-width:720px;}
+    .divider{height:1px;background:linear-gradient(to right,transparent,var(--cream-deep),transparent);margin:0;}
+
+    /* WHY LAB */
+    .why-lab{background:var(--cream);padding:80px 0;}
+    .why-inner{max-width:1000px;margin:0 auto;padding:0 40px;}
+    .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+    .why-img{border-radius:20px;overflow:hidden;}
+    .why-img img{width:100%;height:480px;object-fit:cover;display:block;}
+    .blockquote{border-left:3px solid var(--gold);padding:20px 24px;background:white;border-radius:0 14px 14px 0;margin:28px 0;}
+    .blockquote p{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--charcoal);line-height:1.6;}
+
+    /* LAB CARDS */
+    .labs-section{background:var(--charcoal);padding:80px 0;}
+    .labs-inner{max-width:1100px;margin:0 auto;padding:0 40px;}
+    .labs-header{text-align:center;margin-bottom:64px;}
+    .labs-header h2{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:white;line-height:1;letter-spacing:-1px;margin-bottom:16px;}
+    .labs-header h2 em{font-style:italic;color:var(--rose);}
+    .labs-header p{font-size:16px;color:rgba(255,255,255,.45);max-width:560px;margin:0 auto;line-height:1.7;}
+    .labs-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px;}
+    .lab-card{border-radius:20px;padding:40px;position:relative;overflow:hidden;transition:transform .3s;}
+    .lab-card:hover{transform:translateY(-4px);}
+    .lab-card-number{font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;opacity:.08;position:absolute;top:20px;right:24px;line-height:1;color:white;}
+    .lab-card-tag{font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:14px;}
+    .lab-card-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;color:white;margin-bottom:16px;line-height:1.1;}
+    .lab-card-desc{font-size:14px;color:rgba(255,255,255,.55);line-height:1.8;margin-bottom:24px;}
+    .lab-card-details{display:flex;flex-direction:column;gap:8px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);}
+    .lab-detail{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.4);}
+    .lab-detail-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+    .lab-card-price{font-family:'Cormorant Garamond',serif;font-size:32px;color:white;margin-top:20px;}
+    .lab-card-price span{font-size:14px;color:rgba(255,255,255,.3);}
+
+    /* SEQUENTIAL */
+    .sequential{padding:80px 0;background:white;}
+    .seq-inner{max-width:1000px;margin:0 auto;padding:0 40px;}
+    .seq-steps{display:flex;flex-direction:column;gap:0;margin-top:48px;}
+    .seq-step{display:flex;gap:32px;padding:32px 0;border-bottom:1px solid var(--cream-deep);}
+    .seq-step:last-child{border-bottom:none;}
+    .seq-num{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--gold);min-width:60px;line-height:1;opacity:.6;}
+    .seq-content{}
+    .seq-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--charcoal);margin-bottom:8px;}
+    .seq-desc{font-size:14px;color:var(--charcoal-light);line-height:1.8;}
+
+    /* DASHBOARD */
+    .dashboard-section{background:var(--charcoal);padding:80px 0;}
+    .dash-inner{max-width:1100px;margin:0 auto;padding:0 40px;}
+    .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+    .dash-features{display:flex;flex-direction:column;gap:24px;}
+    .dash-feature{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+    .dash-feature:last-child{border-bottom:none;}
+    .dash-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .dash-feature-title{font-size:16px;font-weight:400;color:white;margin-bottom:4px;}
+    .dash-feature-desc{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;}
+    .dash-mockup{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:32px;}
+    .mock-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.06);}
+    .mock-logo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;letter-spacing:2px;color:white;}
+    .mock-date{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:1px;}
+    .mock-greeting{font-family:'Cormorant Garamond',serif;font-size:32px;color:white;margin-bottom:20px;}
+    .mock-greeting em{font-style:italic;color:var(--rose);}
+    .mock-motto{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px;margin-bottom:16px;}
+    .mock-motto-tag{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+    .mock-motto-text{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,.6);}
+    .mock-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .mock-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px;}
+    .mock-card-tag{font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+    .mock-card-val{font-family:'Cormorant Garamond',serif;font-size:20px;color:white;margin-bottom:4px;}
+    .mock-card-sub{font-size:11px;color:rgba(255,255,255,.3);}
+    .mock-bar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-top:8px;}
+    .mock-fill{height:100%;border-radius:2px;}
+
+    /* CTA FINAL */
+    .final-cta{padding:100px 0;text-align:center;background:var(--cream);}
+    .final-inner{max-width:700px;margin:0 auto;padding:0 40px;}
+    .final-h2{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;line-height:.95;letter-spacing:-2px;color:var(--charcoal);margin-bottom:20px;}
+    .final-h2 em{font-style:italic;color:var(--rose);}
+    .final-p{font-size:16px;color:var(--charcoal-light);line-height:1.8;margin-bottom:40px;}
+    .btn-dark{display:inline-block;background:var(--charcoal);color:white;padding:18px 48px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;margin-right:12px;}
+    .btn-dark:hover{background:var(--rose-dark);transform:translateY(-2px);}
+    .btn-outline{display:inline-block;background:none;color:var(--charcoal-light);padding:16px 36px;border-radius:50px;border:1.5px solid var(--cream-deep);font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all .3s;}
+    .btn-outline:hover{border-color:var(--gold);color:var(--charcoal);}
+
+    @media(max-width:768px){
+      .nav{padding:0 20px;}
+      .hero-title{font-size:48px;}
+      .hero-inner{padding:0 20px;}
+      .section{padding:56px 20px;}
+      .why-grid{grid-template-columns:1fr;gap:40px;}
+      .why-img img{height:300px;}
+      .labs-grid{grid-template-columns:1fr;}
+      .labs-inner{padding:0 20px;}
+      .dash-grid{grid-template-columns:1fr;}
+      .seq-inner,.why-inner,.dash-inner,.final-inner{padding:0 20px;}
+      .final-h2{font-size:42px;}
+      .section-h2{font-size:36px;}
+      .btn-dark,.btn-outline{display:block;text-align:center;margin:0 0 12px;}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="back-link">← <span id="backLabel">Home</span></a>
+    <a href="index.html" class="nav-logo">BUSE</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="lang-wrap">
+      <button class="lang-btn" onclick="this.nextElementSibling.classList.toggle('open')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> <span id="langLabel">EN</span></button>
+      <div class="lang-drop" id="langDrop">
+        <a onclick="setLang('en');return false">English</a>
+        <a onclick="setLang('tr');return false">Türkçe</a>
+        <a onclick="setLang('de');return false">Deutsch</a>
+      </div>
+    </div>
+    <a href="welcome.html" style="background:var(--gold);color:var(--charcoal);padding:8px 20px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;" id="navCta">Enter The Lab</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag" id="heroTag">The World's First</div>
+    <h1 class="hero-title" id="heroTitle">The Lab<br><em>System.</em></h1>
+    <p class="hero-subtitle" id="heroSubtitle">"Not just a platform. A complete science-based training ecosystem."</p>
+    <p class="hero-quote" id="heroQuote">Built on years of research, the latest findings in movement science and neuroscience, and one fundamental belief: <strong>your body deserves to be understood, not just trained.</strong></p>
+    <a href="welcome.html" class="hero-cta" id="heroCta">Enter The Lab System →</a>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<div class="divider"></div>
+<div class="section">
+  <div class="section-tag" id="tag1">The Problem</div>
+  <h2 class="section-h2" id="h1">Most training <em>misses the point.</em></h2>
+  <p class="section-p" id="p1a">You've been told that if you just work hard enough, the results will come. But the fitness industry has been selling you effort without understanding. Reps without reason. Sweat without science. And it's why most people plateau, get injured, or simply give up — not because they lack discipline, but because they're following programs that were never built for how the human body actually works.</p>
+  <p class="section-p" id="p1b">The nervous system controls every movement you make. Every muscle contraction, every coordination pattern, every adaptation — it all starts in the brain. And yet almost no training program in the world accounts for this. That's the gap The Lab System was built to close.</p>
+</div>
+<div class="divider"></div>
+
+<!-- WHY LAB -->
+<section class="why-lab">
+  <div class="why-inner">
+    <div class="why-grid">
+      <div>
+        <div class="section-tag" id="tag2">Why "The Lab"</div>
+        <h2 class="section-h2" id="h2">Because your body needs <em>more than one thing.</em></h2>
+        <p class="section-p" id="p2a">"Train holistically" is one of the most overused phrases in fitness — and one of the least acted upon. The truth is, no one needs only mobile joints, or only strong muscles, or only a healthy mind. You need all of it. And you need them developed together, intelligently, in the right sequence.</p>
+        <p class="section-p" id="p2b">That's why I called it The Lab. Because a lab is where you go to understand things — to test, to learn, to build with precision. Each Lab targets a specific mechanism of your body. Together, they target everything. This is not a workout library. It's a system.</p>
+        <div class="blockquote">
+          <p id="quote1">"I didn't build this to give you workouts. I built it to give you understanding. Because the day you understand your body is the day everything changes."</p>
+        </div>
+      </div>
+      <div class="why-img">
+        <img src="Buse-main.jpg" alt="Buse — The Lab System">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 LABS -->
+<section class="labs-section">
+  <div class="labs-inner">
+    <div class="labs-header">
+      <div style="font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;" id="labsTag">The Four Labs</div>
+      <h2 id="labsTitle">Each one a <em>mechanism.</em><br>Together, a <em>transformation.</em></h2>
+      <p id="labsDesc">Every Lab is a 3-level program — Foundation, Intermediate, Advanced. 12 lessons per level. Each lesson unlocking the next.</p>
+    </div>
+
+    <div class="labs-grid">
+
+      <!-- Movement Lab -->
+      <div class="lab-card" style="background:rgba(200,169,110,.08);border:1px solid rgba(200,169,110,.15);">
+        <div class="lab-card-number">01</div>
+        <div class="lab-card-tag" style="color:var(--movement);" id="labTag1">Movement</div>
+        <div class="lab-card-title" id="labTitle1">Movement Lab</div>
+        <p class="lab-card-desc" id="labDesc1">Most training ignores the nervous system. Movement Lab doesn't. Each lesson rewires how your brain controls movement — building neural pathways that don't just make you move better, but make your body understand itself. We don't just show you the exercise. We teach you the physiology and philosophy behind every single movement.</p>
+        <div class="lab-card-details">
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--movement);"></div><span id="labD1a">Neuromuscular coordination</span></div>
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--movement);"></div><span id="labD1b">Mobility & joint health</span></div>
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--movement);"></div><span id="labD1c">Proprioception & body awareness</span></div>
+        </div>
+        <div class="lab-card-price"><span style="text-decoration:line-through;opacity:.4;font-size:20px;">€79</span> €49 <span id="labPrice1">/ level · Founding Member</span></div>
+      </div>
+
+      <!-- Sculpt Lab -->
+      <div class="lab-card" style="background:rgba(193,132,139,.08);border:1px solid rgba(193,132,139,.15);">
+        <div class="lab-card-number">02</div>
+        <div class="lab-card-tag" style="color:var(--sculpt);" id="labTag2">Sculpt</div>
+        <div class="lab-card-title" id="labTitle2">Sculpt Lab</div>
+        <p class="lab-card-desc" id="labDesc2">Sculpting is a science. Not aesthetics alone, not just effort — but understanding exactly how to shape, define, and strengthen your body using movement science principles. Sculpt Lab teaches you to train with intention, not just with sweat. The difference shows.</p>
+        <div class="lab-card-details">
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--sculpt);"></div><span id="labD2a">Targeted muscle activation</span></div>
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--sculpt);"></div><span id="labD2b">Body composition science</span></div>
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--sculpt);"></div><span id="labD2c">Postural alignment</span></div>
+        </div>
+        <div class="lab-card-price"><span style="text-decoration:line-through;opacity:.4;font-size:20px;">€79</span> €49 <span id="labPrice2">/ level · Founding Member</span></div>
+      </div>
+
+      <!-- Strength Lab -->
+      <div class="lab-card" style="background:rgba(155,107,111,.08);border:1px solid rgba(155,107,111,.15);">
+        <div class="lab-card-number">03</div>
+        <div class="lab-card-tag" style="color:var(--strength);" id="labTag3">Strength</div>
+        <div class="lab-card-title" id="labTitle3">Strength Lab</div>
+        <p class="lab-card-desc" id="labDesc3">Real strength starts in the nervous system — not in the muscle. Strength Lab uses neural drive principles, progressive overload, and intelligent programming to build functional strength that actually transfers to your life. Not gym strength. Real strength.</p>
+        <div class="lab-card-details">
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--strength);"></div><span id="labD3a">Neural drive & motor unit recruitment</span></div>
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--strength);"></div><span id="labD3b">Progressive overload principles</span></div>
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--strength);"></div><span id="labD3c">Functional strength patterns</span></div>
+        </div>
+        <div class="lab-card-price"><span style="text-decoration:line-through;opacity:.4;font-size:20px;">€79</span> €49 <span id="labPrice3">/ level · Founding Member</span></div>
+      </div>
+
+      <!-- Metabolic Lab -->
+      <div class="lab-card" style="background:rgba(212,168,154,.08);border:1px solid rgba(212,168,154,.15);">
+        <div class="lab-card-number">04</div>
+        <div class="lab-card-tag" style="color:var(--metabolic);" id="labTag4">Metabolic</div>
+        <div class="lab-card-title" id="labTitle4">Metabolic Lab</div>
+        <p class="lab-card-desc" id="labDesc4">Your metabolism is not your enemy — it's a system waiting to be understood. Metabolic Lab targets the mechanisms behind conditioning, fat metabolism, and cardiovascular health. High intensity, science-backed, and designed for real results. Not punishment. Performance.</p>
+        <div class="lab-card-details">
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--metabolic);"></div><span id="labD4a">Metabolic conditioning</span></div>
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--metabolic);"></div><span id="labD4b">Fat metabolism science</span></div>
+          <div class="lab-detail"><div class="lab-detail-dot" style="background:var(--metabolic);"></div><span id="labD4c">Cardiovascular efficiency</span></div>
+        </div>
+        <div class="lab-card-price"><span style="text-decoration:line-through;opacity:.4;font-size:20px;">€79</span> €49 <span id="labPrice4">/ level · Founding Member</span></div>
+      </div>
+
+    </div>
+
+    <!-- Recommendation -->
+    <div style="background:rgba(200,169,110,.08);border:1px solid rgba(200,169,110,.15);border-radius:20px;padding:36px 40px;text-align:center;">
+      <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;" id="recTag">Buse's Recommendation</div>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:white;line-height:1.6;max-width:600px;margin:0 auto;" id="recText">"No matter your fitness level — start from Level 1. Not because it's easy, but because the first level teaches you something no other program does: the why behind every movement."</p>
+    </div>
+  </div>
+</section>
+
+<!-- SEQUENTIAL -->
+<section class="sequential">
+  <div class="seq-inner">
+    <div class="section-tag" id="tag3">How It Works</div>
+    <h2 class="section-h2" id="h3">Sequential by <em>design.</em></h2>
+    <p class="section-p" id="p3">Each lesson unlocks the next. Each level builds on the last. This isn't accidental — it's how the nervous system actually learns. You can't shortcut neural adaptation. The Labs are designed around this principle.</p>
+    <div class="seq-steps">
+      <div class="seq-step">
+        <div class="seq-num">01</div>
+        <div class="seq-content">
+          <div class="seq-title" id="s1title">Choose your Lab</div>
+          <p class="seq-desc" id="s1desc">Not sure which one? Take the 2-minute quiz and get a personalised recommendation based on your goals, body, and lifestyle.</p>
+        </div>
+      </div>
+      <div class="seq-step">
+        <div class="seq-num">02</div>
+        <div class="seq-content">
+          <div class="seq-title" id="s2title">Start from Level 1 — always</div>
+          <p class="seq-desc" id="s2desc">Foundation is not just physical preparation. It's neural preparation. The body needs to learn before it can perform. Every lesson teaches you the physiology and the philosophy — not just the movement.</p>
+        </div>
+      </div>
+      <div class="seq-step">
+        <div class="seq-num">03</div>
+        <div class="seq-content">
+          <div class="seq-title" id="s3title">Complete each lesson to unlock the next</div>
+          <p class="seq-desc" id="s3desc">Sequential access is not a restriction — it's a feature. Each lesson is a building block. Skip one and you skip the understanding. The Lab System is built for people who are serious.</p>
+        </div>
+      </div>
+      <div class="seq-step">
+        <div class="seq-num">04</div>
+        <div class="seq-content">
+          <div class="seq-title" id="s4title">Track your progress in your dashboard</div>
+          <p class="seq-desc" id="s4desc">Every lesson logged, every milestone celebrated. Your personal dashboard shows exactly where you are, where you've been, and what's next — across all four Labs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="dashboard-section">
+  <div class="dash-inner">
+    <div class="dash-grid">
+      <div>
+        <div style="font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;" id="dashTag">Your Personal Science Hub</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:white;line-height:1;letter-spacing:-1px;margin-bottom:20px;" id="dashTitle">The dashboard <em style="font-style:italic;color:var(--rose);">that thinks with you.</em></h2>
+        <p style="font-size:15px;color:rgba(255,255,255,.5);line-height:1.8;margin-bottom:36px;" id="dashDesc">Every Lab member gets access to a personal dashboard — not just a video library. A living, breathing science hub that evolves with you.</p>
+        <div class="dash-features">
+          <div class="dash-feature">
+            <div class="dash-icon" style="background:rgba(200,169,110,.1);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="1.5"><path d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <div><div class="dash-feature-title" id="df1t">Progress Tracking</div><div class="dash-feature-desc" id="df1d">Every lesson logged with visual progress bars. See exactly how far you've come across all four Labs.</div></div>
+          </div>
+          <div class="dash-feature">
+            <div class="dash-icon" style="background:rgba(193,132,139,.1);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C1848B" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div><div class="dash-feature-title" id="df2t">Cycle-Aware Training</div><div class="dash-feature-desc" id="df2d">The world's only training platform with built-in cycle phase recommendations. Train with your biology — not against it.</div></div>
+          </div>
+          <div class="dash-feature">
+            <div class="dash-icon" style="background:rgba(200,169,110,.08);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="1.5"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <div><div class="dash-feature-title" id="df3t">Body Journal</div><div class="dash-feature-desc" id="df3d">Track how you feel, what's changing, what you notice. Your body has a story — write it.</div></div>
+          </div>
+          <div class="dash-feature">
+            <div class="dash-icon" style="background:rgba(193,132,139,.08);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C1848B" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </div>
+            <div><div class="dash-feature-title" id="df4t">Daily Science Motto</div><div class="dash-feature-desc" id="df4d">A new science-backed movement insight every day. Small doses of understanding that compound over time.</div></div>
+          </div>
+          <div class="dash-feature">
+            <div class="dash-icon" style="background:rgba(200,169,110,.1);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <div><div class="dash-feature-title" id="df5t">Weekly Messages from Buse</div><div class="dash-feature-desc" id="df5d">Personal insights, science updates, and direct communication — delivered to your dashboard.</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Mockup -->
+      <div class="dash-mockup">
+        <div class="mock-header">
+          <div class="mock-logo">BUSE</div>
+          <div class="mock-date" id="mockDate">MEMBER PORTAL</div>
+        </div>
+        <div class="mock-greeting">Welcome, <em>You</em> ✦</div>
+        <div class="mock-motto">
+          <div class="mock-motto-tag" id="mockMottoTag">Daily Motto</div>
+          <div class="mock-motto-text" id="mockMottoText">"Consistency is the only shortcut."</div>
+        </div>
+        <div class="mock-grid">
+          <div class="mock-card">
+            <div class="mock-card-tag" style="color:var(--movement);" id="mockL1">Movement Lab 1</div>
+            <div class="mock-card-val">67%</div>
+            <div class="mock-card-sub" id="mockL1sub">8 / 12 lessons</div>
+            <div class="mock-bar"><div class="mock-fill" style="width:67%;background:linear-gradient(90deg,var(--movement),var(--rose));"></div></div>
+          </div>
+          <div class="mock-card">
+            <div class="mock-card-tag" style="color:var(--rose);" id="mockCycle">Cycle Tracker</div>
+            <div class="mock-card-val">🌕 Day 14</div>
+            <div class="mock-card-sub" id="mockCycleSub">Ovulation Phase</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+
+<!-- BUNDLES -->
+<section style="background:white;padding:80px 0;border-top:1px solid var(--cream-deep);">
+  <div style="max-width:900px;margin:0 auto;padding:0 40px;text-align:center;">
+    <div style="font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Founding Member Bundles</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--charcoal);letter-spacing:-1px;margin-bottom:12px;">Build your <em style="font-style:italic;color:var(--rose);">Lab collection.</em></h2>
+    <p style="font-size:15px;color:var(--charcoal-light);margin-bottom:48px;line-height:1.7;">Each Lab is €49 as a Founding Member (regular €79). Bundle and save 20%.</p>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-bottom:40px;">
+      
+      <!-- Single -->
+      <div style="border:1.5px solid var(--cream-deep);border-radius:20px;padding:28px 20px;text-align:center;transition:all .3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--cream-deep)'">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--nude);margin-bottom:12px;">Single Lab</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--charcoal);line-height:1;margin-bottom:4px;">€49</div>
+        <div style="font-size:12px;color:var(--nude);text-decoration:line-through;margin-bottom:16px;">€79</div>
+        <div style="font-size:12px;color:var(--charcoal-light);margin-bottom:20px;line-height:1.5;">1 Lab of your choice<br>3 levels · 36 lessons</div>
+        <a href="welcome.html" style="display:block;background:var(--charcoal);color:white;padding:12px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all .3s;">Choose Lab</a>
+      </div>
+
+      <!-- 2 Labs -->
+      <div style="border:1.5px solid var(--cream-deep);border-radius:20px;padding:28px 20px;text-align:center;transition:all .3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--cream-deep)'">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--nude);margin-bottom:12px;">2 Labs</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--charcoal);line-height:1;margin-bottom:4px;">€79</div>
+        <div style="font-size:12px;color:var(--nude);text-decoration:line-through;margin-bottom:16px;">€98</div>
+        <div style="font-size:12px;color:var(--charcoal-light);margin-bottom:20px;line-height:1.5;">2 Labs of your choice<br>Save 20%</div>
+        <a href="welcome.html" style="display:block;background:var(--charcoal);color:white;padding:12px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all .3s;">Choose Labs</a>
+      </div>
+
+      <!-- 3 Labs -->
+      <div style="border:1.5px solid rgba(200,169,110,.4);border-radius:20px;padding:28px 20px;text-align:center;background:rgba(200,169,110,.03);position:relative;transition:all .3s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='rgba(200,169,110,.4)'">
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--charcoal);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:20px;white-space:nowrap;font-weight:500;">Most Popular</div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">3 Labs</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--charcoal);line-height:1;margin-bottom:4px;">€119</div>
+        <div style="font-size:12px;color:var(--nude);text-decoration:line-through;margin-bottom:16px;">€147</div>
+        <div style="font-size:12px;color:var(--charcoal-light);margin-bottom:20px;line-height:1.5;">3 Labs of your choice<br>Save 20%</div>
+        <a href="welcome.html" style="display:block;background:var(--gold);color:var(--charcoal);padding:12px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;">Choose Labs</a>
+      </div>
+
+      <!-- Full Collection -->
+      <div style="border:1.5px solid rgba(193,132,139,.3);border-radius:20px;padding:28px 20px;text-align:center;background:var(--charcoal);transition:all .3s;" onmouseover="this.style.borderColor='var(--rose)'" onmouseout="this.style.borderColor='rgba(193,132,139,.3)'">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--rose);margin-bottom:12px;">Full Collection</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:white;line-height:1;margin-bottom:4px;">€253</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.3);text-decoration:line-through;margin-bottom:16px;">€316</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:20px;line-height:1.5;">All 4 Labs<br>Save 20%</div>
+        <a href="welcome.html" style="display:block;background:var(--rose);color:white;padding:12px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all .3s;">Get Everything</a>
+      </div>
+
+    </div>
+
+    <p style="font-size:12px;color:var(--nude);letter-spacing:1px;">Founding Member pricing — available for the first 50 members only. ✦</p>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="final-inner">
+    <div style="font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;" id="finalTag">Your body is waiting.</div>
+    <h2 class="final-h2" id="finalTitle">The only system<br>of its <em>kind.</em></h2>
+    <p class="final-p" id="finalDesc">No other platform combines sequential neuroscience-based programming, cycle-aware training, four targeted Labs, live classes, and a personal science dashboard. This is not a trend. This is a system. And it was built for people who are serious about understanding their body — not just working it.</p>
+    <div>
+      <a href="welcome.html" class="btn-dark" id="finalBtn1">Enter The Lab System →</a>
+      <a href="quiz.html" class="btn-outline" id="finalBtn2">Find My Lab First</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const T = {
+  en: {
+    backLabel:'Home', heroTag:'The World\'s First',
+    heroTitle:'The Lab<br><em>System.</em>',
+    heroSubtitle:'"Not just a platform. A complete science-based training ecosystem."',
+    heroQuote:'Built on years of research, the latest findings in movement science and neuroscience, and one fundamental belief: <strong>your body deserves to be understood, not just trained.</strong>',
+    heroCta:'Enter The Lab System →',
+    tag1:'The Problem', h1:'Most training <em>misses the point.</em>',
+    p1a:"You've been told that if you just work hard enough, the results will come. But the fitness industry has been selling you effort without understanding. Reps without reason. Sweat without science. And it's why most people plateau, get injured, or simply give up — not because they lack discipline, but because they're following programs that were never built for how the human body actually works.",
+    p1b:'The nervous system controls every movement you make. Every muscle contraction, every coordination pattern, every adaptation — it all starts in the brain. And yet almost no training program in the world accounts for this. That\'s the gap The Lab System was built to close.',
+    tag2:'Why "The Lab"', h2:'Because your body needs <em>more than one thing.</em>',
+    p2a:'"Train holistically" is one of the most overused phrases in fitness — and one of the least acted upon. The truth is, no one needs only mobile joints, or only strong muscles, or only a healthy mind. You need all of it. And you need them developed together, intelligently, in the right sequence.',
+    p2b:"That's why I called it The Lab. Because a lab is where you go to understand things — to test, to learn, to build with precision. Each Lab targets a specific mechanism of your body. Together, they target everything. This is not a workout library. It's a system.",
+    quote1:'"I didn\'t build this to give you workouts. I built it to give you understanding. Because the day you understand your body is the day everything changes."',
+    labsTag:'The Four Labs', labsTitle:'Each one a <em>mechanism.</em><br>Together, a <em>transformation.</em>',
+    labsDesc:'Every Lab is a 3-level program — Foundation, Intermediate, Advanced. 12 lessons per level. Each lesson unlocking the next.',
+    labTag1:'Movement', labTitle1:'Movement Lab',
+    labDesc1:"Most training ignores the nervous system. Movement Lab doesn't. Each lesson rewires how your brain controls movement — building neural pathways that don't just make you move better, but make your body understand itself. We don't just show you the exercise. We teach you the physiology and philosophy behind every single movement.",
+    labD1a:'Neuromuscular coordination', labD1b:'Mobility & joint health', labD1c:'Proprioception & body awareness',
+    labTag2:'Sculpt', labTitle2:'Sculpt Lab',
+    labDesc2:'Sculpting is a science. Not aesthetics alone, not just effort — but understanding exactly how to shape, define, and strengthen your body using movement science principles. Sculpt Lab teaches you to train with intention, not just with sweat. The difference shows.',
+    labD2a:'Targeted muscle activation', labD2b:'Body composition science', labD2c:'Postural alignment',
+    labTag3:'Strength', labTitle3:'Strength Lab',
+    labDesc3:"Real strength starts in the nervous system — not in the muscle. Strength Lab uses neural drive principles, progressive overload, and intelligent programming to build functional strength that actually transfers to your life. Not gym strength. Real strength.",
+    labD3a:'Neural drive & motor unit recruitment', labD3b:'Progressive overload principles', labD3c:'Functional strength patterns',
+    labTag4:'Metabolic', labTitle4:'Metabolic Lab',
+    labDesc4:"Your metabolism is not your enemy — it's a system waiting to be understood. Metabolic Lab targets the mechanisms behind conditioning, fat metabolism, and cardiovascular health. High intensity, science-backed, and designed for real results. Not punishment. Performance.",
+    labD4a:'Metabolic conditioning', labD4b:'Fat metabolism science', labD4c:'Cardiovascular efficiency',
+    labPrice1:'/ level · 12 lessons', labPrice2:'/ level · 12 lessons', labPrice3:'/ level · 12 lessons', labPrice4:'/ level · 12 lessons',
+    recTag:"Buse's Recommendation",
+    recText:'"No matter your fitness level — start from Level 1. Not because it\'s easy, but because the first level teaches you something no other program does: the why behind every movement."',
+    tag3:'How It Works', h3:'Sequential by <em>design.</em>',
+    p3:"Each lesson unlocks the next. Each level builds on the last. This isn't accidental — it's how the nervous system actually learns. You can't shortcut neural adaptation. The Labs are designed around this principle.",
+    s1title:'Choose your Lab', s1desc:"Not sure which one? Take the 2-minute quiz and get a personalised recommendation based on your goals, body, and lifestyle.",
+    s2title:'Start from Level 1 — always', s2desc:"Foundation is not just physical preparation. It's neural preparation. The body needs to learn before it can perform. Every lesson teaches you the physiology and the philosophy — not just the movement.",
+    s3title:'Complete each lesson to unlock the next', s3desc:"Sequential access is not a restriction — it's a feature. Each lesson is a building block. Skip one and you skip the understanding. The Lab System is built for people who are serious.",
+    s4title:'Track your progress in your dashboard', s4desc:"Every lesson logged, every milestone celebrated. Your personal dashboard shows exactly where you are, where you've been, and what's next — across all four Labs.",
+    dashTag:'Your Personal Science Hub',
+    dashTitle:'The dashboard <em style="font-style:italic;color:var(--rose);">that thinks with you.</em>',
+    dashDesc:"Every Lab member gets access to a personal dashboard — not just a video library. A living, breathing science hub that evolves with you.",
+    df1t:'Progress Tracking', df1d:"Every lesson logged with visual progress bars. See exactly how far you've come across all four Labs.",
+    df2t:'Cycle-Aware Training', df2d:"The world's only training platform with built-in cycle phase recommendations. Train with your biology — not against it.",
+    df3t:'Body Journal', df3d:'Track how you feel, what\'s changing, what you notice. Your body has a story — write it.',
+    df4t:'Daily Science Motto', df4d:'A new science-backed movement insight every day. Small doses of understanding that compound over time.',
+    df5t:'Weekly Messages from Buse', df5d:'Personal insights, science updates, and direct communication — delivered to your dashboard.',
+    mockDate:'MEMBER PORTAL', mockMottoTag:'Daily Motto', mockMottoText:'"Consistency is the only shortcut."',
+    mockL1:'Movement Lab 1', mockL1sub:'8 / 12 lessons', mockCycle:'Cycle Tracker', mockCycleSub:'Ovulation Phase',
+    finalTag:'Your body is waiting.',
+    finalTitle:'The only system<br>of its <em>kind.</em>',
+    finalDesc:"No other platform combines sequential neuroscience-based programming, cycle-aware training, four targeted Labs, live classes, and a personal science dashboard. This is not a trend. This is a system. And it was built for people who are serious about understanding their body — not just working it.",
+    finalBtn1:'Enter The Lab System →', finalBtn2:'Find My Lab First',
+    navCta:'Enter The Lab',
+  },
+  tr: {
+    backLabel:'Ana Sayfa', heroTag:'Dunyada Bir Ilk',
+    heroTitle:'The Lab<br><em>System.</em>',
+    heroSubtitle:'"Sadece bir platform degil. Bilim tabanli eksiksiz bir antrenman ekosistemi."',
+    heroQuote:'Yillar suren arastirma, hareket bilimi ve norobilimindeki en guncel bulgular ve tek bir temel inanc uzerine insaa edildi: <strong>Bedeniniz anlasilmayı hak ediyor — sadece calistirilmayi degil.</strong>',
+    heroCta:'Lab Sistemine Gir →',
+    tag1:'Sorun', h1:'Cogu antrenman <em>noktayi kaciriyor.</em>',
+    p1a:"Yeterince cok calisirsaniz sonuclarin gelecegi soylendi size. Ancak fitness endustrisi size anlamadan efor satiyordu. Nedensiz tekrarlar. Bilimsiz ter. Ve cogu insanin takila kalmasi, yaralanmasi ya da pes etmesinin nedeni de bu — disiplin eksikligi degil, insan bedeninin gercekten nasil calistigini baz almayan programlari takip etmeleri.",
+    p1b:"Sinir sistemi yaptiginiz her hareketi kontrol eder. Her kas kasılmasını, her koordinasyon kalibini, her uyumu — hepsi beyinde baslar. Ve yine de dunyadaki neredeyse hicbir antrenman programi bunu hesaba katmiyor. The Lab System'in kapatmak icin kuruldugu bosluk da tam bu.",
+    tag2:'Neden "Lab"', h2:'Cunku bedeninizin <em>birden fazla seye ihtiyaci var.</em>',
+    p2a:'"Butuncul antrenman yap" fitness dunyasinin en cok kullanilan ama en az uygulanan sozlerinden biri. Gercek su: Kimsenin sadece mobil eklemlere, ya da sadece guclu kaslara, ya da sadece saglikli bir zihne ihtiyaci yok. Hepsine ihtiyaciniz var. Ve hepsinin birlikte, akillica, dogru sirada gelistirilmesi gerekiyor.',
+    p2b:"Bu yuzden Lab dedim buna. Cunku lab, seyleri anlamak icin gittiginiz yerdir — test etmek, ogrenimek, hassasiyetle insaa etmek icin. Her Lab, bedeninizin belirli bir mekanizmasini hedefler. Birlikte, her seyi hedeflerler. Bu bir egzersiz kutuphanesi degil. Bir sistem.",
+    quote1:'"Bunu size antrenmanlar vermek icin kurmadim. Anlik vermek icin kurdum. Cunku bedeninizi anladiginiz gun her sey degisir."',
+    labsTag:'Dort Lab', labsTitle:'Her biri bir <em>mekanizma.</em><br>Birlikte, bir <em>donusum.</em>',
+    labsDesc:'Her Lab 3 seviyeli bir programdir — Baslangic, Orta, Ileri. Seviye basina 12 ders. Her ders bir sonrakinin kilidini acar.',
+    labTag1:'Movement', labTitle1:'Movement Lab',
+    labDesc1:"Cogu antrenman sinir sistemini goziardi eder. Movement Lab etmez. Her ders, beyninizin hareketi nasil kontrol ettigini yeniden yapilandiriyor — sadece daha iyi hareket etmenizi saglamakla kalmayip bedeninizin kendini anlamasini saglayan sinirsel yollar insaa ediyor. Sadece egzersizi gostermiyoruz. Her hareketin fizyolojisini ve felsefesini ogretiyoruz.",
+    labD1a:'Noromotor koordinasyon', labD1b:'Mobilite & eklem sagligi', labD1c:'Propriosepsiyon & vucut farkindaligi',
+    labTag2:'Sculpt', labTitle2:'Sculpt Lab',
+    labDesc2:'Sekillendirmek bir bilimdir. Sadece estetik degil, sadece efor degil — hareket bilimi prensiplerini kullanarak bedeninizi tam olarak nasil sekillendireceginizi, tanimlayacaginizi ve guclendireceginizi anlamak. Sculpt Lab size terle degil, niyetle antrenman yapmayi ogretir. Fark gosterir.',
+    labD2a:'Hedefli kas aktivasyonu', labD2b:'Vucut kompozisyonu bilimi', labD2c:'Postural hizalama',
+    labTag3:'Strength', labTitle3:'Strength Lab',
+    labDesc3:"Gercek guc kasta degil — sinir sisteminde baslar. Strength Lab, hayatiniza gercekten transfer olan fonksiyonel guc insaa etmek icin sinirsel aktivasyon prensiplerini, ilerleyici asiri yuku ve akilli programlamayi kullanir. Spor salonu gucu degil. Gercek guc.",
+    labD3a:'Sinirsel aktivasyon & motor unite aktivasyonu', labD3b:'Ilerleyici asiri yuk prensipleri', labD3c:'Fonksiyonel kuvvet kaliplari',
+    labTag4:'Metabolic', labTitle4:'Metabolic Lab',
+    labDesc4:"Metabolizmaniz dusman degil — anlasilmayi bekleyen bir sistem. Metabolic Lab kondisyon, yag metabolizması ve kardiyovaskuler sagligin arkasindaki mekanizmalari hedefler. Yuksek yogunluklu, bilim destekli ve gercek sonuclar icin tasarlanmis. Ceza degil. Performans.",
+    labD4a:'Metabolik kondisyon', labD4b:'Yag metabolizması bilimi', labD4c:'Kardiyovaskuler verimlilik',
+    labPrice1:'/ seviye · 12 ders', labPrice2:'/ seviye · 12 ders', labPrice3:'/ seviye · 12 ders', labPrice4:'/ seviye · 12 ders',
+    recTag:"Buse'nin Tavsiyesi",
+    recText:'"Hangi fiziksel uygunluk seviyesinde olursaniz olun — Level 1\'den baslayin. Kolay oldugu icin degil, cunku ilk seviye size baska hicbir programin ogretmedigi bir seyi ogretiyor: her hareketin arkasindaki neden."',
+    tag3:'Nasil Calisir', h3:'Tasarim geregi <em>sirali.</em>',
+    p3:"Her ders bir sonrakinin kilidini acar. Her seviye bir oncekinin uzerine insaa edilir. Bu tesaduf degil — sinir sisteminin gercekte boyle ogrendigini gosteriyor. Sinirsel uyumu kisayoldan geciremezsiniz. Lab'lar bu prensip etrafinda tasarlandi.",
+    s1title:'Labinizi secin', s1desc:"Hangi oldugundan emin degilsiniz? 2 dakikalik testi yapın ve hedeflerinize, bedeninize ve yasam tarsiniza gore kisisellestirilmis bir tavsiye alin.",
+    s2title:'Her zaman Level 1\'den baslayin', s2desc:"Temel sadece fiziksel hazirlik degil — sinirsel hazirlik. Bedenin perform edebilmeden once ogrenimesi gerekiyor. Her ders size fizyolojiyi ve felsefeyi ogretir — sadece hareketi degil.",
+    s3title:'Bir sonrakini acmak icin her dersi tamamlayin', s3desc:"Siradizi erisim bir kisitlama degil — bir ozellik. Her ders bir yapı tasi. Birini atlarsaniz anlayisi da atlarsınız. Lab System, ciddi olan insanlar icin kuruldu.",
+    s4title:'Ilerlemenizi dashboardda takip edin', s4desc:"Her ders kaydedildi, her kilometre tasi kutlandi. Kisisel dashboardunuz, dort Lab boyunca tam olarak nerede oldugunuzu, nerede oldugunuzu ve siradasini gosterir.",
+    dashTag:'Kisisel Bilim Merkeziniz',
+    dashTitle:'Sizinle <em style="font-style:italic;color:var(--rose);">dusunun dashboard\'u.</em>',
+    dashDesc:"Her Lab uyesi kisisel bir dashboarda erisim kazanir — sadece bir video kutuphanesine degil. Sizinle birlikte gelisen, nefes alan bir bilim merkezine.",
+    df1t:'Ilerleme Takibi', df1d:"Her ders gorsel ilerleme barlariyla kaydedildi. Dort Lab boyunca ne kadar ilerlediginizi tam olarak gorün.",
+    df2t:'Dongu Bilinçli Antrenman', df2d:"Dunyada yalnizca bu platformda olan dongu faz onerileri. Biyolojinizle uyumlu antrenman yapin — ona karsi degil.",
+    df3t:'Vucut Gunlugu', df3d:'Nasil hissettinizi, nelerin degistigini, neleri fark ettiginizi takip edin. Bedeninizin bir hikayesi var — yazin.',
+    df4t:'Gunluk Bilim Mottosu', df4d:'Her gun yeni bir bilim destekli hareket icgörüsü. Zamanla birikeen kucuk anlayis dozlari.',
+    df5t:"Buse'den Haftalik Mesajlar", df5d:'Kisisel icgoruler, bilim guncellemeleri ve dogrudan iletisim — dashboardunuza teslim edildi.',
+    mockDate:'UYE PORTALI', mockMottoTag:'Gunun Mottosu', mockMottoText:'"Tutarlilik tek kisayoldur."',
+    mockL1:'Movement Lab 1', mockL1sub:'8 / 12 ders', mockCycle:'Dongu Takibi', mockCycleSub:'Ovulasyon Fazi',
+    finalTag:'Bedeniniz bekliyor.',
+    finalTitle:'Turunde tek <em>sistem.</em>',
+    finalDesc:"Hicbir baska platform siradizi norobilim tabanli programlamayi, dongu bilinçli antrenmanı, dort hedefli Lab\'i, canli dersleri ve kisisel bir bilim dashboardunu birlestirmiyor. Bu bir trend degil. Bu bir sistem. Ve bedenini sadece calistirmak degil, anlamak konusunda ciddi olan insanlar icin kuruldu.",
+    finalBtn1:'Lab Sistemine Gir →', finalBtn2:'Once Labimi Bul',
+    navCta:"Lab'a Gir",
+  },
+  de: {
+    backLabel:'Startseite', heroTag:'Das Weltweit Erste',
+    heroTitle:'The Lab<br><em>System.</em>',
+    heroSubtitle:'"Nicht nur eine Plattform. Ein vollständiges wissenschaftsbasiertes Trainingsökosystem."',
+    heroQuote:'Aufgebaut auf jahrelanger Forschung, den neuesten Erkenntnissen der Bewegungs- und Neurowissenschaft, und einer grundlegenden Überzeugung: <strong>Dein Körper verdient es, verstanden zu werden — nicht nur trainiert.</strong>',
+    heroCta:'Lab System betreten →',
+    tag1:'Das Problem', h1:'Die meisten Trainings <em>verfehlen den Punkt.</em>',
+    p1a:"Man hat dir gesagt, dass die Ergebnisse kommen, wenn du nur hart genug arbeitest. Aber die Fitnessbranche hat dir Anstrengung ohne Verständnis verkauft. Wiederholungen ohne Grund. Schweiß ohne Wissenschaft. Und deshalb stagnieren, verletzen oder geben die meisten Menschen auf — nicht weil es ihnen an Disziplin mangelt, sondern weil sie Programmen folgen, die nie für die tatsächliche Funktionsweise des menschlichen Körpers konzipiert wurden.",
+    p1b:"Das Nervensystem kontrolliert jede Bewegung die du machst. Jede Muskelkontraktion, jedes Koordinationsmuster, jede Anpassung — alles beginnt im Gehirn. Und doch berücksichtigt fast kein Trainingsprogramm der Welt dies. Das ist die Lücke die The Lab System schließen soll.",
+    tag2:'Warum "The Lab"', h2:'Weil dein Körper <em>mehr als eine Sache braucht.</em>',
+    p2a:'"Trainiere ganzheitlich" ist einer der am meisten verwendeten Phrasen im Fitness — und einer der am wenigsten umgesetzten. Die Wahrheit ist, niemand braucht nur mobile Gelenke, oder nur starke Muskeln, oder nur einen gesunden Geist. Du brauchst alles davon. Und du brauchst sie gemeinsam, intelligent, in der richtigen Reihenfolge entwickelt.',
+    p2b:"Deshalb habe ich es The Lab genannt. Weil ein Labor der Ort ist, an dem man Dinge versteht — testet, lernt und mit Präzision aufbaut. Jedes Lab zielt auf einen bestimmten Mechanismus deines Körpers ab. Zusammen zielen sie auf alles ab. Dies ist keine Workout-Bibliothek. Es ist ein System.",
+    quote1:'"Ich habe das nicht gebaut um dir Workouts zu geben. Ich habe es gebaut um dir Verständnis zu geben. Denn der Tag an dem du deinen Körper verstehst ist der Tag an dem sich alles ändert."',
+    labsTag:'Die Vier Labs', labsTitle:'Jedes ein <em>Mechanismus.</em><br>Zusammen, eine <em>Transformation.</em>',
+    labsDesc:'Jedes Lab ist ein 3-Level-Programm — Foundation, Intermediate, Advanced. 12 Lektionen pro Level. Jede Lektion schaltet die nächste frei.',
+    labTag1:'Movement', labTitle1:'Movement Lab',
+    labDesc1:"Die meisten Trainings ignorieren das Nervensystem. Movement Lab nicht. Jede Lektion verdrahtet neu wie dein Gehirn Bewegung kontrolliert — aufbauend auf neuronalen Bahnen die nicht nur dazu führen dass du dich besser bewegst, sondern dass dein Körper sich selbst versteht. Wir zeigen dir nicht nur die Übung. Wir lehren dir die Physiologie und Philosophie hinter jeder einzelnen Bewegung.",
+    labD1a:'Neuromuskuläre Koordination', labD1b:'Mobilität & Gelenkgesundheit', labD1c:'Propriozeption & Körperbewusstsein',
+    labTag2:'Sculpt', labTitle2:'Sculpt Lab',
+    labDesc2:'Formen ist eine Wissenschaft. Nicht nur Ästhetik, nicht nur Anstrengung — sondern genau zu verstehen wie man den Körper mit Bewegungswissenschaftsprinzipien formt, definiert und stärkt. Sculpt Lab lehrt dich mit Intention zu trainieren, nicht nur mit Schweiß. Der Unterschied zeigt sich.',
+    labD2a:'Gezielte Muskelaktivierung', labD2b:'Körperzusammensetzungswissenschaft', labD2c:'Haltungsausrichtung',
+    labTag3:'Strength', labTitle3:'Strength Lab',
+    labDesc3:"Echte Kraft beginnt im Nervensystem — nicht im Muskel. Strength Lab nutzt neuronale Antriebsprinzipien, progressive Überlastung und intelligente Programmierung um funktionale Kraft zu entwickeln die sich tatsächlich auf dein Leben überträgt. Nicht Fitnessstudio-Kraft. Echte Kraft.",
+    labD3a:'Neuronaler Antrieb & motorische Einheitenrekrutierung', labD3b:'Progressive Überlastungsprinzipien', labD3c:'Funktionale Kraftmuster',
+    labTag4:'Metabolic', labTitle4:'Metabolic Lab',
+    labDesc4:"Dein Stoffwechsel ist nicht dein Feind — er ist ein System das darauf wartet verstanden zu werden. Metabolic Lab zielt auf die Mechanismen hinter Konditionierung, Fettmetabolismus und kardiovaskulärer Gesundheit ab. Hochintensiv, wissenschaftlich fundiert und für echte Ergebnisse konzipiert. Keine Bestrafung. Leistung.",
+    labD4a:'Metabolische Konditionierung', labD4b:'Fettmetabolismus-Wissenschaft', labD4c:'Kardiovaskuläre Effizienz',
+    labPrice1:'/ Level · 12 Lektionen', labPrice2:'/ Level · 12 Lektionen', labPrice3:'/ Level · 12 Lektionen', labPrice4:'/ Level · 12 Lektionen',
+    recTag:"Buse's Empfehlung",
+    recText:'"Egal auf welchem Fitnessniveau du bist — fange mit Level 1 an. Nicht weil es einfach ist, sondern weil das erste Level dir etwas beibringt das kein anderes Programm lehrt: das Warum hinter jeder Bewegung."',
+    tag3:'Wie es funktioniert', h3:'Sequentiell <em>by design.</em>',
+    p3:"Jede Lektion schaltet die nächste frei. Jedes Level baut auf dem letzten auf. Das ist kein Zufall — so lernt das Nervensystem tatsächlich. Du kannst neuronale Anpassung nicht abkürzen. Die Labs sind um dieses Prinzip herum konzipiert.",
+    s1title:'Wähle dein Lab', s1desc:"Nicht sicher welches? Mache das 2-Minuten-Quiz und erhalte eine personalisierte Empfehlung basierend auf deinen Zielen, deinem Körper und deinem Lebensstil.",
+    s2title:'Starte immer mit Level 1', s2desc:"Foundation ist nicht nur physische Vorbereitung. Es ist neuronale Vorbereitung. Der Körper muss lernen bevor er performen kann. Jede Lektion lehrt dir die Physiologie und die Philosophie — nicht nur die Bewegung.",
+    s3title:'Schließe jede Lektion ab um die nächste freizuschalten', s3desc:"Sequentieller Zugang ist keine Einschränkung — es ist ein Feature. Jede Lektion ist ein Baustein. Überspringst du eine, überspringst du das Verständnis. Das Lab System ist für ernsthafte Menschen gebaut.",
+    s4title:'Verfolge deinen Fortschritt im Dashboard', s4desc:"Jede Lektion protokolliert, jeder Meilenstein gefeiert. Dein persönliches Dashboard zeigt genau wo du bist, wo du warst und was als nächstes kommt — über alle vier Labs hinweg.",
+    dashTag:'Dein persönlicher Wissenschafts-Hub',
+    dashTitle:'Das Dashboard <em style="font-style:italic;color:var(--rose);">das mit dir denkt.</em>',
+    dashDesc:"Jedes Lab-Mitglied bekommt Zugang zu einem persönlichen Dashboard — nicht nur einer Video-Bibliothek. Einem lebendigen Wissenschafts-Hub der sich mit dir weiterentwickelt.",
+    df1t:'Fortschrittsverfolgung', df1d:"Jede Lektion mit visuellen Fortschrittsbalken protokolliert. Sieh genau wie weit du über alle vier Labs gekommen bist.",
+    df2t:'Zyklusbewusstes Training', df2d:"Die weltweit einzige Trainingsplattform mit integrierten Zyklusphaseempfehlungen. Trainiere mit deiner Biologie — nicht gegen sie.",
+    df3t:'Körper-Tagebuch', df3d:'Verfolge wie du dich fühlst, was sich verändert, was du bemerkst. Dein Körper hat eine Geschichte — schreibe sie.',
+    df4t:'Tägliches Wissenschafts-Motto', df4d:'Jeden Tag neue wissenschaftlich fundierte Bewegungseinsicht. Kleine Dosen des Verständnisses die sich mit der Zeit summieren.',
+    df5t:'Wöchentliche Nachrichten von Buse', df5d:'Persönliche Einblicke, Wissenschaftsupdates und direkte Kommunikation — in deinem Dashboard.',
+    mockDate:'MITGLIEDERBEREICH', mockMottoTag:'Tagesmotto', mockMottoText:'"Konsequenz ist der einzige Abkürzungsweg."',
+    mockL1:'Movement Lab 1', mockL1sub:'8 / 12 Lektionen', mockCycle:'Zyklus-Tracker', mockCycleSub:'Ovulationsphase',
+    finalTag:'Dein Körper wartet.',
+    finalTitle:'Das einzige System<br>seiner <em>Art.</em>',
+    finalDesc:"Keine andere Plattform kombiniert sequentielle neurowissenschaftsbasierte Programmierung, zyklusbewusstes Training, vier gezielte Labs, Live-Kurse und ein persönliches Wissenschafts-Dashboard. Das ist kein Trend. Das ist ein System. Und es wurde für Menschen gebaut die es ernst meinen ihren Körper zu verstehen — nicht nur zu trainieren.",
+    finalBtn1:'Lab System betreten →', finalBtn2:'Zuerst mein Lab finden',
+    navCta:'Lab betreten',
+  }
+};
+
+let lang = localStorage.getItem('twb_lang') || 'en';
+
+function setLang(l){
+  lang=l; localStorage.setItem('twb_lang',l);
+  document.getElementById('langLabel').textContent=l.toUpperCase();
+  document.querySelectorAll('.lang-drop a').forEach((a,i)=>a.classList.toggle('active',['en','tr','de'][i]===l));
+  document.getElementById('langDrop').classList.remove('open');
+  applyT(); document.documentElement.lang=l;
+}
+
+function applyT(){
+  const tl=T[lang]||T.en;
+  const textIds=['backLabel','heroTag','heroSubtitle','heroCta','tag1','p1a','p1b','tag2','p2a','p2b',
+    'quote1','labsTag','labsDesc','labTag1','labTitle1','labDesc1','labD1a','labD1b','labD1c',
+    'labTag2','labTitle2','labDesc2','labD2a','labD2b','labD2c',
+    'labTag3','labTitle3','labDesc3','labD3a','labD3b','labD3c',
+    'labTag4','labTitle4','labDesc4','labD4a','labD4b','labD4c',
+    'labPrice1','labPrice2','labPrice3','labPrice4','recTag','recText',
+    'tag3','p3','s1title','s1desc','s2title','s2desc','s3title','s3desc','s4title','s4desc',
+    'dashTag','dashDesc','df1t','df1d','df2t','df2d','df3t','df3d','df4t','df4d','df5t','df5d',
+    'mockDate','mockMottoTag','mockMottoText','mockL1','mockL1sub','mockCycle','mockCycleSub',
+    'finalTag','finalDesc','finalBtn1','finalBtn2','navCta'];
+  textIds.forEach(id=>{const el=document.getElementById(id);if(el&&tl[id]!==undefined)el.textContent=tl[id];});
+
+  const htmlIds=['heroTitle','h1','h2','h3','labsTitle','dashTitle','finalTitle','heroQuote','recText'];
+  htmlIds.forEach(id=>{const el=document.getElementById(id);if(el&&tl[id])el.innerHTML=tl[id];});
+}
+
+applyT();
+document.getElementById('langLabel').textContent=lang.toUpperCase();
+document.querySelectorAll('.lang-drop a').forEach((a,i)=>a.classList.toggle('active',['en','tr','de'][i]===lang));
+document.addEventListener('click',e=>{if(!e.target.closest('.lang-wrap'))document.getElementById('langDrop').classList.remove('open');});
+</script>
+</body>
+</html>
