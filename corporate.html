@@ -1127,6 +1127,86 @@
     .topbar-nav a:not(.topbar-cta) { display: none; }
     .section-title { font-size: 30px; }
   }
+  .lang-switcher{display:flex;align-items:center;gap:4px;background:rgba(255,250,247,.08);border-radius:50px;padding:4px;margin-left:16px}
+  .lang-pill{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:7px 14px;border-radius:50px;color:rgba(255,250,247,.6);transition:all .25s}
+  .lang-pill:hover{color:#FFFAF7;background:rgba(255,250,247,.12)}
+  .lang-pill-active{background:rgba(255,250,247,.15);color:#FFFAF7;font-weight:500}
+  .lang-pill-active:hover{background:rgba(255,250,247,.2)}
+  .back-home{position:fixed;top:20px;left:24px;z-index:10001;font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;letter-spacing:.5px;text-decoration:none;color:rgba(255,250,247,.6);transition:opacity .2s}
+  .back-home:hover{color:#FFFAF7}
+
+  /* ========== DARK THEME OVERRIDES ========== */
+  body { background: #1A1410; color: #FFFAF7; }
+
+  .topbar { background: rgba(26,20,16,.97); border-bottom: 1px solid rgba(200,169,110,.1); }
+  .topbar-logo { color: #FFFAF7; }
+  .logo-corp { color: var(--gold); border-color: var(--gold); }
+  .topbar-nav a { color: rgba(255,250,247,.65); }
+  .topbar-nav a:hover { color: var(--gold); }
+  .topbar-cta { background: var(--gold) !important; color: #1A1410 !important; }
+  .topbar-cta:hover { background: #b8963c !important; }
+
+  .section-tag { color: var(--gold); }
+  .section-tag::before { background: rgba(200,169,110,.3); }
+  .section-title { color: #FFFAF7; }
+  .section-title em { color: var(--gold); }
+  .section-desc { color: rgba(255,250,247,.55); }
+
+  .why-card { background: #2D2420; border-color: rgba(200,169,110,.12); }
+  .why-card:hover { border-color: rgba(200,169,110,.3); box-shadow: 0 16px 40px rgba(0,0,0,.5); }
+  .why-icon { background: rgba(200,169,110,.12); }
+  .why-card h3 { color: #FFFAF7; }
+  .why-card p { color: rgba(255,250,247,.6); }
+  .why-card .stat { background: rgba(200,169,110,.12); color: var(--gold); }
+
+  .tax-banner { background: #231C17; }
+  .tax-icon { background: #2D2420; }
+  .tax-content h3 { color: #FFFAF7; }
+  .tax-content h3 em { color: var(--gold); }
+  .tax-content p { color: rgba(255,250,247,.6); }
+  .tax-content .tax-tag { background: var(--gold); color: #1A1410; }
+
+  .service-card { background: #2D2420; border-color: rgba(200,169,110,.12); }
+  .service-card:hover { border-color: rgba(200,169,110,.3); box-shadow: 0 16px 40px rgba(0,0,0,.5); }
+  .service-card.highlight { border-color: var(--gold); }
+  .service-card.highlight::before { background: linear-gradient(135deg, var(--gold), #b8963c); color: #1A1410; }
+  .service-card h3 { color: #FFFAF7; }
+  .service-card > p { color: rgba(255,250,247,.6); }
+  .service-features li { color: rgba(255,250,247,.6); }
+  .service-features li::before { color: var(--gold); }
+  .service-ideal { background: rgba(200,169,110,.08); color: rgba(255,250,247,.55); }
+  .service-ideal strong { color: var(--gold); }
+
+  .process-section { background: #231C17; }
+
+  .body-section { background: #1A1410; }
+  .body-card { background: #2D2420; border-color: rgba(200,169,110,.12); }
+  .body-card:hover { box-shadow: 0 16px 40px rgba(0,0,0,.5); border-color: rgba(200,169,110,.25); }
+  .body-card h3 { color: #FFFAF7; }
+  .body-card p { color: rgba(255,250,247,.6); }
+
+  .roi-section { background: #231C17; }
+
+  .contact-form { background: #2D2420; border-color: rgba(200,169,110,.12); box-shadow: 0 8px 40px rgba(0,0,0,.5); }
+  .form-group label { color: rgba(255,250,247,.5); }
+  .form-group input, .form-group select, .form-group textarea {
+    background: #1A1410; border-color: rgba(200,169,110,.2); color: #FFFAF7;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+  .form-submit { background: var(--gold); color: #1A1410; }
+  .form-submit:hover { background: #b8963c; box-shadow: 0 8px 25px rgba(200,169,110,.3); }
+  .form-note { color: rgba(255,250,247,.4); }
+
+  .pilot-strip { background: #231C17; }
+  .pilot-cta { background: linear-gradient(135deg, var(--gold), #b8963c); color: #1A1410; }
+  .pilot-cta:hover { box-shadow: 0 12px 35px rgba(200,169,110,.25); }
+
+  .corp-hero { background: linear-gradient(160deg, #1A1410 0%, #231C17 40%, #2D2420 100%); }
+  .corp-hero-btn { background: linear-gradient(135deg, var(--gold), #b8963c); color: #1A1410; }
+  .corp-hero-btn:hover { box-shadow: 0 12px 35px rgba(200,169,110,.3); }
+
+  .corp-footer { color: rgba(255,250,247,.4); border-top-color: rgba(200,169,110,.1); }
+  .corp-footer a { color: var(--gold); }
 </style>
 <script type="application/ld+json">
 {
@@ -1143,6 +1223,8 @@
 </head>
 <body>
 
+<a href="index.html" class="back-home">← Home</a>
+
 <!-- TOPBAR -->
 <div class="topbar">
 <a href="index.html" class="topbar-logo">BUSE <span class="logo-corp">CORPORATE</span></a>
@@ -1151,6 +1233,11 @@
     <a href="#process">Process</a>
     <a href="#contact" class="topbar-cta">Get in Touch</a>
   </nav>
+  <div class="lang-switcher">
+    <a href="index.html" class="lang-pill lang-pill-active">EN</a>
+    <a href="tr.html" class="lang-pill">TR</a>
+    <a href="de.html" class="lang-pill">DE</a>
+  </div>
 </div>
 
 <!-- HERO -->

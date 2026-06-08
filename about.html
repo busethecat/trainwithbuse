@@ -510,9 +510,18 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
   .berlin-stats { grid-template-columns: 1fr; }
   .hero-about h1 { font-size: 40px; }
 }
+  .lang-switcher{display:flex;align-items:center;gap:4px;background:rgba(45,42,46,.06);border-radius:50px;padding:4px;margin-left:8px}
+  .lang-pill{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:7px 14px;border-radius:50px;color:var(--charcoal-light);transition:all .25s}
+  .lang-pill:hover{color:var(--charcoal);background:rgba(45,42,46,.07)}
+  .lang-pill-active{background:white;color:var(--charcoal);font-weight:500;box-shadow:0 1px 4px rgba(45,42,46,.1)}
+  .lang-pill-active:hover{background:white}
+  .back-home{position:fixed;top:18px;left:20px;z-index:10001;font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;letter-spacing:.5px;text-decoration:none;color:currentColor;opacity:.6;transition:opacity .2s}
+  .back-home:hover{opacity:1}
 </style>
 </head>
 <body>
+
+<a href="index.html" class="back-home">← Home</a>
 
 <!-- NAV -->
 <nav id="navbar">
@@ -526,23 +535,16 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
     <li><a href="login.html" class="nav-login">Member Login</a></li>
     <li><a href="personal-training.html" class="nav-cta">Book 1:1</a></li>
   </ul>
-  <div class="lang-switcher" style="position:relative;">
-    <button class="lang-toggle" onclick="this.nextElementSibling.classList.toggle('open')" style="background:none;border:1px solid rgba(45,42,46,.15);border-radius:50px;padding:8px 16px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--charcoal-light);transition:all .3s;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> EN
-    </button>
-    <div class="lang-dropdown" style="position:absolute;top:calc(100% + 8px);right:0;background:white;border-radius:12px;box-shadow:0 8px 30px rgba(45,42,46,.12);overflow:hidden;min-width:120px;display:none;z-index:100;">
-      <a href="about.html" style="display:block;padding:12px 20px;font-size:13px;letter-spacing:1px;color:var(--charcoal);text-decoration:none;background:rgba(200,169,110,.06);font-weight:500;">English</a>
-      <a href="about-tr.html" style="display:block;padding:12px 20px;font-size:13px;letter-spacing:1px;color:var(--charcoal-light);text-decoration:none;transition:background .2s;" onmouseover="this.style.background='rgba(200,169,110,.06)'" onmouseout="this.style.background='none'">Türkçe</a>
-      <a href="about-de.html" style="display:block;padding:12px 20px;font-size:13px;letter-spacing:1px;color:var(--charcoal-light);text-decoration:none;transition:background .2s;" onmouseover="this.style.background='rgba(200,169,110,.06)'" onmouseout="this.style.background='none'">Deutsch</a>
-    </div>
+  <div class="lang-switcher">
+    <a href="about.html" class="lang-pill lang-pill-active">EN</a>
+    <a href="about-tr.html" class="lang-pill">TR</a>
+    <a href="about-de.html" class="lang-pill">DE</a>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
-<style>
-.lang-dropdown.open { display: block !important; }
-</style>
+
 
 <!-- ══════════════════════════════════════════
      HERO
@@ -908,14 +910,7 @@ const navLinks = document.getElementById('navLinks');
 hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-// Lang dropdown close on outside click
-document.addEventListener('click', (e) => {
-  const switcher = document.querySelector('.lang-switcher');
-  if (switcher && !switcher.contains(e.target)) {
-    const dd = switcher.querySelector('.lang-dropdown');
-    if (dd) dd.classList.remove('open');
-  }
-});
+
 const obs = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
     if (e.isIntersecting) {
