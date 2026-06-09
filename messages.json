@@ -5,29 +5,29 @@
       "date": "2026-06-09",
       "title": {
         "en": "Welcome to the Lab System 🌸",
-        "tr": "Welcome to the Lab System 🌸",
-        "de": "Welcome to the Lab System 🌸"
+        "tr": "Lab Sistemine Hoş Geldin 🌸",
+        "de": "Willkommen im Lab System 🌸"
       },
       "body": {
-        "en": "I am so glad you are here. This dashboard is your personal space — track your progress, follow your programs, and know that every session counts. You have already taken the hardest step. — Buse",
-        "tr": "I am so glad you are here. This dashboard is your personal space — track your progress, follow your programs, and know that every session counts. You have already taken the hardest step. — Buse",
-        "de": "I am so glad you are here. This dashboard is your personal space — track your progress, follow your programs, and know that every session counts. You have already taken the hardest step. — Buse"
+        "en": "I'm so glad you're here. This dashboard is your personal space — track your progress, follow your programs, and know that every session counts. You've already taken the hardest step. — Buse",
+        "tr": "Burada olman beni çok mutlu ediyor. Bu dashboard senin kişisel alanın — ilerlemeyi takip et, programlarını uygula ve her antrenmanın önemli olduğunu bil. En zor adımı zaten attın. — Buse",
+        "de": "Ich freue mich so sehr, dass du hier bist. Dieses Dashboard ist dein persönlicher Raum — verfolge deinen Fortschritt, folge deinen Programmen und wisse, dass jede Einheit zählt. Du hast den schwersten Schritt bereits gemacht. — Buse"
       },
       "type": "welcome",
       "pinned": true
     },
     {
       "id": "msg-002",
-      "date": "2026-06-10",
+      "date": "2026-06-09",
       "title": {
-        "en": "Bu haftanin programi",
-        "tr": "Bu haftanin programi",
-        "de": "Bu haftanin programi"
+        "en": "This week's focus 💪",
+        "tr": "Bu haftanın odağı 💪",
+        "de": "Der Fokus dieser Woche 💪"
       },
       "body": {
-        "en": "Mesajin icerigi...",
-        "tr": "Mesajin icerigi...",
-        "de": "Mesajin icerigi..."
+        "en": "This week, I want you to focus on one thing: consistency over intensity. Show up, even when it's just 20 minutes. The nervous system learns through repetition, not perfection. — Buse",
+        "tr": "Bu hafta senden tek bir şeye odaklanmanı istiyorum: yoğunluk yerine tutarlılık. Sadece 20 dakikan olsa bile gel. Sinir sistemi tekrar yoluyla öğrenir, mükemmellik yoluyla değil. — Buse",
+        "de": "Diese Woche möchte ich, dass du dich auf eine Sache konzentrierst: Beständigkeit statt Intensität. Erscheine, auch wenn es nur 20 Minuten sind. Das Nervensystem lernt durch Wiederholung, nicht durch Perfektion. — Buse"
       },
       "pinned": false
     }
