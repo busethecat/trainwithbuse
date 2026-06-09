@@ -1970,7 +1970,9 @@ function showResult() {
     <div class="result-analysis">${analysis}</div>
     ${pregnancyHTML}
     <div class="result-plan" style="margin-top:24px">
-      <div class="result-plan-label">${lang === 'tr' ? 'YATIRIM' : lang === 'de' ? 'INVESTITION' : 'INVESTMENT'}</div>
+      <div class="result-plan-label">${lang === 'tr' ? 'ÖNERİLEN PROGRAM' : lang === 'de' ? 'EMPFOHLENES PROGRAMM' : 'RECOMMENDED PROGRAM'}</div>
+      <div class="result-plan-name" style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#2D2A2E;margin-bottom:6px;">${r.title}</div>
+      <div class="result-plan-label" style="margin-top:12px">${lang === 'tr' ? 'YATIRIM' : lang === 'de' ? 'INVESTITION' : 'INVESTMENT'}</div>
       <div class="result-plan-price"><strong>${r.price}</strong> ${r.pricePer}</div>
     </div>
     <div class="result-features">
@@ -2043,9 +2045,11 @@ function determinePlan() {
   
   // Self-paced → match to specific lab based on goal & focus
   if (answers.support === 'self' || answers.budget === 'budget' || answers.budget === 'mid') {
-    if (answers.goal === 'posture' || answers.focus === 'full') return 'movement';
-    if (answers.goal === 'lose' || answers.focus === 'glutes' || answers.focus === 'core') return 'sculpt';
-    if (answers.goal === 'build' || answers.focus === 'upper') return 'strength';
+    const goals = Array.isArray(answers.goal) ? answers.goal : [answers.goal];
+    const focuses = Array.isArray(answers.focus) ? answers.focus : [answers.focus];
+    if (goals.includes('posture') || focuses.includes('full')) return 'movement';
+    if (goals.includes('lose') || focuses.includes('glutes') || focuses.includes('core')) return 'sculpt';
+    if (goals.includes('build') || focuses.includes('upper')) return 'strength';
     return 'movement'; // default lab
   }
   
@@ -2063,14 +2067,18 @@ function buildAnalysis() {
     const actMap = { sedentary: 'hareketsiz', light: 'hafif aktif', moderate: 'orta aktif', very: 'çok aktif' };
     const expMap = { beginner: 'yeni başlayan', inconsistent: 'düzensiz', sometimes: 'ara sıra antrenman yapan', regular: 'düzenli antrenman yapan' };
     
-    return `${age} yaş aralığında, <strong>${actMap[answers.activity] || ''}</strong> bir ${expMap[answers.experience] || ''} olarak, ana hedefiniz <strong>${goalMap[answers.goal] || ''}</strong> ve odak noktanız <strong>${focusMap[answers.focus] || ''}</strong>.${answers.limitations && !answers.limitations.includes('none') ? ' Planınızı ' + answers.limitations.map(l => ({knees:'diz hassasiyeti',ankles:'ayak bileği sorunları',back:'bel ağrısı',shoulders:'omuz kısıtlamaları',pelvic:'pelvik taban ihtiyaçları'})[l]).filter(Boolean).join(', ') + ' göz önünde bulundurarak ayarlayacağız.' : ''} Size en uygun planı belirledik.`;
+    const goals_tr = (Array.isArray(answers.goal) ? answers.goal : [answers.goal]).map(g => goalMap[g]).filter(Boolean).join(', ');
+    const focuses_tr = (Array.isArray(answers.focus) ? answers.focus : [answers.focus]).map(f => focusMap[f]).filter(Boolean).join(', ');
+    return `${age} yaş aralığında, <strong>${actMap[answers.activity] || ''}</strong> bir ${expMap[answers.experience] || ''} olarak, hedefin <strong>${goals_tr || 'genel fitness'}</strong>${focuses_tr ? ' ve odak noktanız <strong>' + focuses_tr + '</strong>' : ''}.${answers.limitations && !answers.limitations.includes('none') ? ' Planını ' + answers.limitations.map(l => ({knees:'diz hassasiyeti',ankles:'ayak bileği sorunları',back:'bel ağrısı',shoulders:'omuz kısıtlamaları',pelvic:'pelvik taban ihtiyaçları'})[l]).filter(Boolean).join(', ') + ' göz önünde bulundurarak ayarlayacağız.' : ''} Sana en uygun planı belirledik.`;
   } else {
     const goalMap = { lose: 'weight loss & toning', build: 'muscle building & strength', posture: 'posture & mobility', health: 'overall health & energy' };
     const focusMap = { core: 'core & abs', glutes: 'glutes & legs', upper: 'upper body & arms', full: 'full body' };
     const actMap = { sedentary: 'sedentary', light: 'lightly active', moderate: 'moderately active', very: 'very active' };
     const expMap = { beginner: 'complete beginner', inconsistent: 'on-and-off exerciser', sometimes: 'occasional trainer', regular: 'regular trainer' };
     
-    return `As a <strong>${actMap[answers.activity] || ''}</strong> ${age} year old ${expMap[answers.experience] || ''}, your main goal is <strong>${goalMap[answers.goal] || ''}</strong> with a focus on <strong>${focusMap[answers.focus] || ''}</strong>.${answers.limitations && !answers.limitations.includes('none') ? ' We\'ll adapt your plan to work around your ' + answers.limitations.map(l => ({knees:'knee sensitivity',ankles:'ankle issues',back:'lower back pain',shoulders:'shoulder limitations',pelvic:'pelvic floor needs'})[l]).filter(Boolean).join(', ') + '.' : ''} We've identified the perfect plan for you.`;
+    const goals_en = (Array.isArray(answers.goal) ? answers.goal : [answers.goal]).map(g => goalMap[g]).filter(Boolean).join(', ');
+    const focuses_en = (Array.isArray(answers.focus) ? answers.focus : [answers.focus]).map(f => focusMap[f]).filter(Boolean).join(', ');
+    return `As a <strong>${actMap[answers.activity] || ''}</strong> ${age} year old ${expMap[answers.experience] || ''}, your main goal is <strong>${goals_en || 'overall fitness'}</strong>${focuses_en ? ' with a focus on <strong>' + focuses_en + '</strong>' : ''}.${answers.limitations && !answers.limitations.includes('none') ? ' We\'ll adapt your plan to work around your ' + answers.limitations.map(l => ({knees:'knee sensitivity',ankles:'ankle issues',back:'lower back pain',shoulders:'shoulder limitations',pelvic:'pelvic floor needs'})[l]).filter(Boolean).join(', ') + '.' : ''} We've identified the perfect plan for you.`;
   }
   
   if (lang === 'de') {
