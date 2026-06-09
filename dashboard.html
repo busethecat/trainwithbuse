@@ -16,7 +16,59 @@
   --cream:#FDF6F0;--cream-deep:#F5EBE0;--rose:#C1848B;--rose-dark:#9B6B6F;
   --charcoal:#2D2A2E;--charcoal-light:#4A4548;--warm-white:#FFFAF7;
   --gold:#C8A96E;--nude:#D4A89A;--radius:16px;
+  /* Tema renkleri — JS tarafından override edilir */
+  --bg:#FFFAF7;--surface:#FFFFFF;--border:#F5EBE0;
+  --accent:var(--rose);--accent-soft:rgba(193,132,139,0.1);
 }
+
+/* ── FEMİNEN TEMA (default) ── */
+body.theme-female, body.theme-other, body {
+  --bg:#FFFAF7;--surface:#FFFFFF;--border:#F5EBE0;
+  --accent:var(--rose);--accent-soft:rgba(193,132,139,0.1);
+  background:var(--bg);
+}
+
+/* ── MASKÜLEN TEMA ── */
+body.theme-male {
+  --bg:#141210;--surface:#1E1A17;--border:#2A2420;
+  --accent:var(--gold);--accent-soft:rgba(200,169,110,0.12);
+  --cream:#1E1A17;--cream-deep:#2A2420;--warm-white:#141210;
+  --charcoal:#F0EBE4;--charcoal-light:#A09488;--nude:#7A6A5A;
+  background:var(--bg);color:#F0EBE4;
+}
+body.theme-male .nav{background:rgba(20,18,16,.95);border-bottom-color:#2A2420;}
+body.theme-male .nav-logo-main,body.theme-male .nav-logo-eyebrow{color:#F0EBE4;}
+body.theme-male .user-pill{border-color:#2A2420;color:#A09488;}
+body.theme-male .lang-switcher{background:rgba(240,235,228,.06);}
+body.theme-male .lang-pill{color:#A09488;}
+body.theme-male .lang-pill-active{background:#2A2420;color:#F0EBE4;box-shadow:0 1px 4px rgba(0,0,0,.4);}
+body.theme-male .btn-out{border-color:#2A2420;color:#A09488;}
+body.theme-male .btn-out:hover{border-color:var(--gold);color:var(--gold);}
+body.theme-male .sidebar{background:#1E1A17;}
+body.theme-male .sb-top{border-bottom-color:#2A2420;}
+body.theme-male .sb-section{border-bottom-color:#2A2420;}
+body.theme-male .sb-item{color:#F0EBE4;}
+body.theme-male .sb-item:hover{background:#2A2420;}
+body.theme-male .sb-item-icon{background:#2A2420;}
+body.theme-male .sb-user-name{color:#F0EBE4;}
+body.theme-male .sb-logout{border-color:#2A2420;color:#A09488;}
+body.theme-male .sb-logout:hover{border-color:var(--gold);color:var(--gold);}
+body.theme-male .hero{border-bottom-color:#2A2420;}
+body.theme-male .motto-section{border-bottom-color:#2A2420;}
+body.theme-male .mid-row{border-bottom-color:#2A2420;}
+body.theme-male .substack-section{border-right-color:#2A2420;}
+body.theme-male .programs-cta{border-bottom-color:#2A2420;}
+body.theme-male .programs-arrow{color:#2A2420;}
+body.theme-male .programs-title{color:#F0EBE4;}
+body.theme-male .programs-cta:hover .programs-title{color:var(--gold);}
+body.theme-male .workout-strip{border-bottom-color:#2A2420;}
+body.theme-male .modal{background:#1E1A17;}
+body.theme-male .modal-divider{background:#2A2420;}
+body.theme-male .finput{background:#141210;border-color:#2A2420;color:#F0EBE4;}
+body.theme-male .finput:focus{border-color:var(--gold);}
+body.theme-male .motto-quote::before{color:#2A2420;}
+body.theme-male .hero-name em{color:var(--gold);}
+body.theme-male .rose{color:var(--gold) !important;}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white);color:var(--charcoal);min-height:100vh;overflow-x:hidden}
@@ -1164,6 +1216,9 @@ function renderCycle(){
       if(midRow) midRow.style.gridTemplateColumns='1fr';
       return;
     }
+    // Female/other tema
+    document.body.classList.remove('theme-male');
+    document.body.classList.add('theme-female');
   }catch(e){}
   const data=getCycleData();
   if(!data?.startDate){
@@ -1315,6 +1370,8 @@ function loadProfile(){
   try{
     const p=JSON.parse(localStorage.getItem('twb_profile_'+(currentUser?.id||''))||'{}');
     ['fn','ln','dob','gender','h','w','goal','level','health','inj'].forEach(k=>{const el=document.getElementById('p_'+k);if(el&&p[k])el.value=p[k];});
+    // Apply gender theme
+    if(p.gender) applyTheme(p.gender);
     if(p.dob)calcAge(p.dob);
   }catch{}
 }
@@ -1499,6 +1556,27 @@ function renderFAQ(){
 function toggleFAQ(i){
   const a=document.getElementById('faa'+i);const q=a.previousElementSibling;
   const open=a.classList.toggle('open');q.classList.toggle('open',open);
+}
+
+function applyTheme(gender){
+  document.body.classList.remove('theme-male','theme-female','theme-other');
+  if(gender==='male'){
+    document.body.classList.add('theme-male');
+    // Maskülen motto
+    const mottoEl=document.querySelector('.motto-quote');
+    if(mottoEl && !mottoEl.dataset.original){
+      mottoEl.dataset.original=mottoEl.textContent;
+      const mottosM={
+        en:["Strength is earned, not given.","Train hard. Recover harder.","Your body is your most powerful tool.","Discipline is the bridge between goals and accomplishment."],
+        tr:["Güç kazanılır, verilmez.","Sert antrenman yap. Daha sert toparlan.","Vücudun en güçlü silahın.","Disiplin, hedefler ile başarı arasındaki köprüdür."],
+        de:["Stärke wird verdient, nicht geschenkt.","Hart trainieren. Noch härter erholen.","Dein Körper ist dein mächtigstes Werkzeug.","Disziplin ist die Brücke zwischen Zielen und Leistung."]
+      };
+      const list=mottosM[lang]||mottosM.en;
+      mottoEl.textContent=list[Math.floor(Math.random()*list.length)];
+    }
+  } else {
+    document.body.classList.add('theme-female');
+  }
 }
 
 async function logout(){await sb.auth.signOut();window.location.href='index.html';}
