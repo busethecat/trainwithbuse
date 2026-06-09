@@ -83,6 +83,26 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
 .nav-logo-eyebrow{font-family:'Cormorant Garamond',serif;font-size:9px;font-weight:300;letter-spacing:5px;text-transform:uppercase;color:var(--charcoal-light)}
 .nav-logo-main{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;letter-spacing:3px;color:var(--charcoal)}
 .nav-right{display:flex;align-items:center;gap:12px}
+.nav-msg-btn{position:relative;background:none;border:1.5px solid var(--cream-deep);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--charcoal-light);transition:all .3s}
+.nav-msg-btn:hover{border-color:var(--rose);color:var(--rose)}
+.nav-msg-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--rose);border:2px solid var(--warm-white);animation:pulseLive 2s infinite}
+body.theme-male .nav-msg-btn{border-color:#2A2420;color:#A09488}
+body.theme-male .nav-msg-btn:hover{border-color:var(--gold);color:var(--gold)}
+body.theme-male .nav-msg-dot{border-color:#141210}
+
+/* INBOX MODAL */
+.inbox-modal{position:fixed;top:76px;right:16px;width:380px;max-width:calc(100vw - 32px);background:white;border-radius:20px;box-shadow:0 20px 60px rgba(45,42,46,.2);z-index:300;transform:translateY(-8px) scale(.97);opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.16,1,.3,1);max-height:70vh;display:flex;flex-direction:column}
+.inbox-modal.open{transform:translateY(0) scale(1);opacity:1;pointer-events:all}
+.inbox-modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--cream-deep);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.inbox-modal-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--charcoal)}
+.inbox-modal-close{background:none;border:none;cursor:pointer;font-size:16px;color:var(--charcoal-light);transition:color .3s;padding:4px}
+.inbox-modal-close:hover{color:var(--charcoal)}
+.inbox-modal-body{overflow-y:auto;padding:12px 16px 16px;flex:1}
+.inbox-modal-overlay{display:none;position:fixed;inset:0;z-index:299}
+.inbox-modal-overlay.open{display:block}
+body.theme-male .inbox-modal{background:#1E1A17;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+body.theme-male .inbox-modal-header{border-bottom-color:#2A2420}
+body.theme-male .inbox-modal-title{color:#F0EBE4}
 .user-pill{font-size:12px;color:var(--charcoal-light);letter-spacing:1px;padding:6px 14px;border:1px solid var(--cream-deep);border-radius:50px}
 .lang-switcher{display:flex;align-items:center;gap:4px;background:rgba(45,42,46,.06);border-radius:50px;padding:4px}
 .lang-pill{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:7px 14px;border-radius:50px;color:var(--charcoal-light);transition:all .25s;cursor:pointer}
@@ -505,6 +525,11 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
   </div>
   <div class="nav-right">
     <span class="user-pill" id="userName">—</span>
+    <!-- MESAJ BUTONU -->
+    <button class="nav-msg-btn" id="navMsgBtn" onclick="toggleInboxModal()" title="Messages from Buse">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="nav-msg-dot" id="navMsgDot" style="display:none"></span>
+    </button>
     <div class="lang-switcher" id="langSwitcher">
       <a class="lang-pill lang-pill-active" onclick="setLang('en');return false" href="#">EN</a>
       <a class="lang-pill" onclick="setLang('tr');return false" href="#">TR</a>
@@ -512,6 +537,18 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
     </div>
     <button class="btn-out" id="logoutBtn" onclick="logout()">Sign Out</button>
   </div>
+
+  <!-- INBOX MODAL -->
+  <div class="inbox-modal" id="inboxModal">
+    <div class="inbox-modal-header">
+      <div class="inbox-modal-title" id="inboxModalTitle">From Buse</div>
+      <button class="inbox-modal-close" onclick="toggleInboxModal()">✕</button>
+    </div>
+    <div class="inbox-modal-body" id="inboxModalBody">
+      <div style="text-align:center;padding:32px;color:var(--nude);font-size:13px">Loading...</div>
+    </div>
+  </div>
+  <div class="inbox-modal-overlay" id="inboxModalOverlay" onclick="toggleInboxModal()"></div>
 </nav>
 
 <!-- ── PAGE ── -->
@@ -523,18 +560,6 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
     <div class="hero-name" id="heroName">Welcome, <em>loading...</em> <span class="star">✦</span></div>
     <div class="hero-date" id="heroDate">—</div>
   </section>
-
-  <!-- FROM BUSE INBOX -->
-  <div class="buse-inbox" id="buseInbox">
-    <div class="buse-inbox-header">
-      <div class="buse-inbox-label" id="inboxLabel">From Buse</div>
-      <div class="buse-inbox-badge" id="inboxBadge" style="display:none">
-        <span class="buse-unread-dot"></span>
-        <span id="inboxUnreadCount">1 new</span>
-      </div>
-    </div>
-    <div id="inboxMessages"></div>
-  </div>
 
   <!-- PROGRAMS CTA -->
   <a class="programs-cta" href="programs.html">
@@ -1693,42 +1718,70 @@ function applyBdayCardTheme(){
 }
 
 // ── FROM BUSE INBOX ──────────────────────────────────────────────────────────
+let _inboxMessages = [];
+
 async function loadBuseInbox(){
   try{
     const res = await fetch('/messages.json?v=' + Date.now());
     if(!res.ok) return;
     const data = await res.json();
-    const messages = data.messages || [];
-    if(!messages.length) return;
+    _inboxMessages = data.messages || [];
+    if(!_inboxMessages.length) return;
 
     const readKey = 'twb_read_msgs_' + (currentUser?.id || '');
     const readSet = new Set(JSON.parse(localStorage.getItem(readKey) || '[]'));
+    const unread = _inboxMessages.filter(m => !readSet.has(m.id));
 
-    const unread = messages.filter(m => !readSet.has(m.id));
-    const badge = document.getElementById('inboxBadge');
-    const unreadCount = document.getElementById('inboxUnreadCount');
-    if(unread.length > 0 && badge){
-      badge.style.display = 'flex';
-      const tl = T[lang];
-      unreadCount.textContent = unread.length + (lang==='tr' ? ' yeni' : lang==='de' ? ' neu' : ' new');
-    }
+    // Nav dot
+    const dot = document.getElementById('navMsgDot');
+    if(dot) dot.style.display = unread.length > 0 ? 'block' : 'none';
 
-    const container = document.getElementById('inboxMessages');
-    if(!container) return;
-
-    container.innerHTML = messages.map(m => {
-      const isUnread = !readSet.has(m.id);
-      const d = new Date(m.date);
-      const dateStr = d.toLocaleDateString(lang==='tr'?'tr-TR':lang==='de'?'de-DE':'en-US', {day:'numeric',month:'long',year:'numeric'});
-      return `<div class="buse-msg ${isUnread?'unread':''}" id="msg-${m.id}" onclick="toggleBuseMsg('${m.id}')">
-        <div class="buse-msg-date">${dateStr}${m.pinned?' · 📌':''}</div>
-        <div class="buse-msg-title">${m.title}</div>
-        <div class="buse-msg-preview">${m.body}</div>
-        <div class="buse-msg-full">${m.body}</div>
-      </div>`;
-    }).join('');
-
+    renderInboxModal(readSet);
   }catch(e){console.warn('Inbox load error:',e);}
+}
+
+function renderInboxModal(readSet){
+  if(!readSet){
+    const readKey = 'twb_read_msgs_' + (currentUser?.id || '');
+    readSet = new Set(JSON.parse(localStorage.getItem(readKey) || '[]'));
+  }
+  const container = document.getElementById('inboxModalBody');
+  if(!container) return;
+
+  if(!_inboxMessages.length){
+    container.innerHTML = '<div style="text-align:center;padding:32px;color:var(--nude);font-size:13px;font-style:italic">No messages yet.</div>';
+    return;
+  }
+
+  container.innerHTML = _inboxMessages.map(m => {
+    const isUnread = !readSet.has(m.id);
+    const d = new Date(m.date);
+    const dateStr = d.toLocaleDateString(lang==='tr'?'tr-TR':lang==='de'?'de-DE':'en-US',{day:'numeric',month:'long',year:'numeric'});
+    const body = typeof m.body === 'object' ? (m.body[lang] || m.body.en || '') : m.body;
+    const title = typeof m.title === 'object' ? (m.title[lang] || m.title.en || '') : m.title;
+    return `<div class="buse-msg ${isUnread?'unread':''}" id="msg-${m.id}" onclick="toggleBuseMsg('${m.id}')">
+      <div class="buse-msg-date">${dateStr}${m.pinned?' · 📌':''}</div>
+      <div class="buse-msg-title">${title}</div>
+      <div class="buse-msg-preview">${body}</div>
+      <div class="buse-msg-full">${body}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleInboxModal(){
+  const modal = document.getElementById('inboxModal');
+  const overlay = document.getElementById('inboxModalOverlay');
+  const isOpen = modal.classList.toggle('open');
+  overlay.classList.toggle('open', isOpen);
+  if(isOpen){
+    // Mark all as read
+    const readKey = 'twb_read_msgs_' + (currentUser?.id || '');
+    const readSet = new Set(_inboxMessages.map(m => m.id));
+    localStorage.setItem(readKey, JSON.stringify([...readSet]));
+    const dot = document.getElementById('navMsgDot');
+    if(dot) dot.style.display = 'none';
+    renderInboxModal(readSet);
+  }
 }
 
 function toggleBuseMsg(id){
