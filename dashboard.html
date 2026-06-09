@@ -287,11 +287,11 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
 .fav-remove:hover{color:var(--rose)}
 
 /* Birthday popup */
-.bday-overlay{display:none;position:fixed;inset:0;background:rgba(45,42,46,.85);backdrop-filter:blur(12px);z-index:800;align-items:center;justify-content:center;overflow:hidden}
+.bday-overlay{display:none;position:fixed;inset:0;background:rgba(45,42,46,.92);backdrop-filter:blur(12px);z-index:800;align-items:center;justify-content:center;overflow:hidden}
 .bday-overlay.open{display:flex;animation:mfade .4s ease}
 
 /* ── BALONLAR ── */
-.balloon{position:absolute;bottom:-150px;width:40px;height:52px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;opacity:0;animation:floatUp 6s ease-in infinite}
+.balloon{position:absolute;bottom:-150px;width:50px;height:65px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;opacity:0;animation:floatUp 5s ease-in infinite;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2))}
 .balloon::after{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:1px;height:16px;background:rgba(255,255,255,.4)}
 .balloon:nth-child(1){left:8%;background:#E8B4B8;animation-delay:0.2s;animation-duration:5.5s}
 .balloon:nth-child(2){left:18%;background:#C8A96E;animation-delay:0.8s;animation-duration:6.2s;width:34px;height:44px}
@@ -305,10 +305,10 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
 
 @keyframes floatUp{
   0%{transform:translateX(0) rotate(-5deg);opacity:0;bottom:-150px}
-  10%{opacity:.9}
-  50%{transform:translateX(20px) rotate(5deg)}
-  80%{opacity:.7}
-  100%{transform:translateX(-10px) rotate(-3deg);opacity:0;bottom:110vh}
+  5%{opacity:1}
+  50%{transform:translateX(25px) rotate(8deg);opacity:1}
+  90%{opacity:.8}
+  100%{transform:translateX(-15px) rotate(-5deg);opacity:0;bottom:105vh}
 }
 
 /* Confetti */
@@ -755,7 +755,7 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
   <div class="confetti-piece" style="left:65%;background:#C8A96E;animation-delay:.6s;border-radius:2px"></div>
   <div class="confetti-piece" style="left:80%;background:#E8B4B8;animation-delay:1.0s"></div>
   <div class="confetti-piece" style="left:90%;background:#D4A89A;animation-delay:.3s;border-radius:50%"></div>
-  <div class="bday-card" style="position:relative;z-index:2">
+  <div class="bday-card" style="position:relative;z-index:10;background:rgba(253,246,240,0.97);border-radius:24px;padding:48px 40px;text-align:center;max-width:480px;width:90%;box-shadow:0 32px 80px rgba(0,0,0,0.4)">
     <div class="bday-emoji">🎂</div>
     <div class="bday-title" id="bdayTitle">Happy Birthday, <em>you!</em></div>
     <p class="bday-text" id="bdayText">—</p>
