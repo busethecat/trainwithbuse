@@ -890,8 +890,9 @@ const questions = {
       icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
       number: "QUESTION 3",
       title: "What's your main goal?",
-      subtitle: "Pick the one that resonates most with you right now",
+      subtitle: "Select all that apply — you can pick multiple",
       key: "goal",
+      multi: true,
       options: [
         { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Lose weight & tone up", desc: "Burn fat, sculpt lean muscle", value: "lose" },
         { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Build muscle & strength", desc: "Get stronger, add muscle", value: "build" },
@@ -903,8 +904,9 @@ const questions = {
       icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
       number: "QUESTION 4",
       title: "Which area do you want to focus on?",
-      subtitle: "We'll prioritize this in your training plan",
+      subtitle: "Select all that apply",
       key: "focus",
+      multi: true,
       cols: 2,
       options: [
         { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Core & abs", value: "core" },
@@ -1974,9 +1976,15 @@ function showResult() {
     ${plan !== 'program' ? '' : `<a href="https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b" class="btn-result-secondary" target="_blank">${callLabel}</a>`}
     ${(plan === 'program' || plan === 'movement' || plan === 'sculpt' || plan === 'strength' || plan === 'group') ? '' : `<a href="welcome.html" class="btn-result-secondary" style="margin-top:8px">${lang === 'tr' ? 'Veya Lab Sistemine gir' : lang === 'de' ? 'Oder Lab System betreten' : 'Or enter the Lab System'}</a>`}
     <div class="email-capture" id="emailCapture">
+      <div style="background:linear-gradient(135deg,rgba(200,169,110,0.12),rgba(200,169,110,0.06));border:1px solid rgba(200,169,110,0.3);border-radius:14px;padding:18px 20px;margin-bottom:16px;text-align:center;">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C8A96E;margin-bottom:8px;">${lang === 'tr' ? 'HOŞGELDİN HEDİYEN' : lang === 'de' ? 'WILLKOMMENSGESCHENK' : 'WELCOME GIFT'}</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#2D2A2E;margin-bottom:10px;">${lang === 'tr' ? 'İlk programında %15 indirim' : lang === 'de' ? '15 % Rabatt auf dein erstes Programm' : '15% off your first program'}</div>
+        <div style="font-family:monospace;font-size:22px;font-weight:700;letter-spacing:5px;color:#C8A96E;background:#2D2A2E;display:inline-block;padding:8px 20px;border-radius:8px;">LABWELCOME15</div>
+        <div style="font-size:11px;color:#888;margin-top:8px;">${lang === 'tr' ? '7 gün geçerli · ödeme sırasında uygula' : lang === 'de' ? '7 Tage gültig · beim Checkout eingeben' : 'Valid 7 days · apply at checkout'}</div>
+      </div>
       <div class="email-capture-tag">${lang === 'tr' ? 'Ücretsiz' : lang === 'de' ? 'Kostenlos' : 'Free'}</div>
       <div class="email-capture-title">${lang === 'tr' ? 'Sonucunu kaydet & haftalık bilim ipuçları al' : lang === 'de' ? 'Ergebnis speichern & wöchentliche Tipps erhalten' : 'Save your result & get weekly science tips'}</div>
-      <div class="email-capture-sub">${lang === 'tr' ? 'Buse sana özel hareket bilimi ipuçları göndersin.' : lang === 'de' ? 'Buse schickt dir persönliche Bewegungswissenschafts-Tipps.' : "Buse will send you personalised movement science tips — no spam, ever."}</div>
+      <div class="email-capture-sub">${lang === 'tr' ? 'Buse sana haftalık hareket bilimi içerikleri göndersin — spam yok, söz.' : lang === 'de' ? 'Buse schickt dir persönlich wissenschaftlich fundierte Bewegungstipps — kein Spam, versprochen.' : "Buse will send you personalised movement science tips — no spam, ever."}</div>
       <div class="email-capture-row">
         <input class="email-capture-input" type="email" id="quizEmail" placeholder="${lang === 'tr' ? 'E-posta adresin' : lang === 'de' ? 'Deine E-Mail-Adresse' : 'Your email address'}">
         <button class="email-capture-btn" onclick="submitQuizEmail('${plan}', '${r.title}')">${lang === 'tr' ? 'Gönder →' : lang === 'de' ? 'Senden →' : 'Send →'}</button>
@@ -2090,18 +2098,25 @@ async function submitQuizEmail(plan, planTitle) {
   }
   const btn = document.querySelector('.email-capture-btn');
   if (btn) { btn.disabled = true; btn.textContent = '...'; }
-  
+
+  // Also send to Formspree for your own records
+  fetch('https://formspree.io/f/mnjbpvbl', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ email, quiz_result: planTitle, quiz_plan_key: plan, language: lang, source: 'quiz_result' })
+  }).catch(() => {});
+
+  // Send personalised email to user via Cloudflare Worker
   try {
-    await fetch('https://formspree.io/f/mnjbpvbl', {
+    await fetch('https://quiz-email-sender.trainwithbuse.workers.dev', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: email,
-        quiz_result: planTitle,
-        quiz_plan_key: plan,
-        language: lang,
-        source: 'quiz_result',
-        _subject: 'New Quiz Lead — Train With Buse: ' + planTitle
+        planTitle: planTitle,
+        planKey: plan,
+        lang: lang,
+        firstName: ''
       })
     });
     const row = document.querySelector('.email-capture-row');
@@ -2111,7 +2126,7 @@ async function submitQuizEmail(plan, planTitle) {
   } catch(e) {
     if (btn) {
       btn.disabled = false;
-      btn.textContent = lang === 'tr' ? 'Gondir ->' : lang === 'de' ? 'Senden ->' : 'Send ->';
+      btn.textContent = lang === 'tr' ? 'Gönder →' : lang === 'de' ? 'Senden →' : 'Send →';
     }
   }
 }
