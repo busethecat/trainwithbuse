@@ -119,6 +119,21 @@
       <label data-i18n="passwordLabel">Password</label>
       <input type="password" id="signupPassword" data-i18n-ph="passwordPh" placeholder="Min. 8 characters">
     </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group">
+        <label data-i18n="dobLabel">Date of Birth</label>
+        <input type="date" id="signupDob">
+      </div>
+      <div class="form-group">
+        <label data-i18n="genderLabel">Gender</label>
+        <select id="signupGender" style="width:100%;padding:13px 18px;border:1.5px solid var(--cream-deep);border-radius:var(--radius);font-family:'Outfit',sans-serif;font-size:15px;font-weight:300;color:var(--charcoal);background:var(--warm-white);outline:none;transition:border-color .3s;appearance:none">
+          <option value="">—</option>
+          <option value="female" data-i18n="optFemale">Female</option>
+          <option value="male" data-i18n="optMale">Male</option>
+          <option value="other" data-i18n="optOther">Other</option>
+        </select>
+      </div>
+    </div>
     <button class="btn" id="signupBtn" onclick="handleSignup()" data-i18n="createAccount">Create Account</button>
     <div class="divider" data-i18n="or">or</div>
     <button class="btn-google" onclick="handleGoogle()">
@@ -142,7 +157,7 @@ const T = {
     successSignup:'✓ Account created! Check your email to confirm.',
     successForgot:'✓ Password reset link sent to your email.',
     errEmailFirst:'Please enter your email address first.',
-    loginLoading:'Signing in...', signupLoading:'Creating account...',
+    loginLoading:'Signing in...', signupLoading:'Creating account...', dobLabel:'Date of Birth', genderLabel:'Gender', optFemale:'Female', optMale:'Male', optOther:'Other / Prefer not to say',
   },
   tr: {
     back:'Ana Sayfa', portal:'Üye Portalı', signin:'Giriş Yap', register:'Kayıt Ol',
@@ -155,7 +170,7 @@ const T = {
     successSignup:'✓ Hesabın oluşturuldu! E-postanı kontrol et.',
     successForgot:'✓ Şifre sıfırlama linki e-postana gönderildi.',
     errEmailFirst:'Önce e-posta adresini gir.',
-    loginLoading:'Giriş yapılıyor...', signupLoading:'Hesap oluşturuluyor...',
+    loginLoading:'Giriş yapılıyor...', signupLoading:'Hesap oluşturuluyor...', dobLabel:'Doğum Tarihi', genderLabel:'Cinsiyet', optFemale:'Kadın', optMale:'Erkek', optOther:'Diğer',
   },
   de: {
     back:'Startseite', portal:'Mitgliederbereich', signin:'Anmelden', register:'Registrieren',
@@ -168,7 +183,7 @@ const T = {
     successSignup:'✓ Konto erstellt! Bitte E-Mail bestätigen.',
     successForgot:'✓ Passwort-Reset-Link wurde gesendet.',
     errEmailFirst:'Bitte zuerst E-Mail-Adresse eingeben.',
-    loginLoading:'Anmeldung läuft...', signupLoading:'Konto wird erstellt...',
+    loginLoading:'Anmeldung läuft...', signupLoading:'Konto wird erstellt...', dobLabel:'Geburtsdatum', genderLabel:'Geschlecht', optFemale:'Weiblich', optMale:'Männlich', optOther:'Andere',
   }
 };
 
@@ -221,13 +236,37 @@ async function handleSignup() {
   const name = document.getElementById('signupName').value.trim();
   const email = document.getElementById('signupEmail').value.trim();
   const password = document.getElementById('signupPassword').value;
+  const dob = document.getElementById('signupDob').value;
+  const gender = document.getElementById('signupGender').value;
   if (!name || !email || !password) return showMsg('signupMsg', t('errFields'), 'error');
   if (password.length < 8) return showMsg('signupMsg', t('errPassword'), 'error');
   const btn = document.getElementById('signupBtn');
   btn.disabled = true; btn.textContent = t('signupLoading');
-  const { error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name } } });
-  if (error) showMsg('signupMsg', error.message, 'error');
-  else showMsg('signupMsg', t('successSignup'), 'success');
+  const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name } } });
+  if (error) {
+    showMsg('signupMsg', error.message, 'error');
+    btn.disabled = false; btn.textContent = t('createAccount');
+    return;
+  }
+  // Save core profile to Supabase
+  if (data?.user) {
+    const nameParts = name.split(' ');
+    await sb.from('user_profiles').upsert({
+      user_id: data.user.id,
+      email: email,
+      first_name: nameParts[0] || name,
+      last_name: nameParts.slice(1).join(' ') || '',
+      date_of_birth: dob || null,
+      gender: gender || null,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id' });
+    // Save to localStorage for immediate use
+    const profile = { fn: nameParts[0] || name, ln: nameParts.slice(1).join(' ') || '', dob: dob, gender: gender };
+    localStorage.setItem('twb_profile_' + data.user.id, JSON.stringify(profile));
+    // Save gender theme immediately
+    if (gender) localStorage.setItem('twb_theme_gender', gender);
+  }
+  showMsg('signupMsg', t('successSignup'), 'success');
   btn.disabled = false; btn.textContent = t('createAccount');
 }
 

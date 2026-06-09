@@ -641,9 +641,46 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
       <button class="modal-x" onclick="closeModal('profileModal')">✕</button>
     </div>
     <div class="modal-b">
-      <div class="frow"><div class="fg"><label class="flabel" id="lbl_fn">First Name</label><input class="finput" id="p_fn" type="text"></div><div class="fg"><label class="flabel" id="lbl_ln">Last Name</label><input class="finput" id="p_ln" type="text"></div></div>
-      <div class="frow"><div class="fg"><label class="flabel" id="lbl_dob">Date of Birth</label><input class="finput" id="p_dob" type="date"></div><div class="fg"><label class="flabel" id="lbl_gender">Gender</label><select class="finput" id="p_gender"><option value="">—</option><option value="female" id="opt_f">Female</option><option value="male" id="opt_m">Male</option><option value="other" id="opt_o">Other</option></select></div></div>
-      <div class="frow3"><div class="fg"><label class="flabel" id="lbl_h">Height (cm)</label><input class="finput" id="p_h" type="number"></div><div class="fg"><label class="flabel" id="lbl_w">Weight (kg)</label><input class="finput" id="p_w" type="number"></div><div class="fg"><label class="flabel" id="lbl_age">Age</label><input class="finput" id="p_age" type="number" readonly style="background:var(--cream);color:var(--nude)"></div></div>
+      <!-- Read-only: name, dob, gender (from register) -->
+      <div class="frow">
+        <div class="fg"><label class="flabel" id="lbl_fn">First Name</label><input class="finput" id="p_fn" type="text" readonly style="background:var(--cream);color:var(--charcoal-light)"></div>
+        <div class="fg"><label class="flabel" id="lbl_ln">Last Name</label><input class="finput" id="p_ln" type="text" readonly style="background:var(--cream);color:var(--charcoal-light)"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="flabel" id="lbl_dob">Date of Birth</label><input class="finput" id="p_dob" type="date" readonly style="background:var(--cream);color:var(--charcoal-light)"></div>
+        <div class="fg"><label class="flabel" id="lbl_gender">Gender</label><input class="finput" id="p_gender_display" type="text" readonly style="background:var(--cream);color:var(--charcoal-light)"><input type="hidden" id="p_gender"></div>
+      </div>
+      <div style="font-size:11px;color:var(--nude);letter-spacing:1px;margin-bottom:20px;margin-top:-8px" id="profileReadonlyNote">Name, date of birth and gender cannot be changed.</div>
+      <div class="modal-divider"></div>
+
+      <!-- Editable: body metrics -->
+      <div class="frow3">
+        <div class="fg"><label class="flabel" id="lbl_h">Height (cm)</label><input class="finput" id="p_h" type="number"></div>
+        <div class="fg"><label class="flabel" id="lbl_w">Weight (kg)</label><input class="finput" id="p_w" type="number"></div>
+        <div class="fg"><label class="flabel" id="lbl_age">Age</label><input class="finput" id="p_age" type="number" readonly style="background:var(--cream);color:var(--nude)"></div>
+      </div>
+
+      <!-- Gender-specific metrics -->
+      <div id="femaleMetrics">
+        <div class="frow3">
+          <div class="fg"><label class="flabel" id="lbl_waist">Waist (cm)</label><input class="finput" id="p_waist" type="number"></div>
+          <div class="fg"><label class="flabel" id="lbl_hips">Hips (cm)</label><input class="finput" id="p_hips" type="number"></div>
+          <div class="fg"><label class="flabel" id="lbl_chest">Chest (cm)</label><input class="finput" id="p_chest" type="number"></div>
+        </div>
+      </div>
+      <div id="maleMetrics" style="display:none">
+        <div class="frow">
+          <div class="fg"><label class="flabel" id="lbl_bodyfat">Body Fat %</label><input class="finput" id="p_bodyfat" type="number" step="0.1"></div>
+          <div class="fg"><label class="flabel" id="lbl_muscle">Muscle Mass (kg)</label><input class="finput" id="p_muscle" type="number" step="0.1"></div>
+        </div>
+        <div class="frow3">
+          <div class="fg"><label class="flabel">Bench 1RM (kg)</label><input class="finput" id="p_bench" type="number"></div>
+          <div class="fg"><label class="flabel">Squat 1RM (kg)</label><input class="finput" id="p_squat" type="number"></div>
+          <div class="fg"><label class="flabel">Deadlift 1RM (kg)</label><input class="finput" id="p_deadlift" type="number"></div>
+        </div>
+      </div>
+
+      <div class="modal-divider"></div>
       <div class="fg"><label class="flabel" id="lbl_goal">My Goal</label><input class="finput" id="p_goal" type="text"></div>
       <div class="fg"><label class="flabel" id="lbl_level">Fitness Level</label><select class="finput" id="p_level"><option value="">—</option><option value="beginner" id="opt_beg">Beginner</option><option value="intermediate" id="opt_int">Intermediate</option><option value="advanced" id="opt_adv">Advanced</option></select></div>
       <div class="fg"><label class="flabel" id="lbl_health">Health Notes</label><textarea class="finput note-ta" id="p_health" style="min-height:70px"></textarea></div>
@@ -1536,9 +1573,19 @@ function closeBusePop(){document.getElementById('busePop').classList.remove('ope
 function loadProfile(){
   try{
     const p=JSON.parse(localStorage.getItem('twb_profile_'+(currentUser?.id||''))||'{}');
-    ['fn','ln','dob','gender','h','w','goal','level','health','inj'].forEach(k=>{const el=document.getElementById('p_'+k);if(el&&p[k])el.value=p[k];});
-    // Apply gender theme
-    if(p.gender) applyTheme(p.gender);
+    // Read-only alanlar
+    ['fn','ln','dob'].forEach(k=>{const el=document.getElementById('p_'+k);if(el&&p[k])el.value=p[k];});
+    if(p.gender){
+      document.getElementById('p_gender').value=p.gender;
+      const gDisplay=document.getElementById('p_gender_display');
+      if(gDisplay){const gMap={female:'Female / Kadın',male:'Male / Erkek',other:'Other'};gDisplay.value=gMap[p.gender]||p.gender;}
+      // Cinsiyet bazlı metrikler
+      document.getElementById('femaleMetrics').style.display=p.gender==='male'?'none':'block';
+      document.getElementById('maleMetrics').style.display=p.gender==='male'?'block':'none';
+      applyTheme(p.gender);
+    }
+    // Editable alanlar
+    ['h','w','goal','level','health','inj','waist','hips','chest','bodyfat','muscle','bench','squat','deadlift'].forEach(k=>{const el=document.getElementById('p_'+k);if(el&&p[k])el.value=p[k];});
     if(p.dob)calcAge(p.dob);
   }catch{}
 }
@@ -1546,7 +1593,10 @@ document.getElementById('p_dob')?.addEventListener('change',e=>calcAge(e.target.
 function calcAge(dob){if(!dob)return;const age=Math.floor((new Date()-new Date(dob))/(864e5*365.25));const el=document.getElementById('p_age');if(el)el.value=age;}
 async function saveProfile(){
   const p={};
-  ['fn','ln','dob','gender','h','w','goal','level','health','inj'].forEach(k=>{const el=document.getElementById('p_'+k);if(el)p[k]=el.value;});
+  ['h','w','goal','level','health','inj','waist','hips','chest','bodyfat','muscle','bench','squat','deadlift'].forEach(k=>{const el=document.getElementById('p_'+k);if(el)p[k]=el.value;});
+  // Read-only alanları koru
+  const stored=JSON.parse(localStorage.getItem('twb_profile_'+(currentUser?.id||''))||'{}');
+  p.fn=stored.fn||p.fn;p.ln=stored.ln||p.ln;p.dob=stored.dob||p.dob;p.gender=stored.gender||p.gender;
   localStorage.setItem('twb_profile_'+(currentUser?.id||''),JSON.stringify(p));
   await sb.from('user_profiles').upsert({
     user_id:currentUser.id,email:currentUser.email,
