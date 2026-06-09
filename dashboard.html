@@ -1106,6 +1106,9 @@ const {createClient}=supabase;
 const sb=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 let currentUser=null,_purchases=new Set(),_progress={},_purchasesRaw=[];
 
+// Apply saved theme immediately to avoid flash
+applyTheme(null);
+
 sb.auth.getSession().then(({data:{session}})=>{
   if(!session){window.location.href='login.html';return;}
   currentUser=session.user;
