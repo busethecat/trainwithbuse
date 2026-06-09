@@ -1452,6 +1452,32 @@ function checkBirthday(){
       applyBdayCardTheme();
     },800);
     localStorage.setItem(key,'1');
+
+    // Inbox'a doğum günü mesajı ekle
+    const bdayMsgKey = 'twb_bday_msg_' + now.getFullYear() + '_' + (currentUser?.id||'');
+    if(!localStorage.getItem(bdayMsgKey)){
+      const bdayInboxMsg = {
+        id: 'bday-' + now.getFullYear(),
+        date: now.toISOString().split('T')[0],
+        title: {
+          en: '🎂 Happy Birthday from Buse!',
+          tr: '🎂 Buse'den İyi Doğum Günleri!',
+          de: '🎂 Alles Gute zum Geburtstag von Buse!'
+        },
+        body: {
+          en: 'Today is your day and I wanted to be the first to celebrate you. Your body has carried you through another year — that is worth honoring. Take a deep breath, move with joy, and know that I am cheering for you. With love — Buse 🌸',
+          tr: 'Bugün senin günün ve seni ilk kutlayan ben olmak istedim. Bedenin seni bir yıl daha taşıdı — bu kutlanmayı hak ediyor. Derin bir nefes al, neşeyle hareket et ve bil ki ben senin için seviniyorum. Sevgiyle — Buse 🌸',
+          de: 'Heute ist dein Tag und ich wollte die Erste sein, die dich feiert. Dein Körper hat dich durch ein weiteres Jahr getragen — das verdient eine Feier. Atme tief durch, beweg dich mit Freude und wisse, dass ich für dich da bin. Mit Liebe — Buse 🌸'
+        },
+        pinned: true
+      };
+      _inboxMessages.unshift(bdayInboxMsg);
+      renderInboxModal();
+      // Nav dot
+      const dot = document.getElementById('navMsgDot');
+      if(dot) dot.style.display = 'block';
+      localStorage.setItem(bdayMsgKey,'1');
+    }
   }catch{}
 }
 function closeBday(){document.getElementById('bdayOverlay').classList.remove('open');}
