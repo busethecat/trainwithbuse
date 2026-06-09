@@ -1053,9 +1053,10 @@ const questions = {
     {
       icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
       number: "SORU 3",
-      title: "Ana hedefiniz ne?",
-      subtitle: "Şu an size en çok hitap edeni seçin",
+      title: "Hedefin ne?",
+      subtitle: "Birden fazla seçebilirsin",
       key: "goal",
+      multi: true,
       options: [
         { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Kilo vermek & sıkılaşmak", desc: "Yağ yakmak, kas formunu çizmek", value: "lose" },
         { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Kas yapmak & güçlenmek", desc: "Daha güçlü olmak, kas eklemek", value: "build" },
@@ -1066,9 +1067,10 @@ const questions = {
     {
       icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
       number: "SORU 4",
-      title: "Hangi bölgeye odaklanmak istersiniz?",
-      subtitle: "Antrenman planınızda buraya öncelik vereceğiz",
+      title: "Hangi bölgelere odaklanmak istiyorsun?",
+      subtitle: "Birden fazla seçebilirsin",
       key: "focus",
+      multi: true,
       cols: 2,
       options: [
         { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Karın & core", value: "core" },
@@ -1215,9 +1217,10 @@ const questions = {
     {
       icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
       number: "FRAGE 3",
-      title: "Was ist dein Hauptziel?",
-      subtitle: "Wähle das, was dich gerade am meisten anspricht",
+      title: "Was ist dein Ziel?",
+      subtitle: "Du kannst mehrere auswählen",
       key: "goal",
+      multi: true,
       options: [
         { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Abnehmen & straffen", desc: "Fett verbrennen, schlanke Muskeln formen", value: "lose" },
         { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>', label: "Muskeln aufbauen & stärker werden", desc: "Stärker werden, Muskelmasse aufbauen", value: "build" },
@@ -1228,9 +1231,10 @@ const questions = {
     {
       icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
       number: "FRAGE 4",
-      title: "Auf welchen Bereich möchtest du dich konzentrieren?",
-      subtitle: "Wir priorisieren das in deinem Trainingsplan",
+      title: "Welche Körperzonen willst du trainieren?",
+      subtitle: "Du kannst mehrere auswählen",
       key: "focus",
+      multi: true,
       cols: 2,
       options: [
         { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>', label: "Core & Bauch", value: "core" },
