@@ -2127,6 +2127,11 @@ async function submitQuizEmail(plan, planTitle) {
     body: JSON.stringify({ email, quiz_result: planTitle, quiz_plan_key: plan, language: lang, source: 'quiz_result' })
   }).catch(() => {});
 
+  // Quiz sonucunu localStorage'a kaydet
+  localStorage.setItem('twb_quiz_plan', plan);
+  localStorage.setItem('twb_quiz_title', planTitle);
+  localStorage.setItem('twb_quiz_lang', lang);
+
   // Send personalised email to user via Cloudflare Worker
   try {
     await fetch('https://quiz-email-sender.trainwithbuse.workers.dev', {

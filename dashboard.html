@@ -1456,24 +1456,51 @@ function checkBirthday(){
     // Inbox'a doğum günü mesajı ekle
     const bdayMsgKey = 'twb_bday_msg_' + now.getFullYear() + '_' + (currentUser?.id||'');
     if(!localStorage.getItem(bdayMsgKey)){
+      const quizPlan = localStorage.getItem('twb_quiz_plan') || '';
+      const quizTitle = localStorage.getItem('twb_quiz_title') || '';
+      const hasBundle = ['movement','sculpt','strength','metabolic'].includes(quizPlan);
+
+      const labNames = {
+        en: quizTitle || 'your Lab',
+        tr: quizTitle || 'Lab programin',
+        de: quizTitle || 'dein Lab'
+      };
+
+      const discountLine = {
+        en: quizPlan
+          ? `As your birthday gift: get 15% off ${labNames.en} with code BDAY15, or 25% off any bundle with code BDAYBUNDLE25. Valid for 7 days. 🎁`
+          : `As your birthday gift: get 15% off any Lab with code BDAY15, or 25% off any bundle with code BDAYBUNDLE25. Valid for 7 days. 🎁`,
+        tr: quizPlan
+          ? `Dogum gunu hediyeniz: ${labNames.tr} icin BDAY15 koduyla %15, herhangi bir bundle icin BDAYBUNDLE25 koduyla %25 indirim. 7 gun gecerli. 🎁`
+          : `Dogum gunu hediyeniz: herhangi bir Lab icin BDAY15 koduyla %15, bundle icin BDAYBUNDLE25 koduyla %25 indirim. 7 gun gecerli. 🎁`,
+        de: quizPlan
+          ? `Als Geburtstagsgeschenk: 15% Rabatt auf ${labNames.de} mit Code BDAY15, oder 25% auf ein Bundle mit BDAYBUNDLE25. 7 Tage gueltig. 🎁`
+          : `Als Geburtstagsgeschenk: 15% Rabatt auf jedes Lab mit Code BDAY15, oder 25% auf ein Bundle mit BDAYBUNDLE25. 7 Tage gueltig. 🎁`
+      };
+
       const bdayInboxMsg = {
         id: 'bday-' + now.getFullYear(),
         date: now.toISOString().split('T')[0],
         title: {
-          en: '🎂 Happy Birthday from Buse!',
-          tr: '🎂 İyi ki doğdun!',
-          de: '🎂 Alles Gute zum Geburtstag von Buse!'
+          en: '🎂 Happy Birthday — a gift from me to you',
+          tr: '🎂 Iyi ki dogdun — sana ozel bir hediye',
+          de: '🎂 Alles Gute — ein Geschenk von mir'
         },
         body: {
-          en: 'Today is your day and I wanted to be the first to celebrate you. Your body has carried you through another year — that is worth honoring. Take a deep breath, move with joy, and know that I am cheering for you. With love — Buse 🌸',
-          tr: 'Bugün senin günün ve seni ilk kutlayan ben olmak istedim. Bedenin seni bir yıl daha taşıdı — bu kutlanmayı hak ediyor. Derin bir nefes al, neşeyle hareket et ve bil ki ben senin için seviniyorum. Sevgiyle — Buse 🌸',
-          de: 'Heute ist dein Tag und ich wollte die Erste sein, die dich feiert. Dein Körper hat dich durch ein weiteres Jahr getragen — das verdient eine Feier. Atme tief durch, beweg dich mit Freude und wisse, dass ich für dich da bin. Mit Liebe — Buse 🌸'
+          en: `Today is your day. Your body carried you through another year of growth, challenge, and becoming — that deserves to be celebrated. Move with joy today, rest without guilt, and know that showing up for yourself is the most powerful thing you can do.
+
+${discountLine.en}`,
+          tr: `Bugun senin gunun. Bedenin seni bir yil daha buyume, zorluk ve donusum icinden tasidi — bu kutlanmayi hak ediyor. Bugun neseyle hareket et, suclanmadan dinlen ve kendine zaman ayirmanin yapabileceginin en guclu seyi oldugunu bil.
+
+${discountLine.tr}`,
+          de: `Heute ist dein Tag. Dein Koerper hat dich durch ein weiteres Jahr des Wachstums, der Herausforderungen und der Veraenderung getragen — das verdient eine Feier. Beweg dich heute mit Freude, ruh dich ohne schlechtes Gewissen aus.
+
+${discountLine.de}`
         },
         pinned: true
       };
       _inboxMessages.unshift(bdayInboxMsg);
       renderInboxModal();
-      // Nav dot
       const dot = document.getElementById('navMsgDot');
       if(dot) dot.style.display = 'block';
       localStorage.setItem(bdayMsgKey,'1');
