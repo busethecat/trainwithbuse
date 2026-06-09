@@ -55,7 +55,7 @@ h1,h2,h3,h4 {
 nav {
   position: fixed; top: 0; width: 100%; z-index: 1000;
   padding: 20px 60px;
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex; align-items: center; gap: 20px;
   transition: all .4s ease; background: transparent;
 }
 nav.scrolled {
@@ -473,7 +473,7 @@ footer {
   background: var(--charcoal);
   border-top: 1px solid rgba(255,255,255,.05);
   padding: 40px 60px;
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap; gap: 16px;
 }
 footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px; }
 .footer-links { display: flex; gap: 24px; }
@@ -515,16 +515,16 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
   .lang-pill:hover{color:var(--charcoal);background:rgba(45,42,46,.07)}
   .lang-pill-active{background:white;color:var(--charcoal);font-weight:500;box-shadow:0 1px 4px rgba(45,42,46,.1)}
   .lang-pill-active:hover{background:white}
-  .back-home{position:fixed;top:18px;left:20px;z-index:10001;font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;letter-spacing:.5px;text-decoration:none;color:currentColor;opacity:.6;transition:opacity .2s}
+  .back-home{font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.8;transition:all .3s}
   .back-home:hover{opacity:1}
 </style>
 </head>
 <body>
 
-<a href="index.html" class="back-home">← Home</a>
 
 <!-- NAV -->
 <nav id="navbar">
+  <a href="index.html" class="back-home">← Home</a>
   <a href="index.html" class="nav-logo">BUSE</a>
   <ul class="nav-links" id="navLinks">
     <li><a href="about.html" class="nav-active">About</a></li>

@@ -273,13 +273,12 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
   .modal-h{padding:24px 24px 0}.modal-b{padding:20px 24px 36px}
   .upcoming-banner{margin:0;border-radius:16px}
 }
-  .back-home{position:fixed;top:18px;left:20px;z-index:10001;font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;letter-spacing:.5px;text-decoration:none;color:currentColor;opacity:.6;transition:opacity .2s}
+  .back-home{font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.8;transition:all .3s}
   .back-home:hover{opacity:1}
 </style>
 </head>
 <body>
 
-<a href="index.html" class="back-home">← Home</a>
 
 <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
 
@@ -394,6 +393,7 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
 <!-- ── NAV ── -->
 <nav class="nav">
   <div class="nav-left">
+    <a href="index.html" class="back-home">← Home</a>
     <button class="hamburger" onclick="openSidebar()"><span></span><span></span><span></span></button>
     <a href="index.html" class="nav-logo">
       <span class="nav-logo-eyebrow">Train With</span>
