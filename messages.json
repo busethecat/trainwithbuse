@@ -1,0 +1,20 @@
+{
+  "messages": [
+    {
+      "id": "msg-001",
+      "date": "2026-06-09",
+      "title": "Welcome to the Lab System 🌸",
+      "body": "I'm so glad you're here. This dashboard is your personal space — track your progress, follow your programs, and know that every session counts. You've already taken the hardest step. — Buse",
+      "type": "welcome",
+      "pinned": true
+    }
+  ]
+}
+
+{
+  "id": "msg-002",
+  "date": "2026-06-10",
+  "title": "Bu haftanın programı 💪",
+  "body": "Mesajın içeriği...",
+  "pinned": false
+}

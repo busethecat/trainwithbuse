@@ -260,6 +260,28 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
 .faq-a{font-size:14px;color:var(--charcoal-light);line-height:1.8;display:none;padding-top:14px}
 .faq-a.open{display:block}
 
+/* ── FROM BUSE INBOX ── */
+.buse-inbox{padding:44px 0;border-bottom:1px solid var(--cream-deep)}
+.buse-inbox-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.buse-inbox-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--nude)}
+.buse-inbox-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--rose);letter-spacing:1px}
+.buse-unread-dot{width:8px;height:8px;border-radius:50%;background:var(--rose);animation:pulseLive 2s infinite;flex-shrink:0}
+.buse-msg{background:white;border:1px solid var(--cream-deep);border-radius:16px;padding:24px 28px;cursor:pointer;transition:all .3s;position:relative}
+.buse-msg:hover{border-color:var(--blush);box-shadow:0 4px 20px rgba(200,160,155,.15);transform:translateY(-1px)}
+.buse-msg.unread{border-color:rgba(193,132,139,.3);background:linear-gradient(135deg,rgba(232,180,184,.06),white)}
+.buse-msg.unread::before{content:'';position:absolute;top:16px;right:16px;width:8px;height:8px;border-radius:50%;background:var(--rose)}
+.buse-msg-date{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--nude);margin-bottom:8px}
+.buse-msg-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--charcoal);margin-bottom:8px;line-height:1.3}
+.buse-msg-preview{font-size:13px;color:var(--charcoal-light);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.buse-msg-full{font-size:14px;color:var(--charcoal-light);line-height:1.8;margin-top:12px;display:none;border-top:1px solid var(--cream-deep);padding-top:12px}
+.buse-msg.open .buse-msg-full{display:block}
+.buse-msg.open .buse-msg-preview{display:none}
+body.theme-male .buse-inbox{border-bottom-color:#2A2420}
+body.theme-male .buse-msg{background:#1E1A17;border-color:#2A2420}
+body.theme-male .buse-msg.unread{background:linear-gradient(135deg,rgba(200,169,110,.08),#1E1A17)}
+body.theme-male .buse-msg-title{color:#F0EBE4}
+body.theme-male .buse-msg-full{border-top-color:#2A2420}
+
 /* Legal text */
 .legal{font-size:14px;color:var(--charcoal-light);line-height:1.9}
 .legal h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--charcoal);margin:28px 0 10px}
@@ -501,6 +523,18 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
     <div class="hero-name" id="heroName">Welcome, <em>loading...</em> <span class="star">✦</span></div>
     <div class="hero-date" id="heroDate">—</div>
   </section>
+
+  <!-- FROM BUSE INBOX -->
+  <div class="buse-inbox" id="buseInbox">
+    <div class="buse-inbox-header">
+      <div class="buse-inbox-label" id="inboxLabel">From Buse</div>
+      <div class="buse-inbox-badge" id="inboxBadge" style="display:none">
+        <span class="buse-unread-dot"></span>
+        <span id="inboxUnreadCount">1 new</span>
+      </div>
+    </div>
+    <div id="inboxMessages"></div>
+  </div>
 
   <!-- PROGRAMS CTA -->
   <a class="programs-cta" href="programs.html">
@@ -1169,6 +1203,7 @@ sb.auth.getSession().then(({data:{session}})=>{
   renderMotto();
   renderSubstack();
   renderCycle();
+    loadBuseInbox();
   renderCounter();
   // Then load Supabase data for purchases/progress
   loadData();
@@ -1655,6 +1690,65 @@ function applyBdayCardTheme(){
     if(text) text.style.cssText = 'color:#4A4548 !important';
     if(btn){ btn.style.background='#2D2A2E'; btn.style.color='#FDF6F0'; btn.style.borderColor='#2D2A2E'; }
   }
+}
+
+// ── FROM BUSE INBOX ──────────────────────────────────────────────────────────
+async function loadBuseInbox(){
+  try{
+    const res = await fetch('/messages.json?v=' + Date.now());
+    if(!res.ok) return;
+    const data = await res.json();
+    const messages = data.messages || [];
+    if(!messages.length) return;
+
+    const readKey = 'twb_read_msgs_' + (currentUser?.id || '');
+    const readSet = new Set(JSON.parse(localStorage.getItem(readKey) || '[]'));
+
+    const unread = messages.filter(m => !readSet.has(m.id));
+    const badge = document.getElementById('inboxBadge');
+    const unreadCount = document.getElementById('inboxUnreadCount');
+    if(unread.length > 0 && badge){
+      badge.style.display = 'flex';
+      const tl = T[lang];
+      unreadCount.textContent = unread.length + (lang==='tr' ? ' yeni' : lang==='de' ? ' neu' : ' new');
+    }
+
+    const container = document.getElementById('inboxMessages');
+    if(!container) return;
+
+    container.innerHTML = messages.map(m => {
+      const isUnread = !readSet.has(m.id);
+      const d = new Date(m.date);
+      const dateStr = d.toLocaleDateString(lang==='tr'?'tr-TR':lang==='de'?'de-DE':'en-US', {day:'numeric',month:'long',year:'numeric'});
+      return `<div class="buse-msg ${isUnread?'unread':''}" id="msg-${m.id}" onclick="toggleBuseMsg('${m.id}')">
+        <div class="buse-msg-date">${dateStr}${m.pinned?' · 📌':''}</div>
+        <div class="buse-msg-title">${m.title}</div>
+        <div class="buse-msg-preview">${m.body}</div>
+        <div class="buse-msg-full">${m.body}</div>
+      </div>`;
+    }).join('');
+
+  }catch(e){console.warn('Inbox load error:',e);}
+}
+
+function toggleBuseMsg(id){
+  const el = document.getElementById('msg-' + id);
+  if(!el) return;
+  const wasOpen = el.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.buse-msg.open').forEach(m => m.classList.remove('open'));
+  if(!wasOpen) el.classList.add('open');
+  // Mark as read
+  const readKey = 'twb_read_msgs_' + (currentUser?.id || '');
+  const readSet = new Set(JSON.parse(localStorage.getItem(readKey) || '[]'));
+  readSet.add(id);
+  localStorage.setItem(readKey, JSON.stringify([...readSet]));
+  // Remove unread dot
+  el.classList.remove('unread');
+  // Update badge
+  const unreadMsgs = document.querySelectorAll('.buse-msg.unread').length;
+  const badge = document.getElementById('inboxBadge');
+  if(badge) badge.style.display = unreadMsgs > 0 ? 'flex' : 'none';
 }
 
 async function logout(){await sb.auth.signOut();localStorage.removeItem('twb_theme_gender');window.location.href='index.html';}
