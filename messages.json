@@ -3,16 +3,32 @@
     {
       "id": "msg-001",
       "date": "2026-06-09",
-      "title": "Welcome to the Lab System 🌸",
-      "body": "I am so glad you are here. This dashboard is your personal space — track your progress, follow your programs, and know that every session counts. You have already taken the hardest step. — Buse",
+      "title": {
+        "en": "Welcome to the Lab System 🌸",
+        "tr": "Welcome to the Lab System 🌸",
+        "de": "Welcome to the Lab System 🌸"
+      },
+      "body": {
+        "en": "I am so glad you are here. This dashboard is your personal space — track your progress, follow your programs, and know that every session counts. You have already taken the hardest step. — Buse",
+        "tr": "I am so glad you are here. This dashboard is your personal space — track your progress, follow your programs, and know that every session counts. You have already taken the hardest step. — Buse",
+        "de": "I am so glad you are here. This dashboard is your personal space — track your progress, follow your programs, and know that every session counts. You have already taken the hardest step. — Buse"
+      },
       "type": "welcome",
       "pinned": true
     },
     {
       "id": "msg-002",
       "date": "2026-06-10",
-      "title": "Bu haftanin programi",
-      "body": "Mesajin icerigi...",
+      "title": {
+        "en": "Bu haftanin programi",
+        "tr": "Bu haftanin programi",
+        "de": "Bu haftanin programi"
+      },
+      "body": {
+        "en": "Mesajin icerigi...",
+        "tr": "Mesajin icerigi...",
+        "de": "Mesajin icerigi..."
+      },
       "pinned": false
     }
   ]

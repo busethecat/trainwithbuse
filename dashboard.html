@@ -1448,6 +1448,7 @@ function checkBirthday(){
     document.getElementById('bdayBtn').textContent=tl.bdayBtn;
     setTimeout(()=>{
       document.getElementById('bdayOverlay').classList.add('open');
+      setTimeout(applyBdayCardTheme, 50);
       applyBdayCardTheme();
     },800);
     localStorage.setItem(key,'1');
@@ -1500,7 +1501,7 @@ async function saveProfile(){
     height_cm:p.h?parseInt(p.h):null,weight_kg:p.w?parseFloat(p.w):null,
     fitness_goal:p.goal,fitness_level:p.level,health_notes:p.health,injuries:p.inj,
     updated_at:new Date().toISOString()
-  });
+  },{onConflict:'user_id',ignoreDuplicates:false});
   const btn=document.getElementById('saveProfileBtn');
   btn.textContent=t('saved');
   setTimeout(()=>{btn.textContent=t('save');closeModal('profileModal');checkBirthday();},1400);
