@@ -2016,7 +2016,12 @@ function showResult() {
   
   const resultSlide = document.getElementById('slide-result');
   resultSlide.classList.add('active');
+  // Scroll to top — try all possible scroll containers
   resultSlide.scrollTop = 0;
+  document.getElementById('quizContainer').scrollTop = 0;
+  window.scrollTo(0, 0);
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
   currentSlide = 'result';
   
   // Update progress to 100%
