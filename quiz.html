@@ -1967,17 +1967,15 @@ function showResult() {
   document.getElementById('resultCard').innerHTML = `
     <div class="result-badge">${r.badge}</div>
     <div class="result-title">${r.title}</div>
-    <div class="result-analysis">${analysis}</div>
     ${pregnancyHTML}
-    <div class="result-plan" style="margin-top:24px">
-      <div class="result-plan-label">${lang === 'tr' ? 'ÖNERİLEN PROGRAM' : lang === 'de' ? 'EMPFOHLENES PROGRAMM' : 'RECOMMENDED PROGRAM'}</div>
-      <div class="result-plan-name" style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#2D2A2E;margin-bottom:6px;">${r.title}</div>
-      <div class="result-plan-label" style="margin-top:12px">${lang === 'tr' ? 'YATIRIM' : lang === 'de' ? 'INVESTITION' : 'INVESTMENT'}</div>
+    <div class="result-plan" style="margin-top:16px;margin-bottom:20px">
+      <div class="result-plan-label">${lang === 'tr' ? 'YATIRIM' : lang === 'de' ? 'INVESTITION' : 'INVESTMENT'}</div>
       <div class="result-plan-price"><strong>${r.price}</strong> ${r.pricePer}</div>
     </div>
     <div class="result-features">
       ${featuresHTML}
     </div>
+    <div class="result-analysis" style="margin-top:20px;margin-bottom:20px">${analysis}</div>
     <a href="${r.link}" class="btn-result" target="_blank">${r.cta}</a>
     ${plan !== 'program' ? '' : `<a href="https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b" class="btn-result-secondary" target="_blank">${callLabel}</a>`}
     ${(plan === 'program' || plan === 'movement' || plan === 'sculpt' || plan === 'strength' || plan === 'group') ? '' : `<a href="welcome.html" class="btn-result-secondary" style="margin-top:8px">${lang === 'tr' ? 'Veya Lab Sistemine gir' : lang === 'de' ? 'Oder Lab System betreten' : 'Or enter the Lab System'}</a>`}
