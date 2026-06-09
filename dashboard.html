@@ -1560,6 +1560,8 @@ function toggleFAQ(i){
 }
 
 function applyTheme(gender){
+  if(gender) localStorage.setItem('twb_theme_gender', gender);
+  else gender = localStorage.getItem('twb_theme_gender') || 'female';
   document.body.classList.remove('theme-male','theme-female','theme-other');
   if(gender==='male'){
     document.body.classList.add('theme-male');
@@ -1580,7 +1582,7 @@ function applyTheme(gender){
   }
 }
 
-async function logout(){await sb.auth.signOut();window.location.href='index.html';}
+async function logout(){await sb.auth.signOut();localStorage.removeItem('twb_theme_gender');window.location.href='index.html';}
 </script>
 </body>
 </html>
