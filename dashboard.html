@@ -1388,9 +1388,7 @@ function checkBirthday(){
     document.getElementById('bdayBtn').textContent=tl.bdayBtn;
     setTimeout(()=>{
       document.getElementById('bdayOverlay').classList.add('open');
-      // Tema renklerini uygula
-      const savedGender = localStorage.getItem('twb_theme_gender') || 'female';
-      applyTheme(savedGender);
+      applyBdayCardTheme();
     },800);
     localStorage.setItem(key,'1');
   }catch{}
@@ -1634,26 +1632,28 @@ function applyTheme(gender){
   } else {
     document.body.classList.add('theme-female');
   }
-  // Birthday card rengini tema ile güncelle
+}
+
+function applyBdayCardTheme(){
+  const gender = localStorage.getItem('twb_theme_gender') || 'female';
   const bdayCard = document.querySelector('.bday-card');
-  if(bdayCard){
-    if(gender === 'male'){
-      bdayCard.style.background = '#1E1A17';
-      const title = document.getElementById('bdayTitle');
-      const text = document.getElementById('bdayText');
-      const btn = document.getElementById('bdayBtn');
-      if(title) title.style.color = '#F0EBE4';
-      if(text) text.style.color = '#A09488';
-      if(btn){ btn.style.background = '#C8A96E'; btn.style.color = '#141210'; btn.style.borderColor = '#C8A96E'; }
-    } else {
-      bdayCard.style.background = '#FDF6F0';
-      const title = document.getElementById('bdayTitle');
-      const text = document.getElementById('bdayText');
-      const btn = document.getElementById('bdayBtn');
-      if(title) title.style.color = '#2D2A2E';
-      if(text) text.style.color = '#4A4548';
-      if(btn){ btn.style.background = '#2D2A2E'; btn.style.color = '#FDF6F0'; btn.style.borderColor = '#2D2A2E'; }
-    }
+  if(!bdayCard) return;
+  if(gender === 'male'){
+    bdayCard.style.background = '#1E1A17';
+    const title = document.getElementById('bdayTitle');
+    const text = document.getElementById('bdayText');
+    const btn = document.getElementById('bdayBtn');
+    if(title) title.style.cssText = 'color:#F0EBE4 !important';
+    if(text) text.style.cssText = 'color:#A09488 !important';
+    if(btn){ btn.style.background='#C8A96E'; btn.style.color='#141210'; btn.style.borderColor='#C8A96E'; }
+  } else {
+    bdayCard.style.background = '#FDF6F0';
+    const title = document.getElementById('bdayTitle');
+    const text = document.getElementById('bdayText');
+    const btn = document.getElementById('bdayBtn');
+    if(title) title.style.cssText = 'color:#2D2A2E !important';
+    if(text) text.style.cssText = 'color:#4A4548 !important';
+    if(btn){ btn.style.background='#2D2A2E'; btn.style.color='#FDF6F0'; btn.style.borderColor='#2D2A2E'; }
   }
 }
 
