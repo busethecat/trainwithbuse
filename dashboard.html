@@ -755,7 +755,7 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
   <div class="confetti-piece" style="left:65%;background:#C8A96E;animation-delay:.6s;border-radius:2px"></div>
   <div class="confetti-piece" style="left:80%;background:#E8B4B8;animation-delay:1.0s"></div>
   <div class="confetti-piece" style="left:90%;background:#D4A89A;animation-delay:.3s;border-radius:50%"></div>
-  <div class="bday-card" style="position:relative;z-index:10;background:rgba(253,246,240,0.97);border-radius:24px;padding:48px 40px;text-align:center;max-width:480px;width:90%;box-shadow:0 32px 80px rgba(0,0,0,0.4)">
+  <div class="bday-card" style="position:relative;z-index:10;border-radius:24px;padding:48px 40px;text-align:center;max-width:480px;width:90%;box-shadow:0 32px 80px rgba(0,0,0,0.5)">
     <div class="bday-emoji">🎂</div>
     <div class="bday-title" id="bdayTitle">Happy Birthday, <em>you!</em></div>
     <p class="bday-text" id="bdayText">—</p>
@@ -1386,7 +1386,12 @@ function checkBirthday(){
     document.getElementById('bdayTitle').innerHTML=tl.bdayTitle(name);
     document.getElementById('bdayText').textContent=tl.bdayText;
     document.getElementById('bdayBtn').textContent=tl.bdayBtn;
-    setTimeout(()=>document.getElementById('bdayOverlay').classList.add('open'),800);
+    setTimeout(()=>{
+      document.getElementById('bdayOverlay').classList.add('open');
+      // Tema renklerini uygula
+      const savedGender = localStorage.getItem('twb_theme_gender') || 'female';
+      applyTheme(savedGender);
+    },800);
     localStorage.setItem(key,'1');
   }catch{}
 }
@@ -1628,6 +1633,27 @@ function applyTheme(gender){
     }
   } else {
     document.body.classList.add('theme-female');
+  }
+  // Birthday card rengini tema ile güncelle
+  const bdayCard = document.querySelector('.bday-card');
+  if(bdayCard){
+    if(gender === 'male'){
+      bdayCard.style.background = '#1E1A17';
+      const title = document.getElementById('bdayTitle');
+      const text = document.getElementById('bdayText');
+      const btn = document.getElementById('bdayBtn');
+      if(title) title.style.color = '#F0EBE4';
+      if(text) text.style.color = '#A09488';
+      if(btn){ btn.style.background = '#C8A96E'; btn.style.color = '#141210'; btn.style.borderColor = '#C8A96E'; }
+    } else {
+      bdayCard.style.background = '#FDF6F0';
+      const title = document.getElementById('bdayTitle');
+      const text = document.getElementById('bdayText');
+      const btn = document.getElementById('bdayBtn');
+      if(title) title.style.color = '#2D2A2E';
+      if(text) text.style.color = '#4A4548';
+      if(btn){ btn.style.background = '#2D2A2E'; btn.style.color = '#FDF6F0'; btn.style.borderColor = '#2D2A2E'; }
+    }
   }
 }
 
