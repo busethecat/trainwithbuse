@@ -202,6 +202,25 @@ body.theme-male .inbox-modal-title{color:#F0EBE4}
 
 /* ── PROGRAMS CTA ── */
 .programs-cta{display:flex;align-items:center;justify-content:space-between;padding:44px 0;border-bottom:1px solid var(--cream-deep);text-decoration:none;color:var(--charcoal);transition:all .3s;cursor:pointer}
+
+/* ── ASSESSMENT REPORT ── */
+.assessment-section{padding:44px 0;border-bottom:1px solid var(--cream-deep)}
+.assessment-eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--nude);margin-bottom:20px}
+.assessment-card{background:linear-gradient(135deg,rgba(200,169,110,.08),rgba(193,132,139,.06));border:1px solid rgba(200,169,110,.2);border-radius:20px;padding:32px 36px;margin-bottom:20px;position:relative;overflow:hidden}
+.assessment-card::before{content:'✦';position:absolute;right:24px;top:20px;font-size:32px;color:rgba(200,169,110,.15)}
+.assessment-match{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.assessment-program{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;color:var(--charcoal);margin-bottom:16px;line-height:1.2}
+.assessment-reason{font-size:14px;color:var(--charcoal-light);line-height:1.8;margin-bottom:24px;border-left:2px solid var(--gold);padding-left:16px;font-style:italic}
+.assessment-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-assessment-primary{display:inline-flex;align-items:center;gap:8px;background:var(--charcoal);color:white;padding:14px 28px;border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all .3s}
+.btn-assessment-primary:hover{background:var(--rose-dark);transform:translateY(-1px)}
+.assessment-explore{font-size:12px;color:var(--nude);text-decoration:none;letter-spacing:1px;display:inline-flex;align-items:center;gap:6px;padding:14px 0;transition:color .3s}
+.assessment-explore:hover{color:var(--rose)}
+body.theme-male .assessment-card{background:linear-gradient(135deg,rgba(200,169,110,.1),rgba(30,26,23,.5));border-color:rgba(200,169,110,.25)}
+body.theme-male .assessment-program{color:#F0EBE4}
+body.theme-male .assessment-reason{color:#A09488;border-left-color:var(--gold)}
+body.theme-male .btn-assessment-primary{background:var(--gold);color:#141210}
+body.theme-male .btn-assessment-primary:hover{background:#D4B87A}
 .programs-cta:hover .programs-arrow{transform:translateX(8px)}
 .programs-cta:hover .programs-title{color:var(--rose)}
 .programs-left{}
@@ -561,8 +580,22 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
     <div class="hero-date" id="heroDate">—</div>
   </section>
 
+  <!-- ASSESSMENT REPORT -->
+  <div class="assessment-section" id="assessmentSection" style="display:none">
+    <div class="assessment-eyebrow" id="assessmentEyebrow">YOUR ASSESSMENT</div>
+    <div class="assessment-card">
+      <div class="assessment-match" id="assessmentMatch">RECOMMENDED FOR YOU</div>
+      <div class="assessment-program" id="assessmentProgram">—</div>
+      <div class="assessment-reason" id="assessmentReason">—</div>
+      <div class="assessment-btns">
+        <a class="btn-assessment-primary" id="assessmentCta" href="welcome.html">Start Now →</a>
+        <a class="assessment-explore" href="programs.html" id="assessmentExplore">Explore all programs →</a>
+      </div>
+    </div>
+  </div>
+
   <!-- PROGRAMS CTA -->
-  <a class="programs-cta" href="programs.html">
+  <a class="programs-cta" href="programs.html" id="genericProgramsCta">
     <div class="programs-left">
       <div class="programs-eyebrow" id="progEyebrow">My Space</div>
       <div class="programs-title" id="progTitle">My <em>Programs</em></div>
@@ -1828,6 +1861,81 @@ function applyBdayCardTheme(){
     if(text) text.style.cssText = 'color:#4A4548 !important';
     if(btn){ btn.style.background='#2D2A2E'; btn.style.color='#FDF6F0'; btn.style.borderColor='#2D2A2E'; }
   }
+}
+
+// ── ASSESSMENT REPORT ───────────────────────────────────────────────────────
+function renderAssessment(){
+  const plan = localStorage.getItem('twb_quiz_plan');
+  const title = localStorage.getItem('twb_quiz_title');
+  if(!plan || !title) return; // quiz yapılmamış, generic CTA göster
+
+  // Quiz yapılmış — assessment section göster, generic gizle
+  const section = document.getElementById('assessmentSection');
+  const generic = document.getElementById('genericProgramsCta');
+  if(section) section.style.display = 'block';
+  if(generic) generic.style.display = 'none';
+
+  // Program adı
+  const progEl = document.getElementById('assessmentProgram');
+  if(progEl) progEl.textContent = title;
+
+  const tl = T[lang];
+
+  // Eyebrow + match + explore
+  const eyebrow = document.getElementById('assessmentEyebrow');
+  const match = document.getElementById('assessmentMatch');
+  const explore = document.getElementById('assessmentExplore');
+  if(eyebrow) eyebrow.textContent = lang==='tr' ? 'ANALİZİN' : lang==='de' ? 'DEINE ANALYSE' : 'YOUR ASSESSMENT';
+  if(match) match.textContent = lang==='tr' ? 'SENİN İÇİN ÖNERİLEN' : lang==='de' ? 'EMPFOHLEN FÜR DICH' : 'RECOMMENDED FOR YOU';
+  if(explore) explore.textContent = lang==='tr' ? 'Tüm programları keşfet →' : lang==='de' ? 'Alle Programme entdecken →' : 'Explore all programs →';
+
+  // CTA butonu
+  const cta = document.getElementById('assessmentCta');
+  if(cta) cta.textContent = lang==='tr' ? 'Hemen Başla →' : lang==='de' ? 'Jetzt starten →' : 'Start Now →';
+
+  // Neden bu program — plan'a göre dinamik açıklama
+  const reasons = {
+    movement: {
+      en: "Based on your goals and movement history, your nervous system needs reprogramming before it needs loading. The Movement Lab addresses the root cause — dysfunctional patterns — so every other training you do becomes more effective. This is where transformation begins.",
+      tr: "Hedeflerine ve hareket geçmişine göre, sinir sisteminin yüklenmeden önce yeniden programlanması gerekiyor. Movement Lab, kök nedeni — işlevsiz hareket kalıplarını — ele alıyor; böylece yaptığın her antrenman daha etkili hale geliyor. Dönüşüm buradan başlar.",
+      de: "Basierend auf deinen Zielen und deiner Bewegungsgeschichte braucht dein Nervensystem eine Neuprogrammierung, bevor es belastet werden kann. Das Movement Lab adressiert die Ursache — dysfunktionale Bewegungsmuster — damit jedes weitere Training effektiver wird."
+    },
+    sculpt: {
+      en: "Your profile points to someone ready to sculpt and define — not just lose weight, but build a body with intention. The Sculpt Lab uses precision movement science to target the areas that matter most to you, building strength and shape simultaneously.",
+      tr: "Profilin, sadece kilo vermek değil, bilinçli bir beden inşa etmeye hazır birini gösteriyor. Sculpt Lab, sana en önemli bölgeleri hedef almak için hassas hareket bilimini kullanıyor; güç ve form aynı anda inşa ediliyor.",
+      de: "Dein Profil zeigt jemanden, der bereit ist zu formen und zu definieren — nicht nur Gewicht zu verlieren, sondern einen Körper mit Intention aufzubauen. Das Sculpt Lab nutzt präzise Bewegungswissenschaft."
+    },
+    strength: {
+      en: "Your data reveals a strong foundation that's ready to be built upon. The Strength Lab is designed for people who want to feel genuinely powerful — progressive overload, neural adaptation, real results. You're not a beginner. Train like it.",
+      tr: "Verilerine göre, üzerine inşa edilmeye hazır güçlü bir temel var. Strength Lab, gerçekten güçlü hissetmek isteyen insanlar için tasarlandı — progresif aşırı yüklenme, sinirsel adaptasyon, gerçek sonuçlar. Başlangıç seviyesinde değilsin. Öyle antrenman yap.",
+      de: "Deine Daten zeigen ein starkes Fundament, das bereit ist, aufgebaut zu werden. Das Strength Lab ist für Menschen konzipiert, die sich wirklich stark fühlen wollen — progressive Überlastung, neuronale Anpassung, echte Ergebnisse."
+    },
+    group: {
+      en: "You thrive with community energy. Live Lab Classes give you the structure, accountability, and real-time coaching that solo training simply can't replicate. Science confirms: group exercise increases performance by up to 200%. You're in the right place.",
+      tr: "Topluluk enerjisiyle gelişiyorsun. Canlı Lab Dersleri, solo antrenmanın kopyalayamayacağı yapı, hesap verebilirlik ve gerçek zamanlı koçluk sunuyor. Bilim doğruluyor: grup egzersizi performansı %200'e kadar artırıyor.",
+      de: "Du blühst mit Gemeinschaftsenergie auf. Live Lab Classes geben dir Struktur, Verantwortlichkeit und Echtzeit-Coaching, das Solo-Training einfach nicht replizieren kann. Wissenschaft bestätigt: Gruppentraining steigert die Leistung um bis zu 200 %."
+    },
+    online: {
+      en: "Your profile matches our Online Coaching program — personalized programming, weekly check-ins, and the full methodology of The Buse Method delivered directly to you, wherever you are in the world.",
+      tr: "Profilin Online Koçluk programımızla örtüşüyor — kişiselleştirilmiş programlama, haftalık kontroller ve dünyanın her yerinde sana doğrudan iletilen The Buse Method metodolojisi.",
+      de: "Dein Profil passt zu unserem Online-Coaching-Programm — personalisierte Programmierung, wöchentliche Check-ins und die vollständige Methodik der Buse Method, direkt zu dir geliefert."
+    },
+    inperson: {
+      en: "For you, nothing replaces in-person work. The Buse Method — in person, in Berlin — is reserved for a maximum of 3 clients per month. Your assessment places you in this category. This is the most direct path to transformation.",
+      tr: "Senin için hiçbir şey birebir çalışmanın yerini tutamaz. The Buse Method — birebir, Berlin'de — ayda maksimum 3 müşteri için ayrılmıştır. Analizin seni bu kategoriye yerleştiriyor. Bu, dönüşüme giden en doğrudan yol.",
+      de: "Für dich ersetzt nichts die persönliche Arbeit. The Buse Method — persönlich, in Berlin — ist für maximal 3 Klienten pro Monat reserviert. Deine Analyse ordnet dich dieser Kategorie zu."
+    },
+    default: {
+      en: "Based on your assessment, this program aligns with your current goals, movement history, and lifestyle. Every recommendation is grounded in movement science — this is not a generic plan. It was built around you.",
+      tr: "Analizine göre, bu program mevcut hedeflerinle, hareket geçmişinle ve yaşam tarzınla örtüşüyor. Her öneri hareket bilimine dayanıyor — bu genel bir plan değil. Senin etrafında inşa edildi.",
+      de: "Basierend auf deiner Analyse passt dieses Programm zu deinen aktuellen Zielen, deiner Bewegungsgeschichte und deinem Lebensstil. Jede Empfehlung basiert auf Bewegungswissenschaft."
+    }
+  };
+
+  const reasonData = reasons[plan] || reasons.default;
+  const reasonText = reasonData[lang] || reasonData.en;
+  const reasonEl = document.getElementById('assessmentReason');
+  if(reasonEl) reasonEl.textContent = reasonText;
 }
 
 // ── FROM BUSE INBOX ──────────────────────────────────────────────────────────
