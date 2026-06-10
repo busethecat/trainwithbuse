@@ -520,6 +520,74 @@
 
   .plans-footer a:hover { text-decoration: underline; }
 
+  
+  .plans-category-label {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--nude);
+    margin-bottom: 24px;
+    margin-top: 48px;
+  }
+  .plans-section-title {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .plans-section-title h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 400;
+    color: var(--charcoal);
+  }
+  .plans-section-title h2 em { color: var(--rose); font-style: italic; }
+  .section-tag {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 12px;
+  }
+  .lab-grid { grid-template-columns: repeat(4, 1fr); }
+  .coaching-grid { grid-template-columns: repeat(3, 1fr); }
+  .plan-badge {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--cream-deep);
+    color: var(--charcoal-light);
+    padding: 4px 10px;
+    border-radius: 50px;
+    margin-bottom: 12px;
+  }
+  .plan-badge.founding { background: var(--gold); color: white; }
+  .plan-badge.exclusive { background: var(--charcoal); color: white; }
+
+  /* Bundle strip */
+  .bundle-strip {
+    background: var(--charcoal);
+    border-radius: 24px;
+    padding: 48px;
+    margin: 40px 0;
+    text-align: center;
+  }
+  .bundle-inner { max-width: 600px; margin: 0 auto; }
+  .bundle-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .bundle-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; color: white; margin-bottom: 12px; }
+  .bundle-title em { color: var(--gold); font-style: italic; }
+  .bundle-desc { font-size: 14px; color: rgba(255,255,255,.6); margin-bottom: 32px; }
+  .bundle-options { display: flex; gap: 16px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
+  .bundle-option { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 20px 24px; min-width: 120px; }
+  .bundle-option.featured-bundle { background: rgba(200,169,110,.15); border-color: var(--gold); }
+  .bundle-opt-label { font-size: 13px; color: rgba(255,255,255,.7); margin-bottom: 6px; }
+  .bundle-opt-discount { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold); }
+  .bundle-opt-note { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 4px; }
+  .bundle-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: var(--charcoal); padding: 14px 32px; border-radius: 50px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-decoration: none; transition: all .3s; }
+  .bundle-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(200,169,110,.3); }
+
+  @media (max-width: 1100px) { .lab-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 700px) { .lab-grid, .coaching-grid { grid-template-columns: 1fr; } .bundle-strip { padding: 32px 24px; } }
+
   /* ========== MOBILE ========== */
   @media (max-width: 1024px) {
     .plans-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -572,86 +640,166 @@
 
 <!-- PLANS -->
 <section class="plans-section">
-  <div class="plans-grid">
+  <div class="plans-section-title">
+    <div class="section-tag">Premium Programs</div>
+    <h2>Every Plan, <em>Explained</em></h2>
+  </div>
 
-    <!-- 1:1 ONLINE -->
-    <div class="plan-card featured">
-      <div class="plan-icon online"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg></div>
-      <div class="plan-name">1:1 Online Coaching</div>
-      <div class="plan-desc">Your own personal coach, wherever you are. Custom programming, weekly check-ins, and ongoing support to keep you on track.</div>
-      <div class="plan-price">
-        <div class="plan-price-amount">€199</div>
-        <div class="plan-price-period">per month</div>
-      </div>
+  <!-- LAB SERIES -->
+  <div class="plans-category-label">THE LAB SERIES — Self-Paced Programs</div>
+  <div class="plans-grid lab-grid">
+
+    <div class="plan-card lab-card">
+      <div class="plan-badge">Foundation</div>
+      <div class="plan-icon movement"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M6 20l2.5-5 3.5 3 3.5-3 2.5 5"/><path d="M12 7v5"/></svg></div>
+      <div class="plan-name">The Movement Lab</div>
+      <div class="plan-desc">Rewire your nervous system's movement patterns from the ground up. The foundation of everything.</div>
+      <div class="plan-price"><div class="plan-price-amount">€49</div><div class="plan-price-period">per level · 3 levels</div></div>
       <ul class="plan-features">
-        <li>Fully personalized training program</li>
-        <li>Weekly video check-ins with Buse</li>
-        <li>Custom nutrition guidance</li>
-        <li>24/7 chat support</li>
-        <li>Monthly plan adjustments</li>
+        <li>6 weeks · 24 videos per level</li>
+        <li>Bodyweight only</li>
+        <li>Beginner to Advanced</li>
+        <li>Personal dashboard access</li>
+        <li>Science-backed programming</li>
       </ul>
-      <a href="index.html#booking" class="plan-cta primary">Book Free Call</a>
-      <div class="plan-ideal"><strong>Ideal for:</strong> Anyone who wants expert-level coaching without being in Berlin.</div>
+      <a href="https://buy.stripe.com/fZu9AS49jbfSdow72G1kA09" target="_blank" class="plan-cta primary">Start Now →</a>
+      <div class="plan-ideal"><strong>Best for:</strong> Posture issues, chronic pain, movement dysfunction, returning to exercise.</div>
     </div>
 
-    <!-- IN-PERSON -->
-    <div class="plan-card">
-      <div class="plan-icon inperson"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="5" x2="6" y2="19"/><line x1="18" y1="5" x2="18" y2="19"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/><path d="M3 7h3M3 17h3M18 7h3M18 17h3"/></svg></div>
-      <div class="plan-name">In-Person Training</div>
-      <div class="plan-desc">Premium 1:1 sessions in Berlin. Hands-on coaching, real-time form correction, and the energy of training together in person.</div>
+    <div class="plan-card lab-card">
+      <div class="plan-badge">Define</div>
+      <div class="plan-icon sculpt"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+      <div class="plan-name">The Sculpt Lab</div>
+      <div class="plan-desc">Precision sculpting guided by movement science. Shape, define, and strengthen with intention.</div>
+      <div class="plan-price"><div class="plan-price-amount">€49</div><div class="plan-price-period">per level · 3 levels</div></div>
+      <ul class="plan-features">
+        <li>8 weeks · 32 videos per level</li>
+        <li>Bodyweight only</li>
+        <li>Progressive overload system</li>
+        <li>Personal dashboard access</li>
+        <li>Core & glutes focused</li>
+      </ul>
+      <a href="https://buy.stripe.com/6oUbJ07lv2JmgAI4Uy1kA0a" target="_blank" class="plan-cta primary">Start Now →</a>
+      <div class="plan-ideal"><strong>Best for:</strong> Toning, fat loss, core strength, glutes & legs definition.</div>
+    </div>
+
+    <div class="plan-card lab-card">
+      <div class="plan-badge">Build</div>
+      <div class="plan-icon strength"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+      <div class="plan-name">The Strength Lab</div>
+      <div class="plan-desc">Neural strength training — your brain rewires first, your body follows. Real, lasting strength.</div>
+      <div class="plan-price"><div class="plan-price-amount">€49</div><div class="plan-price-period">per level · 3 levels</div></div>
+      <ul class="plan-features">
+        <li>6 weeks · 24 videos per level</li>
+        <li>Bodyweight only</li>
+        <li>Neural adaptation focus</li>
+        <li>Personal dashboard access</li>
+        <li>Upper body & full body</li>
+      </ul>
+      <a href="https://buy.stripe.com/14A4gyfS13NqesAgDg1kA0b" target="_blank" class="plan-cta primary">Start Now →</a>
+      <div class="plan-ideal"><strong>Best for:</strong> Muscle building, strength gains, upper body development.</div>
+    </div>
+
+    <div class="plan-card lab-card">
+      <div class="plan-badge">Burn</div>
+      <div class="plan-icon metabolic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div class="plan-name">The Metabolic Lab</div>
+      <div class="plan-desc">High-intensity metabolic conditioning that burns fat and builds endurance simultaneously.</div>
+      <div class="plan-price"><div class="plan-price-amount">€49</div><div class="plan-price-period">per level · 3 levels</div></div>
+      <ul class="plan-features">
+        <li>4 weeks · 20 videos per level</li>
+        <li>Bodyweight only</li>
+        <li>HIIT & conditioning</li>
+        <li>Personal dashboard access</li>
+        <li>Short, intense sessions</li>
+      </ul>
+      <a href="https://buy.stripe.com/8x23cu7lv97Kbgo1Im1kA0c" target="_blank" class="plan-cta primary">Start Now →</a>
+      <div class="plan-ideal"><strong>Best for:</strong> Fat loss, endurance, energy boost, time-efficient training.</div>
+    </div>
+
+  </div>
+
+  <!-- BUNDLE -->
+  <div class="bundle-strip">
+    <div class="bundle-inner">
+      <div class="bundle-tag">Best Value</div>
+      <div class="bundle-title">Build Your <em>Bundle</em></div>
+      <div class="bundle-desc">Combine any Labs and save. The more you commit, the more you save.</div>
+      <div class="bundle-options">
+        <div class="bundle-option">
+          <div class="bundle-opt-label">2 Labs</div>
+          <div class="bundle-opt-discount">15% off</div>
+        </div>
+        <div class="bundle-option">
+          <div class="bundle-opt-label">3 Labs</div>
+          <div class="bundle-opt-discount">20% off</div>
+        </div>
+        <div class="bundle-option featured-bundle">
+          <div class="bundle-opt-label">All 4 Labs</div>
+          <div class="bundle-opt-discount">30% off</div>
+          <div class="bundle-opt-note">€137 instead of €196</div>
+        </div>
+      </div>
+      <a href="mailto:hello@trainwithbuse.com?subject=Bundle Inquiry" class="bundle-cta">Build My Bundle →</a>
+    </div>
+  </div>
+
+  <!-- LIVE + COACHING -->
+  <div class="plans-category-label">LIVE & COACHED — With Buse</div>
+  <div class="plans-grid coaching-grid">
+
+    <div class="plan-card featured">
+      <div class="plan-badge founding">Founding Member</div>
+      <div class="plan-icon group"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="plan-name">Live Lab Classes</div>
+      <div class="plan-desc">3 live Zoom classes per week — HIIT, Strength & Mobility. Max 12 people. Real coaching, real community.</div>
       <div class="plan-price">
-        <div class="plan-price-amount">€95</div>
-        <div class="plan-price-period">per session</div>
+        <div class="plan-price-amount">€59<span style="font-size:14px;font-weight:300">/mo</span></div>
+        <div class="plan-price-period" style="text-decoration:line-through;opacity:.5">€89/month after launch</div>
       </div>
       <ul class="plan-features">
-        <li>50-minute personal sessions</li>
-        <li>Real-time form correction</li>
+        <li>Mon · Wed · Fri evenings via Zoom</li>
+        <li>HIIT · Strength · Mobility</li>
+        <li>Max 12 people per class</li>
+        <li>Replay access for 48h</li>
+        <li>Dashboard access included</li>
+        <li>Price locked for founding members</li>
+      </ul>
+      <a href="https://buy.stripe.com/6oUcN48pz3Nqbgodr41kA0d" target="_blank" class="plan-cta primary">Join as Founding Member →</a>
+      <div class="plan-ideal"><strong>Founding price ends when 20 members join.</strong> Annual option: €499/year.</div>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-icon online"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg></div>
+      <div class="plan-name">1:1 Online Coaching</div>
+      <div class="plan-desc">Your personal sports scientist, wherever you are. Custom programming, weekly check-ins, full support.</div>
+      <div class="plan-price"><div class="plan-price-amount">€300</div><div class="plan-price-period">per month</div></div>
+      <ul class="plan-features">
+        <li>Fully personalized program</li>
+        <li>Weekly video check-ins</li>
+        <li>Custom nutrition guidance</li>
+        <li>WhatsApp support</li>
+        <li>Monthly plan adjustments</li>
+      </ul>
+      <a href="https://buy.stripe.com/3cI3cu7lvbfS0BK2Mq1kA0f" target="_blank" class="plan-cta secondary">Start Coaching →</a>
+      <div class="plan-ideal"><strong>Best for:</strong> Anywhere in the world — serious about results.</div>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-badge exclusive">Max 3/month</div>
+      <div class="plan-icon inperson"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="plan-name">The Buse Method</div>
+      <div class="plan-desc">In-person, in Berlin. The most direct path to transformation — Buse's full methodology, hands-on. Limited to 3 clients/month.</div>
+      <div class="plan-price"><div class="plan-price-amount">€120</div><div class="plan-price-period">per session</div></div>
+      <ul class="plan-features">
+        <li>60-minute personal sessions</li>
+        <li>Real-time movement analysis</li>
         <li>Monthly progress assessments</li>
         <li>Digital training records</li>
         <li>Home or gym — your choice</li>
       </ul>
-      <a href="index.html#booking" class="plan-cta secondary">Book Session</a>
-      <div class="plan-ideal"><strong>Ideal for:</strong> Berlin-based clients who want hands-on guidance and accountability.</div>
-    </div>
-
-    <!-- GROUP -->
-    <div class="plan-card">
-      <div class="plan-icon group"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-      <div class="plan-name">Group Classes</div>
-      <div class="plan-desc">Live online sessions with the motivation of a group and the science of personal training. Limited to 12 people per class.</div>
-      <div class="plan-price">
-        <div class="plan-price-amount">€49</div>
-        <div class="plan-price-period">per month</div>
-      </div>
-      <ul class="plan-features">
-        <li>3x live sessions per week</li>
-        <li>Replay access for missed classes</li>
-        <li>Private community group</li>
-        <li>Monthly challenges & goals</li>
-        <li>Science-backed programming</li>
-      </ul>
-      <a href="index.html#booking" class="plan-cta secondary">Join Now</a>
-      <div class="plan-ideal"><strong>Ideal for:</strong> People who thrive in a group setting and want an affordable option.</div>
-    </div>
-
-    <!-- PROGRAM -->
-    <div class="plan-card">
-      <div class="plan-icon program"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
-      <div class="plan-name">Sculpt & Strengthen</div>
-      <div class="plan-desc">A complete 8-week video program you can follow at your own pace. Designed for full-body transformation with progressive difficulty.</div>
-      <div class="plan-price">
-        <div class="plan-price-amount">€79</div>
-        <div class="plan-price-period">one-time payment</div>
-      </div>
-      <ul class="plan-features">
-        <li>40 follow-along videos</li>
-        <li>8 weeks of structured programming</li>
-        <li>Progressive difficulty levels</li>
-        <li>Lifetime access</li>
-        <li>Exercise breakdowns & tips</li>
-      </ul>
-      <a href="https://payhip.com/b/9G5sy" target="_blank" class="plan-cta secondary">Get Program</a>
-      <div class="plan-ideal"><strong>Ideal for:</strong> Self-starters who want a proven plan without ongoing commitment.</div>
+      <a href="https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g" target="_blank" class="plan-cta secondary">Book Session →</a>
+      <div class="plan-ideal"><strong>Berlin only.</strong> 1 session €120 · 10 sessions €1,200.</div>
     </div>
 
   </div>
