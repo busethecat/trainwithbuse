@@ -1942,6 +1942,17 @@ function updateBackButton() {
   }
 }
 
+const STRIPE_LINKS = {
+  movement: 'https://buy.stripe.com/fZu9AS49jbfSdow72G1kA09',
+  sculpt:   'https://buy.stripe.com/6oUbJ07lv2JmgAI4Uy1kA0a',
+  strength: 'https://buy.stripe.com/14A4gyfS13NqesAgDg1kA0b',
+  metabolic:'https://buy.stripe.com/8x23cu7lv97Kbgo1Im1kA0c',
+  group:    'https://buy.stripe.com/6oUcN48pz3Nqbgodr41kA0d',
+  online:   'https://buy.stripe.com/3cI3cu7lvbfS0BK2Mq1kA0f',
+  inperson: 'https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g',
+  program:  'https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g'
+};
+
 function showResult() {
   const plan = determinePlan();
   const r = results[lang][plan];
@@ -1981,7 +1992,11 @@ function showResult() {
       ${featuresHTML}
     </div>
     <div class="result-analysis" style="margin-top:20px;margin-bottom:20px">${analysis}</div>
-    <a href="${r.link}" class="btn-result" target="_blank">${r.cta}</a>
+    <a href="${STRIPE_LINKS[plan] || r.link}" class="btn-result btn-buy" target="_blank" style="background:var(--charcoal);position:relative">
+      ${lang === 'tr' ? 'Hemen Başla' : lang === 'de' ? 'Jetzt starten' : 'Start Now'} — ${r.price} ${r.pricePer}
+      <span style="position:absolute;top:-8px;right:-8px;background:var(--rose);color:white;font-size:9px;letter-spacing:1px;padding:3px 8px;border-radius:50px;text-transform:uppercase">${lang === 'tr' ? 'Özel' : lang === 'de' ? 'Exklusiv' : 'Exclusive'}</span>
+    </a>
+    <a href="${r.link}" class="btn-result-secondary" target="_blank" style="font-size:12px;opacity:.7">${lang === 'tr' ? 'Önce Lab Sistemini İncele' : lang === 'de' ? 'Lab System ansehen' : 'Explore the Lab System first'}</a>
     ${plan !== 'program' ? '' : `<a href="https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b" class="btn-result-secondary" target="_blank">${callLabel}</a>`}
     ${(plan === 'program' || plan === 'movement' || plan === 'sculpt' || plan === 'strength' || plan === 'group') ? '' : `<a href="welcome.html" class="btn-result-secondary" style="margin-top:8px">${lang === 'tr' ? 'Veya Lab Sistemine gir' : lang === 'de' ? 'Oder Lab System betreten' : 'Or enter the Lab System'}</a>`}
     <div class="email-capture" id="emailCapture">
