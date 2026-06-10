@@ -2214,37 +2214,68 @@
     <div class="section-tag">Blog</div>
     <h2 class="section-title">Science <em>Simplified</em></h2>
     <p class="section-desc">Neuroscience, movement science, and wellness — explained so you can actually use it.</p>
-    <div class="blog-grid">
-      <div class="blog-card reveal">
-        <div class="blog-thumb blog-thumb-1"><span>01</span></div>
-        <div class="blog-content">
-          <div class="blog-category">Neuroscience</div>
-          <h3>How Your Brain Sabotages Your Workout (And How to Fix It)</h3>
-          <p>The neuroscience behind motivation, fatigue, and why your brain quits before your muscles do.</p>
-         <a href="https://substack.com/@trainwithbuse" target="_blank" class="blog-read-more">Read More →</a>
-        </div>
+    <div class="blog-grid" id="blogGrid">
+      <!-- Loading state -->
+      <div class="blog-card reveal" style="opacity:.5">
+        <div class="blog-thumb blog-thumb-1"><span>·</span></div>
+        <div class="blog-content"><div class="blog-category">Loading...</div><h3 style="background:var(--cream-deep);height:20px;border-radius:8px;margin-bottom:8px"></h3><p style="background:var(--cream-deep);height:40px;border-radius:8px"></p></div>
       </div>
-      <div class="blog-card reveal">
-        <div class="blog-thumb blog-thumb-2"><span>02</span></div>
-        <div class="blog-content">
-          <div class="blog-category">Movement Science</div>
-          <h3>The Mobility Myth: Why Stretching Alone Won't Fix You</h3>
-          <p>Why traditional stretching falls short and what movement science says actually works.</p>
-          <a href="https://substack.com/@trainwithbuse" target="_blank" class="blog-read-more">Read More →</a>
-        </div>
+      <div class="blog-card reveal" style="opacity:.5">
+        <div class="blog-thumb blog-thumb-2"><span>·</span></div>
+        <div class="blog-content"><div class="blog-category">Loading...</div><h3 style="background:var(--cream-deep);height:20px;border-radius:8px;margin-bottom:8px"></h3><p style="background:var(--cream-deep);height:40px;border-radius:8px"></p></div>
       </div>
-      <div class="blog-card reveal">
-        <div class="blog-thumb blog-thumb-3"><span>03</span></div>
-        <div class="blog-content">
-          <div class="blog-category">Wellness</div>
-          <h3>Color Psychology & Your Nervous System: What Science Says</h3>
-          <p>Can the colors you wear actually affect your hormones? A deep dive into chromotherapy research.</p>
-          <a href="https://substack.com/@trainwithbuse" target="_blank" class="blog-read-more">Read More →</a>
-        </div>
+      <div class="blog-card reveal" style="opacity:.5">
+        <div class="blog-thumb blog-thumb-3"><span>·</span></div>
+        <div class="blog-content"><div class="blog-category">Loading...</div><h3 style="background:var(--cream-deep);height:20px;border-radius:8px;margin-bottom:8px"></h3><p style="background:var(--cream-deep);height:40px;border-radius:8px"></p></div>
       </div>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <a href="https://trainwithbuse.substack.com" target="_blank" class="btn-secondary">View All Articles →</a>
     </div>
   </div>
 </section>
+<script>
+(async function loadBlogPosts() {
+  try {
+    const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://trainwithbuse.substack.com/feed&count=3');
+    const data = await res.json();
+    if (data.status !== 'ok' || !data.items?.length) return;
+
+    const thumbClasses = ['blog-thumb-1', 'blog-thumb-2', 'blog-thumb-3'];
+    const grid = document.getElementById('blogGrid');
+    if (!grid) return;
+
+    grid.innerHTML = data.items.slice(0, 3).map((item, i) => {
+      const desc = (item.description || '').replace(/<[^>]*>/g, '').trim().slice(0, 120);
+      const cat = item.categories?.[0] || 'Science';
+      
+      // Resim: thumbnail > enclosure > content içi img
+      let imgUrl = item.thumbnail || item.enclosure?.link || '';
+      if (!imgUrl && item.content) {
+        const m = item.content.match(/<img[^>]+src=["']([^"']+)["']/);
+        if (m) imgUrl = m[1];
+      }
+
+      const thumbHTML = imgUrl
+        ? `<div class="${thumbClasses[i]}" style="background-image:url('${imgUrl}');background-size:cover;background-position:center;height:220px;border-radius:16px 16px 0 0"><span style="display:none">${String(i+1).padStart(2,'0')}</span></div>`
+        : `<div class="blog-thumb ${thumbClasses[i]}"><span>${String(i+1).padStart(2,'0')}</span></div>`;
+
+      return `<div class="blog-card reveal">
+        ${thumbHTML}
+        <div class="blog-content">
+          <div class="blog-category">${cat}</div>
+          <h3>${item.title}</h3>
+          <p>${desc}${desc.length >= 120 ? '...' : ''}</p>
+          <a href="${item.link}" target="_blank" class="blog-read-more">Read More →</a>
+        </div>
+      </div>`;
+    }).join('');
+
+  } catch(e) {
+    console.warn('Blog load error:', e);
+  }
+})();
+</script>
 
 <!-- NEWSLETTER -->
 <section class="newsletter-section">
