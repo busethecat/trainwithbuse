@@ -2237,7 +2237,7 @@
 <script>
 (async function loadBlogPosts() {
   try {
-    const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://trainwithbuse.substack.com/feed&count=3');
+    const res = await fetch('https://rss-proxy.trainwithbuse.workers.dev&count=3');
     const data = await res.json();
     if (data.status !== 'ok' || !data.items?.length) return;
 
