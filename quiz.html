@@ -1996,9 +1996,9 @@ function showResult() {
       ${lang === 'tr' ? 'Hemen Başla' : lang === 'de' ? 'Jetzt starten' : 'Start Now'} — ${r.price} ${r.pricePer}
       <span style="position:absolute;top:-8px;right:-8px;background:var(--rose);color:white;font-size:9px;letter-spacing:1px;padding:3px 8px;border-radius:50px;text-transform:uppercase">${lang === 'tr' ? 'Özel' : lang === 'de' ? 'Exklusiv' : 'Exclusive'}</span>
     </a>
-    <a href="${r.link}" class="btn-result-secondary" target="_blank" style="font-size:12px;opacity:.7">${lang === 'tr' ? 'Önce Lab Sistemini İncele' : lang === 'de' ? 'Lab System ansehen' : 'Explore the Lab System first'}</a>
+    <a href="plans.html" class="btn-result-secondary" target="_blank" style="font-size:12px;opacity:.7">${lang === 'tr' ? 'Diğer planları incele' : lang === 'de' ? 'Andere Programme ansehen' : 'Explore other programs'}</a>
     ${plan !== 'program' ? '' : `<a href="https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b" class="btn-result-secondary" target="_blank">${callLabel}</a>`}
-    ${(plan === 'program' || plan === 'movement' || plan === 'sculpt' || plan === 'strength' || plan === 'group') ? '' : `<a href="welcome.html" class="btn-result-secondary" style="margin-top:8px">${lang === 'tr' ? 'Veya Lab Sistemine gir' : lang === 'de' ? 'Oder Lab System betreten' : 'Or enter the Lab System'}</a>`}
+
     <div class="email-capture" id="emailCapture">
       <div style="background:linear-gradient(135deg,rgba(200,169,110,0.12),rgba(200,169,110,0.06));border:1px solid rgba(200,169,110,0.3);border-radius:14px;padding:18px 20px;margin-bottom:16px;text-align:center;">
         <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C8A96E;margin-bottom:8px;">${lang === 'tr' ? 'HOŞGELDİN HEDİYEN' : lang === 'de' ? 'WILLKOMMENSGESCHENK' : 'WELCOME GIFT'}</div>
