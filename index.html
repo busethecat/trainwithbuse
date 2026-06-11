@@ -2237,40 +2237,46 @@
 <script>
 (async function loadBlogPosts() {
   try {
-    const res = await fetch('https://rss-proxy.trainwithbuse.workers.dev&count=3');
-    const data = await res.json();
-    if (data.status !== 'ok' || !data.items?.length) return;
+    const res = await fetch('https://rss-proxy.trainwithbuse.workers.dev');
+    const xmlText = await res.text();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlText, 'application/xml');
+    const items = Array.from(xml.querySelectorAll('item')).slice(0, 3);
+    if (!items.length) return;
 
     const thumbClasses = ['blog-thumb-1', 'blog-thumb-2', 'blog-thumb-3'];
     const grid = document.getElementById('blogGrid');
     if (!grid) return;
 
-    grid.innerHTML = data.items.slice(0, 3).map((item, i) => {
-      const desc = (item.description || '').replace(/<[^>]*>/g, '').trim().slice(0, 120);
-      const cat = item.categories?.[0] || 'Science';
-      
-      // Resim: thumbnail > enclosure > content içi img
-      let imgUrl = item.thumbnail || item.enclosure?.link || '';
-      if (!imgUrl && item.content) {
-        const m = item.content.match(/<img[^>]+src=["']([^"']+)["']/);
+    grid.innerHTML = items.map((item, i) => {
+      const title = item.querySelector('title')?.textContent || '';
+      const linkEl = item.querySelector('link');
+      const link = linkEl ? (linkEl.textContent || linkEl.nextSibling?.nodeValue || '').trim() : '';
+      const desc = (item.querySelector('description')?.textContent || '')
+        .replace(/<[^>]*>/g, '').trim().slice(0, 120);
+      const cat = item.querySelector('category')?.textContent || 'Science';
+
+      let imgUrl = item.querySelector('enclosure')?.getAttribute('url') || '';
+      if (!imgUrl) {
+        const encoded = item.getElementsByTagName('content:encoded')[0]?.textContent || '';
+        const m = encoded.match(/<img[^>]+src=["']([^"']+)["']/);
         if (m) imgUrl = m[1];
       }
 
       const thumbHTML = imgUrl
-        ? `<div class="${thumbClasses[i]}" style="background-image:url('${imgUrl}');background-size:cover;background-position:center;height:220px;border-radius:16px 16px 0 0"><span style="display:none">${String(i+1).padStart(2,'0')}</span></div>`
+        ? `<div class="${thumbClasses[i]}" style="background-image:url('${imgUrl}');background-size:cover;background-position:center;height:220px;border-radius:16px 16px 0 0"></div>`
         : `<div class="blog-thumb ${thumbClasses[i]}"><span>${String(i+1).padStart(2,'0')}</span></div>`;
 
       return `<div class="blog-card reveal">
         ${thumbHTML}
         <div class="blog-content">
           <div class="blog-category">${cat}</div>
-          <h3>${item.title}</h3>
+          <h3>${title}</h3>
           <p>${desc}${desc.length >= 120 ? '...' : ''}</p>
-          <a href="${item.link}" target="_blank" class="blog-read-more">Read More →</a>
+          <a href="${link}" target="_blank" class="blog-read-more">Read More →</a>
         </div>
       </div>`;
     }).join('');
-
   } catch(e) {
     console.warn('Blog load error:', e);
   }
