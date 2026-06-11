@@ -2239,30 +2239,37 @@
   try {
     const res = await fetch('https://rss-proxy.trainwithbuse.workers.dev');
     const xmlText = await res.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(xmlText, 'application/xml');
-    const items = Array.from(xml.querySelectorAll('item')).slice(0, 3);
-    if (!items.length) return;
+    
+    // CDATA'yı temizle ve manuel parse et
+    function getTagText(xml, tag) {
+      const re = new RegExp('<' + tag + '[^>]*>(?:<!\\[CDATA\\[)?(.*?)(?:\\]\\]>)?</' + tag + '>', 'is');
+      const m = xml.match(re);
+      return m ? m[1].trim() : '';
+    }
+    
+    function getAttr(xml, tag, attr) {
+      const re = new RegExp('<' + tag + '[^>]*' + attr + '=["\']([^"\']+)["\']', 'i');
+      const m = xml.match(re);
+      return m ? m[1] : '';
+    }
+
+    // item'ları split et
+    const itemMatches = xmlText.split('<item>').slice(1).slice(0, 3);
+    if (!itemMatches.length) return;
 
     const thumbClasses = ['blog-thumb-1', 'blog-thumb-2', 'blog-thumb-3'];
     const grid = document.getElementById('blogGrid');
     if (!grid) return;
 
-    grid.innerHTML = items.map((item, i) => {
-      const title = item.querySelector('title')?.textContent || '';
-      const linkEl = item.querySelector('link');
-      const link = linkEl ? (linkEl.textContent || linkEl.nextSibling?.nodeValue || '').trim() : '';
-      const desc = (item.querySelector('description')?.textContent || '')
-        .replace(/<[^>]*>/g, '').trim().slice(0, 120);
-      const cat = item.querySelector('category')?.textContent || 'Science';
-
-      let imgUrl = item.querySelector('enclosure')?.getAttribute('url') || '';
-      if (!imgUrl) {
-        const encoded = item.getElementsByTagName('content:encoded')[0]?.textContent || '';
-        const m = encoded.match(/<img[^>]+src=["']([^"']+)["']/);
-        if (m) imgUrl = m[1];
-      }
-
+    grid.innerHTML = itemMatches.map((itemXml, i) => {
+      const title = getTagText(itemXml, 'title') || '';
+      const link = getTagText(itemXml, 'link') || getTagText(itemXml, 'guid') || '';
+      const desc = getTagText(itemXml, 'description').replace(/<[^>]*>/g, '').trim().slice(0, 120);
+      const cat = getTagText(itemXml, 'category') || 'Science';
+      
+      // Enclosure URL
+      let imgUrl = getAttr(itemXml, 'enclosure', 'url');
+      
       const thumbHTML = imgUrl
         ? `<div class="${thumbClasses[i]}" style="background-image:url('${imgUrl}');background-size:cover;background-position:center;height:220px;border-radius:16px 16px 0 0"></div>`
         : `<div class="blog-thumb ${thumbClasses[i]}"><span>${String(i+1).padStart(2,'0')}</span></div>`;
