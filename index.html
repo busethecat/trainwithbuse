@@ -2216,15 +2216,15 @@
     <p class="section-desc">Neuroscience, movement science, and wellness — explained so you can actually use it.</p>
     <div class="blog-grid" id="blogGrid">
       <!-- Loading state -->
-      <div class="blog-card reveal" style="opacity:.5">
+      <div class="blog-card reveal visible" style="opacity:.4">
         <div class="blog-thumb blog-thumb-1"><span>·</span></div>
         <div class="blog-content"><div class="blog-category">Loading...</div><h3 style="background:var(--cream-deep);height:20px;border-radius:8px;margin-bottom:8px"></h3><p style="background:var(--cream-deep);height:40px;border-radius:8px"></p></div>
       </div>
-      <div class="blog-card reveal" style="opacity:.5">
+      <div class="blog-card reveal visible" style="opacity:.4">
         <div class="blog-thumb blog-thumb-2"><span>·</span></div>
         <div class="blog-content"><div class="blog-category">Loading...</div><h3 style="background:var(--cream-deep);height:20px;border-radius:8px;margin-bottom:8px"></h3><p style="background:var(--cream-deep);height:40px;border-radius:8px"></p></div>
       </div>
-      <div class="blog-card reveal" style="opacity:.5">
+      <div class="blog-card reveal visible" style="opacity:.4">
         <div class="blog-thumb blog-thumb-3"><span>·</span></div>
         <div class="blog-content"><div class="blog-category">Loading...</div><h3 style="background:var(--cream-deep);height:20px;border-radius:8px;margin-bottom:8px"></h3><p style="background:var(--cream-deep);height:40px;border-radius:8px"></p></div>
       </div>
@@ -2274,7 +2274,7 @@
         ? `<div class="${thumbClasses[i]}" style="background-image:url('${imgUrl}');background-size:cover;background-position:center;height:220px;border-radius:16px 16px 0 0"></div>`
         : `<div class="blog-thumb ${thumbClasses[i]}"><span>${String(i+1).padStart(2,'0')}</span></div>`;
 
-      return `<div class="blog-card reveal">
+      return `<div class="blog-card reveal visible">
         ${thumbHTML}
         <div class="blog-content">
           <div class="blog-category">${cat}</div>
