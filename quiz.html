@@ -1948,7 +1948,7 @@ const STRIPE_LINKS = {
   strength: 'https://buy.stripe.com/14A4gyfS13NqesAgDg1kA0b',
   metabolic:'https://buy.stripe.com/8x23cu7lv97Kbgo1Im1kA0c',
   group:    'https://buy.stripe.com/6oUcN48pz3Nqbgodr41kA0d',
-  online:   'https://buy.stripe.com/3cI3cu7lvbfS0BK2Mq1kA0f',
+  online:   'https://buy.stripe.com/00w6oGfS1do0cksaeS1kA0n',
   inperson: 'https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g',
   program:  'https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g'
 };
@@ -2166,7 +2166,7 @@ async function submitQuizEmail(plan, planTitle) {
     if (success) success.style.display = 'block';
 
     // Show Stripe CTA button
-    const stripeLinks = {"movement": "https://buy.stripe.com/fZu9AS49jbfSdow72G1kA09", "sculpt": "https://buy.stripe.com/6oUbJ07lv2JmgAI4Uy1kA0a", "strength": "https://buy.stripe.com/14A4gyfS13NqesAgDg1kA0b", "metabolic": "https://buy.stripe.com/8x23cu7lv97Kbgo1Im1kA0c", "group": "https://buy.stripe.com/dRm8wOcFP5Vy2JSdr41kA0e", "inperson": "https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g", "online": "https://buy.stripe.com/3cI3cu7lvbfS0BK2Mq1kA0f"};
+    const stripeLinks = {"movement": "https://buy.stripe.com/fZu9AS49jbfSdow72G1kA09", "sculpt": "https://buy.stripe.com/6oUbJ07lv2JmgAI4Uy1kA0a", "strength": "https://buy.stripe.com/14A4gyfS13NqesAgDg1kA0b", "metabolic": "https://buy.stripe.com/8x23cu7lv97Kbgo1Im1kA0c", "group": "https://buy.stripe.com/dRm8wOcFP5Vy2JSdr41kA0e", "inperson": "https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g", "online": "https://buy.stripe.com/00w6oGfS1do0cksaeS1kA0n"};
     const stripeUrl = stripeLinks[plan];
     if (stripeUrl) {
       const existingBtn = document.getElementById('stripeCtaBtn');
