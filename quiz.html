@@ -2164,6 +2164,29 @@ async function submitQuizEmail(plan, planTitle) {
     const success = document.getElementById('emailSuccess');
     if (row) row.style.display = 'none';
     if (success) success.style.display = 'block';
+
+    // Show Stripe CTA button
+    const stripeLinks = {"movement": "https://buy.stripe.com/fZu9AS49jbfSdow72G1kA09", "sculpt": "https://buy.stripe.com/6oUbJ07lv2JmgAI4Uy1kA0a", "strength": "https://buy.stripe.com/14A4gyfS13NqesAgDg1kA0b", "metabolic": "https://buy.stripe.com/8x23cu7lv97Kbgo1Im1kA0c", "group": "https://buy.stripe.com/dRm8wOcFP5Vy2JSdr41kA0e", "inperson": "https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g", "online": "https://buy.stripe.com/3cI3cu7lvbfS0BK2Mq1kA0f"};
+    const stripeUrl = stripeLinks[plan];
+    if (stripeUrl) {
+      const existingBtn = document.getElementById('stripeCtaBtn');
+      if (!existingBtn) {
+        const ctaBtn = document.createElement('a');
+        ctaBtn.id = 'stripeCtaBtn';
+        ctaBtn.href = stripeUrl;
+        ctaBtn.target = '_blank';
+        ctaBtn.style.cssText = 'display:inline-block;margin-top:18px;padding:14px 32px;background:linear-gradient(135deg,#C1848B,#9B6B6F);color:#fff;font-family:Outfit,sans-serif;font-size:15px;font-weight:600;letter-spacing:1px;border-radius:50px;text-decoration:none;transition:opacity 0.3s;';
+        const btnLabels = {
+          tr: 'Hemen Başla →',
+          de: 'Jetzt starten →',
+          en: 'Start Now →'
+        };
+        ctaBtn.textContent = btnLabels[lang] || btnLabels['en'];
+        ctaBtn.onmouseover = function(){ this.style.opacity='0.85'; };
+        ctaBtn.onmouseout = function(){ this.style.opacity='1'; };
+        success.parentNode.insertBefore(ctaBtn, success.nextSibling);
+      }
+    }
   } catch(e) {
     if (btn) {
       btn.disabled = false;
