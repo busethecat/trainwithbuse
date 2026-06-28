@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Session — Train With Buse</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <style>
+    :root {
+      --blush: #E8B4B8;
+      --blush-light: #F5D5D8;
+      --cream: #FDF6F0;
+      --cream-deep: #F5EBE0;
+      --rose: #C1848B;
+      --rose-dark: #9B6B6F;
+      --charcoal: #2D2A2E;
+      --charcoal-light: #4A4548;
+      --gold: #C8A96E;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--charcoal); min-height: 100vh; }
+
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 20px 40px; display: flex; align-items: center; justify-content: space-between;
+      background: rgba(253,246,240,0.92); backdrop-filter: blur(20px);
+    }
+    .topbar-logo { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; color: var(--charcoal); text-decoration: none; letter-spacing: 3px; }
+    .topbar-back { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--charcoal-light); text-decoration: none; transition: color .3s; }
+    .topbar-back:hover { color: var(--rose); }
+
+    .main { padding: 110px 24px 60px; max-width: 640px; margin: 0 auto; }
+
+    /* AUTH GUARD */
+    .auth-guard { text-align: center; padding: 80px 20px; display: none; }
+    .auth-guard h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; margin-bottom: 12px; }
+    .auth-guard p { font-size: 14px; color: var(--charcoal-light); margin-bottom: 24px; }
+
+    /* LOADING */
+    .loading { text-align: center; padding: 80px 20px; }
+    .loading-spinner { width: 32px; height: 32px; border: 2px solid var(--blush); border-top-color: var(--rose); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* SECTION TAG */
+    .section-tag { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--rose); font-weight: 600; margin-bottom: 6px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 400; color: var(--charcoal); margin-bottom: 8px; }
+    .section-sub { font-size: 14px; color: var(--charcoal-light); line-height: 1.6; margin-bottom: 36px; }
+
+    /* PACKAGE CARDS */
+    .packages { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .pkg-card {
+      background: #fff; border-radius: 20px; padding: 22px 24px;
+      border: 1.5px solid rgba(232,180,184,.2); cursor: pointer;
+      transition: all .3s; display: flex; align-items: center; gap: 16px;
+    }
+    .pkg-card:hover { border-color: var(--rose); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(193,132,139,.12); }
+    .pkg-card.selected { border-color: var(--rose); background: rgba(193,132,139,.05); }
+    .pkg-icon { font-size: 28px; flex-shrink: 0; }
+    .pkg-info { flex: 1; }
+    .pkg-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: var(--charcoal); margin-bottom: 4px; }
+    .pkg-detail { font-size: 13px; color: var(--charcoal-light); line-height: 1.5; }
+    .pkg-badge { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--rose); font-weight: 600; background: rgba(193,132,139,.1); padding: 3px 10px; border-radius: 20px; margin-top: 6px; display: inline-block; }
+    .pkg-check { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--blush); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .3s; }
+    .pkg-card.selected .pkg-check { background: var(--rose); border-color: var(--rose); color: #fff; }
+
+    /* LIVE LABS CARD (no booking) */
+    .live-card {
+      background: #fff; border-radius: 20px; padding: 24px;
+      border: 1.5px solid rgba(232,180,184,.2); margin-bottom: 12px;
+    }
+    .live-schedule { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+    .live-day { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--cream); border-radius: 12px; font-size: 13px; color: var(--charcoal-light); }
+    .live-day strong { color: var(--charcoal); }
+    .coming-soon { display: inline-block; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; background: rgba(200,169,110,.15); color: var(--gold); padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
+
+    /* BOOKING FORM */
+    .booking-form { display: none; background: #fff; border-radius: 24px; padding: 32px; border: 1.5px solid rgba(232,180,184,.2); margin-top: 24px; }
+    .booking-form.visible { display: block; }
+
+    .form-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; margin-bottom: 6px; }
+    .form-sub { font-size: 13px; color: var(--charcoal-light); margin-bottom: 24px; line-height: 1.6; }
+
+    .field-group { margin-bottom: 18px; }
+    .field-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--charcoal-light); font-weight: 500; display: block; margin-bottom: 8px; }
+
+    /* DATE SLOTS */
+    .date-slots { display: flex; flex-direction: column; gap: 12px; }
+    .date-slot { background: var(--cream); border-radius: 14px; padding: 14px 16px; border: 1.5px solid transparent; transition: all .3s; }
+    .date-slot-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+    .date-slot-num { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--rose); font-weight: 600; }
+    .date-slot-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .add-slot-btn { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-radius: 14px; border: 1.5px dashed rgba(232,180,184,.4); background: transparent; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--charcoal-light); width: 100%; justify-content: center; transition: all .3s; margin-top: 8px; }
+    .add-slot-btn:hover { border-color: var(--rose); color: var(--rose); }
+
+    input[type="date"], select, textarea {
+      width: 100%; padding: 12px 16px; border-radius: 12px;
+      border: 1.5px solid rgba(232,180,184,.3); background: #fff;
+      font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--charcoal);
+      outline: none; transition: border .3s;
+    }
+    input[type="date"]:focus, select:focus, textarea:focus { border-color: var(--rose); }
+    textarea { resize: vertical; min-height: 90px; }
+
+    .submit-btn {
+      width: 100%; padding: 17px; border-radius: 50px;
+      background: var(--charcoal); color: var(--cream);
+      font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase; border: none; cursor: pointer;
+      transition: all .3s; margin-top: 8px;
+    }
+    .submit-btn:hover { background: var(--rose-dark); transform: translateY(-2px); }
+    .submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    .error-box { display: none; margin-top: 12px; padding: 12px 16px; background: #fff0f0; border-radius: 12px; font-size: 13px; color: #c0392b; }
+
+    /* GOOGLE FORM */
+    .gform-section { background: linear-gradient(135deg, rgba(200,169,110,.08), rgba(193,132,139,.06)); border: 1.5px solid rgba(200,169,110,.25); border-radius: 20px; padding: 24px; margin-top: 24px; }
+    .gform-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: var(--charcoal); margin-bottom: 8px; }
+    .gform-text { font-size: 13px; color: var(--charcoal-light); line-height: 1.7; margin-bottom: 16px; }
+    .gform-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 50px; background: var(--gold); color: #fff; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 1px; text-decoration: none; transition: all .3s; }
+    .gform-btn:hover { opacity: .85; transform: translateY(-2px); }
+
+    /* SUCCESS */
+    .success-screen { display: none; text-align: center; padding: 60px 20px; }
+    .success-icon { font-size: 56px; margin-bottom: 20px; }
+    .success-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 400; margin-bottom: 12px; }
+    .success-sub { font-size: 14px; color: var(--charcoal-light); line-height: 1.7; margin-bottom: 28px; }
+    .success-summary { background: #fff; border-radius: 16px; padding: 20px 24px; text-align: left; font-size: 13px; color: var(--charcoal-light); line-height: 2; margin-bottom: 24px; border: 1px solid rgba(232,180,184,.2); }
+    .back-btn { display: inline-block; padding: 14px 36px; border-radius: 50px; background: var(--charcoal); color: var(--cream); font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 1px; text-decoration: none; transition: all .3s; }
+    .back-btn:hover { background: var(--rose-dark); }
+
+    /* NO PURCHASES */
+    .no-purchases { text-align: center; padding: 60px 20px; }
+    .no-purchases h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; margin-bottom: 12px; }
+    .no-purchases p { font-size: 14px; color: var(--charcoal-light); margin-bottom: 24px; line-height: 1.6; }
+
+    @media (max-width: 600px) {
+      .topbar { padding: 16px 20px; }
+      .main { padding: 90px 16px 40px; }
+      .date-slot-fields { grid-template-columns: 1fr; }
+      .booking-form { padding: 22px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="topbar-logo">BUSE</a>
+  <a href="dashboard.html" class="topbar-back">← Dashboard</a>
+</div>
+
+<div class="main">
+
+  <!-- Loading -->
+  <div class="loading" id="loadingScreen">
+    <div class="loading-spinner"></div>
+    <div style="font-size:14px;color:var(--charcoal-light);">Loading your sessions...</div>
+  </div>
+
+  <!-- Auth guard -->
+  <div class="auth-guard" id="authGuard">
+    <h2>Login Required</h2>
+    <p>Please log in to book a session with Buse.</p>
+    <a href="login.html" class="back-btn">Log In →</a>
+  </div>
+
+  <!-- No purchases -->
+  <div class="no-purchases" id="noPurchases" style="display:none;">
+    <div style="font-size:48px;margin-bottom:16px;">🌸</div>
+    <h2>No Active Sessions</h2>
+    <p>You don't have any 1:1 coaching or Live Lab sessions yet.<br>Explore plans to get started.</p>
+    <a href="plans.html" class="back-btn" style="margin-top:8px;">View Plans →</a>
+  </div>
+
+  <!-- Main content -->
+  <div id="mainContent" style="display:none;">
+
+    <div class="section-tag">1:1 Sessions & Live Classes</div>
+    <div class="section-title">Your <em style="font-style:italic;color:var(--rose);">Sessions</em></div>
+    <div class="section-sub">Select a session type to book, or view your upcoming Live Lab schedule below.</div>
+
+    <!-- Package cards -->
+    <div class="packages" id="packageList"></div>
+
+    <!-- Live Labs section -->
+    <div id="liveLabsSection" style="display:none;">
+      <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--charcoal-light);font-weight:500;margin-bottom:12px;">Live Lab Classes</div>
+      <div class="live-card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+          <span style="font-size:20px;">🎯</span>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;">Live Lab Classes</div>
+        </div>
+        <div style="font-size:13px;color:var(--charcoal-light);margin-bottom:14px;">Your weekly live session schedule with Buse via Zoom.</div>
+        <div class="live-schedule">
+          <div class="live-day">📅 <strong>Monday</strong> — Strength Lab <span class="coming-soon">Zoom link soon</span></div>
+          <div class="live-day">📅 <strong>Wednesday</strong> — HIIT & Conditioning <span class="coming-soon">Zoom link soon</span></div>
+          <div class="live-day">📅 <strong>Friday</strong> — Mobility & Recovery <span class="coming-soon">Zoom link soon</span></div>
+        </div>
+        <div style="margin-top:14px;padding:10px 14px;background:rgba(200,169,110,.08);border-radius:10px;font-size:12px;color:var(--charcoal-light);">
+          🔔 Zoom links will be sent to your email before each class. Replay available for 48 hours.
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking form -->
+    <div class="booking-form" id="bookingForm">
+      <div class="form-title" id="formTitle">Book a Session</div>
+      <div class="form-sub" id="formSub">Choose up to 3 preferred time slots — Buse will confirm the best one within 12 hours.</div>
+
+      <div class="field-group">
+        <label class="field-label">Preferred Date & Time Options</label>
+        <div class="date-slots" id="dateSlots">
+          <div class="date-slot" id="slot-0">
+            <div class="date-slot-num">Option 1</div>
+            <div class="date-slot-fields">
+              <input type="date" id="date-0" placeholder="Date">
+              <select id="time-0">
+                <option value="">Select time</option>
+                <option>08:00</option><option>09:00</option><option>10:00</option>
+                <option>11:00</option><option>12:00</option><option>13:00</option>
+                <option>14:00</option><option>15:00</option><option>16:00</option>
+                <option>17:00</option><option>18:00</option><option>19:00</option>
+                <option>20:00</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button class="add-slot-btn" id="addSlotBtn" onclick="addSlot()">+ Add another option</button>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Notes (optional)</label>
+        <textarea id="bookingNotes" placeholder="Any goals, injuries, areas to focus on, or anything else Buse should know before your session..."></textarea>
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitBooking()">Send Booking Request →</button>
+      <div class="error-box" id="errorBox"></div>
+    </div>
+
+    <!-- Google Form section -->
+    <div class="gform-section" id="gformSection" style="display:none;">
+      <div class="gform-title">📋 Exercise Readiness Questionnaire</div>
+      <div class="gform-text">
+        Help Buse prepare the perfect session for you. By completing this short questionnaire, she'll know exactly where you are, what you need, and how to make every minute count.
+        <br><br>
+        <em style="color:var(--rose);">The more you share, the better Buse can tailor your session.</em>
+      </div>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdBYtcOBxYzkhzJ62cDnlwRRHCTMTl06iwL6601403itm-o4A/viewform?usp=header" target="_blank" class="gform-btn">
+        📝 Fill Out the Form →
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Success screen -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">🌸</div>
+    <div class="success-title">Request Sent!</div>
+    <div class="success-sub">Your booking request has been received.<br>Buse will confirm within <strong>12 hours</strong>.</div>
+    <div class="success-summary" id="successSummary"></div>
+    <div class="gform-section" style="margin-bottom:24px;text-align:left;">
+      <div class="gform-title">One more thing...</div>
+      <div class="gform-text">Fill out the Exercise Readiness Questionnaire so Buse can prepare the perfect session for you.</div>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdBYtcOBxYzkhzJ62cDnlwRRHCTMTl06iwL6601403itm-o4A/viewform?usp=header" target="_blank" class="gform-btn">📝 Fill Out Now →</a>
+    </div>
+    <a href="dashboard.html" class="back-btn">Back to Dashboard</a>
+  </div>
+
+</div>
+
+<script>
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentUser = null;
+let selectedPkg = null;
+let slotCount = 1;
+
+const COACHING_IDS = ['online-single', 'online-8pack', 'inperson-single', 'inperson-10pack'];
+const LIVE_IDS = ['live-labs-monthly', 'live-labs-yearly'];
+
+const PKG_INFO = {
+  'online-single':   { icon: '🖥️', name: 'Online 1:1 Coaching', detail: 'Single session — 50 min via Zoom', badge: 'Online', type: 'online' },
+  'online-8pack':    { icon: '🖥️', name: 'Online 1:1 Coaching', detail: '8-session pack — 50 min each via Zoom · 1 session free', badge: 'Online · 8 Pack', type: 'online' },
+  'inperson-single': { icon: '📍', name: 'The Buse Method', detail: 'Single session — 50 min in Berlin', badge: 'In-Person · Berlin', type: 'inperson' },
+  'inperson-10pack': { icon: '📍', name: 'The Buse Method', detail: '10-session pack — 50 min each in Berlin · 1 session free', badge: 'In-Person · Berlin', type: 'inperson' },
+};
+
+// Set min date
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+const minDate = tomorrow.toISOString().split('T')[0];
+document.getElementById('date-0').min = minDate;
+
+// Auth
+sb.auth.getSession().then(async ({ data: { session } }) => {
+  if (!session) {
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('authGuard').style.display = 'block';
+    return;
+  }
+  currentUser = session.user;
+  await loadPurchases();
+});
+
+async function loadPurchases() {
+  const { data: purchases } = await sb.from('purchases')
+    .select('course_id, created_at')
+    .eq('user_id', currentUser.id);
+
+  document.getElementById('loadingScreen').style.display = 'none';
+
+  if (!purchases || purchases.length === 0) {
+    document.getElementById('noPurchases').style.display = 'block';
+    return;
+  }
+
+  const courseIds = purchases.map(p => p.course_id);
+  const hasCoaching = courseIds.some(id => COACHING_IDS.includes(id));
+  const hasLive = courseIds.some(id => LIVE_IDS.includes(id));
+
+  if (!hasCoaching && !hasLive) {
+    document.getElementById('noPurchases').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('mainContent').style.display = 'block';
+
+  // Build package cards
+  if (hasCoaching) {
+    const pkgList = document.getElementById('packageList');
+    const coachingIds = courseIds.filter(id => COACHING_IDS.includes(id));
+    // Deduplicate by type
+    const seen = new Set();
+    coachingIds.forEach(id => {
+      const info = PKG_INFO[id];
+      if (!info || seen.has(info.type)) return;
+      seen.add(info.type);
+      pkgList.innerHTML += `
+        <div class="pkg-card" id="pkg-${id}" onclick="selectPackage('${id}', '${info.type}')">
+          <div class="pkg-icon">${info.icon}</div>
+          <div class="pkg-info">
+            <div class="pkg-name">${info.name}</div>
+            <div class="pkg-detail">${info.detail}</div>
+            <div class="pkg-badge">${info.badge}</div>
+          </div>
+          <div class="pkg-check" id="check-${id}">✓</div>
+        </div>`;
+    });
+  }
+
+  if (hasLive) {
+    document.getElementById('liveLabsSection').style.display = 'block';
+  }
+}
+
+function selectPackage(id, type) {
+  // Deselect all
+  document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
+  selectedPkg = { id, type };
+  document.getElementById('pkg-' + id).classList.add('selected');
+
+  // Show form
+  const form = document.getElementById('bookingForm');
+  form.classList.add('visible');
+
+  const isOnline = type === 'online';
+  document.getElementById('formTitle').textContent = isOnline ? 'Book an Online Session' : 'Book an In-Person Session';
+  document.getElementById('formSub').textContent = isOnline
+    ? 'Choose up to 3 preferred time slots — Buse will confirm the best one and send you a Zoom link within 12 hours.'
+    : 'Choose up to 3 preferred time slots — Buse will confirm the best one and share the Berlin studio address within 12 hours.';
+
+  document.getElementById('gformSection').style.display = 'block';
+  form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function addSlot() {
+  if (slotCount >= 3) {
+    document.getElementById('addSlotBtn').style.display = 'none';
+    return;
+  }
+  const i = slotCount;
+  const slot = document.createElement('div');
+  slot.className = 'date-slot';
+  slot.id = 'slot-' + i;
+  slot.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="date-slot-num">Option ${i + 1}</div>
+      <button onclick="removeSlot(${i})" style="background:none;border:none;cursor:pointer;color:var(--charcoal-light);font-size:18px;line-height:1;">×</button>
+    </div>
+    <div class="date-slot-fields">
+      <input type="date" id="date-${i}" min="${minDate}">
+      <select id="time-${i}">
+        <option value="">Select time</option>
+        <option>08:00</option><option>09:00</option><option>10:00</option>
+        <option>11:00</option><option>12:00</option><option>13:00</option>
+        <option>14:00</option><option>15:00</option><option>16:00</option>
+        <option>17:00</option><option>18:00</option><option>19:00</option>
+        <option>20:00</option>
+      </select>
+    </div>`;
+  document.getElementById('dateSlots').appendChild(slot);
+  slotCount++;
+  if (slotCount >= 3) document.getElementById('addSlotBtn').style.display = 'none';
+}
+
+function removeSlot(i) {
+  document.getElementById('slot-' + i)?.remove();
+  slotCount--;
+  document.getElementById('addSlotBtn').style.display = 'flex';
+}
+
+async function submitBooking() {
+  const date0 = document.getElementById('date-0').value;
+  const time0 = document.getElementById('time-0').value;
+
+  if (!selectedPkg) { showError('Please select a session type.'); return; }
+  if (!date0) { showError('Please select at least one date.'); return; }
+  if (!time0) { showError('Please select at least one time slot.'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  document.getElementById('errorBox').style.display = 'none';
+
+  // Collect all slots
+  const slots = [];
+  for (let i = 0; i < 3; i++) {
+    const d = document.getElementById('date-' + i)?.value;
+    const t = document.getElementById('time-' + i)?.value;
+    if (d && t) slots.push({ date: d, time: t });
+  }
+
+  const notes = document.getElementById('bookingNotes').value;
+
+  const { error } = await sb.from('bookings').insert({
+    user_id: currentUser.id,
+    user_email: currentUser.email,
+    session_type: selectedPkg.type,
+    requested_date: slots[0].date,
+    requested_time: slots[0].time,
+    notes: [
+      slots.length > 1 ? `Preferred slots:\n${slots.map((s,i) => `Option ${i+1}: ${s.date} at ${s.time}`).join('\n')}` : '',
+      notes ? `Notes: ${notes}` : ''
+    ].filter(Boolean).join('\n\n') || null,
+    status: 'pending'
+  });
+
+  if (error) {
+    showError('Something went wrong. Please try again.');
+    btn.disabled = false;
+    btn.textContent = 'Send Booking Request →';
+    return;
+  }
+
+  // Success
+  document.getElementById('mainContent').style.display = 'none';
+  const success = document.getElementById('successScreen');
+  success.style.display = 'block';
+  document.getElementById('successSummary').innerHTML = `
+    ${slots.map((s, i) => `<div>📅 <strong>Option ${i+1}:</strong> ${new Date(s.date + 'T00:00:00').toLocaleDateString('en-GB', {weekday:'long', year:'numeric', month:'long', day:'numeric'})} at ${s.time}</div>`).join('')}
+    <div>📍 <strong>Type:</strong> ${selectedPkg.type === 'online' ? 'Online (Zoom)' : 'In-Person (Berlin)'}</div>
+    ${notes ? '<div>📝 <strong>Notes:</strong> ' + notes + '</div>' : ''}
+  `;
+  success.scrollIntoView({ behavior: 'smooth' });
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorBox');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+</script>
+</body>
+</html>
