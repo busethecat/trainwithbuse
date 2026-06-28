@@ -1,15 +1,36 @@
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: CloudflareBrowserRenderingCrawler
+Disallow: /
+
 User-agent: *
 Disallow: /dashboard.html
 Disallow: /programs.html
 Disallow: /course.html
 Disallow: /login.html
 Disallow: /lab-system.html
-Disallow: /about.html
-Disallow: /contact.html
-Disallow: /personal-training.html
-Disallow: /corporate.html
-Disallow: /tr.html
-Disallow: /de.html
 Allow: /
 
-Sitemap: https://www.trainwithbuse.com/sitemap.xml
+Sitemap: https://trainwithbuse.com/sitemap.xml
