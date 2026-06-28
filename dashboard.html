@@ -498,6 +498,19 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
       <span class="sb-item-arrow">›</span>
     </div>
   </div>
+  <div class="sb-section">
+    <div class="sb-section-title">1:1 Sessions</div>
+    <div class="sb-item" onclick="openModal('bookingModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div><div class="sb-item-label">Book a Session</div><div class="sb-item-sub">Request your 1:1 with Buse</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+    <div class="sb-item" onclick="openModal('myBookingsModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+      <div><div class="sb-item-label">My Bookings</div><div class="sb-item-sub">View your session requests</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+  </div>
 
   <div class="sb-section">
     <div class="sb-section-title" id="sb_support">Support</div>
@@ -2027,5 +2040,223 @@ function toggleBuseMsg(id){
 
 async function logout(){await sb.auth.signOut();localStorage.removeItem('twb_theme_gender');window.location.href='index.html';}
 </script>
+
+<!-- ========== BOOKING MODAL ========== -->
+<div class="modal-overlay" id="bookingModal" style="display:none;">
+  <div class="modal-card" style="max-width:480px;">
+    <div class="modal-top">
+      <div><div class="modal-tag">1:1 Session</div><div class="modal-title">Book a Session</div></div>
+      <button class="modal-x" onclick="closeModal('bookingModal')">✕</button>
+    </div>
+    <div class="modal-b" id="bookingBody">
+      <div id="bookingForm">
+        <p style="font-size:13px;color:var(--charcoal-light);margin-bottom:20px;line-height:1.6;">Select your preferred session type, date and time. Buse will confirm within 12 hours.</p>
+        
+        <div style="margin-bottom:16px;">
+          <label style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--charcoal-light);font-weight:500;display:block;margin-bottom:8px;">Session Type</label>
+          <div style="display:flex;gap:10px;">
+            <button onclick="selectSessionType('online')" id="typeOnline" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid rgba(232,180,184,.3);background:#fff;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;transition:all .3s;" onmouseover="this.style.borderColor='var(--rose)'" onmouseout="if(selectedType!=='online')this.style.borderColor='rgba(232,180,184,.3)'">
+              🖥️ Online (Zoom)
+            </button>
+            <button onclick="selectSessionType('inperson')" id="typeInperson" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid rgba(232,180,184,.3);background:#fff;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;transition:all .3s;" onmouseover="this.style.borderColor='var(--rose)'" onmouseout="if(selectedType!=='inperson')this.style.borderColor='rgba(232,180,184,.3)'">
+              📍 In-Person (Berlin)
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--charcoal-light);font-weight:500;display:block;margin-bottom:8px;">Preferred Date</label>
+          <input type="date" id="bookingDate" min="" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid rgba(232,180,184,.3);background:#fff;font-family:'Outfit',sans-serif;font-size:14px;color:var(--charcoal);outline:none;transition:border .3s;" onfocus="this.style.borderColor='var(--rose)'" onblur="this.style.borderColor='rgba(232,180,184,.3)'">
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--charcoal-light);font-weight:500;display:block;margin-bottom:8px;">Preferred Time</label>
+          <select id="bookingTime" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid rgba(232,180,184,.3);background:#fff;font-family:'Outfit',sans-serif;font-size:14px;color:var(--charcoal);outline:none;transition:border .3s;" onfocus="this.style.borderColor='var(--rose)'" onblur="this.style.borderColor='rgba(232,180,184,.3)'">
+            <option value="">Select a time slot</option>
+            <option value="08:00">08:00</option>
+            <option value="09:00">09:00</option>
+            <option value="10:00">10:00</option>
+            <option value="11:00">11:00</option>
+            <option value="12:00">12:00</option>
+            <option value="13:00">13:00</option>
+            <option value="14:00">14:00</option>
+            <option value="15:00">15:00</option>
+            <option value="16:00">16:00</option>
+            <option value="17:00">17:00</option>
+            <option value="18:00">18:00</option>
+            <option value="19:00">19:00</option>
+            <option value="20:00">20:00</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom:24px;">
+          <label style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--charcoal-light);font-weight:500;display:block;margin-bottom:8px;">Notes (optional)</label>
+          <textarea id="bookingNotes" placeholder="Any goals, injuries or preferences Buse should know..." style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid rgba(232,180,184,.3);background:#fff;font-family:'Outfit',sans-serif;font-size:14px;color:var(--charcoal);outline:none;resize:vertical;min-height:80px;transition:border .3s;" onfocus="this.style.borderColor='var(--rose)'" onblur="this.style.borderColor='rgba(232,180,184,.3)'"></textarea>
+        </div>
+
+        <button onclick="submitBooking()" style="width:100%;padding:16px;border-radius:50px;background:var(--charcoal);color:var(--cream);font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='var(--rose-dark)'" onmouseout="this.style.background='var(--charcoal)'">
+          Send Request →
+        </button>
+        <div id="bookingError" style="display:none;margin-top:12px;padding:10px 14px;background:#fff0f0;border-radius:10px;font-size:13px;color:#c0392b;text-align:center;"></div>
+      </div>
+
+      <!-- Success screen -->
+      <div id="bookingSuccess" style="display:none;text-align:center;padding:20px 0;">
+        <div style="font-size:48px;margin-bottom:16px;">🌸</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--charcoal);margin-bottom:12px;">Request Sent!</div>
+        <div style="font-size:14px;color:var(--charcoal-light);line-height:1.7;margin-bottom:24px;">Your booking request has been received.<br>Buse will confirm within <strong>12 hours</strong>.</div>
+        <div id="bookingSummary" style="background:var(--cream);border-radius:14px;padding:16px 20px;text-align:left;font-size:13px;color:var(--charcoal-light);line-height:1.8;margin-bottom:20px;"></div>
+        <button onclick="closeModal('bookingModal');resetBookingForm();" style="padding:14px 32px;border-radius:50px;background:var(--charcoal);color:var(--cream);font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;letter-spacing:1px;border:none;cursor:pointer;">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MY BOOKINGS MODAL ========== -->
+<div class="modal-overlay" id="myBookingsModal" style="display:none;">
+  <div class="modal-card" style="max-width:480px;">
+    <div class="modal-top">
+      <div><div class="modal-tag">1:1 Session</div><div class="modal-title">My Bookings</div></div>
+      <button class="modal-x" onclick="closeModal('myBookingsModal')">✕</button>
+    </div>
+    <div class="modal-b" id="myBookingsBody">
+      <div style="text-align:center;padding:20px;color:var(--charcoal-light);font-size:14px;">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Booking system ──
+let selectedType = '';
+
+function selectSessionType(type) {
+  selectedType = type;
+  const onlineBtn = document.getElementById('typeOnline');
+  const inpersonBtn = document.getElementById('typeInperson');
+  if (type === 'online') {
+    onlineBtn.style.borderColor = 'var(--rose)';
+    onlineBtn.style.background = 'rgba(193,132,139,0.08)';
+    inpersonBtn.style.borderColor = 'rgba(232,180,184,.3)';
+    inpersonBtn.style.background = '#fff';
+  } else {
+    inpersonBtn.style.borderColor = 'var(--rose)';
+    inpersonBtn.style.background = 'rgba(193,132,139,0.08)';
+    onlineBtn.style.borderColor = 'rgba(232,180,184,.3)';
+    onlineBtn.style.background = '#fff';
+  }
+}
+
+// Set min date to tomorrow
+document.addEventListener('DOMContentLoaded', () => {
+  const dateInput = document.getElementById('bookingDate');
+  if (dateInput) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    dateInput.min = tomorrow.toISOString().split('T')[0];
+  }
+});
+
+async function submitBooking() {
+  const date = document.getElementById('bookingDate').value;
+  const time = document.getElementById('bookingTime').value;
+  const notes = document.getElementById('bookingNotes').value;
+  const errorEl = document.getElementById('bookingError');
+
+  if (!selectedType) { showBookingError('Please select a session type.'); return; }
+  if (!date) { showBookingError('Please select a date.'); return; }
+  if (!time) { showBookingError('Please select a time slot.'); return; }
+
+  errorEl.style.display = 'none';
+
+  const { error } = await sb.from('bookings').insert({
+    user_id: currentUser.id,
+    user_email: currentUser.email,
+    session_type: selectedType,
+    requested_date: date,
+    requested_time: time,
+    notes: notes || null,
+    status: 'pending'
+  });
+
+  if (error) {
+    showBookingError('Something went wrong. Please try again.');
+    console.error(error);
+    return;
+  }
+
+  // Show success
+  document.getElementById('bookingForm').style.display = 'none';
+  document.getElementById('bookingSuccess').style.display = 'block';
+  document.getElementById('bookingSummary').innerHTML = `
+    <div>📅 <strong>Date:</strong> ${new Date(date + 'T00:00:00').toLocaleDateString('en-GB', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}</div>
+    <div>⏰ <strong>Time:</strong> ${time}</div>
+    <div>📍 <strong>Type:</strong> ${selectedType === 'online' ? 'Online (Zoom)' : 'In-Person (Berlin)'}</div>
+    ${notes ? '<div>📝 <strong>Notes:</strong> ' + notes + '</div>' : ''}
+  `;
+}
+
+function showBookingError(msg) {
+  const errorEl = document.getElementById('bookingError');
+  errorEl.textContent = msg;
+  errorEl.style.display = 'block';
+}
+
+function resetBookingForm() {
+  selectedType = '';
+  document.getElementById('bookingDate').value = '';
+  document.getElementById('bookingTime').value = '';
+  document.getElementById('bookingNotes').value = '';
+  document.getElementById('bookingForm').style.display = 'block';
+  document.getElementById('bookingSuccess').style.display = 'none';
+  document.getElementById('bookingError').style.display = 'none';
+  document.getElementById('typeOnline').style.borderColor = 'rgba(232,180,184,.3)';
+  document.getElementById('typeOnline').style.background = '#fff';
+  document.getElementById('typeInperson').style.borderColor = 'rgba(232,180,184,.3)';
+  document.getElementById('typeInperson').style.background = '#fff';
+}
+
+async function renderMyBookings() {
+  const body = document.getElementById('myBookingsBody');
+  const { data, error } = await sb.from('bookings')
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .order('created_at', { ascending: false });
+
+  if (error || !data || data.length === 0) {
+    body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--charcoal-light);font-size:14px;">No booking requests yet.<br><br><button onclick="closeModal('myBookingsModal');openModal('bookingModal');" style="margin-top:8px;padding:12px 24px;border-radius:50px;background:var(--charcoal);color:var(--cream);font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;letter-spacing:1px;border:none;cursor:pointer;">Book a Session →</button></div>';
+    return;
+  }
+
+  body.innerHTML = data.map(b => {
+    const statusColor = b.status === 'confirmed' ? '#27ae60' : b.status === 'cancelled' ? '#c0392b' : '#C8A96E';
+    const statusLabel = b.status === 'confirmed' ? '✓ Confirmed' : b.status === 'cancelled' ? '✕ Cancelled' : '⏳ Pending';
+    return `
+      <div style="background:var(--cream);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;">${b.session_type === 'online' ? '🖥️ Online' : '📍 In-Person'}</div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:${statusColor};text-transform:uppercase;">${statusLabel}</div>
+        </div>
+        <div style="font-size:13px;color:var(--charcoal-light);line-height:1.7;">
+          <div>📅 ${new Date(b.requested_date + 'T00:00:00').toLocaleDateString('en-GB', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}</div>
+          <div>⏰ ${b.requested_time}</div>
+          ${b.notes ? '<div>📝 ' + b.notes + '</div>' : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Override openModal to load bookings
+const _origOpenModal = window.openModal;
+window.openModal = function(id) {
+  if (id === 'myBookingsModal') renderMyBookings();
+  if (_origOpenModal) _origOpenModal(id);
+  else {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'flex';
+  }
+};
+</script>
+
 </body>
 </html>
