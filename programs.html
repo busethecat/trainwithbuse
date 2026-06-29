@@ -259,7 +259,7 @@ async function loadData(){
 function render(){
   const tl=T[lang];
   const content=document.getElementById('content');
-  const liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  const liveIds=['live-flexibility','live-power','live-core'];
   const myCourses=Object.entries(COURSES).filter(([id])=>_purchases.has(id)&&!liveIds.includes(id));
   const storeCourses=Object.entries(COURSES).filter(([id])=>!_purchases.has(id)&&!liveIds.includes(id));
   const myLives=liveIds.filter(id=>_purchases.has(id));
@@ -406,7 +406,11 @@ function render(){
             <div style="margin-bottom:8px;color:var(--charcoal-light);">${icon}</div>
             <div class="store-title">${c.title}</div>
             <div class="store-sub">${sched}</div>
-            <div class="store-price"><span>€</span>${c.price}<span style="font-size:13px;color:var(--nude)">${tl.perMonth}</span></div>
+            <div style="margin-bottom:6px;">
+              <span style="font-size:13px;color:var(--nude);text-decoration:line-through;">€89/mo</span>
+            </div>
+            <div class="store-price" style="margin-bottom:2px;"><span>€</span>59<span style="font-size:13px;color:var(--nude)">/mo</span></div>
+            <div style="font-size:11px;color:var(--rose);font-weight:500;letter-spacing:.5px;margin-bottom:10px;">Founding Member · Limited seats</div>
             <div class="store-desc">${desc.substring(0,60)}...</div>
             ${c.comingSoon ? 
               '<button class="btn-buy" style="background:var(--nude);cursor:default;opacity:.7;" disabled>Coming Soon</button>' : 
@@ -458,12 +462,13 @@ async function logout(){await sb.auth.signOut();window.location.href='index.html
     <div id="liveDetailSched" style="display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--cream);border-radius:12px;font-size:13px;color:var(--charcoal-light);margin-bottom:20px;"></div>
     <div id="liveDetailDesc" style="font-size:14px;color:var(--charcoal-light);line-height:1.8;margin-bottom:24px;"></div>
     <div style="padding:16px;background:var(--cream);border-radius:14px;margin-bottom:24px;">
-      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);font-weight:600;margin-bottom:8px;">Founding Member Price</div>
-      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);font-weight:600;margin-bottom:8px;">Founding Member Price · Limited Seats</div>
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px;">
+        <span style="font-size:15px;color:var(--charcoal-light);text-decoration:line-through;opacity:.6;">€89/mo</span>
         <span style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;">€59</span>
         <span style="font-size:13px;color:var(--charcoal-light);">/ month</span>
       </div>
-      <div style="font-size:12px;color:var(--charcoal-light);">or €499/year · 2 months free · First 50 members only</div>
+      <div style="font-size:12px;color:var(--charcoal-light);">or €499/year · 2 months free</div>
     </div>
     <div id="liveDetailBtnWrap"></div>
   </div>
