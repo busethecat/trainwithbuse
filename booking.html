@@ -191,22 +191,15 @@
           <label class="form-label">Session Type</label>
           <div class="type-row" id="typeRow"></div>
 
-          <label class="form-label">Preferred Time</label>
-          <div class="time-slots" id="timeSlots">
-            <div class="time-slot" onclick="selectTime(this,'08:00')">08:00</div>
-            <div class="time-slot" onclick="selectTime(this,'09:00')">09:00</div>
-            <div class="time-slot" onclick="selectTime(this,'10:00')">10:00</div>
-            <div class="time-slot" onclick="selectTime(this,'11:00')">11:00</div>
-            <div class="time-slot" onclick="selectTime(this,'12:00')">12:00</div>
-            <div class="time-slot" onclick="selectTime(this,'13:00')">13:00</div>
-            <div class="time-slot" onclick="selectTime(this,'14:00')">14:00</div>
-            <div class="time-slot" onclick="selectTime(this,'15:00')">15:00</div>
-            <div class="time-slot" onclick="selectTime(this,'16:00')">16:00</div>
-            <div class="time-slot" onclick="selectTime(this,'17:00')">17:00</div>
-            <div class="time-slot" onclick="selectTime(this,'18:00')">18:00</div>
-            <div class="time-slot" onclick="selectTime(this,'19:00')">19:00</div>
-            <div class="time-slot" onclick="selectTime(this,'20:00')">20:00</div>
+          <div style="background:rgba(200,169,110,.08);border:1px solid rgba(200,169,110,.2);border-radius:12px;padding:11px 14px;margin-bottom:16px;font-size:12px;color:var(--charcoal-light);line-height:1.5;">
+            Tip: Select multiple date &amp; time options to help Buse confirm faster.
           </div>
+
+          <div id="slotsContainer"></div>
+
+          <button onclick="addSlot()" id="addSlotBtn" style="width:100%;padding:10px;border-radius:12px;border:1.5px dashed rgba(232,180,184,.4);background:transparent;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;color:var(--charcoal-light);margin-bottom:16px;transition:all .2s;" onmouseover="this.style.borderColor='var(--rose)';this.style.color='var(--rose)'" onmouseout="this.style.borderColor='rgba(232,180,184,.4)';this.style.color='var(--charcoal-light)'">
+            + Add another date &amp; time option
+          </button>
 
           <label class="form-label">Notes (optional)</label>
           <textarea id="bookingNotes" placeholder="Any goals, injuries or preferences Buse should know..."></textarea>
@@ -264,6 +257,7 @@ let allBookings = [];
 let selectedDate = null;
 let selectedType = null;
 let selectedTime = null;
+let slots = []; // [{date, time}]
 let viewYear, viewMonth;
 let userPurchases = new Set();
 let bookingDates = new Set();
@@ -355,6 +349,44 @@ function changeMonth(dir) {
   renderCalendar();
 }
 
+const TIMES = ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
+
+function renderSlots() {
+  const container = document.getElementById('slotsContainer');
+  container.innerHTML = slots.map((slot, i) => `
+    <div style="background:var(--cream-deep);border-radius:14px;padding:14px 16px;margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--rose);font-weight:600;">Option ${i+1}</div>
+        ${slots.length > 1 ? `<button onclick="removeSlot(${i})" style="background:none;border:none;cursor:pointer;color:var(--charcoal-light);font-size:16px;padding:2px 6px;">×</button>` : ''}
+      </div>
+      <input type="date" id="slot-date-${i}" value="${slot.date||''}" min="${new Date(Date.now()+86400000).toISOString().split('T')[0]}"
+        onchange="updateSlot(${i},'date',this.value)"
+        style="width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid rgba(232,180,184,.25);background:#fff;font-family:'Outfit',sans-serif;font-size:13px;color:var(--charcoal);outline:none;margin-bottom:8px;">
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        ${TIMES.map(t => `<div onclick="updateSlot(${i},'time','${t}')" style="padding:6px 12px;border-radius:50px;border:1.5px solid ${slot.time===t?'var(--rose)':'rgba(232,180,184,.25)'};background:${slot.time===t?'var(--rose)':'#fff'};color:${slot.time===t?'#fff':'var(--charcoal)'};cursor:pointer;font-size:12px;transition:all .2s;">${t}</div>`).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('addSlotBtn').style.display = slots.length >= 3 ? 'none' : 'block';
+}
+
+function addSlot() {
+  if (slots.length >= 3) return;
+  slots.push({ date: '', time: '' });
+  renderSlots();
+}
+
+function removeSlot(i) {
+  slots.splice(i, 1);
+  renderSlots();
+}
+
+function updateSlot(i, field, value) {
+  slots[i][field] = value;
+  renderSlots();
+}
+
 function selectDate(dateStr) {
   selectedDate = dateStr;
   selectedType = null;
@@ -368,7 +400,6 @@ function selectDate(dateStr) {
   document.getElementById('selectedDateDisplay').textContent =
     d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-  // Check purchases
   const hasOnline = [...userPurchases].some(id => ['online-single','online-8pack'].includes(id));
   const hasInperson = [...userPurchases].some(id => ['inperson-single','inperson-10pack'].includes(id));
   const hasCoaching = hasOnline || hasInperson;
@@ -385,21 +416,17 @@ function selectDate(dateStr) {
   noPurchaseMsg.style.display = 'none';
   formInner.style.display = 'block';
 
-  // Build type buttons
   const typeRow = document.getElementById('typeRow');
   typeRow.innerHTML = '';
-  if (hasOnline) {
-    typeRow.innerHTML += `<button class="type-btn" onclick="selectType(this,'online')">Online (Zoom)</button>`;
-  }
-  if (hasInperson) {
-    typeRow.innerHTML += `<button class="type-btn" onclick="selectType(this,'inperson')">In-Person (Berlin)</button>`;
-  }
+  if (hasOnline) typeRow.innerHTML += `<button class="type-btn" onclick="selectType(this,'online')">Online (Zoom)</button>`;
+  if (hasInperson) typeRow.innerHTML += `<button class="type-btn" onclick="selectType(this,'inperson')">In-Person (Berlin)</button>`;
 
-  // Reset time slots
-  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('active'));
+  // Init slots with selected date
+  slots = [{ date: dateStr, time: '' }];
+  renderSlots();
+
   document.getElementById('bookingNotes').value = '';
   document.getElementById('errorNote').style.display = 'none';
-
   section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -409,30 +436,34 @@ function selectType(btn, type) {
   btn.classList.add('active');
 }
 
-function selectTime(el, time) {
-  selectedTime = time;
-  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('active'));
-  el.classList.add('active');
-}
+// selectTime replaced by updateSlot
 
 async function submitBooking() {
   const errorNote = document.getElementById('errorNote');
   errorNote.style.display = 'none';
 
   if (!selectedType) { showError('Please select a session type.'); return; }
-  if (!selectedTime) { showError('Please select a time.'); return; }
+
+  const validSlots = slots.filter(s => s.date && s.time);
+  if (validSlots.length === 0) { showError('Please select at least one date and time.'); return; }
 
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.textContent = 'Sending...';
 
+  const notes = document.getElementById('bookingNotes').value || '';
+  const slotsNote = validSlots.length > 1
+    ? 'Preferred slots:\n' + validSlots.map((s,i) => `Option ${i+1}: ${s.date} at ${s.time}`).join('\n')
+    : '';
+  const fullNotes = [slotsNote, notes].filter(Boolean).join('\n\n') || null;
+
   const { error } = await sb.from('bookings').insert({
     user_id: currentUser.id,
     user_email: currentUser.email,
     session_type: selectedType,
-    requested_date: selectedDate,
-    requested_time: selectedTime,
-    notes: document.getElementById('bookingNotes').value || null,
+    requested_date: validSlots[0].date,
+    requested_time: validSlots[0].time,
+    notes: fullNotes,
     status: 'pending'
   });
 
@@ -441,9 +472,24 @@ async function submitBooking() {
 
   if (error) { showError('Something went wrong. Please try again.'); return; }
 
+  // Notify Buse via email
+  try {
+    await fetch('https://booking-notify.trainwithbuse.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userEmail: currentUser.email,
+        sessionType: selectedType,
+        slots: validSlots,
+        notes: notes,
+      })
+    });
+  } catch(e) { console.log('Notify failed:', e); }
+
   showToast('Request sent! Buse will confirm within 12 hours.');
   document.getElementById('bookingFormSection').style.display = 'none';
-  selectedDate = null; selectedType = null; selectedTime = null;
+  slots = [];
+  selectedDate = null; selectedType = null;
 
   await loadData();
   renderCalendar();
