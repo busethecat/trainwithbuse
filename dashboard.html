@@ -79,7 +79,7 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--bg,#FFFAF7
 .hamburger{background:none;border:none;cursor:pointer;display:none;flex-direction:column;gap:5px;padding:6px;transition:opacity .3s}
 .hamburger:hover{opacity:.5}
 .hamburger span{display:block;width:22px;height:1.5px;background:var(--charcoal)}
-.nav-logo{display:flex;flex-direction:column;line-height:1;text-decoration:none}
+.nav-logo{display:none;}
 .nav-logo-eyebrow{font-family:'Cormorant Garamond',serif;font-size:9px;font-weight:300;letter-spacing:5px;text-transform:uppercase;color:var(--charcoal-light)}
 .nav-logo-main{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;letter-spacing:3px;color:var(--charcoal)}
 .nav-right{display:flex;align-items:center;gap:12px}
@@ -140,7 +140,7 @@ body.theme-male .inbox-modal-title{color:#F0EBE4}
 
 /* ── HERO SECTION ── */
 .hero{padding:88px 48px 48px;border-bottom:1px solid var(--cream-deep);margin-bottom:0;max-width:900px}
-.hero-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.hero-eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--charcoal-light);margin-bottom:12px;opacity:.7}
 .hero-name{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;line-height:1.1;margin-bottom:10px;letter-spacing:-1px}
 .hero-name em{font-style:italic;color:var(--rose);font-weight:300}
 .hero-name .star{font-size:48px;vertical-align:middle;opacity:.4;margin-left:8px}
@@ -437,7 +437,7 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
       <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;letter-spacing:3px;color:var(--charcoal);">BUSE</div>
     </a>
   </div>
-  <div class="sb-top">
+  <div class="sb-top" style="display:none;">
     <div class="sb-user">
       <div class="sb-avatar" id="sbAvatar">B</div>
       <div>
