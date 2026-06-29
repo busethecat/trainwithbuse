@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Train With Buse</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <style>
+    :root {
+      --cream: #FDF6F0;
+      --cream-deep: #F5EBE0;
+      --rose: #C1848B;
+      --rose-dark: #9B6B6F;
+      --charcoal: #2D2A2E;
+      --charcoal-light: #4A4548;
+      --gold: #C8A96E;
+      --nude: #D4A89A;
+      --green: #3B6D11;
+      --green-light: #EAF3DE;
+      --amber: #854F0B;
+      --amber-light: #FAEEDA;
+      --red: #A32D2D;
+      --red-light: #FCEBEB;
+      --purple: #3C3489;
+      --purple-light: #EEEDFE;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Outfit', sans-serif; background: var(--cream-deep); color: var(--charcoal); min-height: 100vh; }
+
+    /* LOGIN */
+    .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+    .login-card { background: #fff; border-radius: 24px; padding: 44px; max-width: 400px; width: 100%; border: 1px solid rgba(232,180,184,.15); box-shadow: 0 16px 48px rgba(45,42,46,.08); }
+    .login-logo { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; letter-spacing: 3px; text-align: center; margin-bottom: 8px; }
+    .login-sub { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--rose); text-align: center; margin-bottom: 32px; }
+    .login-input { width: 100%; padding: 13px 16px; border-radius: 12px; border: 1.5px solid rgba(232,180,184,.3); background: #fff; font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--charcoal); outline: none; margin-bottom: 12px; transition: border .2s; }
+    .login-input:focus { border-color: var(--rose); }
+    .login-btn { width: 100%; padding: 14px; border-radius: 50px; background: var(--charcoal); color: var(--cream); font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; border: none; cursor: pointer; transition: all .3s; }
+    .login-btn:hover { background: var(--rose-dark); }
+    .login-error { font-size: 13px; color: var(--red); text-align: center; margin-top: 10px; display: none; }
+
+    /* TOPBAR */
+    .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 58px; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; background: rgba(253,246,240,.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(232,180,184,.15); }
+    .topbar-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; letter-spacing: 3px; }
+    .topbar-tag { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--rose); font-weight: 600; background: rgba(193,132,139,.1); padding: 3px 10px; border-radius: 20px; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .signout-btn { font-size: 12px; color: var(--charcoal-light); cursor: pointer; letter-spacing: .5px; background: none; border: none; }
+    .signout-btn:hover { color: var(--rose); }
+
+    /* LAYOUT */
+    .layout { max-width: 860px; margin: 78px auto 0; padding: 24px; }
+
+    /* STATS */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; }
+    .stat-card { background: #fff; border-radius: 14px; padding: 16px; border: 1px solid rgba(232,180,184,.12); text-align: center; }
+    .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; color: var(--charcoal); line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-light); }
+
+    /* FILTER */
+    .filter-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .filter-btn { padding: 7px 16px; border-radius: 50px; font-size: 12px; letter-spacing: .5px; cursor: pointer; border: 1.5px solid rgba(232,180,184,.25); background: #fff; color: var(--charcoal-light); transition: all .2s; font-family: 'Outfit', sans-serif; }
+    .filter-btn:hover { border-color: var(--rose); color: var(--rose); }
+    .filter-btn.active { border-color: var(--rose); background: rgba(193,132,139,.07); color: var(--rose-dark); font-weight: 500; }
+
+    /* SECTION */
+    .section-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-light); font-weight: 500; margin-bottom: 12px; margin-top: 4px; }
+
+    /* BOOKING CARD */
+    .booking-card { background: #fff; border-radius: 18px; padding: 20px 22px; margin-bottom: 12px; border: 1px solid rgba(232,180,184,.15); transition: all .2s; }
+    .booking-card:hover { border-color: rgba(232,180,184,.35); }
+    .bc-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+    .bc-name { font-size: 15px; font-weight: 500; color: var(--charcoal); margin-bottom: 3px; }
+    .bc-email { font-size: 12px; color: var(--charcoal-light); }
+    .bc-type { font-size: 11px; padding: 2px 8px; border-radius: 20px; border: 1px solid rgba(232,180,184,.25); color: var(--charcoal-light); margin-left: 8px; vertical-align: middle; }
+    .badge { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; white-space: nowrap; }
+    .badge-pending { background: var(--amber-light); color: var(--amber); }
+    .badge-confirmed { background: var(--green-light); color: var(--green); }
+    .badge-alternative { background: var(--purple-light); color: var(--purple); }
+    .badge-cancelled { background: var(--red-light); color: var(--red); }
+
+    .bc-slots { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+    .slot-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--charcoal-light); }
+    .slot-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(45,42,46,.2); flex-shrink: 0; }
+    .slot-dot.primary { background: var(--rose); }
+
+    .bc-note { font-size: 12px; color: var(--charcoal-light); background: var(--cream-deep); border-radius: 10px; padding: 9px 12px; margin-bottom: 12px; line-height: 1.6; }
+
+    .bc-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .btn-confirm { font-size: 12px; padding: 7px 14px; border-radius: 10px; border: 1px solid var(--green); background: var(--green-light); color: var(--green); cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 500; transition: all .2s; }
+    .btn-confirm:hover { background: var(--green); color: #fff; }
+    .btn-alt { font-size: 12px; padding: 7px 14px; border-radius: 10px; border: 1px solid rgba(45,42,46,.15); background: var(--cream-deep); color: var(--charcoal); cursor: pointer; font-family: 'Outfit', sans-serif; transition: all .2s; }
+    .btn-alt:hover { border-color: var(--purple); color: var(--purple); }
+    .btn-decline { font-size: 12px; padding: 7px 14px; border-radius: 10px; border: 1px solid var(--red); background: var(--red-light); color: var(--red); cursor: pointer; font-family: 'Outfit', sans-serif; transition: all .2s; }
+    .btn-decline:hover { background: var(--red); color: #fff; }
+
+    .alt-panel { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(232,180,184,.15); }
+    .alt-panel.show { display: block; }
+    .alt-row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .alt-row input { flex: 1; padding: 10px 13px; border-radius: 10px; border: 1.5px solid rgba(232,180,184,.25); font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--charcoal); outline: none; }
+    .alt-row input:focus { border-color: var(--rose); }
+    .btn-send-alt { font-size: 12px; padding: 9px 18px; border-radius: 50px; background: var(--charcoal); color: var(--cream); border: none; cursor: pointer; font-family: 'Outfit', sans-serif; letter-spacing: 1px; transition: all .2s; }
+    .btn-send-alt:hover { background: var(--rose-dark); }
+
+    .confirmed-info { font-size: 13px; color: var(--green); font-weight: 500; }
+
+    .empty { text-align: center; padding: 40px; color: var(--charcoal-light); font-size: 14px; }
+
+    @media (max-width: 600px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .topbar { padding: 0 16px; }
+      .layout { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-logo">BUSE</div>
+    <div class="login-sub">Admin Panel</div>
+    <input type="password" class="login-input" id="adminPass" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')checkPass()">
+    <button class="login-btn" onclick="checkPass()">Enter</button>
+    <div class="login-error" id="loginError">Incorrect password</div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" style="display:none;">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="topbar-logo">BUSE</div>
+      <div class="topbar-tag">Admin</div>
+    </div>
+    <div class="topbar-right">
+      <button class="signout-btn" onclick="signOut()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="stats" id="statsRow"></div>
+
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('pending',this)">Pending</button>
+      <button class="filter-btn" onclick="setFilter('confirmed',this)">Confirmed</button>
+      <button class="filter-btn" onclick="setFilter('alternative_proposed',this)">Alternative Sent</button>
+      <button class="filter-btn" onclick="setFilter('cancelled',this)">Declined</button>
+    </div>
+
+    <div id="bookingsList"></div>
+  </div>
+</div>
+
+<script>
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const ADMIN_PASS = 'BuseAdmin2026!';
+let allBookings = [];
+let currentFilter = 'all';
+
+function checkPass() {
+  const val = document.getElementById('adminPass').value;
+  if (val === ADMIN_PASS) {
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    loadBookings();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+function signOut() {
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('adminPass').value = '';
+}
+
+async function loadBookings() {
+  const { data, error } = await sb
+    .from('bookings')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  allBookings = data || [];
+  renderStats();
+  renderList();
+}
+
+function renderStats() {
+  const total = allBookings.length;
+  const pending = allBookings.filter(b => b.status === 'pending').length;
+  const confirmed = allBookings.filter(b => b.status === 'confirmed').length;
+  const alt = allBookings.filter(b => b.status === 'alternative_proposed').length;
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Total</div></div>
+    <div class="stat-card"><div class="stat-num">${pending}</div><div class="stat-label">Pending</div></div>
+    <div class="stat-card"><div class="stat-num">${confirmed}</div><div class="stat-label">Confirmed</div></div>
+    <div class="stat-card"><div class="stat-num">${alt}</div><div class="stat-label">Alt Sent</div></div>
+  `;
+}
+
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList();
+}
+
+function renderList() {
+  const list = document.getElementById('bookingsList');
+  let items = allBookings;
+  if (currentFilter !== 'all') items = items.filter(b => b.status === currentFilter);
+
+  if (items.length === 0) {
+    list.innerHTML = `<div class="empty">No bookings found.</div>`;
+    return;
+  }
+
+  const pending = items.filter(b => b.status === 'pending');
+  const others = items.filter(b => b.status !== 'pending');
+
+  let html = '';
+
+  if (pending.length > 0 && currentFilter === 'all') {
+    html += `<div class="section-label">Pending Action</div>`;
+    html += pending.map(b => bookingCard(b)).join('');
+    if (others.length > 0) html += `<div class="section-label" style="margin-top:20px;">Other</div>`;
+    html += others.map(b => bookingCard(b)).join('');
+  } else {
+    html += items.map(b => bookingCard(b)).join('');
+  }
+
+  list.innerHTML = html;
+}
+
+function bookingCard(b) {
+  const d = new Date(b.requested_date + 'T00:00:00');
+  const dateStr = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  const typeLabel = b.session_type === 'online' ? 'Online' : 'In-Person';
+
+  const badgeMap = {
+    pending: '<span class="badge badge-pending">Pending</span>',
+    confirmed: '<span class="badge badge-confirmed">Confirmed</span>',
+    alternative_proposed: '<span class="badge badge-alternative">Alt Sent</span>',
+    cancelled: '<span class="badge badge-cancelled">Declined</span>',
+  };
+
+  // Parse notes for multiple slots
+  let slotsHtml = `<div class="slot-row"><div class="slot-dot primary"></div>${dateStr} · ${b.requested_time}</div>`;
+  if (b.notes && b.notes.includes('Preferred slots:')) {
+    const lines = b.notes.split('\n').filter(l => l.startsWith('Option'));
+    if (lines.length > 1) {
+      slotsHtml = lines.map((l, i) => `<div class="slot-row"><div class="slot-dot ${i===0?'primary':''}"></div>${l.replace(/^Option \d+: /,'')}</div>`).join('');
+    }
+  }
+
+  const notesText = b.notes
+    ? b.notes.replace(/Preferred slots:[\s\S]*?(\n\n|$)/,'').replace(/Notes: /,'').trim()
+    : '';
+
+  let actionsHtml = '';
+  if (b.status === 'pending' || b.status === 'alternative_proposed') {
+    actionsHtml = `
+      <div class="bc-actions">
+        <button class="btn-confirm" onclick="confirmBooking('${b.id}','${b.requested_date}','${b.requested_time}','${b.user_email}')">
+          Confirm ${b.requested_time}
+        </button>
+        <button class="btn-alt" onclick="toggleAlt('${b.id}')">Propose Alternative</button>
+        <button class="btn-decline" onclick="declineBooking('${b.id}','${b.user_email}')">Decline</button>
+      </div>
+      <div class="alt-panel" id="alt-${b.id}">
+        <div style="font-size:12px;color:var(--charcoal-light);margin-bottom:10px;">Propose a different date & time:</div>
+        <div class="alt-row">
+          <input type="date" id="alt-date-${b.id}" min="${new Date().toISOString().split('T')[0]}">
+          <input type="time" id="alt-time-${b.id}" value="10:00" style="width:120px;">
+        </div>
+        <button class="btn-send-alt" onclick="proposeAlternative('${b.id}','${b.user_email}')">Send Alternative →</button>
+      </div>`;
+  } else if (b.status === 'confirmed') {
+    const cd = b.confirmed_date || b.requested_date;
+    const ct = b.confirmed_time || b.requested_time;
+    const cDate = new Date(cd + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+    actionsHtml = `<div class="confirmed-info">Session confirmed for ${cDate} at ${ct}</div>`;
+  }
+
+  return `
+    <div class="booking-card" id="card-${b.id}">
+      <div class="bc-top">
+        <div>
+          <div class="bc-name">${b.user_email}<span class="bc-type">${typeLabel}</span></div>
+          <div class="bc-email">${new Date(b.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})}</div>
+        </div>
+        ${badgeMap[b.status] || ''}
+      </div>
+      <div class="bc-slots">${slotsHtml}</div>
+      ${notesText ? `<div class="bc-note">${notesText}</div>` : ''}
+      ${actionsHtml}
+    </div>`;
+}
+
+function toggleAlt(id) {
+  document.getElementById('alt-' + id).classList.toggle('show');
+}
+
+async function confirmBooking(id, date, time, email) {
+  const { error } = await sb.from('bookings').update({
+    status: 'confirmed',
+    confirmed_date: date,
+    confirmed_time: time,
+  }).eq('id', id);
+
+  if (error) { alert('Error: ' + error.message); return; }
+
+  // Send confirmation email
+  await sendEmail(email, 'confirmed', { date, time });
+
+  await loadBookings();
+}
+
+async function proposeAlternative(id, email) {
+  const date = document.getElementById('alt-date-' + id).value;
+  const time = document.getElementById('alt-time-' + id).value;
+
+  if (!date || !time) { alert('Please select a date and time.'); return; }
+
+  const { error } = await sb.from('bookings').update({
+    status: 'alternative_proposed',
+    alternative_date: date,
+    alternative_time: time,
+  }).eq('id', id);
+
+  if (error) { alert('Error: ' + error.message); return; }
+
+  await sendEmail(email, 'alternative', { date, time });
+  await loadBookings();
+}
+
+async function declineBooking(id, email) {
+  if (!confirm('Are you sure you want to decline this booking?')) return;
+
+  const { error } = await sb.from('bookings').update({ status: 'cancelled' }).eq('id', id);
+  if (error) { alert('Error: ' + error.message); return; }
+
+  await sendEmail(email, 'cancelled', {});
+  await loadBookings();
+}
+
+async function sendEmail(toEmail, type, data) {
+  try {
+    await fetch('https://booking-notify.trainwithbuse.workers.dev/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ toEmail, type, data }),
+    });
+  } catch(e) { console.log('Email error:', e); }
+}
+</script>
+</body>
+</html>
