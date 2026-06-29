@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome — Train With Buse</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blush: #E8B4B8;
+      --cream: #FDF6F0;
+      --cream-deep: #F5EBE0;
+      --rose: #C1848B;
+      --rose-dark: #9B6B6F;
+      --charcoal: #2D2A2E;
+      --charcoal-light: #4A4548;
+      --gold: #C8A96E;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+
+    .card {
+      background: #fff; border-radius: 28px; max-width: 560px; width: 100%;
+      padding: 48px; border: 1px solid rgba(232,180,184,.15);
+      box-shadow: 0 20px 60px rgba(193,132,139,.1);
+      animation: fadeUp .6s ease both;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+    .logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; letter-spacing: 3px; color: var(--charcoal); text-align: center; margin-bottom: 36px; text-decoration: none; display: block; }
+
+    .welcome-icon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+
+    .tag { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--rose); font-weight: 600; text-align: center; margin-bottom: 10px; }
+
+    .title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 400; color: var(--charcoal); text-align: center; line-height: 1.2; margin-bottom: 12px; }
+    .title em { font-style: italic; color: var(--rose); }
+
+    .subtitle { font-size: 14px; color: var(--charcoal-light); text-align: center; line-height: 1.7; margin-bottom: 32px; }
+
+    .divider { height: 1px; background: rgba(232,180,184,.2); margin: 28px 0; }
+
+    /* INFO BLOCKS */
+    .info-block { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
+    .info-icon { width: 38px; height: 38px; border-radius: 12px; background: var(--cream-deep); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .info-icon svg { width: 18px; height: 18px; stroke: var(--rose); }
+    .info-content { flex: 1; }
+    .info-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--charcoal-light); font-weight: 500; margin-bottom: 3px; }
+    .info-value { font-size: 14px; color: var(--charcoal); line-height: 1.5; }
+
+    /* SCHEDULE CARD */
+    .schedule-card { background: var(--cream-deep); border-radius: 16px; padding: 18px 20px; margin-bottom: 20px; }
+    .schedule-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(232,180,184,.2); }
+    .schedule-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .schedule-day { font-size: 13px; font-weight: 500; color: var(--charcoal); }
+    .schedule-class { font-size: 13px; color: var(--charcoal-light); }
+    .schedule-time { font-size: 13px; color: var(--rose); font-weight: 500; }
+
+    /* STEPS */
+    .steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+    .step { display: flex; gap: 12px; align-items: flex-start; }
+    .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--charcoal); color: var(--cream); font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .step-text { font-size: 14px; color: var(--charcoal-light); line-height: 1.5; }
+    .step-text strong { color: var(--charcoal); }
+
+    /* BUTTONS */
+    .btn-primary { display: block; width: 100%; padding: 17px; border-radius: 50px; background: var(--charcoal); color: var(--cream); font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; text-align: center; transition: all .3s; margin-bottom: 10px; border: none; cursor: pointer; }
+    .btn-primary:hover { background: var(--rose-dark); transform: translateY(-2px); }
+    .btn-secondary { display: block; width: 100%; padding: 15px; border-radius: 50px; background: transparent; color: var(--charcoal); font-family: 'Outfit', sans-serif; font-size: 13px; letter-spacing: 1px; text-decoration: none; text-align: center; border: 1.5px solid rgba(45,42,46,.15); transition: all .3s; }
+    .btn-secondary:hover { border-color: var(--rose); color: var(--rose); }
+
+    .zoom-note { font-size: 12px; color: var(--charcoal-light); text-align: center; margin-top: 14px; line-height: 1.6; padding: 12px 16px; background: rgba(200,169,110,.08); border-radius: 12px; border: 1px solid rgba(200,169,110,.2); }
+
+    @media (max-width: 600px) { .card { padding: 32px 24px; } .title { font-size: 28px; } }
+  </style>
+</head>
+<body>
+
+<div class="card" id="onboardingCard">
+  <a href="index.html" class="logo">BUSE</a>
+  <div id="content">
+    <div style="text-align:center;padding:40px;color:var(--charcoal-light);font-size:14px;">Loading...</div>
+  </div>
+</div>
+
+<script>
+const PRODUCTS = {
+  // Online Coaching
+  'online-single': {
+    type: 'coaching',
+    tag: 'Welcome',
+    title: 'Your session is <em>ready.</em>',
+    subtitle: 'Thank you for booking with Buse. Your 1:1 Online Coaching session is confirmed. Let\'s get you scheduled.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px;stroke:var(--rose)"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>`,
+    iconBg: 'rgba(193,132,139,.1)',
+    product: '1:1 Online Coaching — Single Session',
+    duration: '50 minutes via Zoom',
+    steps: [
+      { text: '<strong>Book your session</strong> — select your preferred date and time below.' },
+      { text: '<strong>Complete the questionnaire</strong> — help Buse prepare the perfect session for you.' },
+      { text: '<strong>Check your email</strong> — Buse will confirm within 12 hours with a Zoom link.' },
+    ],
+    cta: 'Book Your Session →',
+    ctaLink: 'booking.html',
+    secondary: 'Go to Dashboard',
+    secondaryLink: 'dashboard.html',
+  },
+  'online-8pack': {
+    type: 'coaching',
+    tag: 'Welcome',
+    title: 'Your 8 sessions are <em>ready.</em>',
+    subtitle: 'Thank you for investing in your transformation. Your 8-session Online Coaching pack is active. Let\'s book your first session.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px;stroke:var(--rose)"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>`,
+    iconBg: 'rgba(193,132,139,.1)',
+    product: '1:1 Online Coaching — 8 Sessions',
+    duration: '50 minutes each via Zoom · 1 session free',
+    steps: [
+      { text: '<strong>Book your first session</strong> — select your preferred date and time below.' },
+      { text: '<strong>Complete the questionnaire</strong> — help Buse prepare the perfect session for you.' },
+      { text: '<strong>Check your email</strong> — Buse will confirm within 12 hours with a Zoom link.' },
+    ],
+    cta: 'Book Your First Session →',
+    ctaLink: 'booking.html',
+    secondary: 'Go to Dashboard',
+    secondaryLink: 'dashboard.html',
+  },
+  // In-Person
+  'inperson-single': {
+    type: 'coaching',
+    tag: 'Welcome',
+    title: 'See you in <em>Berlin.</em>',
+    subtitle: 'Your in-person session with Buse is confirmed. Let\'s find the perfect time for you.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px;stroke:var(--rose)"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    iconBg: 'rgba(193,132,139,.1)',
+    product: 'The Buse Method — Single Session',
+    duration: '50 minutes · In-Person, Berlin',
+    steps: [
+      { text: '<strong>Book your session</strong> — select your preferred date and time below.' },
+      { text: '<strong>Complete the questionnaire</strong> — help Buse prepare the perfect session for you.' },
+      { text: '<strong>Check your email</strong> — Buse will confirm within 12 hours with the studio address.' },
+    ],
+    cta: 'Book Your Session →',
+    ctaLink: 'booking.html',
+    secondary: 'Go to Dashboard',
+    secondaryLink: 'dashboard.html',
+  },
+  'inperson-10pack': {
+    type: 'coaching',
+    tag: 'Welcome',
+    title: 'See you in <em>Berlin.</em>',
+    subtitle: 'Your 10-session Buse Method pack is active. Let\'s get your first session booked.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px;stroke:var(--rose)"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    iconBg: 'rgba(193,132,139,.1)',
+    product: 'The Buse Method — 10 Sessions',
+    duration: '50 minutes each · In-Person, Berlin · 1 session free',
+    steps: [
+      { text: '<strong>Book your first session</strong> — select your preferred date and time below.' },
+      { text: '<strong>Complete the questionnaire</strong> — help Buse prepare the perfect session for you.' },
+      { text: '<strong>Check your email</strong> — Buse will confirm within 12 hours with the studio address.' },
+    ],
+    cta: 'Book Your First Session →',
+    ctaLink: 'booking.html',
+    secondary: 'Go to Dashboard',
+    secondaryLink: 'dashboard.html',
+  },
+  // Live Labs
+  'live-labs-monthly': {
+    type: 'live',
+    tag: 'Welcome, Founding Member',
+    title: 'Your classes are <em>live.</em>',
+    subtitle: 'You\'re in. As a Founding Member, your price is locked for life. Here\'s everything you need to get started.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px;stroke:var(--gold)"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+    iconBg: 'rgba(200,169,110,.1)',
+    product: 'Live Lab Classes — Monthly',
+    duration: 'Founding Member · €59/month',
+  },
+  'live-labs-yearly': {
+    type: 'live',
+    tag: 'Welcome, Founding Member',
+    title: 'Your classes are <em>live.</em>',
+    subtitle: 'You\'re in. As a Founding Member, your price is locked for life. Here\'s everything you need to get started.',
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px;stroke:var(--gold)"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+    iconBg: 'rgba(200,169,110,.1)',
+    product: 'Live Lab Classes — Annual',
+    duration: 'Founding Member · €499/year · 2 months free',
+  },
+  // Labs
+  'movement': { type: 'lab', name: 'Movement Lab', color: '#B8C8D4' },
+  'sculpt':   { type: 'lab', name: 'Sculpt Lab',   color: '#E8B4B8' },
+  'strength': { type: 'lab', name: 'Strength Lab',  color: '#D5C4E8' },
+  'metabolic':{ type: 'lab', name: 'Metabolic Lab', color: '#B8D4B8' },
+};
+
+function render() {
+  const params = new URLSearchParams(window.location.search);
+  const product = params.get('product') || 'unknown';
+  const p = PRODUCTS[product];
+  const content = document.getElementById('content');
+
+  if (!p) {
+    // Generic fallback
+    content.innerHTML = `
+      <div class="tag">Welcome</div>
+      <div class="title">You're <em>in.</em></div>
+      <div class="subtitle">Your purchase is confirmed. Head to your dashboard to get started.</div>
+      <div class="divider"></div>
+      <a href="dashboard.html" class="btn-primary">Go to Dashboard →</a>
+    `;
+    return;
+  }
+
+  if (p.type === 'coaching') {
+    content.innerHTML = `
+      <div class="welcome-icon" style="background:${p.iconBg}">${p.icon}</div>
+      <div class="tag">${p.tag}</div>
+      <div class="title">${p.title}</div>
+      <div class="subtitle">${p.subtitle}</div>
+
+      <div class="divider"></div>
+
+      <div class="info-block">
+        <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+        <div class="info-content">
+          <div class="info-label">Your Plan</div>
+          <div class="info-value">${p.product}</div>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="info-content">
+          <div class="info-label">Session</div>
+          <div class="info-value">${p.duration}</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--charcoal-light);font-weight:500;margin-bottom:14px;">Next Steps</div>
+      <div class="steps">
+        ${p.steps.map((s,i) => `<div class="step"><div class="step-num">${i+1}</div><div class="step-text">${s.text}</div></div>`).join('')}
+      </div>
+
+      <a href="${p.ctaLink}" class="btn-primary">${p.cta}</a>
+      <a href="${p.secondaryLink}" class="btn-secondary">${p.secondary}</a>
+    `;
+    return;
+  }
+
+  if (p.type === 'live') {
+    content.innerHTML = `
+      <div class="welcome-icon" style="background:${p.iconBg}">${p.icon}</div>
+      <div class="tag">${p.tag}</div>
+      <div class="title">${p.title}</div>
+      <div class="subtitle">${p.subtitle}</div>
+
+      <div class="divider"></div>
+
+      <div class="info-block">
+        <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+        <div class="info-content">
+          <div class="info-label">Your Plan</div>
+          <div class="info-value">${p.product}</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--charcoal-light);font-weight:500;margin-bottom:14px;">Your Weekly Schedule</div>
+      <div class="schedule-card">
+        <div class="schedule-row">
+          <div class="schedule-day">Monday</div>
+          <div class="schedule-class">Flexibility Lab</div>
+          <div class="schedule-time">19:00</div>
+        </div>
+        <div class="schedule-row">
+          <div class="schedule-day">Wednesday</div>
+          <div class="schedule-class">Power Lab</div>
+          <div class="schedule-time">19:00</div>
+        </div>
+      </div>
+
+      <div class="zoom-note">
+        Zoom links will be sent to your email before each class.<br>
+        Replay available for 48 hours after each session.
+      </div>
+
+      <div class="divider"></div>
+
+      <a href="dashboard.html" class="btn-primary">Go to Dashboard →</a>
+    `;
+    return;
+  }
+
+  if (p.type === 'lab') {
+    content.innerHTML = `
+      <div class="welcome-icon" style="background:${p.color}33;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="${p.color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px;"><path d="M9 3h6v10l3 7H6l3-7V3z"/><line x1="6" y1="14" x2="18" y2="14"/></svg>
+      </div>
+      <div class="tag">Welcome</div>
+      <div class="title">Your <em>${p.name}</em> is ready.</div>
+      <div class="subtitle">Your program is now active in your dashboard. Start from Lesson 1 and work through at your own pace — each lesson builds on the last.</div>
+
+      <div class="divider"></div>
+
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Go to your dashboard</strong> — your program is waiting.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Start with Lesson 1</strong> — sequential order is designed for a reason.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Track your progress</strong> — every completed lesson is logged automatically.</div></div>
+      </div>
+
+      <a href="dashboard.html" class="btn-primary">Start Your Program →</a>
+    `;
+    return;
+  }
+}
+
+render();
+</script>
+</body>
+</html>
