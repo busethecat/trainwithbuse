@@ -53,6 +53,7 @@ const COURSES = {
     ]
   },
   'movement-lab-2': {
+    comingSoon: true,
     title: 'Movement Lab 2',
     subtitle: 'Intermediate Series',
     subtitleKey: 'intermediate',
@@ -75,6 +76,7 @@ const COURSES = {
     ]
   },
   'movement-lab-3': {
+    comingSoon: true,
     title: 'Movement Lab 3',
     subtitle: 'Advanced Series',
     subtitleKey: 'advanced',
@@ -97,6 +99,7 @@ const COURSES = {
     }))
   },
   'sculpt-lab-2': {
+    comingSoon: true,
     title: 'Sculpt Lab 2',
     subtitle: 'Intermediate Series',
     subtitleKey: 'intermediate',
@@ -108,6 +111,7 @@ const COURSES = {
     }))
   },
   'sculpt-lab-3': {
+    comingSoon: true,
     title: 'Sculpt Lab 3',
     subtitle: 'Advanced Series',
     subtitleKey: 'advanced',
@@ -130,6 +134,7 @@ const COURSES = {
     }))
   },
   'strength-lab-2': {
+    comingSoon: true,
     title: 'Strength Lab 2',
     subtitle: 'Intermediate Series',
     subtitleKey: 'intermediate',
@@ -141,6 +146,7 @@ const COURSES = {
     }))
   },
   'strength-lab-3': {
+    comingSoon: true,
     title: 'Strength Lab 3',
     subtitle: 'Advanced Series',
     subtitleKey: 'advanced',
@@ -164,6 +170,7 @@ const COURSES = {
     }))
   },
   'metabolic-lab-2': {
+    comingSoon: true,
     title: 'Metabolic Lab 2',
     subtitle: 'Intermediate Series',
     subtitleKey: 'intermediate',
@@ -175,6 +182,7 @@ const COURSES = {
     }))
   },
   'metabolic-lab-3': {
+    comingSoon: true,
     title: 'Metabolic Lab 3',
     subtitle: 'Advanced Series',
     subtitleKey: 'advanced',

@@ -360,7 +360,9 @@ function render(){
             <div class="store-sub">${sub}</div>
             <div class="store-price"><span>€</span>${course.price}</div>
             <div class="store-desc">${tl.storeDesc}</div>
-            <button class="btn-buy" onclick="buyCourse('${id}')">${tl.buy}</button>
+            ${course.comingSoon ? 
+              '<button class="btn-buy" style="background:var(--nude);cursor:default;opacity:.7;" disabled>Coming Soon</button>' : 
+              `<button class="btn-buy" onclick="buyCourse('${id}')">${tl.buy}</button>`}
           </div>
         </div>`;
     });
@@ -381,7 +383,9 @@ function render(){
             <div class="store-sub">${sched}</div>
             <div class="store-price"><span>€</span>${c.price}<span style="font-size:13px;color:var(--nude)">${tl.perMonth}</span></div>
             <div class="store-desc">${tl.storeDesc}</div>
-            <button class="btn-buy" onclick="buyCourse('${id}')">${tl.buy}</button>
+            ${course.comingSoon ? 
+              '<button class="btn-buy" style="background:var(--nude);cursor:default;opacity:.7;" disabled>Coming Soon</button>' : 
+              `<button class="btn-buy" onclick="buyCourse('${id}')">${tl.buy}</button>`}
           </div>
         </div>`;
       });
