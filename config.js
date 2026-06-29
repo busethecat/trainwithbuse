@@ -35,7 +35,7 @@ const COURSES = {
     subtitle: 'Foundation Series',
     subtitleKey: 'foundation',
     category: 'movement',
-    price: 49,
+    price: 89,
     color: '#C8A96E',
     lessons: [
       { id: 1, title: 'Lesson 1', duration: '18 min', videoId: 'YOUR_VIDEO_ID' },
@@ -57,7 +57,7 @@ const COURSES = {
     subtitle: 'Intermediate Series',
     subtitleKey: 'intermediate',
     category: 'movement',
-    price: 49,
+    price: 89,
     color: '#C8A96E',
     lessons: [
       { id: 1, title: 'Lesson 1', duration: '20 min', videoId: 'YOUR_VIDEO_ID' },
@@ -79,7 +79,7 @@ const COURSES = {
     subtitle: 'Advanced Series',
     subtitleKey: 'advanced',
     category: 'movement',
-    price: 49,
+    price: 89,
     color: '#C8A96E',
     lessons: Array.from({length: 12}, (_, i) => ({
       id: i+1, title: `Lesson ${i+1}`, duration: '25 min', videoId: 'YOUR_VIDEO_ID'
@@ -90,7 +90,7 @@ const COURSES = {
     subtitle: 'Foundation Series',
     subtitleKey: 'foundation',
     category: 'sculpt',
-    price: 49,
+    price: 89,
     color: '#C1848B',
     lessons: Array.from({length: 12}, (_, i) => ({
       id: i+1, title: `Lesson ${i+1}`, duration: '25 min', videoId: 'YOUR_VIDEO_ID'
@@ -101,7 +101,7 @@ const COURSES = {
     subtitle: 'Intermediate Series',
     subtitleKey: 'intermediate',
     category: 'sculpt',
-    price: 49,
+    price: 89,
     color: '#C1848B',
     lessons: Array.from({length: 12}, (_, i) => ({
       id: i+1, title: `Lesson ${i+1}`, duration: '25 min', videoId: 'YOUR_VIDEO_ID'
@@ -112,7 +112,7 @@ const COURSES = {
     subtitle: 'Advanced Series',
     subtitleKey: 'advanced',
     category: 'sculpt',
-    price: 49,
+    price: 89,
     color: '#C1848B',
     lessons: Array.from({length: 12}, (_, i) => ({
       id: i+1, title: `Lesson ${i+1}`, duration: '25 min', videoId: 'YOUR_VIDEO_ID'
@@ -123,7 +123,7 @@ const COURSES = {
     subtitle: 'Foundation Series',
     subtitleKey: 'foundation',
     category: 'strength',
-    price: 49,
+    price: 89,
     color: '#9B6B6F',
     lessons: Array.from({length: 12}, (_, i) => ({
       id: i+1, title: `Lesson ${i+1}`, duration: '25 min', videoId: 'YOUR_VIDEO_ID'
@@ -134,7 +134,7 @@ const COURSES = {
     subtitle: 'Intermediate Series',
     subtitleKey: 'intermediate',
     category: 'strength',
-    price: 49,
+    price: 89,
     color: '#9B6B6F',
     lessons: Array.from({length: 12}, (_, i) => ({
       id: i+1, title: `Lesson ${i+1}`, duration: '25 min', videoId: 'YOUR_VIDEO_ID'
@@ -145,7 +145,7 @@ const COURSES = {
     subtitle: 'Advanced Series',
     subtitleKey: 'advanced',
     category: 'strength',
-    price: 49,
+    price: 89,
     color: '#9B6B6F',
     lessons: Array.from({length: 12}, (_, i) => ({
       id: i+1, title: `Lesson ${i+1}`, duration: '25 min', videoId: 'YOUR_VIDEO_ID'
@@ -157,7 +157,7 @@ const COURSES = {
     subtitle: 'Foundation Series',
     subtitleKey: 'foundation',
     category: 'metabolic',
-    price: 49,
+    price: 89,
     color: '#D4A89A',
     lessons: Array.from({length: 12}, (_, i) => ({
       id: i+1, title: `Lesson ${i+1}`, duration: '25 min', videoId: 'YOUR_VIDEO_ID'
@@ -168,7 +168,7 @@ const COURSES = {
     subtitle: 'Intermediate Series',
     subtitleKey: 'intermediate',
     category: 'metabolic',
-    price: 49,
+    price: 89,
     color: '#D4A89A',
     lessons: Array.from({length: 12}, (_, i) => ({
       id: i+1, title: `Lesson ${i+1}`, duration: '25 min', videoId: 'YOUR_VIDEO_ID'
@@ -179,18 +179,19 @@ const COURSES = {
     subtitle: 'Advanced Series',
     subtitleKey: 'advanced',
     category: 'metabolic',
-    price: 49,
+    price: 89,
     color: '#D4A89A',
     lessons: Array.from({length: 12}, (_, i) => ({
       id: i+1, title: `Lesson ${i+1}`, duration: '25 min', videoId: 'YOUR_VIDEO_ID'
     }))
   },
   'live-booty': {
-    title: 'Booty Lab',
-    subtitle: 'Live · 2x per week',
+    title: 'Live Lab Classes',
+    subtitle: 'Mon · Wed · Fri — Coming Soon',
     subtitleKey: 'live',
     category: 'live',
-    price: 49,
+    price: 59,
+    comingSoon: true,
     color: '#C1848B',
     zoomLink: 'https://zoom.us/j/YOUR_BOOTY_ZOOM_LINK',
     schedule: { en: 'Tuesday & Thursday · 18:00', tr: 'Sali & Persembe - 18:00', de: 'Dienstag & Donnerstag · 18:00' },
@@ -199,34 +200,37 @@ const COURSES = {
   },
   'live-flexibility': {
     title: 'Flexibility Lab',
+    comingSoon: true,
     subtitle: 'Live · 1x per week',
     subtitleKey: 'live',
     category: 'live',
-    price: 29,
+    price: 59,
     color: '#C8A96E',
     zoomLink: 'https://zoom.us/j/YOUR_FLEX_ZOOM_LINK',
-    schedule: { en: 'Sunday · 10:00', tr: 'Pazar · 10:00', de: 'Sonntag · 10:00' },
+    schedule: { en: 'Monday · 19:00', tr: 'Pazartesi · 19:00', de: 'Montag · 19:00' },
     descKey: 'liveFlexDesc',
     lessons: []
   },
   'live-power': {
     title: 'Power Lab',
+    comingSoon: true,
     subtitle: 'Live · 2x per week',
     subtitleKey: 'live',
     category: 'live',
-    price: 49,
+    price: 89,
     color: '#9B6B6F',
     zoomLink: 'https://zoom.us/j/YOUR_POWER_ZOOM_LINK',
-    schedule: { en: 'Monday & Wednesday · 07:00', tr: 'Pazartesi & Carsamba - 07:00', de: 'Montag & Mittwoch · 07:00' },
+    schedule: { en: 'Wednesday · 19:00', tr: 'Çarşamba · 19:00', de: 'Mittwoch · 19:00' },
     descKey: 'livePowerDesc',
     lessons: []
   },
   'live-core': {
     title: 'Core & Burn Lab',
+    comingSoon: true,
     subtitle: 'Live · 2x per week',
     subtitleKey: 'live',
     category: 'live',
-    price: 49,
+    price: 89,
     color: '#4A4548',
     zoomLink: 'https://zoom.us/j/YOUR_CORE_ZOOM_LINK',
     schedule: { en: 'Tuesday & Friday · 12:00', tr: 'Sali & Cuma - 12:00', de: 'Dienstag & Freitag · 12:00' },
