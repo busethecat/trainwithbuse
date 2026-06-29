@@ -22,459 +22,484 @@
       --charcoal: #2D2A2E;
       --charcoal-light: #4A4548;
       --gold: #C8A96E;
+      --nude: #D4A89A;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--charcoal); min-height: 100vh; }
+    body { font-family: 'Outfit', sans-serif; background: var(--cream-deep); color: var(--charcoal); min-height: 100vh; }
 
+    /* TOPBAR */
     .topbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 20px 40px; display: flex; align-items: center; justify-content: space-between;
-      background: rgba(253,246,240,0.92); backdrop-filter: blur(20px);
+      padding: 0 32px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(253,246,240,0.95); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(232,180,184,.15);
     }
-    .topbar-logo { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; color: var(--charcoal); text-decoration: none; letter-spacing: 3px; }
-    .topbar-back { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--charcoal-light); text-decoration: none; transition: color .3s; }
+    .topbar-left { display: flex; align-items: center; gap: 20px; }
+    .topbar-back { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--charcoal-light); text-decoration: none; transition: color .2s; }
     .topbar-back:hover { color: var(--rose); }
+    .topbar-back svg { width: 16px; height: 16px; }
+    .topbar-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: var(--charcoal); }
+    .topbar-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; letter-spacing: 3px; color: var(--charcoal); text-decoration: none; }
 
-    .main { padding: 110px 24px 60px; max-width: 640px; margin: 0 auto; }
+    /* LAYOUT */
+    .layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; max-width: 1100px; margin: 80px auto 0; padding: 24px; min-height: calc(100vh - 80px); }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
 
-    /* AUTH GUARD */
-    .auth-guard { text-align: center; padding: 80px 20px; display: none; }
-    .auth-guard h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; margin-bottom: 12px; }
-    .auth-guard p { font-size: 14px; color: var(--charcoal-light); margin-bottom: 24px; }
+    /* CARD */
+    .card { background: #fff; border-radius: 20px; padding: 28px; border: 1px solid rgba(232,180,184,.12); }
 
-    /* LOADING */
-    .loading { text-align: center; padding: 80px 20px; }
-    .loading-spinner { width: 32px; height: 32px; border: 2px solid var(--blush); border-top-color: var(--rose); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 16px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    /* CALENDAR */
+    .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .cal-month { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; color: var(--charcoal); }
+    .cal-nav { display: flex; gap: 8px; }
+    .cal-nav-btn { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid rgba(232,180,184,.3); background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--charcoal-light); transition: all .2s; }
+    .cal-nav-btn:hover { border-color: var(--rose); color: var(--rose); }
 
-    /* SECTION TAG */
-    .section-tag { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--rose); font-weight: 600; margin-bottom: 6px; }
-    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 400; color: var(--charcoal); margin-bottom: 8px; }
-    .section-sub { font-size: 14px; color: var(--charcoal-light); line-height: 1.6; margin-bottom: 36px; }
-
-    /* PACKAGE CARDS */
-    .packages { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
-    .pkg-card {
-      background: #fff; border-radius: 20px; padding: 22px 24px;
-      border: 1.5px solid rgba(232,180,184,.2); cursor: pointer;
-      transition: all .3s; display: flex; align-items: center; gap: 16px;
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cal-day-label { text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--charcoal-light); padding: 8px 0; font-weight: 500; }
+    .cal-day {
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; border-radius: 50%; cursor: pointer;
+      transition: all .2s; color: var(--charcoal); position: relative;
     }
-    .pkg-card:hover { border-color: var(--rose); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(193,132,139,.12); }
-    .pkg-card.selected { border-color: var(--rose); background: rgba(193,132,139,.05); }
-    .pkg-icon { font-size: 28px; flex-shrink: 0; }
-    .pkg-info { flex: 1; }
-    .pkg-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: var(--charcoal); margin-bottom: 4px; }
-    .pkg-detail { font-size: 13px; color: var(--charcoal-light); line-height: 1.5; }
-    .pkg-badge { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--rose); font-weight: 600; background: rgba(193,132,139,.1); padding: 3px 10px; border-radius: 20px; margin-top: 6px; display: inline-block; }
-    .pkg-check { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--blush); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .3s; }
-    .pkg-card.selected .pkg-check { background: var(--rose); border-color: var(--rose); color: #fff; }
-
-    /* LIVE LABS CARD (no booking) */
-    .live-card {
-      background: #fff; border-radius: 20px; padding: 24px;
-      border: 1.5px solid rgba(232,180,184,.2); margin-bottom: 12px;
-    }
-    .live-schedule { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
-    .live-day { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--cream); border-radius: 12px; font-size: 13px; color: var(--charcoal-light); }
-    .live-day strong { color: var(--charcoal); }
-    .coming-soon { display: inline-block; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; background: rgba(200,169,110,.15); color: var(--gold); padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
+    .cal-day:hover:not(.cal-day-empty):not(.cal-day-past) { background: var(--cream); }
+    .cal-day-empty { cursor: default; color: rgba(45,42,46,.2); }
+    .cal-day-past { cursor: default; color: rgba(45,42,46,.25); }
+    .cal-day-today { font-weight: 600; color: var(--rose); }
+    .cal-day-selected { background: var(--charcoal) !important; color: #fff !important; font-weight: 500; }
+    .cal-day-has-booking::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--rose); }
+    .cal-day-selected.cal-day-has-booking::after { background: var(--blush); }
 
     /* BOOKING FORM */
-    .booking-form { display: none; background: #fff; border-radius: 24px; padding: 32px; border: 1.5px solid rgba(232,180,184,.2); margin-top: 24px; }
-    .booking-form.visible { display: block; }
+    .form-section { margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(232,180,184,.15); }
+    .form-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-light); font-weight: 500; margin-bottom: 10px; display: block; }
+    .selected-date-display { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: var(--charcoal); margin-bottom: 16px; }
 
-    .form-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; margin-bottom: 6px; }
-    .form-sub { font-size: 13px; color: var(--charcoal-light); margin-bottom: 24px; line-height: 1.6; }
+    .type-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .type-btn { padding: 12px; border-radius: 12px; border: 1.5px solid rgba(232,180,184,.25); background: #fff; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--charcoal); transition: all .2s; text-align: center; }
+    .type-btn:hover { border-color: var(--rose); }
+    .type-btn.active { border-color: var(--rose); background: rgba(193,132,139,.06); color: var(--rose-dark); font-weight: 500; }
 
-    .field-group { margin-bottom: 18px; }
-    .field-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--charcoal-light); font-weight: 500; display: block; margin-bottom: 8px; }
+    .time-slots { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .time-slot { padding: 8px 14px; border-radius: 50px; border: 1.5px solid rgba(232,180,184,.25); background: #fff; cursor: pointer; font-size: 13px; color: var(--charcoal); transition: all .2s; }
+    .time-slot:hover { border-color: var(--rose); }
+    .time-slot.active { border-color: var(--rose); background: var(--rose); color: #fff; }
 
-    /* DATE SLOTS */
-    .date-slots { display: flex; flex-direction: column; gap: 12px; }
-    .date-slot { background: var(--cream); border-radius: 14px; padding: 14px 16px; border: 1.5px solid transparent; transition: all .3s; }
-    .date-slot-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-    .date-slot-num { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--rose); font-weight: 600; }
-    .date-slot-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-    .add-slot-btn { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-radius: 14px; border: 1.5px dashed rgba(232,180,184,.4); background: transparent; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--charcoal-light); width: 100%; justify-content: center; transition: all .3s; margin-top: 8px; }
-    .add-slot-btn:hover { border-color: var(--rose); color: var(--rose); }
+    textarea { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid rgba(232,180,184,.25); background: #fff; font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--charcoal); outline: none; resize: vertical; min-height: 80px; transition: border .2s; margin-bottom: 16px; }
+    textarea:focus { border-color: var(--rose); }
 
-    input[type="date"], select, textarea {
-      width: 100%; padding: 12px 16px; border-radius: 12px;
-      border: 1.5px solid rgba(232,180,184,.3); background: #fff;
-      font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--charcoal);
-      outline: none; transition: border .3s;
-    }
-    input[type="date"]:focus, select:focus, textarea:focus { border-color: var(--rose); }
-    textarea { resize: vertical; min-height: 90px; }
+    .submit-btn { width: 100%; padding: 15px; border-radius: 50px; background: var(--charcoal); color: var(--cream); font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; border: none; cursor: pointer; transition: all .3s; }
+    .submit-btn:hover { background: var(--rose-dark); transform: translateY(-1px); }
+    .submit-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 
-    .submit-btn {
-      width: 100%; padding: 17px; border-radius: 50px;
-      background: var(--charcoal); color: var(--cream);
-      font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500;
-      letter-spacing: 1.5px; text-transform: uppercase; border: none; cursor: pointer;
-      transition: all .3s; margin-top: 8px;
-    }
-    .submit-btn:hover { background: var(--rose-dark); transform: translateY(-2px); }
-    .submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    /* RIGHT PANEL */
+    .right-panel { display: flex; flex-direction: column; gap: 16px; }
 
-    .error-box { display: none; margin-top: 12px; padding: 12px 16px; background: #fff0f0; border-radius: 12px; font-size: 13px; color: #c0392b; }
+    /* STATS */
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(232,180,184,.15); border-radius: 16px; overflow: hidden; }
+    .stat-box { background: #fff; padding: 16px 12px; text-align: center; }
+    .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--charcoal); line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--charcoal-light); }
 
-    /* GOOGLE FORM */
-    .gform-section { background: linear-gradient(135deg, rgba(200,169,110,.08), rgba(193,132,139,.06)); border: 1.5px solid rgba(200,169,110,.25); border-radius: 20px; padding: 24px; margin-top: 24px; }
-    .gform-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: var(--charcoal); margin-bottom: 8px; }
-    .gform-text { font-size: 13px; color: var(--charcoal-light); line-height: 1.7; margin-bottom: 16px; }
-    .gform-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 50px; background: var(--gold); color: #fff; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 1px; text-decoration: none; transition: all .3s; }
-    .gform-btn:hover { opacity: .85; transform: translateY(-2px); }
+    /* BOOKINGS LIST */
+    .bookings-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .bookings-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; }
+    .filter-tabs { display: flex; gap: 4px; }
+    .filter-tab { padding: 5px 12px; border-radius: 50px; font-size: 11px; letter-spacing: .5px; cursor: pointer; border: 1.5px solid transparent; transition: all .2s; color: var(--charcoal-light); }
+    .filter-tab:hover { color: var(--charcoal); }
+    .filter-tab.active { border-color: var(--rose); color: var(--rose-dark); background: rgba(193,132,139,.06); }
 
-    /* SUCCESS */
-    .success-screen { display: none; text-align: center; padding: 60px 20px; }
-    .success-icon { font-size: 56px; margin-bottom: 20px; }
-    .success-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 400; margin-bottom: 12px; }
-    .success-sub { font-size: 14px; color: var(--charcoal-light); line-height: 1.7; margin-bottom: 28px; }
-    .success-summary { background: #fff; border-radius: 16px; padding: 20px 24px; text-align: left; font-size: 13px; color: var(--charcoal-light); line-height: 2; margin-bottom: 24px; border: 1px solid rgba(232,180,184,.2); }
-    .back-btn { display: inline-block; padding: 14px 36px; border-radius: 50px; background: var(--charcoal); color: var(--cream); font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 1px; text-decoration: none; transition: all .3s; }
-    .back-btn:hover { background: var(--rose-dark); }
+    .booking-item { padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(232,180,184,.15); margin-bottom: 10px; transition: all .2s; cursor: default; }
+    .booking-item:hover { border-color: rgba(232,180,184,.4); box-shadow: 0 4px 12px rgba(193,132,139,.08); }
+    .booking-item-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+    .booking-date { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 500; color: var(--charcoal); }
+    .booking-time { font-size: 12px; color: var(--charcoal-light); margin-top: 2px; }
+    .booking-type { font-size: 11px; color: var(--charcoal-light); margin-top: 4px; }
+    .status-badge { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+    .status-pending { background: rgba(200,169,110,.12); color: #8B6B2E; }
+    .status-confirmed { background: rgba(100,180,120,.12); color: #2D6B3F; }
+    .status-cancelled { background: rgba(200,80,80,.1); color: #8B2D2D; }
 
-    /* NO PURCHASES */
-    .no-purchases { text-align: center; padding: 60px 20px; }
-    .no-purchases h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; margin-bottom: 12px; }
-    .no-purchases p { font-size: 14px; color: var(--charcoal-light); margin-bottom: 24px; line-height: 1.6; }
+    .empty-state { text-align: center; padding: 32px 16px; color: var(--charcoal-light); }
+    .empty-state p { font-size: 13px; line-height: 1.6; }
 
-    @media (max-width: 600px) {
-      .topbar { padding: 16px 20px; }
-      .main { padding: 90px 16px 40px; }
-      .date-slot-fields { grid-template-columns: 1fr; }
-      .booking-form { padding: 22px 18px; }
-    }
+    /* SUCCESS TOAST */
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--charcoal); color: var(--cream); padding: 14px 24px; border-radius: 50px; font-size: 13px; transition: transform .4s cubic-bezier(.16,1,.3,1); z-index: 999; white-space: nowrap; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* AUTH GUARD */
+    .auth-guard { display: none; text-align: center; padding: 100px 24px; }
+    .auth-guard h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; margin-bottom: 12px; }
+    .auth-guard p { font-size: 14px; color: var(--charcoal-light); margin-bottom: 24px; }
+    .auth-btn { display: inline-block; padding: 14px 32px; border-radius: 50px; background: var(--charcoal); color: var(--cream); font-family: 'Outfit', sans-serif; font-size: 13px; text-decoration: none; }
+
+    /* ERROR */
+    .error-note { font-size: 12px; color: #c0392b; margin-top: 8px; display: none; }
+
+    .no-purchase-note { background: var(--cream); border-radius: 12px; padding: 14px 16px; font-size: 13px; color: var(--charcoal-light); line-height: 1.6; margin-bottom: 16px; }
+    .no-purchase-note a { color: var(--rose); text-decoration: none; }
   </style>
 </head>
 <body>
 
 <div class="topbar">
+  <div class="topbar-left">
+    <a href="dashboard.html" class="topbar-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back
+    </a>
+    <div class="topbar-title">Book a Session</div>
+  </div>
   <a href="index.html" class="topbar-logo">BUSE</a>
-  <a href="dashboard.html" class="topbar-back">← Dashboard</a>
 </div>
 
-<div class="main">
+<div id="authGuard" class="auth-guard">
+  <h2>Login Required</h2>
+  <p>Please log in to book a session with Buse.</p>
+  <a href="login.html" class="auth-btn">Log In →</a>
+</div>
 
-  <!-- Loading -->
-  <div class="loading" id="loadingScreen">
-    <div class="loading-spinner"></div>
-    <div style="font-size:14px;color:var(--charcoal-light);">Loading your sessions...</div>
-  </div>
+<div class="layout" id="mainLayout" style="display:none;">
 
-  <!-- Auth guard -->
-  <div class="auth-guard" id="authGuard">
-    <h2>Login Required</h2>
-    <p>Please log in to book a session with Buse.</p>
-    <a href="login.html" class="back-btn">Log In →</a>
-  </div>
-
-  <!-- No purchases -->
-  <div class="no-purchases" id="noPurchases" style="display:none;">
-    <div style="font-size:48px;margin-bottom:16px;">🌸</div>
-    <h2>No Active Sessions</h2>
-    <p>You don't have any 1:1 coaching or Live Lab sessions yet.<br>Explore plans to get started.</p>
-    <a href="plans.html" class="back-btn" style="margin-top:8px;">View Plans →</a>
-  </div>
-
-  <!-- Main content -->
-  <div id="mainContent" style="display:none;">
-
-    <div class="section-tag">1:1 Sessions & Live Classes</div>
-    <div class="section-title">Your <em style="font-style:italic;color:var(--rose);">Sessions</em></div>
-    <div class="section-sub">Select a session type to book, or view your upcoming Live Lab schedule below.</div>
-
-    <!-- Package cards -->
-    <div class="packages" id="packageList"></div>
-
-    <!-- Live Labs section -->
-    <div id="liveLabsSection" style="display:none;">
-      <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--charcoal-light);font-weight:500;margin-bottom:12px;">Live Lab Classes</div>
-      <div class="live-card">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
-          <span style="font-size:20px;">🎯</span>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;">Live Lab Classes</div>
-        </div>
-        <div style="font-size:13px;color:var(--charcoal-light);margin-bottom:14px;">Your weekly live session schedule with Buse via Zoom.</div>
-        <div class="live-schedule">
-          <div class="live-day">📅 <strong>Monday</strong> — Strength Lab <span class="coming-soon">Zoom link soon</span></div>
-          <div class="live-day">📅 <strong>Wednesday</strong> — HIIT & Conditioning <span class="coming-soon">Zoom link soon</span></div>
-          <div class="live-day">📅 <strong>Friday</strong> — Mobility & Recovery <span class="coming-soon">Zoom link soon</span></div>
-        </div>
-        <div style="margin-top:14px;padding:10px 14px;background:rgba(200,169,110,.08);border-radius:10px;font-size:12px;color:var(--charcoal-light);">
-          🔔 Zoom links will be sent to your email before each class. Replay available for 48 hours.
+  <!-- LEFT: Calendar + Form -->
+  <div>
+    <div class="card">
+      <!-- Calendar -->
+      <div class="cal-header">
+        <div class="cal-month" id="calMonth"></div>
+        <div class="cal-nav">
+          <button class="cal-nav-btn" onclick="changeMonth(-1)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button class="cal-nav-btn" onclick="changeMonth(1)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
         </div>
       </div>
-    </div>
+      <div class="cal-grid" id="calGrid"></div>
 
-    <!-- Booking form -->
-    <div class="booking-form" id="bookingForm">
-      <div class="form-title" id="formTitle">Book a Session</div>
-      <div class="form-sub" id="formSub">Choose up to 3 preferred time slots — Buse will confirm the best one within 12 hours.</div>
+      <!-- Booking Form -->
+      <div class="form-section" id="bookingFormSection" style="display:none;">
+        <div class="selected-date-display" id="selectedDateDisplay"></div>
 
-      <div class="field-group">
-        <label class="field-label">Preferred Date & Time Options</label>
-        <div class="date-slots" id="dateSlots">
-          <div class="date-slot" id="slot-0">
-            <div class="date-slot-num">Option 1</div>
-            <div class="date-slot-fields">
-              <input type="date" id="date-0" placeholder="Date">
-              <select id="time-0">
-                <option value="">Select time</option>
-                <option>08:00</option><option>09:00</option><option>10:00</option>
-                <option>11:00</option><option>12:00</option><option>13:00</option>
-                <option>14:00</option><option>15:00</option><option>16:00</option>
-                <option>17:00</option><option>18:00</option><option>19:00</option>
-                <option>20:00</option>
-              </select>
-            </div>
+        <div id="noPurchaseMsg" class="no-purchase-note" style="display:none;">
+          You don't have an active coaching session. <a href="plans.html">View plans →</a>
+        </div>
+
+        <div id="bookingFormInner">
+          <label class="form-label">Session Type</label>
+          <div class="type-row" id="typeRow"></div>
+
+          <label class="form-label">Preferred Time</label>
+          <div class="time-slots" id="timeSlots">
+            <div class="time-slot" onclick="selectTime(this,'08:00')">08:00</div>
+            <div class="time-slot" onclick="selectTime(this,'09:00')">09:00</div>
+            <div class="time-slot" onclick="selectTime(this,'10:00')">10:00</div>
+            <div class="time-slot" onclick="selectTime(this,'11:00')">11:00</div>
+            <div class="time-slot" onclick="selectTime(this,'12:00')">12:00</div>
+            <div class="time-slot" onclick="selectTime(this,'13:00')">13:00</div>
+            <div class="time-slot" onclick="selectTime(this,'14:00')">14:00</div>
+            <div class="time-slot" onclick="selectTime(this,'15:00')">15:00</div>
+            <div class="time-slot" onclick="selectTime(this,'16:00')">16:00</div>
+            <div class="time-slot" onclick="selectTime(this,'17:00')">17:00</div>
+            <div class="time-slot" onclick="selectTime(this,'18:00')">18:00</div>
+            <div class="time-slot" onclick="selectTime(this,'19:00')">19:00</div>
+            <div class="time-slot" onclick="selectTime(this,'20:00')">20:00</div>
           </div>
+
+          <label class="form-label">Notes (optional)</label>
+          <textarea id="bookingNotes" placeholder="Any goals, injuries or preferences Buse should know..."></textarea>
+
+          <button class="submit-btn" id="submitBtn" onclick="submitBooking()">Send Request →</button>
+          <div class="error-note" id="errorNote"></div>
         </div>
-        <button class="add-slot-btn" id="addSlotBtn" onclick="addSlot()">+ Add another option</button>
       </div>
+    </div>
+  </div>
 
-      <div class="field-group">
-        <label class="field-label">Notes (optional)</label>
-        <textarea id="bookingNotes" placeholder="Any goals, injuries, areas to focus on, or anything else Buse should know before your session..."></textarea>
+  <!-- RIGHT: Stats + Bookings -->
+  <div class="right-panel">
+
+    <!-- Stats -->
+    <div class="stats-row" id="statsRow">
+      <div class="stat-box">
+        <div class="stat-num" id="statTotal">—</div>
+        <div class="stat-label">Total</div>
       </div>
-
-      <button class="submit-btn" id="submitBtn" onclick="submitBooking()">Send Booking Request →</button>
-      <div class="error-box" id="errorBox"></div>
+      <div class="stat-box">
+        <div class="stat-num" id="statPending">—</div>
+        <div class="stat-label">Pending</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="statConfirmed">—</div>
+        <div class="stat-label">Confirmed</div>
+      </div>
     </div>
 
-    <!-- Google Form section -->
-    <div class="gform-section" id="gformSection" style="display:none;">
-      <div class="gform-title">📋 Exercise Readiness Questionnaire</div>
-      <div class="gform-text">
-        Help Buse prepare the perfect session for you. By completing this short questionnaire, she'll know exactly where you are, what you need, and how to make every minute count.
-        <br><br>
-        <em style="color:var(--rose);">The more you share, the better Buse can tailor your session.</em>
+    <!-- Bookings list -->
+    <div class="card">
+      <div class="bookings-header">
+        <div class="bookings-title">My Bookings</div>
+        <div class="filter-tabs">
+          <div class="filter-tab active" onclick="filterBookings('all', this)">All</div>
+          <div class="filter-tab" onclick="filterBookings('pending', this)">Pending</div>
+          <div class="filter-tab" onclick="filterBookings('confirmed', this)">Done</div>
+        </div>
       </div>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdBYtcOBxYzkhzJ62cDnlwRRHCTMTl06iwL6601403itm-o4A/viewform?usp=header" target="_blank" class="gform-btn">
-        📝 Fill Out the Form →
-      </a>
+      <div id="bookingsList"></div>
     </div>
 
   </div>
-
-  <!-- Success screen -->
-  <div class="success-screen" id="successScreen">
-    <div class="success-icon">🌸</div>
-    <div class="success-title">Request Sent!</div>
-    <div class="success-sub">Your booking request has been received.<br>Buse will confirm within <strong>12 hours</strong>.</div>
-    <div class="success-summary" id="successSummary"></div>
-    <div class="gform-section" style="margin-bottom:24px;text-align:left;">
-      <div class="gform-title">One more thing...</div>
-      <div class="gform-text">Fill out the Exercise Readiness Questionnaire so Buse can prepare the perfect session for you.</div>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdBYtcOBxYzkhzJ62cDnlwRRHCTMTl06iwL6601403itm-o4A/viewform?usp=header" target="_blank" class="gform-btn">📝 Fill Out Now →</a>
-    </div>
-    <a href="dashboard.html" class="back-btn">Back to Dashboard</a>
-  </div>
-
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentUser = null;
-let selectedPkg = null;
-let slotCount = 1;
+let allBookings = [];
+let selectedDate = null;
+let selectedType = null;
+let selectedTime = null;
+let viewYear, viewMonth;
+let userPurchases = new Set();
+let bookingDates = new Set();
+let currentFilter = 'all';
 
 const COACHING_IDS = ['online-single', 'online-8pack', 'inperson-single', 'inperson-10pack'];
-const LIVE_IDS = ['live-labs-monthly', 'live-labs-yearly'];
-
 const PKG_INFO = {
-  'online-single':   { icon: '🖥️', name: 'Online 1:1 Coaching', detail: 'Single session — 50 min via Zoom', badge: 'Online', type: 'online' },
-  'online-8pack':    { icon: '🖥️', name: 'Online 1:1 Coaching', detail: '8-session pack — 50 min each via Zoom · 1 session free', badge: 'Online · 8 Pack', type: 'online' },
-  'inperson-single': { icon: '📍', name: 'The Buse Method', detail: 'Single session — 50 min in Berlin', badge: 'In-Person · Berlin', type: 'inperson' },
-  'inperson-10pack': { icon: '📍', name: 'The Buse Method', detail: '10-session pack — 50 min each in Berlin · 1 session free', badge: 'In-Person · Berlin', type: 'inperson' },
+  'online-single':   { label: 'Online (Zoom)', type: 'online' },
+  'online-8pack':    { label: 'Online (Zoom)', type: 'online' },
+  'inperson-single': { label: 'In-Person (Berlin)', type: 'inperson' },
+  'inperson-10pack': { label: 'In-Person (Berlin)', type: 'inperson' },
 };
 
-// Set min date
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-const minDate = tomorrow.toISOString().split('T')[0];
-document.getElementById('date-0').min = minDate;
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
-// Auth
+// Init
 sb.auth.getSession().then(async ({ data: { session } }) => {
   if (!session) {
-    document.getElementById('loadingScreen').style.display = 'none';
     document.getElementById('authGuard').style.display = 'block';
     return;
   }
   currentUser = session.user;
-  await loadPurchases();
+  document.getElementById('mainLayout').style.display = 'grid';
+
+  const now = new Date();
+  viewYear = now.getFullYear();
+  viewMonth = now.getMonth();
+
+  await loadData();
+  renderCalendar();
+  renderBookingsList();
 });
 
-async function loadPurchases() {
-  const { data: purchases } = await sb.from('purchases')
-    .select('course_id, created_at')
-    .eq('user_id', currentUser.id);
+async function loadData() {
+  const [{ data: purchases }, { data: bookings }] = await Promise.all([
+    sb.from('purchases').select('course_id').eq('user_id', currentUser.id),
+    sb.from('bookings').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false })
+  ]);
 
-  document.getElementById('loadingScreen').style.display = 'none';
+  userPurchases = new Set((purchases || []).map(p => p.course_id));
+  allBookings = bookings || [];
+  bookingDates = new Set(allBookings.map(b => b.requested_date));
 
-  if (!purchases || purchases.length === 0) {
-    document.getElementById('noPurchases').style.display = 'block';
-    return;
+  // Stats
+  document.getElementById('statTotal').textContent = allBookings.length;
+  document.getElementById('statPending').textContent = allBookings.filter(b => b.status === 'pending').length;
+  document.getElementById('statConfirmed').textContent = allBookings.filter(b => b.status === 'confirmed').length;
+}
+
+function renderCalendar() {
+  document.getElementById('calMonth').textContent = `${MONTHS[viewMonth]} ${viewYear}`;
+
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = DAYS.map(d => `<div class="cal-day-label">${d}</div>`).join('');
+
+  const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+  const offset = firstDay === 0 ? 6 : firstDay - 1;
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  const today = new Date();
+
+  for (let i = 0; i < offset; i++) {
+    grid.innerHTML += `<div class="cal-day cal-day-empty"></div>`;
   }
 
-  const courseIds = purchases.map(p => p.course_id);
-  const hasCoaching = courseIds.some(id => COACHING_IDS.includes(id));
-  const hasLive = courseIds.some(id => LIVE_IDS.includes(id));
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(viewYear, viewMonth, d);
+    const dateStr = `${viewYear}-${String(viewMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const isToday = date.toDateString() === today.toDateString();
+    const isSelected = selectedDate === dateStr;
+    const hasBooking = bookingDates.has(dateStr);
 
-  if (!hasCoaching && !hasLive) {
-    document.getElementById('noPurchases').style.display = 'block';
-    return;
-  }
+    let cls = 'cal-day';
+    if (isPast) cls += ' cal-day-past';
+    if (isToday) cls += ' cal-day-today';
+    if (isSelected) cls += ' cal-day-selected';
+    if (hasBooking) cls += ' cal-day-has-booking';
 
-  document.getElementById('mainContent').style.display = 'block';
-
-  // Build package cards
-  if (hasCoaching) {
-    const pkgList = document.getElementById('packageList');
-    const coachingIds = courseIds.filter(id => COACHING_IDS.includes(id));
-    // Deduplicate by type
-    const seen = new Set();
-    coachingIds.forEach(id => {
-      const info = PKG_INFO[id];
-      if (!info || seen.has(info.type)) return;
-      seen.add(info.type);
-      pkgList.innerHTML += `
-        <div class="pkg-card" id="pkg-${id}" onclick="selectPackage('${id}', '${info.type}')">
-          <div class="pkg-icon">${info.icon}</div>
-          <div class="pkg-info">
-            <div class="pkg-name">${info.name}</div>
-            <div class="pkg-detail">${info.detail}</div>
-            <div class="pkg-badge">${info.badge}</div>
-          </div>
-          <div class="pkg-check" id="check-${id}">✓</div>
-        </div>`;
-    });
-  }
-
-  if (hasLive) {
-    document.getElementById('liveLabsSection').style.display = 'block';
+    const onclick = isPast ? '' : `onclick="selectDate('${dateStr}')"`;
+    grid.innerHTML += `<div class="${cls}" ${onclick}>${d}</div>`;
   }
 }
 
-function selectPackage(id, type) {
-  // Deselect all
-  document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
-  selectedPkg = { id, type };
-  document.getElementById('pkg-' + id).classList.add('selected');
-
-  // Show form
-  const form = document.getElementById('bookingForm');
-  form.classList.add('visible');
-
-  const isOnline = type === 'online';
-  document.getElementById('formTitle').textContent = isOnline ? 'Book an Online Session' : 'Book an In-Person Session';
-  document.getElementById('formSub').textContent = isOnline
-    ? 'Choose up to 3 preferred time slots — Buse will confirm the best one and send you a Zoom link within 12 hours.'
-    : 'Choose up to 3 preferred time slots — Buse will confirm the best one and share the Berlin studio address within 12 hours.';
-
-  document.getElementById('gformSection').style.display = 'block';
-  form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+function changeMonth(dir) {
+  viewMonth += dir;
+  if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+  if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+  renderCalendar();
 }
 
-function addSlot() {
-  if (slotCount >= 3) {
-    document.getElementById('addSlotBtn').style.display = 'none';
+function selectDate(dateStr) {
+  selectedDate = dateStr;
+  selectedType = null;
+  selectedTime = null;
+  renderCalendar();
+
+  const section = document.getElementById('bookingFormSection');
+  section.style.display = 'block';
+
+  const d = new Date(dateStr + 'T00:00:00');
+  document.getElementById('selectedDateDisplay').textContent =
+    d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  // Check purchases
+  const hasOnline = [...userPurchases].some(id => ['online-single','online-8pack'].includes(id));
+  const hasInperson = [...userPurchases].some(id => ['inperson-single','inperson-10pack'].includes(id));
+  const hasCoaching = hasOnline || hasInperson;
+
+  const noPurchaseMsg = document.getElementById('noPurchaseMsg');
+  const formInner = document.getElementById('bookingFormInner');
+
+  if (!hasCoaching) {
+    noPurchaseMsg.style.display = 'block';
+    formInner.style.display = 'none';
     return;
   }
-  const i = slotCount;
-  const slot = document.createElement('div');
-  slot.className = 'date-slot';
-  slot.id = 'slot-' + i;
-  slot.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <div class="date-slot-num">Option ${i + 1}</div>
-      <button onclick="removeSlot(${i})" style="background:none;border:none;cursor:pointer;color:var(--charcoal-light);font-size:18px;line-height:1;">×</button>
-    </div>
-    <div class="date-slot-fields">
-      <input type="date" id="date-${i}" min="${minDate}">
-      <select id="time-${i}">
-        <option value="">Select time</option>
-        <option>08:00</option><option>09:00</option><option>10:00</option>
-        <option>11:00</option><option>12:00</option><option>13:00</option>
-        <option>14:00</option><option>15:00</option><option>16:00</option>
-        <option>17:00</option><option>18:00</option><option>19:00</option>
-        <option>20:00</option>
-      </select>
-    </div>`;
-  document.getElementById('dateSlots').appendChild(slot);
-  slotCount++;
-  if (slotCount >= 3) document.getElementById('addSlotBtn').style.display = 'none';
+
+  noPurchaseMsg.style.display = 'none';
+  formInner.style.display = 'block';
+
+  // Build type buttons
+  const typeRow = document.getElementById('typeRow');
+  typeRow.innerHTML = '';
+  if (hasOnline) {
+    typeRow.innerHTML += `<button class="type-btn" onclick="selectType(this,'online')">Online (Zoom)</button>`;
+  }
+  if (hasInperson) {
+    typeRow.innerHTML += `<button class="type-btn" onclick="selectType(this,'inperson')">In-Person (Berlin)</button>`;
+  }
+
+  // Reset time slots
+  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('active'));
+  document.getElementById('bookingNotes').value = '';
+  document.getElementById('errorNote').style.display = 'none';
+
+  section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function removeSlot(i) {
-  document.getElementById('slot-' + i)?.remove();
-  slotCount--;
-  document.getElementById('addSlotBtn').style.display = 'flex';
+function selectType(btn, type) {
+  selectedType = type;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function selectTime(el, time) {
+  selectedTime = time;
+  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
 }
 
 async function submitBooking() {
-  const date0 = document.getElementById('date-0').value;
-  const time0 = document.getElementById('time-0').value;
+  const errorNote = document.getElementById('errorNote');
+  errorNote.style.display = 'none';
 
-  if (!selectedPkg) { showError('Please select a session type.'); return; }
-  if (!date0) { showError('Please select at least one date.'); return; }
-  if (!time0) { showError('Please select at least one time slot.'); return; }
+  if (!selectedType) { showError('Please select a session type.'); return; }
+  if (!selectedTime) { showError('Please select a time.'); return; }
 
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.textContent = 'Sending...';
-  document.getElementById('errorBox').style.display = 'none';
-
-  // Collect all slots
-  const slots = [];
-  for (let i = 0; i < 3; i++) {
-    const d = document.getElementById('date-' + i)?.value;
-    const t = document.getElementById('time-' + i)?.value;
-    if (d && t) slots.push({ date: d, time: t });
-  }
-
-  const notes = document.getElementById('bookingNotes').value;
 
   const { error } = await sb.from('bookings').insert({
     user_id: currentUser.id,
     user_email: currentUser.email,
-    session_type: selectedPkg.type,
-    requested_date: slots[0].date,
-    requested_time: slots[0].time,
-    notes: [
-      slots.length > 1 ? `Preferred slots:\n${slots.map((s,i) => `Option ${i+1}: ${s.date} at ${s.time}`).join('\n')}` : '',
-      notes ? `Notes: ${notes}` : ''
-    ].filter(Boolean).join('\n\n') || null,
+    session_type: selectedType,
+    requested_date: selectedDate,
+    requested_time: selectedTime,
+    notes: document.getElementById('bookingNotes').value || null,
     status: 'pending'
   });
 
-  if (error) {
-    showError('Something went wrong. Please try again.');
-    btn.disabled = false;
-    btn.textContent = 'Send Booking Request →';
-    return;
-  }
+  btn.disabled = false;
+  btn.textContent = 'Send Request →';
 
-  // Success
-  document.getElementById('mainContent').style.display = 'none';
-  const success = document.getElementById('successScreen');
-  success.style.display = 'block';
-  document.getElementById('successSummary').innerHTML = `
-    ${slots.map((s, i) => `<div>📅 <strong>Option ${i+1}:</strong> ${new Date(s.date + 'T00:00:00').toLocaleDateString('en-GB', {weekday:'long', year:'numeric', month:'long', day:'numeric'})} at ${s.time}</div>`).join('')}
-    <div>📍 <strong>Type:</strong> ${selectedPkg.type === 'online' ? 'Online (Zoom)' : 'In-Person (Berlin)'}</div>
-    ${notes ? '<div>📝 <strong>Notes:</strong> ' + notes + '</div>' : ''}
-  `;
-  success.scrollIntoView({ behavior: 'smooth' });
+  if (error) { showError('Something went wrong. Please try again.'); return; }
+
+  showToast('Request sent! Buse will confirm within 12 hours.');
+  document.getElementById('bookingFormSection').style.display = 'none';
+  selectedDate = null; selectedType = null; selectedTime = null;
+
+  await loadData();
+  renderCalendar();
+  renderBookingsList();
 }
 
 function showError(msg) {
-  const el = document.getElementById('errorBox');
+  const el = document.getElementById('errorNote');
   el.textContent = msg;
   el.style.display = 'block';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function filterBookings(filter, tab) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  renderBookingsList();
+}
+
+function renderBookingsList() {
+  const list = document.getElementById('bookingsList');
+  let items = allBookings;
+  if (currentFilter === 'pending') items = items.filter(b => b.status === 'pending');
+  if (currentFilter === 'confirmed') items = items.filter(b => b.status === 'confirmed');
+
+  if (items.length === 0) {
+    list.innerHTML = `<div class="empty-state"><p>${currentFilter === 'all' ? 'No booking requests yet.<br>Select a date on the calendar to get started.' : 'No ' + currentFilter + ' bookings.'}</p></div>`;
+    return;
+  }
+
+  list.innerHTML = items.map(b => {
+    const d = new Date(b.requested_date + 'T00:00:00');
+    const dateStr = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+    const statusClass = `status-${b.status}`;
+    const statusLabel = b.status === 'pending' ? 'Pending' : b.status === 'confirmed' ? 'Confirmed' : 'Cancelled';
+    const typeLabel = b.session_type === 'online' ? 'Online (Zoom)' : 'In-Person (Berlin)';
+
+    return `<div class="booking-item">
+      <div class="booking-item-top">
+        <div>
+          <div class="booking-date">${dateStr}</div>
+          <div class="booking-time">${b.requested_time}</div>
+        </div>
+        <div class="status-badge ${statusClass}">${statusLabel}</div>
+      </div>
+      <div class="booking-type">${typeLabel}</div>
+      ${b.notes ? `<div style="font-size:12px;color:var(--charcoal-light);margin-top:6px;padding-top:6px;border-top:1px solid rgba(232,180,184,.1);">${b.notes.substring(0,80)}${b.notes.length > 80 ? '...' : ''}</div>` : ''}
+    </div>`;
+  }).join('');
 }
 </script>
 </body>
