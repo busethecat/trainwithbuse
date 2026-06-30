@@ -437,12 +437,14 @@
   .program-card {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Kartın sönük kalmasını engeller */
+    height: 100%;
     background: var(--warm-white);
-    border-radius: 20px;
+    border-radius: var(--radius);
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-}
+    transition: all 0.4s;
+    border: 1px solid rgba(232, 180, 184, 0.12);
+  }
 
 .program-thumb {
     position: relative;
@@ -782,14 +784,6 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
-  }
-
-  .program-card {
-    border-radius: var(--radius);
-    overflow: hidden;
-    background: white;
-    transition: all 0.4s;
-    border: 1px solid rgba(232, 180, 184, 0.12);
   }
 
   .program-card:hover {
@@ -1723,7 +1717,7 @@
           "@type": "Offer",
           "name": "In-Person Training Berlin",
           "description": "Premium 1:1 personal training sessions in Berlin. Neuroscience-backed programming, movement assessments.",
-          "price": "120",
+          "price": "119",
           "priceCurrency": "EUR"
         },
         {
@@ -1960,7 +1954,7 @@
   <div style="position:absolute;bottom:-40px;left:-40px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,.08) 0%,transparent 70%);pointer-events:none;"></div>
   <div style="max-width:900px;margin:0 auto;padding:0 40px;text-align:center;position:relative;z-index:1;">
     <div style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#C8A96E;margin-bottom:20px;">2 Minutes · Free · Personalized</div>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:white;line-height:1;letter-spacing:-1px;margin-bottom:16px;">Not sure where to <em style="font-style:italic;color:#C1848B;">start?</em></h2>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:white;line-height:1;letter-spacing:-1px;margin-bottom:16px;">Not sure where to <em style="font-style:italic;color:var(--rose);">start?</em></h2>
     <p style="font-size:16px;color:rgba(255,255,255,.55);line-height:1.7;max-width:520px;margin:0 auto 36px;">Answer 11 quick questions and discover exactly which Lab — or coaching option — is right for your body, goals, and lifestyle.</p>
     <div style="display:flex;justify-content:center;gap:32px;margin-bottom:40px;flex-wrap:wrap;">
       <div style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.5);font-size:13px;">
@@ -1994,7 +1988,7 @@
     <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:64px;flex-wrap:wrap;gap:24px;">
       <div>
         <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#C8A96E;margin-bottom:14px;">Work With Buse</div>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:58px;font-weight:300;line-height:.95;letter-spacing:-1px;color:#2D2A2E;">How we can<br><em style="font-style:italic;color:#C1848B;">work together</em></h2>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:58px;font-weight:300;line-height:.95;letter-spacing:-1px;color:var(--charcoal);">How we can<br><em style="font-style:italic;color:var(--rose);">work together</em></h2>
       </div>
       <p style="font-size:15px;color:#4A4548;line-height:1.7;max-width:380px;">From private Berlin sessions to fully online coaching — real results, real science, tailored to you.</p>
     </div>
@@ -2006,7 +2000,7 @@
       <div class="reveal" style="background:white;border-radius:24px;padding:44px;border:1px solid rgba(232,180,184,.15);position:relative;overflow:hidden;transition:all .3s;" onmouseover="this.style.boxShadow='0 20px 60px rgba(200,160,155,.15)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
         <div style="position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(200,169,110,.06) 0%,transparent 70%);pointer-events:none;"></div>
         <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C8A96E;margin-bottom:16px;">Remote · Worldwide</div>
-        <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:#2D2A2E;margin-bottom:8px;">1:1 Online<br>Coaching</h3>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:var(--charcoal);margin-bottom:8px;">1:1 Online<br>Coaching</h3>
         <p style="font-size:14px;color:#4A4548;line-height:1.7;margin-bottom:28px;">Your own program, your own coach, your own science. Personalized programming built around your neurology, your body, your life — with Buse available every step of the way.</p>
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:32px;">
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
@@ -2028,7 +2022,7 @@
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid rgba(232,180,184,.15);">
           <div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:#2D2A2E;line-height:1;">€300</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--charcoal);line-height:1;">€199</div>
             <div style="font-size:11px;color:#D4A89A;letter-spacing:1px;">/month</div>
           </div>
           <a href="https://buy.stripe.com/3cI3cu7lvbfS0BK2Mq1kA0f" target="_blank" style="background:#2D2A2E;color:white;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all .3s;" onmouseover="this.style.background='#9B6B6F'" onmouseout="this.style.background='#2D2A2E'">Start Now →</a>
@@ -2038,7 +2032,7 @@
       <!-- In-Person Berlin -->
       <div class="reveal" style="background:#2D2A2E;border-radius:24px;padding:44px;position:relative;overflow:hidden;transition:all .3s;" onmouseover="this.style.boxShadow='0 20px 60px rgba(45,42,46,.3)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
         <div style="position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(193,132,139,.1) 0%,transparent 70%);pointer-events:none;"></div>
-        <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C8A96E;margin-bottom:16px;">Berlin · Premium</div>
+        <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Berlin · Premium</div>
         <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:white;margin-bottom:8px;">In-Person<br>Training</h3>
         <p style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:28px;">The full Buse Method — in Berlin. Movement & training science applied hands-on, in real time. Programs designed to develop you physically and cognitively, combining movement science with science-backed tools for long-term transformation.</p>
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:32px;">
@@ -2061,7 +2055,7 @@
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid rgba(255,255,255,.08);">
           <div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:white;line-height:1;">€120</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:white;line-height:1;">€119</div>
             <div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:1px;">/session</div>
           </div>
           <a href="https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g" target="_blank" style="background:#C8A96E;color:#2D2A2E;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Book Session →</a>
@@ -2078,7 +2072,7 @@
             <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C1848B;">Live · Online · Zoom</div>
             <span style="background:#C8A96E;color:#2D2A2E;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:50px;font-weight:600;">Founding Member</span>
           </div>
-          <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:#2D2A2E;margin-bottom:8px;">Live Lab<br>Classes</h3>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:var(--charcoal);margin-bottom:8px;">Live Lab<br>Classes</h3>
           <p style="font-size:14px;color:#4A4548;line-height:1.7;margin-bottom:24px;">3 live Zoom classes per week — HIIT, Strength & Mobility. Max 12 people per class. Real coaching, real community, real results.</p>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
@@ -2101,7 +2095,7 @@
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:24px;">
           <div style="text-align:right;">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:#2D2A2E;line-height:1;">€59</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--charcoal);line-height:1;">€59</div>
             <div style="font-size:11px;color:#D4A89A;letter-spacing:1px;">/month · founding</div>
             <div style="font-size:11px;color:#D4A89A;text-decoration:line-through;opacity:.6;">€89/month after launch</div>
           </div>
@@ -2117,7 +2111,7 @@
 <!-- BRIDGE TEASER -->
 <div id="bridgeTeaser" style="padding:60px 40px 0;background:var(--warm-white);text-align:center;position:relative;">
   <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C8A96E;margin-bottom:20px;">Train on Your Own Terms</div>
-  <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,52px);font-weight:300;color:#2D2A2E;line-height:1.2;margin-bottom:40px;">Now let me show you something<br><em style="font-style:italic;color:#C1848B;">you've never seen before.</em></h3>
+  <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,52px);font-weight:300;color:#2D2A2E;line-height:1.2;margin-bottom:40px;">Now let me show you something<br><em style="font-style:italic;color:var(--rose);">you've never seen before.</em></h3>
 
   <!-- Animated scroll line -->
   <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
