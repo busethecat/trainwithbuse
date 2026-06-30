@@ -1751,7 +1751,9 @@ function renderLiveClasses(){
           </div>
           <div style="font-size:11px;color:${c.color};letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">${sched}</div>
           <div style="font-size:13px;color:var(--charcoal-light);line-height:1.6;margin-bottom:14px">${desc}</div>
-          ${owned
+          ${c.comingSoon
+            ?`<button disabled style="background:var(--nude);color:white;border:none;padding:10px 22px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:not-allowed;opacity:.7">Coming Soon</button>`
+            :owned
             ?`<a href="${c.zoomLink}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--charcoal);color:white;padding:10px 22px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none">${tl.liveJoin}</a>`
             :`<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
                 <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300">€${c.price}<span style="font-size:14px;color:var(--nude)">${tl.livePerMonth}</span></div>
