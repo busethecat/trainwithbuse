@@ -319,7 +319,7 @@ body::before{
           <div style="font-size:12px;color:rgba(255,255,255,.4);display:flex;gap:8px;align-items:center;"><span style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0"></span>Proprioception & body awareness</div>
         </div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);">€89 <span style="font-size:14px;color:rgba(255,255,255,.3);font-family:'Outfit',sans-serif;">/ level</span></div>
-        <a href="https://buy.stripe.com/fZu9AS49jbfSdow72G1kA09" target="_blank" style="display:inline-block;margin-top:16px;background:var(--gold);color:var(--charcoal);padding:12px 24px;border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;">Start Now →</a>
+        <span id="labBtnMovement" style="display:inline-block;margin-top:16px;background:rgba(200,169,110,.25);color:rgba(255,255,255,.6);padding:12px 24px;border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:500;cursor:default;">Coming Soon</span>
       </div>
 
       <div style="background:rgba(193,132,139,.08);border:1px solid rgba(193,132,139,.15);border-radius:20px;padding:36px;">
@@ -333,7 +333,7 @@ body::before{
           <div style="font-size:12px;color:rgba(255,255,255,.4);display:flex;gap:8px;align-items:center;"><span style="width:6px;height:6px;border-radius:50%;background:var(--rose);flex-shrink:0"></span>Postural alignment</div>
         </div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);">€89 <span style="font-size:14px;color:rgba(255,255,255,.3);font-family:'Outfit',sans-serif;">/ level</span></div>
-        <a href="https://buy.stripe.com/6oUbJ07lv2JmgAI4Uy1kA0a" target="_blank" style="display:inline-block;margin-top:16px;background:var(--rose);color:white;padding:12px 24px;border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;">Start Now →</a>
+        <span id="labBtnSculpt" style="display:inline-block;margin-top:16px;background:rgba(193,132,139,.25);color:rgba(255,255,255,.6);padding:12px 24px;border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:500;cursor:default;">Coming Soon</span>
       </div>
 
       <div style="background:rgba(155,107,111,.08);border:1px solid rgba(155,107,111,.15);border-radius:20px;padding:36px;">
@@ -347,7 +347,7 @@ body::before{
           <div style="font-size:12px;color:rgba(255,255,255,.4);display:flex;gap:8px;align-items:center;"><span style="width:6px;height:6px;border-radius:50%;background:#9B6B6F;flex-shrink:0"></span>Functional strength patterns</div>
         </div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);">€89 <span style="font-size:14px;color:rgba(255,255,255,.3);font-family:'Outfit',sans-serif;">/ level</span></div>
-        <a href="https://buy.stripe.com/14A4gyfS13NqesAgDg1kA0b" target="_blank" style="display:inline-block;margin-top:16px;background:#9B6B6F;color:white;padding:12px 24px;border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;">Start Now →</a>
+        <span id="labBtnStrength" style="display:inline-block;margin-top:16px;background:rgba(155,107,111,.25);color:rgba(255,255,255,.6);padding:12px 24px;border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:500;cursor:default;">Coming Soon</span>
       </div>
 
       <div style="background:rgba(212,168,154,.08);border:1px solid rgba(212,168,154,.15);border-radius:20px;padding:36px;">
@@ -361,7 +361,7 @@ body::before{
           <div style="font-size:12px;color:rgba(255,255,255,.4);display:flex;gap:8px;align-items:center;"><span style="width:6px;height:6px;border-radius:50%;background:var(--nude);flex-shrink:0"></span>Cardiovascular efficiency</div>
         </div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);">€89 <span style="font-size:14px;color:rgba(255,255,255,.3);font-family:'Outfit',sans-serif;">/ level</span></div>
-        <a href="https://buy.stripe.com/8x23cu7lv97Kbgo1Im1kA0c" target="_blank" style="display:inline-block;margin-top:16px;background:var(--nude);color:white;padding:12px 24px;border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;">Start Now →</a>
+        <span id="labBtnMetabolic" style="display:inline-block;margin-top:16px;background:rgba(212,168,154,.25);color:rgba(255,255,255,.6);padding:12px 24px;border-radius:50px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:500;cursor:default;">Coming Soon</span>
       </div>
 
     </div>
@@ -427,6 +427,7 @@ const T = {
     ctaBtn:'Enter Your Dashboard',
     ctaSecondary:'Create Account First',
     ctaNote:'Already have an account? Sign in above.',
+    comingSoon:'Coming Soon',
   },
   tr:{
     eyebrow:"Lab'a Hos Geldin",
@@ -439,6 +440,7 @@ const T = {
     ctaBtn:'Dashboardina Gir',
     ctaSecondary:'Once Hesap Olustur',
     ctaNote:'Zaten hesabin var mi? Yukarda giris yap.',
+    comingSoon:'Yakında',
   },
   de:{
     eyebrow:'Willkommen im Lab',
@@ -451,6 +453,7 @@ const T = {
     ctaBtn:'Dashboard betreten',
     ctaSecondary:'Zuerst Konto erstellen',
     ctaNote:'Hast du bereits ein Konto? Melde dich oben an.',
+    comingSoon:'Demnächst',
   }
 };
 
@@ -482,6 +485,10 @@ function applyT(){
   document.getElementById('ctaBtn').textContent = tl.ctaBtn;
   document.getElementById('ctaSecondary').textContent = tl.ctaSecondary;
   document.getElementById('ctaNote').textContent = tl.ctaNote;
+  ['labBtnMovement','labBtnSculpt','labBtnStrength','labBtnMetabolic'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.textContent = tl.comingSoon;
+  });
   document.documentElement.lang = lang;
 }
 

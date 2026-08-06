@@ -364,6 +364,16 @@
     transform: translateY(-2px);
   }
 
+  .plan-cta.disabled,
+  .bundle-cta.disabled {
+    background: rgba(45, 42, 46, 0.12) !important;
+    color: var(--charcoal-light) !important;
+    cursor: default !important;
+    pointer-events: none;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
   .plan-ideal {
     margin-top: 16px;
     padding: 12px 16px;
@@ -662,7 +672,7 @@
         <li>Personal dashboard access</li>
         <li>Science-backed programming</li>
       </ul>
-      <a href="https://buy.stripe.com/fZu9AS49jbfSdow72G1kA09" target="_blank" class="plan-cta primary">Start Now →</a>
+      <span class="plan-cta primary disabled" aria-disabled="true">Coming Soon</span>
       <div class="plan-ideal"><strong>Best for:</strong> Posture issues, chronic pain, movement dysfunction, returning to exercise.</div>
     </div>
 
@@ -679,7 +689,7 @@
         <li>Personal dashboard access</li>
         <li>Core & glutes focused</li>
       </ul>
-      <a href="https://buy.stripe.com/6oUbJ07lv2JmgAI4Uy1kA0a" target="_blank" class="plan-cta primary">Start Now →</a>
+      <span class="plan-cta primary disabled" aria-disabled="true">Coming Soon</span>
       <div class="plan-ideal"><strong>Best for:</strong> Toning, fat loss, core strength, glutes & legs definition.</div>
     </div>
 
@@ -696,7 +706,7 @@
         <li>Personal dashboard access</li>
         <li>Upper body & full body</li>
       </ul>
-      <a href="https://buy.stripe.com/14A4gyfS13NqesAgDg1kA0b" target="_blank" class="plan-cta primary">Start Now →</a>
+      <span class="plan-cta primary disabled" aria-disabled="true">Coming Soon</span>
       <div class="plan-ideal"><strong>Best for:</strong> Muscle building, strength gains, upper body development.</div>
     </div>
 
@@ -713,7 +723,7 @@
         <li>Personal dashboard access</li>
         <li>Short, intense sessions</li>
       </ul>
-      <a href="https://buy.stripe.com/8x23cu7lv97Kbgo1Im1kA0c" target="_blank" class="plan-cta primary">Start Now →</a>
+      <span class="plan-cta primary disabled" aria-disabled="true">Coming Soon</span>
       <div class="plan-ideal"><strong>Best for:</strong> Fat loss, endurance, energy boost, time-efficient training.</div>
     </div>
 
@@ -742,7 +752,7 @@
           <div class="bundle-opt-note">€267 instead of €356</div>
         </div>
       </div>
-      <a href="bundle.html" class="bundle-cta">Build My Bundle →</a>
+      <span class="bundle-cta disabled" aria-disabled="true">Coming Soon</span>
     </div>
   </div>
 

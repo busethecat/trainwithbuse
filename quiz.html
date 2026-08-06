@@ -1953,6 +1953,9 @@ const STRIPE_LINKS = {
   program:  'https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g'
 };
 
+// The Lab System (video programs) is temporarily paused — see LAB_PLANS below.
+const LAB_PLANS = ['movement', 'sculpt', 'strength', 'metabolic'];
+
 function showResult() {
   const plan = determinePlan();
   const r = results[lang][plan];
@@ -1992,10 +1995,14 @@ function showResult() {
       ${featuresHTML}
     </div>
     <div class="result-analysis" style="margin-top:20px;margin-bottom:20px">${analysis}</div>
+    ${LAB_PLANS.includes(plan) ? `
+    <span class="btn-result btn-buy" style="background:rgba(45,42,46,.3);cursor:default;pointer-events:none;position:relative;display:inline-block">
+      ${lang === 'tr' ? 'Yakında' : lang === 'de' ? 'Demnächst' : 'Coming Soon'}
+    </span>` : `
     <a href="${STRIPE_LINKS[plan] || r.link}" class="btn-result btn-buy" target="_blank" style="background:var(--charcoal);position:relative">
       ${lang === 'tr' ? 'Hemen Başla' : lang === 'de' ? 'Jetzt starten' : 'Start Now'} — ${r.price} ${r.pricePer}
       <span style="position:absolute;top:-8px;right:-8px;background:var(--rose);color:white;font-size:9px;letter-spacing:1px;padding:3px 8px;border-radius:50px;text-transform:uppercase">${lang === 'tr' ? 'Özel' : lang === 'de' ? 'Exklusiv' : 'Exclusive'}</span>
-    </a>
+    </a>`}
     <a href="plans.html" class="btn-result-secondary" target="_blank" style="font-size:12px;opacity:.7">${lang === 'tr' ? 'Diğer planları incele' : lang === 'de' ? 'Andere Programme ansehen' : 'Explore other programs'}</a>
     ${plan !== 'program' ? '' : `<a href="https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b" class="btn-result-secondary" target="_blank">${callLabel}</a>`}
 
@@ -2165,26 +2172,34 @@ async function submitQuizEmail(plan, planTitle) {
     if (row) row.style.display = 'none';
     if (success) success.style.display = 'block';
 
-    // Show Stripe CTA button
-    const stripeLinks = {"movement": "https://buy.stripe.com/fZu9AS49jbfSdow72G1kA09", "sculpt": "https://buy.stripe.com/6oUbJ07lv2JmgAI4Uy1kA0a", "strength": "https://buy.stripe.com/14A4gyfS13NqesAgDg1kA0b", "metabolic": "https://buy.stripe.com/8x23cu7lv97Kbgo1Im1kA0c", "group": "https://buy.stripe.com/dRm8wOcFP5Vy2JSdr41kA0e", "inperson": "https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g", "online": "https://buy.stripe.com/00w6oGfS1do0cksaeS1kA0n"};
-    const stripeUrl = stripeLinks[plan];
-    if (stripeUrl) {
-      const existingBtn = document.getElementById('stripeCtaBtn');
-      if (!existingBtn) {
-        const ctaBtn = document.createElement('a');
-        ctaBtn.id = 'stripeCtaBtn';
-        ctaBtn.href = stripeUrl;
-        ctaBtn.target = '_blank';
-        ctaBtn.style.cssText = 'display:inline-block;margin-top:18px;padding:14px 32px;background:linear-gradient(135deg,#C1848B,#9B6B6F);color:#fff;font-family:Outfit,sans-serif;font-size:15px;font-weight:600;letter-spacing:1px;border-radius:50px;text-decoration:none;transition:opacity 0.3s;';
-        const btnLabels = {
-          tr: 'Hemen Başla →',
-          de: 'Jetzt starten →',
-          en: 'Start Now →'
-        };
-        ctaBtn.textContent = btnLabels[lang] || btnLabels['en'];
-        ctaBtn.onmouseover = function(){ this.style.opacity='0.85'; };
-        ctaBtn.onmouseout = function(){ this.style.opacity='1'; };
-        success.parentNode.insertBefore(ctaBtn, success.nextSibling);
+    // Show Stripe CTA button (reuses STRIPE_LINKS — single source of truth, see top of script)
+    const existingBtn = document.getElementById('stripeCtaBtn');
+    if (!existingBtn) {
+      if (LAB_PLANS.includes(plan)) {
+        const comingSoonBtn = document.createElement('span');
+        comingSoonBtn.id = 'stripeCtaBtn';
+        comingSoonBtn.style.cssText = 'display:inline-block;margin-top:18px;padding:14px 32px;background:rgba(45,42,46,.25);color:#fff;font-family:Outfit,sans-serif;font-size:15px;font-weight:600;letter-spacing:1px;border-radius:50px;cursor:default;';
+        const comingSoonLabels = { tr: 'Yakında', de: 'Demnächst', en: 'Coming Soon' };
+        comingSoonBtn.textContent = comingSoonLabels[lang] || comingSoonLabels['en'];
+        success.parentNode.insertBefore(comingSoonBtn, success.nextSibling);
+      } else {
+        const stripeUrl = STRIPE_LINKS[plan];
+        if (stripeUrl) {
+          const ctaBtn = document.createElement('a');
+          ctaBtn.id = 'stripeCtaBtn';
+          ctaBtn.href = stripeUrl;
+          ctaBtn.target = '_blank';
+          ctaBtn.style.cssText = 'display:inline-block;margin-top:18px;padding:14px 32px;background:linear-gradient(135deg,#C1848B,#9B6B6F);color:#fff;font-family:Outfit,sans-serif;font-size:15px;font-weight:600;letter-spacing:1px;border-radius:50px;text-decoration:none;transition:opacity 0.3s;';
+          const btnLabels = {
+            tr: 'Hemen Başla →',
+            de: 'Jetzt starten →',
+            en: 'Start Now →'
+          };
+          ctaBtn.textContent = btnLabels[lang] || btnLabels['en'];
+          ctaBtn.onmouseover = function(){ this.style.opacity='0.85'; };
+          ctaBtn.onmouseout = function(){ this.style.opacity='1'; };
+          success.parentNode.insertBefore(ctaBtn, success.nextSibling);
+        }
       }
     }
   } catch(e) {

@@ -7,28 +7,29 @@
     <link rel="alternate" hreflang="de" href="https://trainwithbuse.com/de.html" />
     <link rel="alternate" hreflang="x-default" href="https://trainwithbuse.com/index.html" />
 <meta name="google-site-verification" content="mPxxq_h5KMoerFZOeY2cqQCzYhO_3yrcBpBjd9llPig" />
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Train With Buse — Wissenschaftsbasiertes Personal Training | Berlin</title>
-  <meta name="description" content="Wissenschaftsbasiertes Personal Training mit Neurowissenschaft. Online-Programme, Live-Kurse, 1:1 Coaching und das Lab System.">
-  <meta name="robots" content="noindex, nofollow">
-  <link rel="canonical" href="https://trainwithbuse.com/de.html">
+  <title>Train With Buse — Wissenschaftlich fundiertes Personal Training | Berlin</title>
+  <meta name="description" content="Sportwissenschaftlerin Buse Kosif bietet neurowissenschaftlich fundiertes Personal Training in Berlin und weltweit. 1:1-Online-Coaching, Präsenztraining, The Lab System und Live-Kurse. MSc Bewegungswissenschaft · NASM-CPT · 12+ Jahre Erfahrung · 1.000+ Kund:innen.">
+  <meta name="robots" content="index, follow">
+  <link rel="alternate" hreflang="en" href="https://www.trainwithbuse.com/">
+  <link rel="alternate" hreflang="tr" href="https://www.trainwithbuse.com/tr.html">
+  <link rel="alternate" hreflang="de" href="https://www.trainwithbuse.com/de.html">
+  <link rel="alternate" hreflang="x-default" href="https://www.trainwithbuse.com/">
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Train With Buse — Wissenschaftsbasiertes Personal Training">
-  <meta property="og:description" content="Neurowissenschaftsbasierte Trainingsprogramme, Live-Kurse und 1:1 Coaching von Sportwissenschaftlerin Buse. Berlin & weltweit.">
-  <meta property="og:url" content="https://trainwithbuse.com/de.html">
+  <meta property="og:title" content="Train With Buse — Wissenschaftlich fundiertes Personal Training | Berlin">
+  <meta property="og:description" content="Sportwissenschaftlerin Buse Kosif: neurowissenschaftlich fundiertes 1:1-Coaching, Präsenztraining in Berlin, The Lab System und Live-Kurse. MSc Bewegungswissenschaft · 12+ Jahre Erfahrung.">
+  <meta property="og:url" content="https://www.trainwithbuse.com/de.html">
   <meta property="og:site_name" content="Train With Buse">
   <meta property="og:image" content="https://trainwithbuse.com/Buse-main.jpg">
   <meta property="og:locale" content="de_DE">
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Train With Buse — Wissenschaftsbasiertes Personal Training">
-  <meta name="twitter:description" content="Neurowissenschaftsbasierte Trainingsprogramme von Sportwissenschaftlerin Buse.">
+  <meta name="twitter:title" content="Train With Buse — Wissenschaftlich fundiertes Personal Training | Berlin">
+  <meta name="twitter:description" content="Sportwissenschaftlerin Buse Kosif: neurowissenschaftlich fundiertes Coaching, The Lab System und Live-Kurse. Berlin und weltweit.">
   <meta name="twitter:image" content="https://trainwithbuse.com/Buse-main.jpg">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LocalBusiness","name":"Train With Buse","description":"Science-backed personal training by Buse, a Berlin-based sports scientist with 12+ years experience.","url":"https://www.trainwithbuse.com","address":{"@type":"PostalAddress","addressLocality":"Berlin","addressCountry":"DE"},"priceRange":"€€","makesOffer":[{"@type":"Offer","name":"1:1 Online Coaching","price":"199","priceCurrency":"EUR"},{"@type":"Offer","name":"In-Person Personal Training","price":"119","priceCurrency":"EUR"},{"@type":"Offer","name":"Online Group Classes","price":"49","priceCurrency":"EUR"}]}
-</script>
+
 <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="192x192" href="favicon-192.png">
@@ -60,6 +61,7 @@
   html { scroll-behavior: smooth; }
 
   body {
+  overflow-x: hidden;
     font-family: 'Outfit', sans-serif;
     font-weight: 300;
     color: var(--charcoal);
@@ -153,6 +155,15 @@
   }
 
   .nav-cta::after { display: none !important; }
+  .nav-login {
+    font-size: 12px !important; letter-spacing: 2px !important;
+    color: var(--charcoal-light) !important;
+    border: 1.5px solid rgba(45,42,46,0.15) !important;
+    padding: 9px 20px !important; border-radius: 50px !important;
+    transition: all 0.3s !important; text-transform: uppercase !important;
+  }
+  .nav-login:hover { border-color: #C8A96E !important; color: var(--charcoal) !important; }
+  .nav-login::after { display: none !important; }
 
   .hamburger {
     display: none;
@@ -264,7 +275,7 @@
     line-height: 1.8;
   }
 
- .hero-buttons {
+  .hero-buttons {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
@@ -322,7 +333,7 @@
     max-width: 480px;
     margin: 0 auto;
   }
-  .hero-image-frame {
+.hero-image-frame {
     width: 100%;
     max-width: 480px;
     aspect-ratio: 3/4;
@@ -426,12 +437,14 @@
   .program-card {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Kartın sönük kalmasını engeller */
+    height: 100%;
     background: var(--warm-white);
-    border-radius: 20px;
+    border-radius: var(--radius);
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-}
+    transition: all 0.4s;
+    border: 1px solid rgba(232, 180, 184, 0.12);
+  }
 
 .program-thumb {
     position: relative;
@@ -771,14 +784,6 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
-  }
-
-  .program-card {
-    border-radius: var(--radius);
-    overflow: hidden;
-    background: white;
-    transition: all 0.4s;
-    border: 1px solid rgba(232, 180, 184, 0.12);
   }
 
   .program-card:hover {
@@ -1352,7 +1357,7 @@
   .lang-pill-active:hover {
     background: white;
   }
- /* ========== QUIZ BANNER ========== */
+  /* ========== QUIZ BANNER ========== */
   .quiz-banner {
     background: linear-gradient(135deg, var(--charcoal) 0%, #3D3A3E 50%, var(--charcoal) 100%);
     padding: 60px 40px;
@@ -1475,7 +1480,6 @@
     .quiz-banner-features { gap: 16px; }
   }
 
-
   /* ========== SCROLL ANIMATIONS ========== */
   .reveal {
     opacity: 0;
@@ -1530,32 +1534,385 @@
     .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
     .booking-wrapper { padding: 40px 20px; }
     .booking-form-card { padding: 24px; }
+  
+  /* Additional mobile fixes */
+  .hero-content { flex-direction: column !important; gap: 40px !important; }
+  .hero-text { text-align: center !important; }
+  .hero-buttons { justify-content: center !important; }
+  .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .services-grid { grid-template-columns: 1fr !important; }
+  .testimonials-grid { grid-template-columns: 1fr !important; }
+  .blog-grid { grid-template-columns: 1fr !important; }
+  .booking-wrapper { grid-template-columns: 1fr !important; }
+  .footer-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .nav-menu { gap: 16px !important; }
+  [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: 1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns:1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: repeat(5"] { grid-template-columns: 1fr 1fr !important; }
+  [style*="font-size:72px"] { font-size: 44px !important; }
+  [style*="font-size: 72px"] { font-size: 44px !important; }
+  [style*="font-size:64px"] { font-size: 40px !important; }
+  [style*="font-size: 64px"] { font-size: 40px !important; }
+  [style*="font-size:68px"] { font-size: 42px !important; }
+  [style*="font-size:58px"] { font-size: 36px !important; }
+  [style*="font-size: 58px"] { font-size: 36px !important; }
+  [style*="padding:100px 0"] { padding: 60px 0 !important; }
+  [style*="padding: 100px 0"] { padding: 60px 0 !important; }
+  [style*="gap:80px"] { gap: 40px !important; }
+  [style*="gap: 80px"] { gap: 40px !important; }
+  [style*="padding:0 40px"] { padding: 0 20px !important; }
+  [style*="padding: 0 40px"] { padding: 0 20px !important; }
+  .section { padding: 0 20px !important; }
+  
+}
+
+  .hero-quiz-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 24px;
+    background: white;
+    border: 1.5px solid rgba(193,132,139,.25);
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all .3s;
+    box-shadow: 0 4px 20px rgba(193,132,139,.1);
+    animation: pillPulse 3s ease-in-out infinite;
   }
-  .back-home{font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.8;transition:all .3s}
-  .back-home:hover{opacity:1}
+  .hero-quiz-pill:hover {
+    border-color: var(--rose, #C1848B);
+    box-shadow: 0 8px 32px rgba(193,132,139,.25);
+    transform: translateY(-2px);
+  }
+  .pill-text {
+    font-size: 13px;
+    color: var(--charcoal-light, #4A4548);
+    font-weight: 300;
+  }
+  .pill-cta {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rose-dark, #9B6B6F);
+    font-weight: 500;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, rgba(193,132,139,.1), rgba(200,169,110,.1));
+    border-radius: 50px;
+    border: 1px solid rgba(193,132,139,.2);
+    transition: all .3s;
+  }
+  .hero-quiz-pill:hover .pill-cta {
+    background: var(--rose, #C1848B);
+    color: white;
+    border-color: var(--rose, #C1848B);
+  }
+  @keyframes pillPulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(193,132,139,.1); }
+    50% { box-shadow: 0 4px 28px rgba(193,132,139,.25), 0 0 0 4px rgba(193,132,139,.06); }
+  }
+
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://www.trainwithbuse.com/#website",
+  "name": "Train With Buse",
+  "url": "https://www.trainwithbuse.com/de.html",
+  "description": "Wissenschaftlich fundiertes Personal Training von Sportwissenschaftlerin Buse Kosif. Neurowissenschaftlich fundiertes 1:1-Coaching, Präsenztraining in Berlin, The Lab System und Live-Kurse.",
+  "inLanguage": "de",
+  "author": {"@id": "https://www.trainwithbuse.com/#buse"},
+  "publisher": {"@id": "https://www.trainwithbuse.com/#buse"},
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [".hero-tag", ".hero h1", ".hero-desc", ".section-title", ".section-desc"]
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.trainwithbuse.com/de.html?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://www.trainwithbuse.com/#buse",
+      "name": "Buse Kosif",
+      "jobTitle": "Sports Scientist & Personal Trainer",
+      "description": "Berlin ansässige Sportwissenschaftlerin mit MSc in Bewegungswissenschaft, MBA und NASM-CPT-Zertifizierung. Gastwissenschaftlerin an der Charité Universitätsmedizin Berlin. Gründerin von Train With Buse und Schöpferin von The Lab System — dem weltweit ersten wissenschaftlich fundierten Trainingsökosystem.",
+      "url": "https://trainwithbuse.com",
+      "image": "https://trainwithbuse.com/Buse-main.jpg",
+      "sameAs": [
+        "https://www.instagram.com/trainwithbuse",
+        "https://substack.com/@trainwithbuse",
+        "https://www.tiktok.com/@trainwithbuse"
+      ],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "MSc Movement Science",
+          "credentialCategory": "degree"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "MBA",
+          "credentialCategory": "degree"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "NASM Certified Personal Trainer (CPT)",
+          "credentialCategory": "certification"
+        }
+      ],
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Charité Universitätsmedizin Berlin",
+        "url": "https://www.charite.de"
+      },
+      "knowsAbout": [
+        "Movement Science",
+        "Neuroscience",
+        "Personal Training",
+        "Exercise Science",
+        "Strength Training",
+        "Mobility Training",
+        "Corporate Wellness",
+        "Neuromechanics",
+        "Progressive Overload",
+        "Neural Drive"
+      ]
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://www.trainwithbuse.com/#business",
+      "name": "Train With Buse",
+      "description": "Das weltweit erste wissenschaftlich fundierte Trainings-Lab-System. Sequentielle Programme in Movement, Sculpt und Strength, Live-Kurse, 1:1-Coaching und ein persönliches Dashboard mit Fortschritts-Tracking, Zyklus-Tracking und wissenschaftlich fundierten Tools.",
+      "url": "https://trainwithbuse.com/de.html",
+      "image": "https://trainwithbuse.com/Buse-main.jpg",
+      "founder": {"@id": "https://trainwithbuse.com/#buse"},
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Berlin",
+        "addressCountry": "DE"
+      },
+      "areaServed": ["Berlin", "Germany", "Worldwide"],
+      "priceRange": "€€",
+      "makesOffer": [
+        {
+          "@type": "Offer",
+          "name": "1:1 Online-Coaching",
+          "description": "Personalisiertes, wissenschaftlich fundiertes Trainingsprogramm mit wöchentlichen Video-Check-ins, Ernährungsberatung und WhatsApp-Support.",
+          "price": "199",
+          "priceCurrency": "EUR",
+          "priceSpecification": {"@type": "UnitPriceSpecification", "billingDuration": "P1M"}
+        },
+        {
+          "@type": "Offer",
+          "name": "Präsenztraining Berlin",
+          "description": "Premium 1:1-Personal-Training-Einheiten in Berlin. Neurowissenschaftlich fundierte Programmierung, Bewegungsanalysen.",
+          "price": "119",
+          "priceCurrency": "EUR"
+        },
+        {
+          "@type": "Offer",
+          "name": "Movement Lab — Online Program",
+          "description": "Sequentielles Bewegungsprogramm mit 12 Lektionen pro Level. 3 Level: Foundation, Intermediate, Advanced.",
+          "price": "49",
+          "priceCurrency": "EUR"
+        },
+        {
+          "@type": "Offer",
+          "name": "Sculpt Lab — Online Program",
+          "description": "Wissenschaftlich fundiertes Sculpting-Programm. 3 Level mit je 12 sequentiellen Lektionen.",
+          "price": "49",
+          "priceCurrency": "EUR"
+        },
+        {
+          "@type": "Offer",
+          "name": "Strength Lab — Online Program",
+          "description": "Progressives Krafttraining nach den Prinzipien von neuronaler Ansteuerung und progressiver Überlastung. 3 Level.",
+          "price": "49",
+          "priceCurrency": "EUR"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Was ist The Lab System von Train With Buse?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Lab System ist das weltweit erste wissenschaftlich fundierte Online-Trainingsökosystem, entwickelt von Sportwissenschaftlerin Buse Kosif. Es vereint sequentielle Videoprogramme (Movement Lab, Sculpt Lab, Strength Lab), Live-Gruppenkurse (Booty Lab, Flexibility Lab, Power Lab, Core & Burn Lab) und ein persönliches Dashboard mit Fortschritts-Tracking, Zyklus-Tracking, täglicher wissenschaftlich fundierter Motivation und wöchentlichen Nachrichten von Buse."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wer ist Buse Kosif?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Buse Kosif ist eine Berlin ansässige Sportwissenschaftlerin und Personal Trainerin mit über 12 Jahren Erfahrung und mehr als 1.000 trainierten Kund:innen. Sie hat einen MSc in Bewegungswissenschaft, einen MBA und die NASM-CPT-Zertifizierung. Sie ist Gastwissenschaftlerin an der Charité Universitätsmedizin Berlin und Gründerin von Train With Buse."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was unterscheidet Train With Buse von anderen Fitness-Plattformen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Train With Buse basiert auf neurowissenschaftlichen und bewegungswissenschaftlichen Prinzipien — nicht auf Trends. Die Programme sind sequentiell aufgebaut: Jede Lektion öffnet neue neuronale Bahnen, bevor es weitergeht. Das persönliche Dashboard bietet zyklusphasenbasierte Trainingsempfehlungen, Fortschritts-Tracking, ein Körper-Journal und direkte Nachrichten von Buse. Keine andere Plattform vereint diese Elemente."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Bietet Train With Buse Präsenztraining in Berlin an?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja. Buse bietet Premium-1:1-Präsenztraining in Berlin für 119 € pro Einheit. Die Einheiten beinhalten neurowissenschaftlich fundierte Programmierung, Bewegungsanalysen und digitale Trainingsaufzeichnungen. Präsenztraining erfolgt ausschließlich auf Empfehlung, um maximale Qualität und Fokus zu gewährleisten."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was ist das Movement-Lab-Programm?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Movement Lab ist ein sequentielles Online-Trainingsprogramm von Sportwissenschaftlerin Buse Kosif. Es besteht aus 3 Leveln (Foundation, Intermediate, Advanced) mit je 12 Lektionen. Jede Lektion baut auf der vorherigen auf und trainiert neu, wie das Nervensystem Bewegung steuert. Es wird vollständig mit dem eigenen Körpergewicht durchgeführt und ist überall zugänglich."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Bietet Train With Buse Corporate-Wellness-Programme an?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja. Train With Buse bietet Corporate-Wellness-Programme für Berliner Unternehmen an, darunter Bewegungsworkshops, Gruppentrainings und wissenschaftlich fundiertes Teamtraining. Die Programme können unter §3 Nr. 34 EStG steuerlich begünstigt sein (bis zu 600 € pro Mitarbeiter:in und Jahr)."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+/* ── MOBILE SPECIFIC FIXES ── */
+@media (max-width: 768px) {
+
+  /* Stats bar - stack vertically */
+  [style*="repeat(3,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns:repeat(3,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Lab cards - stack vertically, remove arrow columns */
+  [style*="grid-template-columns: 1fr auto 1fr auto 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns:1fr auto 1fr auto 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Hide arrows between lab cards on mobile */
+  [style*="padding:0 20px"] svg,
+  [style*="padding: 0 20px"] svg {
+    display: none !important;
+  }
+
+  /* Dashboard features strip - 2 columns on mobile */
+  [style*="grid-template-columns:repeat(5,1fr)"],
+  [style*="grid-template-columns: repeat(5,1fr)"],
+  [style*="grid-template-columns: repeat(5, 1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Stats bar borders */
+  [style*="border-right:1px solid rgba(232,180,184,.2)"],
+  [style*="border-right: 1px solid rgba(232,180,184,.2)"] {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(232,180,184,.2) !important;
+  }
+
+  /* Dashboard feature borders */
+  [style*="border-right:1px solid rgba(255,255,255,.06)"],
+  [style*="border-right: 1px solid rgba(255,255,255,.06)"] {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255,255,255,.06) !important;
+  }
+
+  /* Lab cards padding on mobile */
+  [style*="padding:40px 36px"],
+  [style*="padding: 40px 36px"] {
+    padding: 24px 20px !important;
+  }
+
+  /* Services grid */
+  [style*="grid-template-columns: 1fr 1fr"],
+  [style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Testimonials grid */
+  [style*="grid-template-columns: 1fr 1fr 1fr"],
+  [style*="grid-template-columns:1fr 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Large font sizes */
+  [style*="font-size:64px"], [style*="font-size: 64px"] { font-size: 40px !important; }
+  [style*="font-size:72px"], [style*="font-size: 72px"] { font-size: 42px !important; letter-spacing: -1px !important; }
+  [style*="font-size:68px"], [style*="font-size: 68px"] { font-size: 40px !important; }
+
+  /* Section padding */
+  [style*="padding:0 40px"], [style*="padding: 0 40px"] { padding: 0 20px !important; }
+  [style*="padding:100px 0"], [style*="padding: 100px 0"] { padding: 56px 0 !important; }
+  [style*="padding:80px 0"], [style*="padding: 80px 0"] { padding: 48px 0 !important; }
+
+  /* Bridge card flex direction */
+  [style*="display:flex"][style*="justify-content:space-between"] {
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  /* Not sure strip */
+  [style*="background:#2D2A2E"][style*="display:flex"] {
+    flex-direction: column !important;
+    gap: 20px !important;
+    padding: 36px 20px !important;
+    text-align: center !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
-
 <!-- NAVIGATION -->
 <nav id="navbar">
-  <a href="index.html" class="back-home">← Home</a>
   <a href="#" class="nav-logo">BUSE</a>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#about">Über mich</a></li>
+    <li><a href="about-de.html">Über mich</a></li>
     <li><a href="#services">Angebote</a></li>
-    <li><a href="#programs">Programme</a></li>
-<li><a href="https://substack.com/@trainwithbuse" target="_blank">Blog</a></li>  
-<li><a href="corporate-de.html">Corporate</a></li>  
-<li><a href="#booking" class="nav-cta">Jetzt Buchen</a></li>
+    <li><a href="lab-system.html" style="color:var(--gold,#C8A96E);font-weight:500;">The Lab System</a></li>
+<li><a href="https://substack.com/@trainwithbuse" target="_blank">Blog</a></li>
+<li><a href="corporate-de.html">Corporate</a></li>
+<li><a href="login.html" class="nav-login">Mitgliederbereich</a></li>
+<li><a href="personal-training.html" class="nav-cta">1:1-Coaching buchen</a></li>
+
   </ul>
   <div class="lang-switcher">
     <a href="index.html" class="lang-pill">EN</a>
     <a href="tr.html" class="lang-pill">TR</a>
     <a href="de.html" class="lang-pill lang-pill-active">DE</a>
   </div>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
+  <button class="hamburger" id="hamburger" aria-label="Menü">
 
     <span></span><span></span><span></span>
   </button>
@@ -1565,12 +1922,13 @@
 <section class="hero" id="home">
   <div class="hero-content">
     <div class="hero-text">
-      <div class="hero-tag">Sportwissenschaftlerin & Personal Trainerin</div>
-      <h1>Trainiere deinen Körper.<br>Stärke deinen <em>Geist.</em></h1>
-      <p class="hero-desc">Wissenschaftlich fundiertes Personal Training auf Basis von Neurowissenschaft und Bewegungswissenschaft. Verstehe das Warum hinter jeder Bewegung.</p>
-     <div class="hero-buttons">
-        <a href="plans-de.html" class="btn-primary">Pläne Ansehen</a>
+      <div class="hero-tag">Sports Scientist & Personal Trainer</div>
+      <h1>Trainiere deinen Körper.<br>Erweitere deinen <em>Geist.</em></h1>
+      <p class="hero-desc">Wissenschaftlich fundiertes Personal Training, verwurzelt in Neurowissenschaft und Bewegungswissenschaft. Verändere deinen Körper und verstehe das Warum hinter jeder Wiederholung.</p>
+      <div class="hero-buttons">
+        <a href="plans-de.html" class="btn-primary">Pläne ansehen →</a>
       </div>
+
     </div>
     <div class="hero-image-wrapper">
       <div class="hero-image-frame">
@@ -1587,222 +1945,272 @@
       </div>
     </div>
   </div>
+
 </section>
 
 <!-- QUIZ BANNER -->
-<section class="quiz-banner">
-  <div class="quiz-banner-inner">
-    <div class="quiz-banner-tag">✦ Personalisiert für dich</div>
-    <h2>Nicht sicher, wo du <em>anfangen</em> sollst?</h2>
-    <p>Mach ein 2-Minuten-Quiz und erhalte eine personalisierte Trainingsempfehlung basierend auf deinen Zielen, Erfahrung und Lebensstil.</p>
-    <div class="quiz-banner-features">
-      <div class="quiz-banner-feature"><span>⏱</span> 2 Minuten</div>
-      <div class="quiz-banner-feature"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span> 100% personalisiert</div>
-      <div class="quiz-banner-feature"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14l-2-2 5-5"/><path d="M11 4l2 2-5 5"/></svg></span> Wissenschaftlich fundiert</div>
-    </div>
-    <a href="quiz.html?lang=de" class="quiz-banner-btn">Finde deinen Plan →</a>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section class="about-bg" id="about">
-  <div class="section">
-    <div class="about-grid">
-      <div class="about-image-col">
-        <div class="about-image-box">
-         <img src="Science-meets .png" alt="Buse" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+<section style="background:#2D2A2E;padding:72px 0;position:relative;overflow:hidden;">
+  <div style="position:absolute;top:-60px;right:-60px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(193,132,139,.12) 0%,transparent 70%);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-40px;left:-40px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,.08) 0%,transparent 70%);pointer-events:none;"></div>
+  <div style="max-width:900px;margin:0 auto;padding:0 40px;text-align:center;position:relative;z-index:1;">
+    <div style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#C8A96E;margin-bottom:20px;">2 Minuten · Kostenlos · Persönlich</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:white;line-height:1;letter-spacing:-1px;margin-bottom:16px;">Noch nicht sicher, wo du <em style="font-style:italic;color:var(--rose);">anfangen sollst?</em></h2>
+    <p style="font-size:16px;color:rgba(255,255,255,.55);line-height:1.7;max-width:520px;margin:0 auto 36px;">Beantworte 11 kurze Fragen und finde heraus, welches Lab — oder welche Coaching-Option — wirklich zu deinem Körper, deinen Zielen und deinem Alltag passt.</p>
+    <div style="display:flex;justify-content:center;gap:32px;margin-bottom:40px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.5);font-size:13px;">
+        <div style="width:28px;height:28px;border:1px solid rgba(200,169,110,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         </div>
-        <div class="credentials">
-          <div class="credential-tag">MSc Movement Science</div>
-          <div class="credential-tag">MBA</div>
-          <div class="credential-tag">NASM-CPT</div>
-        </div>
+        2 Minuten
       </div>
-      <div class="about-text-col">
-        <div class="section-tag">Über Mich</div>
-        <h2 class="section-title">Wissenschaft trifft <em>Leidenschaft</em></h2>
-        <p class="section-desc">Ich bin Buse — Sportwissenschaftlerin und Personal Trainerin in Berlin, mit über 12 Jahren Erfahrung. Mein Ansatz ist einfach: Ich gestalte Training, das mit deinem Gehirn arbeitet, nicht dagegen. Durch die Verbindung von Bewegungswissenschaft und Neurowissenschaft transformiere ich nicht nur den Körper, sondern auch den Geist.</p>
-        <div class="about-philosophy">
-          <p>"Jeder Körper erzählt eine Geschichte. Meine Aufgabe ist es, dir zu helfen, dein stärkstes Kapitel zu schreiben — auf Basis von Wissenschaft, angetrieben von Leidenschaft."</p>
+      <div style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.5);font-size:13px;">
+        <div style="width:28px;height:28px;border:1px solid rgba(200,169,110,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
-        <div class="about-numbers">
-          <div class="about-number">
-            <h3>12+</h3>
-            <span>Jahre</span>
-          </div>
-          <div class="about-number">
-            <h3>1000+</h3>
-            <span>Kunden</span>
-          </div>
-          <div class="about-number">
-            <h3>3</h3>
-            <span>Abschlüsse</span>
-          </div>
+        Wissenschaftlich passend
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.5);font-size:13px;">
+        <div style="width:28px;height:28px;border:1px solid rgba(200,169,110,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
+        100 % persönlich
       </div>
     </div>
+    <a href="quiz.html?lang=de" style="display:inline-block;background:#C8A96E;color:#2D2A2E;padding:18px 48px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;font-weight:500;">Deinen Plan finden →</a>
   </div>
 </section>
 
 <!-- SERVICES -->
-<section id="services">
-  <div class="section">
-<div class="section-tag">Angebote</div>
-    <h2 class="section-title">So können wir <em>zusammenarbeiten</em></h2>
-    <p class="section-desc">Von persönlichen Sessions in Berlin bis zu komplett online Coaching — wähle das Format, das in dein Leben passt.</p>
-    <div class="services-grid">
-      <!-- 1:1 Online Coaching -->
-      <div class="service-card reveal">
-        <div class="service-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>
+<section id="services" style="padding:100px 0;background:var(--warm-white,#FFFAF7);">
+  <div style="max-width:1100px;margin:0 auto;padding:0 40px;">
+    
+    <!-- Header -->
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:64px;flex-wrap:wrap;gap:24px;">
+      <div>
+        <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#C8A96E;margin-bottom:14px;">Mit Buse arbeiten</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:58px;font-weight:300;line-height:.95;letter-spacing:-1px;color:var(--charcoal);">So können wir<br><em style="font-style:italic;color:var(--rose);">zusammenarbeiten</em></h2>
+      </div>
+      <p style="font-size:15px;color:#4A4548;line-height:1.7;max-width:380px;">Von privaten Sessions in Berlin bis zu vollständig online begleitetem Coaching — echte Ergebnisse, echte Wissenschaft, ganz auf dich abgestimmt.</p>
+    </div>
+
+    <!-- Team Photo -->
+    <div class="reveal" style="margin-bottom:48px;border-radius:24px;overflow:hidden;">
+      <img src="photos/team-buse-final.jpg" alt="Buse beim Coaching" style="width:100%;height:auto;display:block;">
+    </div>
+
+    <!-- 2 Service Cards -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
+      
+      <!-- 1:1 Online -->
+      <div class="reveal" style="background:white;border-radius:24px;padding:44px;border:1px solid rgba(232,180,184,.15);position:relative;overflow:hidden;transition:all .3s;" onmouseover="this.style.boxShadow='0 20px 60px rgba(200,160,155,.15)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+        <div style="position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(200,169,110,.06) 0%,transparent 70%);pointer-events:none;"></div>
+        <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C8A96E;margin-bottom:16px;">Remote · Weltweit</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:var(--charcoal);margin-bottom:8px;">1:1 Online-<br>Coaching</h3>
+        <p style="font-size:14px;color:#4A4548;line-height:1.7;margin-bottom:28px;">Dein eigenes Programm, dein eigener Coach, deine eigene Wissenschaft. Individuelle Programmierung, abgestimmt auf dein Nervensystem, deinen Körper und dein Leben — mit Buse an deiner Seite bei jedem Schritt.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:32px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Individuelles Trainingsprogramm für deinen Körper
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Wöchentliche Video-Check-ins mit Buse
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Ernährungsberatung inklusive
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            WhatsApp-Support zwischen den Sessions
+          </div>
         </div>
-        <h3>1:1 Online Coaching</h3>
-        <p>Dein individuelles Programm, wöchentliche Video-Gespräche und laufende Betreuung — trainiere von überall mit professioneller Anleitung.</p>
-        <div class="service-price">€89 <span>/Einheit</span></div>
-        <ul class="service-features">
-          <li>Individueller Trainingsplan</li>
-          <li>Wöchentliche Video-Gespräche</li>
-          <li>Ernährungsberatung</li>
-          <li>Chat support</li>
-        </ul>
-        <a href="#booking" class="btn-primary">Jetzt Starten</a>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid rgba(232,180,184,.15);">
+          <div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--charcoal);line-height:1;">€199</div>
+            <div style="font-size:11px;color:#D4A89A;letter-spacing:1px;">/Monat</div>
+          </div>
+          <a href="https://buy.stripe.com/3cI3cu7lvbfS0BK2Mq1kA0f" target="_blank" style="background:#2D2A2E;color:white;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all .3s;" onmouseover="this.style.background='#9B6B6F'" onmouseout="this.style.background='#2D2A2E'">Jetzt starten →</a>
+        </div>
       </div>
 
       <!-- In-Person Berlin -->
-      <div class="service-card reveal">
-        <div class="service-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+      <div class="reveal" style="background:#2D2A2E;border-radius:24px;padding:44px;position:relative;overflow:hidden;transition:all .3s;" onmouseover="this.style.boxShadow='0 20px 60px rgba(45,42,46,.3)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+        <div style="position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(193,132,139,.1) 0%,transparent 70%);pointer-events:none;"></div>
+        <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Berlin · Premium</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:white;margin-bottom:8px;">Präsenz-<br>training</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:28px;">Die komplette Buse Method — live in Berlin. Bewegungs- und Trainingswissenschaft, hautnah und in Echtzeit angewendet. Programme, die dich körperlich und kognitiv weiterbringen — Bewegungswissenschaft kombiniert mit wissenschaftlich fundierten Tools für nachhaltige Veränderung.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:32px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            60-minütige Privatsessions in Berlin
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Bewegungs- und trainingswissenschaftliche Methodik
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Fokus auf körperliche & kognitive Entwicklung
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Monatliche Bewegungsanalysen & Tracking
+          </div>
         </div>
-        <h3>In-Person Training</h3>
-        <p>Premium 1:1 Sessions in Berlin. Hands-on Coaching, Formkorrektur und die Energie des gemeinsamen Trainings.</p>
-        <div class="service-price">€119 <span>/Einheit</span></div>
-        <ul class="service-features">
-          <li>50-min persönliche Sessions</li>
-          <li>Monatliche Assessments</li>
-          <li>Digitale Trainingsaufzeichnungen</li>
-          <li>Zuhause oder im Studio</li>
-        </ul>
-        <a href="#booking" class="btn-primary">Termin Buchen</a>
-      </div>
-
-      <!-- Group Online -->
-      <div class="service-card reveal">
-        <div class="service-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" /></svg>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid rgba(255,255,255,.08);">
+          <div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:white;line-height:1;">€119</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:1px;">/Einheit</div>
+          </div>
+          <a href="https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g" target="_blank" style="background:#C8A96E;color:#2D2A2E;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Session buchen →</a>
         </div>
-        <h3>Group Classes</h3>
-        <p>Live Online-Gruppensessions — die Motivation einer Klasse mit der Wissenschaft des Personal Trainings.</p>
-        <div class="service-price">€59 <span>/Monat</span></div>
-        <ul class="service-features">
-          <li>3x Live-Sessions/Woche</li>
-          <li>Aufzeichnungen</li>
-          <li>Community-Gruppe</li>
-          <li>Monatliche Challenges</li>
-        </ul>
-        <a href="#booking" class="btn-primary">Jetzt Beitreten</a>
       </div>
     </div>
+
+    <!-- Live Lab Classes Card -->
+    <div class="reveal" style="background:linear-gradient(135deg,rgba(193,132,139,.06),rgba(200,169,110,.04));border:1px solid rgba(193,132,139,.2);border-radius:24px;padding:44px;position:relative;overflow:hidden;transition:all .3s;margin-bottom:24px;" onmouseover="this.style.boxShadow='0 20px 60px rgba(200,160,155,.15)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+      <div style="position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(193,132,139,.08) 0%,transparent 70%);pointer-events:none;"></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:32px;">
+        <div style="flex:1;min-width:280px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C1848B;">Live · Online · Zoom</div>
+            <span style="background:#C8A96E;color:#2D2A2E;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:50px;font-weight:600;">Founding Member</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:var(--charcoal);margin-bottom:8px;">Live Lab<br>Classes</h3>
+          <p style="font-size:14px;color:#4A4548;line-height:1.7;margin-bottom:24px;">3 Live-Zoom-Kurse pro Woche — HIIT, Kraft & Mobility. Maximal 12 Personen pro Kurs. Echtes Coaching, echte Community, echte Ergebnisse.</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Mo · Mi · Fr abends via Zoom
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              HIIT · Kraft · Mobility — 3 Kurse/Woche
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Max. 12 Personen · 48h Replay-Zugang
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Dashboard-Zugang inklusive
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:24px;">
+          <div style="text-align:right;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--charcoal);line-height:1;">€59</div>
+            <div style="font-size:11px;color:#D4A89A;letter-spacing:1px;">/Monat · Founding Member</div>
+            <div style="font-size:11px;color:#D4A89A;text-decoration:line-through;opacity:.6;">€89/Monat nach dem Launch</div>
+          </div>
+          <a href="https://buy.stripe.com/6oUcN48pz3Nqbgodr41kA0d" target="_blank" style="background:#C1848B;color:white;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;white-space:nowrap;" onmouseover="this.style.background='#9B6B6F'" onmouseout="this.style.background='#C1848B'">Jetzt beitreten →</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- PROGRAMS / VIDEOS -->
-<section class="programs-bg" id="programs">
-  <div class="section">
-    <div class="section-tag">Programme & Videos</div>
-    <h2 class="section-title">Trainiere nach deinem <em>Zeitplan</em></h2>
-    <p class="section-desc">Fertige Programme und On-Demand-Videos, entwickelt von einer Sportwissenschaftlerin. Smart trainieren, überall.</p>
-    <div class="programs-grid">
-      <div class="program-card reveal">
-  <div class="program-thumb">
-    <img src="Sculpt.png" alt="Sculpt & Strengthen" class="program-img">
-    
-    <div class="program-badge">8 Wochen</div>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
-    </svg>
-  </div>
-  <div class="program-info">
-    <h3>Sculpt & Strengthen</h3>
-    <p>Ganzkörper-Transformationsprogramm: Krafttraining kombiniert mit neurowissenschaftlich fundierten Erholungsprotokollen.</p>
-    <div class="program-meta">
-      <div class="program-price">€79</div>
-      <div class="program-detail">40 VIDEOS</div>
-    </div>
-    <a href="https://payhip.com/b/9G5sy" target="_blank" class="main-btn btn-full" style="text-align: center; text-decoration: none; display: block;">GET PROGRAM</a>
-  </div>
-</div>
+<!-- THE LAB SYSTEM -->
+<!-- BRIDGE TEASER -->
+<div id="bridgeTeaser" style="padding:60px 40px 0;background:var(--warm-white);text-align:center;position:relative;">
+  <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C8A96E;margin-bottom:20px;">Trainiere nach deinen eigenen Regeln</div>
+  <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,52px);font-weight:300;color:#2D2A2E;line-height:1.2;margin-bottom:40px;">Jetzt zeige ich dir etwas,<br><em style="font-style:italic;color:var(--rose);">das du noch nie gesehen hast.</em></h3>
 
-      <div class="program-card reveal">
-  <div class="program-thumb">
-    <img src="core.png" alt="Core & Mobility Flow" class="program-img">
-    
-    <div class="program-badge">6 Weeks</div>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
+  <!-- Animated scroll line -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+    <svg width="2" height="40" viewBox="0 0 2 40">
+      <line x1="1" y1="0" x2="1" y2="40" stroke="#C8A96E" stroke-width="1.5" stroke-dasharray="5 5" stroke-opacity="0.5"/>
+    </svg>
+    <div id="bridgeLine" style="width:1.5px;height:0;background:linear-gradient(to bottom,#C8A96E,rgba(200,169,110,.2));transition:height .6s ease;"></div>
+    <svg id="bridgeArrow" class="bounce-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0;transition:opacity .4s ease;margin-top:-1px;">
+      <polyline points="6 9 12 15 18 9"/>
     </svg>
   </div>
-  <div class="program-info">
-    <h3>Core & Mobility Flow</h3>
-    <p>Entfalte das Potenzial deines Körpers mit wissenschaftlich fundierter Mobilitätsarbeit und tiefer Core-Aktivierung.</p>
-    <div class="program-meta">
-      <div class="program-price">€59</div>
-      <div class="program-detail">30 VIDEOS</div>
-    </div>
-    <button class="main-btn btn-full" onclick="window.location.href='#booking'">GET PROGRAM</button>
-  </div>
 </div>
+<div style="height:0;background:var(--warm-white);"></div>
 
-     <div class="program-card reveal">
-  <div class="program-thumb">
-    <img src="Mind-body.png" alt="Mind-Body Reset" class="program-img">
-    
-    <div class="program-badge">4 Weeks</div>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
-    </svg>
-  </div>
-  
-  <div class="program-info">
-    <h3>Mind-Body Reset</h3>
-    <p>Neurowissenschaftlich fundiertes Programm zur Stressreduktion, besseren Schlaf und Wiederherstellung deiner körperlichen Balance</p>
-    <div class="program-meta">
-      <div class="program-price">€39</div>
-      <div class="program-detail">20 VIDEOS</div>
+<style>
+.bounce-arrow { animation: bounceDown 2s ease-in-out infinite; }
+@keyframes bounceDown {
+  0%,100%{transform:translateY(0);} 50%{transform:translateY(5px);}
+}
+</style>
+<script>
+(function(){
+  const line = document.getElementById('bridgeLine');
+  const arrow = document.getElementById('bridgeArrow');
+  const teaser = document.getElementById('bridgeTeaser');
+  let animated = false;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting && !animated){
+        animated = true;
+        setTimeout(()=>{
+          line.style.height = '60px';
+          setTimeout(()=>{ arrow.style.opacity = '0.7'; }, 500);
+        }, 200);
+      }
+    });
+  }, { threshold: 0.5 });
+  if(teaser) observer.observe(teaser);
+})();
+</script>
+
+<section id="programs" style="background:#2D2A2E;padding:120px 0;position:relative;overflow:hidden;">
+
+  <div style="position:absolute;top:-100px;right:-100px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(193,132,139,.08) 0%,transparent 65%);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:0;left:-80px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,.06) 0%,transparent 65%);pointer-events:none;"></div>
+
+  <div style="max-width:900px;margin:0 auto;padding:0 40px;position:relative;z-index:1;text-align:center;">
+
+    <div style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#C8A96E;margin-bottom:20px;">Weltweit einzigartig</div>
+
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(56px,7vw,88px);font-weight:300;line-height:.9;letter-spacing:-2px;color:white;margin-bottom:28px;">The Lab<br><em style="font-style:italic;color:#C1848B;">System.</em></h2>
+
+    <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:560px;margin:0 auto 20px;line-height:1.8;">Aufgebaut auf Bewegungs- und Trainingswissenschaft. Entwickelt für echte Ergebnisse.</p>
+    <p style="font-size:14px;color:rgba(255,255,255,.4);max-width:520px;margin:0 auto 48px;line-height:1.8;">4 sequentielle Programme · Live-Kurse · Persönliches Dashboard · Wissenschaftlich fundiert von Anfang an.</p>
+
+    <!-- Pills -->
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:52px;">
+      <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;border:1px solid rgba(200,169,110,.3);border-radius:50px;color:rgba(255,255,255,.6);">Movement Lab</span>
+      <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;border:1px solid rgba(193,132,139,.3);border-radius:50px;color:rgba(255,255,255,.6);">Sculpt Lab</span>
+      <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;border:1px solid rgba(155,107,111,.3);border-radius:50px;color:rgba(255,255,255,.6);">Strength Lab</span>
+      <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;border:1px solid rgba(212,168,154,.3);border-radius:50px;color:rgba(255,255,255,.6);">Metabolic Lab</span>
     </div>
-    <button class="main-btn btn-full" onclick="window.location.href='#booking'">PLAN BUCHEN</button>
-  </div>
-</div>
-    </div>
+
+    <!-- CTA -->
+    <a href="welcome.html" style="display:inline-block;background:#C8A96E;color:#2D2A2E;padding:20px 56px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;box-shadow:0 0 40px rgba(200,169,110,.2);" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">The Lab System entdecken →</a>
+
   </div>
 </section>
+
 
 <!-- BOOKING -->
 <section id="booking">
   <div class="section">
     <div class="booking-wrapper reveal">
       <div class="booking-text">
-        <h2>Bereit <em>loszulegen?</em></h2>
-        <p>Buche dein kostenloses Kennenlerngespräch oder deine erste Session. Lass uns über deine Ziele reden und einen Plan entwickeln, der wirklich funktioniert.</p>
+        <h2>Bereit <em>anzufangen?</em></h2>
+        <p>Buche dein kostenloses Erstgespräch oder direkt deine erste Session. Lass uns über deine Ziele sprechen und einen Plan erstellen, der wirklich funktioniert.</p>
         <ul class="booking-steps">
           <li>
             <div class="step-number">1</div>
-            Wähle dein Angebot und deine Wunschzeit
+            Wähle deine Leistung und Wunschzeit
           </li>
           <li>
             <div class="step-number">2</div>
-            Wir machen ein kurzes Kennenlerngespräch (kostenlos!)
+            Wir führen ein kurzes Kennenlerngespräch (kostenlos!)
           </li>
           <li>
             <div class="step-number">3</div>
-            Du bekommst deinen individuellen Plan und startest mit dem Training
+            Erhalte deinen individuellen Plan & starte dein Training
           </li>
         </ul>
       </div>
       <div class="booking-form-card">
-        <h3>Termin Buchen</h3>
+        <h3>Session buchen</h3>
 <div class="calendly-inline-widget" data-url="https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b" style="min-width:320px;height:700px;"></div>
 <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
       </div>
@@ -1813,9 +2221,25 @@
 <!-- TESTIMONIALS -->
 <section class="testimonials-bg" id="testimonials">
   <div class="section">
-    <div class="section-tag">Kundenstimmen</div>
-    <h2 class="section-title">Was Kunden <em>sagen</em></h2>
-    <p class="section-desc">Echte Geschichten von echten Menschen, die ihr Training mit wissenschaftlich fundiertem Coaching transformiert haben.</p>
+
+    <!-- Stats bar -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(232,180,184,.2);border-radius:20px;overflow:hidden;margin-bottom:56px;">
+      <div style="padding:28px 32px;border-right:1px solid rgba(232,180,184,.15);text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:48px;font-weight:400;color:var(--charcoal,#2D2A2E);line-height:1;margin-bottom:6px;">1.000<span style="color:#C8A96E">+</span></div>
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#D4A89A;">Trainierte Kund:innen</div>
+      </div>
+      <div style="padding:28px 32px;border-right:1px solid rgba(232,180,184,.15);text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:48px;font-weight:400;color:var(--charcoal,#2D2A2E);line-height:1;margin-bottom:6px;">12<span style="color:#C8A96E">+</span></div>
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#D4A89A;">Jahre Erfahrung</div>
+      </div>
+      <div style="padding:28px 32px;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:48px;font-weight:400;color:var(--charcoal,#2D2A2E);line-height:1;margin-bottom:6px;">5.0<span style="color:#C8A96E">★</span></div>
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#D4A89A;">Durchschnittsbewertung</div>
+      </div>
+    </div>
+    <div class="section-tag">Erfahrungen</div>
+    <h2 class="section-title">Was Kund:innen <em>sagen</em></h2>
+    <p class="section-desc">Echte Geschichten von echten Menschen, die ihr Training mit wissenschaftlich fundiertem Coaching verändert haben.</p>
     <div class="testimonials-grid">
       <div class="testimonial-card reveal">
         <div class="testimonial-quote">"</div>
@@ -1861,52 +2285,97 @@
 <section id="blog">
   <div class="section">
     <div class="section-tag">Blog</div>
-    <h2 class="section-title">Wissenschaft <em>verständlich erklärt</em></h2>
-    <p class="section-desc">Neurowissenschaft, Bewegungswissenschaft und Wellness — so erklärt, dass du es wirklich im Alltag nutzen kannst.</p>
-    <div class="blog-grid">
-      <div class="blog-card reveal">
-        <div class="blog-thumb blog-thumb-1"><span>01</span></div>
-        <div class="blog-content">
-          <div class="blog-category">Neuroscience</div>
-          <h3>How Your Brain Sabotages Your Workout (And How to Fix It)</h3>
-          <p>The neuroscience behind motivation, fatigue, and why your brain quits before your muscles do.</p>
-         <a href="https://substack.com/@trainwithbuse" target="_blank" class="blog-read-more">Read More →</a>
-        </div>
+    <h2 class="section-title">Wissenschaft <em>einfach erklärt</em></h2>
+    <p class="section-desc">Neurowissenschaft, Bewegungswissenschaft und Wellness — so erklärt, dass du es wirklich anwenden kannst.</p>
+    <div class="blog-grid" id="blogGrid">
+      <!-- Loading state -->
+      <div class="blog-card reveal visible" style="opacity:.4">
+        <div class="blog-thumb blog-thumb-1"><span>·</span></div>
+        <div class="blog-content"><div class="blog-category">Wird geladen...</div><h3 style="background:var(--cream-deep);height:20px;border-radius:8px;margin-bottom:8px"></h3><p style="background:var(--cream-deep);height:40px;border-radius:8px"></p></div>
       </div>
-      <div class="blog-card reveal">
-        <div class="blog-thumb blog-thumb-2"><span>02</span></div>
-        <div class="blog-content">
-          <div class="blog-category">Movement Science</div>
-          <h3>The Mobility Myth: Why Stretching Alone Won't Fix You</h3>
-          <p>Why traditional stretching falls short and what movement science says actually works.</p>
-          <a href="https://substack.com/@trainwithbuse" target="_blank" class="blog-read-more">Read More →</a>
-        </div>
+      <div class="blog-card reveal visible" style="opacity:.4">
+        <div class="blog-thumb blog-thumb-2"><span>·</span></div>
+        <div class="blog-content"><div class="blog-category">Wird geladen...</div><h3 style="background:var(--cream-deep);height:20px;border-radius:8px;margin-bottom:8px"></h3><p style="background:var(--cream-deep);height:40px;border-radius:8px"></p></div>
       </div>
-      <div class="blog-card reveal">
-        <div class="blog-thumb blog-thumb-3"><span>03</span></div>
-        <div class="blog-content">
-          <div class="blog-category">Wellness</div>
-          <h3>Color Psychology & Your Nervous System: What Science Says</h3>
-          <p>Can the colors you wear actually affect your hormones? A deep dive into chromotherapy research.</p>
-          <a href="https://substack.com/@trainwithbuse" target="_blank" class="blog-read-more">Read More →</a>
+      <div class="blog-card reveal visible" style="opacity:.4">
+        <div class="blog-thumb blog-thumb-3"><span>·</span></div>
+        <div class="blog-content"><div class="blog-category">Wird geladen...</div><h3 style="background:var(--cream-deep);height:20px;border-radius:8px;margin-bottom:8px"></h3><p style="background:var(--cream-deep);height:40px;border-radius:8px"></p></div>
       </div>
-    </div>  
-  </div>  
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <a href="https://trainwithbuse.substack.com" target="_blank" class="btn-secondary">Alle Artikel ansehen →</a>
+    </div>
+  </div>
 </section>
+<script>
+(async function loadBlogPosts() {
+  try {
+    const res = await fetch('https://rss-proxy.trainwithbuse.workers.dev');
+    const xmlText = await res.text();
+    
+    // CDATA'yı temizle ve manuel parse et
+    function getTagText(xml, tag) {
+      const re = new RegExp('<' + tag + '[^>]*>(?:<!\\[CDATA\\[)?(.*?)(?:\\]\\]>)?</' + tag + '>', 'is');
+      const m = xml.match(re);
+      return m ? m[1].trim() : '';
+    }
+    
+    function getAttr(xml, tag, attr) {
+      const re = new RegExp('<' + tag + '[^>]*' + attr + '=["\']([^"\']+)["\']', 'i');
+      const m = xml.match(re);
+      return m ? m[1] : '';
+    }
+
+    // item'ları split et
+    const itemMatches = xmlText.split('<item>').slice(1).slice(0, 3);
+    if (!itemMatches.length) return;
+
+    const thumbClasses = ['blog-thumb-1', 'blog-thumb-2', 'blog-thumb-3'];
+    const grid = document.getElementById('blogGrid');
+    if (!grid) return;
+
+    grid.innerHTML = itemMatches.map((itemXml, i) => {
+      const title = getTagText(itemXml, 'title') || '';
+      const link = getTagText(itemXml, 'link') || getTagText(itemXml, 'guid') || '';
+      const desc = getTagText(itemXml, 'description').replace(/<[^>]*>/g, '').trim().slice(0, 120);
+      const cat = getTagText(itemXml, 'category') || 'Wissenschaft';
+      
+      // Enclosure URL
+      let imgUrl = getAttr(itemXml, 'enclosure', 'url');
+      
+      const thumbHTML = imgUrl
+        ? `<div class="${thumbClasses[i]}" style="background-image:url('${imgUrl}');background-size:cover;background-position:center;height:220px;border-radius:16px 16px 0 0"></div>`
+        : `<div class="blog-thumb ${thumbClasses[i]}"><span>${String(i+1).padStart(2,'0')}</span></div>`;
+
+      return `<div class="blog-card reveal visible">
+        ${thumbHTML}
+        <div class="blog-content">
+          <div class="blog-category">${cat}</div>
+          <h3>${title}</h3>
+          <p>${desc}${desc.length >= 120 ? '...' : ''}</p>
+          <a href="${link}" target="_blank" class="blog-read-more">Weiterlesen →</a>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    console.warn('Blog load error:', e);
+  }
+})();
+</script>
 
 <!-- NEWSLETTER -->
 <section class="newsletter-section">
   <div class="newsletter-box">
-    <div class="section-tag" style="justify-content:center">Bleib Verbunden</div>
-    <h2 class="section-title">Werde Teil <em>der Community</em></h2>
-    <p class="section-desc">Wöchentliche wissenschaftlich fundierte Tipps zu Training, Neurowissenschaft und besserem Leben — direkt in dein Postfach.</p>
+    <div class="section-tag" style="justify-content:center">Bleib in Kontakt</div>
+    <h2 class="section-title">Werde Teil der <em>Community</em></h2>
+    <p class="section-desc">Wöchentliche, wissenschaftlich fundierte Tipps zu Training, Neurowissenschaft und einem besseren Leben — direkt in dein Postfach.</p>
    <div class="newsletter-container" style="max-width: 600px; margin: 0 auto; text-align: center;">
   <form action="https://formspree.io/f/mnjbpvbl" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
-    
-    <input type="email" name="email" placeholder="Enter your email" required 
+
+    <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required
       style="padding: 18px 25px; border-radius: 100px; border: 1px solid var(--nude); background: white; font-family: 'Outfit', sans-serif; color: var(--charcoal); font-size: 16px; outline: none;">
-    
-    <button type="submit" class="btn-primary">Subscribe</button> 
+
+    <button type="submit" class="btn-primary">Abonnieren</button>
 
     </button>
     
@@ -1920,7 +2389,7 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <a href="#" class="nav-logo">BUSE</a>
-      <p> Sportwissenschaftlerin & Personal Trainerin in Berlin. Wissenschaftlich fundiertes Training für Körper und Geist.</p>
+      <p>Berlin ansässige sports scientist & personal trainer. Wissenschaftlich fundiertes Training für Körper und Geist.</p>
       <div class="footer-social">
         <a href="https://www.instagram.com/trainwithbuse" target="_blank" rel="noopener" aria-label="Instagram">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="5" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
@@ -1938,29 +2407,29 @@
       </div>
     </div>
     <div class="footer-col">
-      <h4>Schnelllinks</h4>
-      <a href="#about">Über mich</a>
+      <h4>Quicklinks</h4>
+      <a href="about-de.html">Über mich</a>
       <a href="#services">Angebote</a>
-      <a href="#programs">Programme</a>
+      <a href="lab-system.html" style="color:var(--gold,#C8A96E);font-weight:500;">The Lab System</a>
       <a href="https://substack.com/@trainwithbuse" target="_blank">Blog</a>
     </div>
     <div class="footer-col">
       <h4>Angebote</h4>
-      <a href="#booking">Online Coaching</a>
-      <a href="#booking">Personal Training</a>
+      <a href="#booking">Online-Coaching</a>
+      <a href="#booking">Präsenztraining</a>
       <a href="#booking">Gruppenkurse</a>
-      <a href="https://payhip.com/trainwithbuse" target="_blank">Video Programme</a>
+      <a href="welcome.html" target="_blank">Videoprogramme</a>
     </div>
     <div class="footer-col">
       <h4>Kontakt</h4>
-      <a href="mailto:trainwithbuse@gmail.com">trainwithbuse@gmail.com</a>
-      <a href="#">Berlin, Germany</a>
-      <a href="#booking">Termin Buchen</a>
+      <a href="mailto:hello@trainwithbuse.com">hello@trainwithbuse.com</a>
+      <a href="#">Berlin, Deutschland</a>
+      <a href="#booking">Termin buchen</a>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 Buse. Alle Rechte vorbehalten.</span>
-    <span>Built with science & soul. · <a href="policy-de.html" style="color: var(--charcoal-light); text-decoration: none;">Datenschutzbestimmungen & Nutzungsbedingungen</a></span>
+   <span>Mit Wissenschaft & Herz gebaut. · <a href="policy-de.html" style="color: var(--charcoal-light); text-decoration: none;">Datenschutz & AGB</a></span>
   </div>
 </footer>
 
@@ -2014,6 +2483,163 @@
       }
     });
   });
+</script>
+
+<!-- BOOKING MODAL -->
+<div id="bookingModal" style="display:none;position:fixed;inset:0;background:rgba(45,42,46,.8);backdrop-filter:blur(10px);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:24px;width:92%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative;">
+    <button onclick="closeBooking()" style="position:absolute;top:16px;right:16px;background:none;border:1.5px solid rgba(45,42,46,.1);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;color:#4A4548;z-index:1;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div style="padding:36px 36px 0;">
+      <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C8A96E;margin-bottom:10px;">Kostenlos · 15 Minuten</div>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;color:#2D2A2E;margin-bottom:6px;">Session buchen</h3>
+      <p style="font-size:14px;color:#4A4548;margin-bottom:24px;">Wähle eine Zeit und lass uns über deine Ziele sprechen.</p>
+    </div>
+    <div class="calendly-inline-widget" data-url="https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b" style="min-width:300px;height:600px;"></div>
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  </div>
+</div>
+<style>
+@keyframes popUp{from{transform:scale(.93);opacity:0}to{transform:scale(1);opacity:1}}
+</style>
+<script>
+function openBooking(){var m=document.getElementById('bookingModal');m.style.display='flex';}
+function closeBooking(){document.getElementById('bookingModal').style.display='none';}
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('bookingModal').addEventListener('click',function(e){if(e.target===this)closeBooking();});
+  document.querySelectorAll('a[href="#booking"]').forEach(function(a){
+    a.addEventListener('click',function(e){e.preventDefault();openBooking();});
+  });
+  // Also handle Book Now in nav
+  document.querySelectorAll('.nav-cta').forEach(function(a){
+    if(a.getAttribute('href')==='#booking'){
+      a.addEventListener('click',function(e){e.preventDefault();openBooking();});
+    }
+  });
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function() {
+  var hash = window.location.hash;
+  if (hash && hash.includes('access_token')) {
+    var s = window.supabase.createClient(
+      'https://jgrnqqvmxqvfbxgvxuom.supabase.co',
+      'sb_publishable_xNmBmtMoxeeYsrtohlookw_yadawA3q'
+    );
+    s.auth.getSession().then(function(r) {
+      if (r.data && r.data.session) window.location.href = '/dashboard.html';
+      else s.auth.onAuthStateChange(function(ev, ses) { if (ses) window.location.href = '/dashboard.html'; });
+    });
+  }
+})();
+</script>
+</body>
+</html><!-- TESTIMONIALS -->
+
+
+<!-- ABOUT (compact) -->
+
+<!-- EMAIL CAPTURE POPUP -->
+<div id="emailPopup" style="display:none;position:fixed;inset:0;background:rgba(45,42,46,.55);backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center;padding:24px;">
+  <div style="background:#fff;border-radius:28px;max-width:480px;width:100%;padding:48px 44px;position:relative;box-shadow:0 32px 80px rgba(45,42,46,.2);animation:popupIn .4s cubic-bezier(.16,1,.3,1);">
+    <button onclick="closePopup()" style="position:absolute;top:20px;right:20px;background:none;border:none;cursor:pointer;font-size:20px;color:#4A4548;line-height:1;padding:4px 8px;" aria-label="Close">✕</button>
+
+    <div style="font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#C1848B;font-weight:600;margin-bottom:10px;text-align:center;">Willkommensgeschenk</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:#2D2A2E;margin-bottom:12px;line-height:1.2;text-align:center;">20 % Rabatt auf dein<br><em style="font-style:italic;color:#C1848B;">erstes Programm.</em></div>
+    <p style="font-size:14px;color:#4A4548;line-height:1.7;margin-bottom:28px;text-align:center;">Wissenschaftlich fundiertes Training, ganz für dich. Trag deine E-Mail-Adresse ein und wir schicken dir sofort deinen Rabattcode.</p>
+
+    <div id="popupForm">
+      <input type="email" id="popupEmail" placeholder="deine@email.com"
+        style="width:100%;padding:14px 18px;border-radius:14px;border:1.5px solid rgba(232,180,184,.35);background:#fff;font-family:'Outfit',sans-serif;font-size:14px;color:#2D2A2E;outline:none;margin-bottom:10px;transition:border .2s;box-sizing:border-box;"
+        onfocus="this.style.borderColor='#C1848B'" onblur="this.style.borderColor='rgba(232,180,184,.35)'"
+        onkeydown="if(event.key==='Enter')submitPopup()">
+      <button onclick="submitPopup()" id="popupBtn"
+        style="width:100%;padding:16px;border-radius:50px;background:#2D2A2E;color:#FDF6F0;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;transition:all .3s;"
+        onmouseover="this.style.background='#9B6B6F'" onmouseout="this.style.background='#2D2A2E'">
+        Meinen 20%-Rabatt sichern →
+      </button>
+      <div id="popupError" style="display:none;font-size:12px;color:#c0392b;text-align:center;margin-top:8px;"></div>
+    </div>
+
+    <div id="popupSuccess" style="display:none;text-align:center;padding:10px 0;">
+      <div style="font-size:32px;margin-bottom:12px;">🌸</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:#2D2A2E;margin-bottom:8px;">Schau in dein Postfach!</div>
+      <div style="font-size:14px;color:#4A4548;line-height:1.7;">Dein Code <strong>WELCOME20</strong> ist unterwegs.</div>
+    </div>
+
+    <div style="text-align:center;margin-top:16px;">
+      <button onclick="closePopup()" style="background:none;border:none;cursor:pointer;font-size:12px;color:#4A4548;letter-spacing:.5px;text-decoration:underline;font-family:'Outfit',sans-serif;">Nein, danke</button>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes popupIn {
+  from { opacity:0; transform:scale(.92) translateY(16px); }
+  to { opacity:1; transform:scale(1) translateY(0); }
+}
+</style>
+
+<script>
+(function() {
+  // Don't show if already seen
+  if (localStorage.getItem('twb_popup_seen')) return;
+
+  setTimeout(function() {
+    const popup = document.getElementById('emailPopup');
+    if (popup) {
+      popup.style.display = 'flex';
+      localStorage.setItem('twb_popup_seen', '1');
+    }
+  }, 30000); // 30 seconds
+})();
+
+function closePopup() {
+  document.getElementById('emailPopup').style.display = 'none';
+}
+
+// Close on overlay click
+document.getElementById('emailPopup').addEventListener('click', function(e) {
+  if (e.target === this) closePopup();
+});
+
+async function submitPopup() {
+  const email = document.getElementById('popupEmail').value.trim();
+  const errorEl = document.getElementById('popupError');
+  errorEl.style.display = 'none';
+
+  if (!email || !email.includes('@')) {
+    errorEl.textContent = 'Bitte gib eine gültige E-Mail-Adresse ein.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  const btn = document.getElementById('popupBtn');
+  btn.disabled = true;
+  btn.textContent = 'Wird gesendet...';
+
+  try {
+    const res = await fetch('https://email-capture.trainwithbuse.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+
+    if (res.ok) {
+      document.getElementById('popupForm').style.display = 'none';
+      document.getElementById('popupSuccess').style.display = 'block';
+      setTimeout(closePopup, 3000);
+    } else {
+      throw new Error('Failed');
+    }
+  } catch(e) {
+    errorEl.textContent = 'Etwas ist schiefgelaufen. Bitte versuch es erneut.';
+    errorEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Meinen 20%-Rabatt sichern →';
+  }
+}
 </script>
 
 </body>

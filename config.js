@@ -31,6 +31,7 @@ const STRIPE_PRICES = {
 // Example: https://www.youtube.com/watch?v=XXXXXXXXXXXX -> 'XXXXXXXXXXXX'
 const COURSES = {
   'movement-lab-1': {
+    comingSoon: true,
     title: 'Movement Lab 1',
     subtitle: 'Foundation Series',
     subtitleKey: 'foundation',
@@ -88,6 +89,7 @@ const COURSES = {
     }))
   },
   'sculpt-lab-1': {
+    comingSoon: true,
     title: 'Sculpt Lab 1',
     subtitle: 'Foundation Series',
     subtitleKey: 'foundation',
@@ -123,6 +125,7 @@ const COURSES = {
     }))
   },
   'strength-lab-1': {
+    comingSoon: true,
     title: 'Strength Lab 1',
     subtitle: 'Foundation Series',
     subtitleKey: 'foundation',
@@ -159,6 +162,7 @@ const COURSES = {
   },
 
   'metabolic-lab-1': {
+    comingSoon: true,
     title: 'Metabolic Lab 1',
     subtitle: 'Foundation Series',
     subtitleKey: 'foundation',
