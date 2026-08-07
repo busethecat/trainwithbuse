@@ -282,9 +282,27 @@ let course = null;
 let completedLessons = new Set();
 let currentLessonId = 1;
 
+// 30-minute inactivity timeout — signs the user out and sends them back to login
+let _idleTimer;
+function startIdleTimer(){
+  const IDLE_LIMIT_MS = 30*60*1000;
+  function resetIdleTimer(){
+    clearTimeout(_idleTimer);
+    _idleTimer=setTimeout(async()=>{
+      await sb.auth.signOut();
+      window.location.href='login.html';
+    }, IDLE_LIMIT_MS);
+  }
+  ['mousemove','mousedown','keydown','scroll','touchstart','click'].forEach(evt=>{
+    document.addEventListener(evt, resetIdleTimer, {passive:true});
+  });
+  resetIdleTimer();
+}
+
 sb.auth.getSession().then(({ data: { session } }) => {
   if (!session) { window.location.href = 'login.html'; return; }
   currentUser = session.user;
+  startIdleTimer();
   init();
 });
 

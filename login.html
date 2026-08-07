@@ -96,7 +96,13 @@
       <label data-i18n="passwordLabel">Password</label>
       <input type="password" id="loginPassword" placeholder="••••••••">
     </div>
-    <div class="forgot"><a href="#" onclick="showForgot();return false" data-i18n="forgot">Forgot password?</a></div>
+    <div class="forgot" style="display:flex;align-items:center;justify-content:space-between;">
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--charcoal-light);text-transform:none;letter-spacing:.3px;cursor:pointer;">
+        <input type="checkbox" id="rememberMe" style="width:auto;accent-color:var(--rose-dark);cursor:pointer;">
+        <span data-i18n="rememberMe">Remember Me</span>
+      </label>
+      <a href="#" onclick="showForgot();return false" data-i18n="forgot">Forgot password?</a>
+    </div>
     <button class="btn" id="loginBtn" onclick="handleLogin()" data-i18n="signinBtn">Sign In</button>
     <div class="divider" data-i18n="or">or</div>
     <button class="btn-google" onclick="handleGoogle()">
@@ -158,6 +164,7 @@ const T = {
     successForgot:'✓ Password reset link sent to your email.',
     errEmailFirst:'Please enter your email address first.',
     loginLoading:'Signing in...', signupLoading:'Creating account...', dobLabel:'Date of Birth', genderLabel:'Gender', optFemale:'Female', optMale:'Male', optOther:'Other / Prefer not to say',
+    rememberMe:'Remember Me',
   },
   tr: {
     back:'Ana Sayfa', portal:'Üye Portalı', signin:'Giriş Yap', register:'Kayıt Ol',
@@ -171,6 +178,7 @@ const T = {
     successForgot:'✓ Şifre sıfırlama linki e-postana gönderildi.',
     errEmailFirst:'Önce e-posta adresini gir.',
     loginLoading:'Giriş yapılıyor...', signupLoading:'Hesap oluşturuluyor...', dobLabel:'Doğum Tarihi', genderLabel:'Cinsiyet', optFemale:'Kadın', optMale:'Erkek', optOther:'Diğer',
+    rememberMe:'Beni Hatırla',
   },
   de: {
     back:'Startseite', portal:'Mitgliederbereich', signin:'Anmelden', register:'Registrieren',
@@ -184,6 +192,7 @@ const T = {
     successForgot:'✓ Passwort-Reset-Link wurde gesendet.',
     errEmailFirst:'Bitte zuerst E-Mail-Adresse eingeben.',
     loginLoading:'Anmeldung läuft...', signupLoading:'Konto wird erstellt...', dobLabel:'Geburtsdatum', genderLabel:'Geschlecht', optFemale:'Weiblich', optMale:'Männlich', optOther:'Andere',
+    rememberMe:'E-Mail-Adresse merken',
   }
 };
 
@@ -203,6 +212,13 @@ function applyTranslations() {
 }
 
 applyTranslations();
+
+// Remember Me — only the email is ever stored, never the password
+const rememberedEmail = localStorage.getItem('twb_remember_email');
+if (rememberedEmail) {
+  document.getElementById('loginEmail').value = rememberedEmail;
+  document.getElementById('rememberMe').checked = true;
+}
 
 // Auth
 const { createClient } = supabase;
@@ -229,7 +245,14 @@ async function handleLogin() {
   btn.disabled = true; btn.textContent = t('loginLoading');
   const { error } = await sb.auth.signInWithPassword({ email, password });
   if (error) { showMsg('loginMsg', t('errLogin'), 'error'); btn.disabled = false; btn.textContent = t('signinBtn'); }
-  else window.location.href = 'dashboard.html';
+  else {
+    if (document.getElementById('rememberMe').checked) {
+      localStorage.setItem('twb_remember_email', email);
+    } else {
+      localStorage.removeItem('twb_remember_email');
+    }
+    window.location.href = 'dashboard.html';
+  }
 }
 
 async function handleSignup() {

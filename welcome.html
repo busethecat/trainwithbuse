@@ -409,7 +409,7 @@ body::before{
   <p style="font-size:16px;color:rgba(255,255,255,.5);margin-bottom:40px;">Take the quiz to find your Lab, or go straight to your dashboard.</p>
   <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
     <a href="quiz.html" style="padding:16px 36px;background:var(--gold);color:var(--charcoal);border-radius:50px;font-size:12px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;font-weight:500;">Take the Quiz →</a>
-    <a href="login.html" style="padding:16px 36px;background:none;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);border-radius:50px;font-size:12px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;">Enter Dashboard</a>
+    <a href="login.html" style="padding:16px 36px;background:none;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);border-radius:50px;font-size:12px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;">Member Login</a>
   </div>
 </div>
 
@@ -498,23 +498,6 @@ document.querySelectorAll('.lang-option').forEach((btn,i)=>{
   btn.classList.toggle('active', ['en','tr','de'][i]===lang);
 });
 
-// If already logged in, go directly to dashboard
-const sbScript = document.createElement('script');
-sbScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-sbScript.onload = function(){
-  const { createClient } = supabase;
-  const sb = createClient(
-    'https://jgrnqqvmxqvfbxgvxuom.supabase.co',
-    'sb_publishable_xNmBmtMoxeeYsrtohlookw_yadawA3q'
-  );
-  sb.auth.getSession().then(({ data: { session } }) => {
-    if(session){
-      // Already logged in — go straight to dashboard
-      window.location.href = 'dashboard.html';
-    }
-  });
-};
-document.head.appendChild(sbScript);
 </script>
 </body>
 </html>
