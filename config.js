@@ -21,10 +21,7 @@ const STRIPE_PRICES = {
   'metabolic-lab-1': 'price_METABOLIC1',
   'metabolic-lab-2': 'price_METABOLIC2',
   'metabolic-lab-3': 'price_METABOLIC3',
-  'live-booty': 'price_BOOTY',
-  'live-flexibility': 'price_FLEX',
-  'live-power': 'price_POWER',
-  'live-core': 'price_CORE',
+  'live-lab-classes': 'price_LIVELAB',
 };
 
 // Video URLs - Upload to YouTube as unlisted and paste IDs here
@@ -197,7 +194,7 @@ const COURSES = {
       id: i+1, title: `Lesson ${i+1}`, duration: '25 min', videoId: 'YOUR_VIDEO_ID'
     }))
   },
-  'live-booty': {
+  'live-lab-classes': {
     title: 'Live Lab Classes',
     subtitle: 'Mon · Wed · Fri — Coming Soon',
     subtitleKey: 'live',
@@ -205,48 +202,9 @@ const COURSES = {
     price: 59,
     comingSoon: true,
     color: '#C1848B',
-    zoomLink: 'https://zoom.us/j/YOUR_BOOTY_ZOOM_LINK',
-    schedule: { en: 'Tuesday & Thursday · 18:00', tr: 'Sali & Persembe - 18:00', de: 'Dienstag & Donnerstag · 18:00' },
-    descKey: 'liveBootyDesc',
-    lessons: []
-  },
-  'live-flexibility': {
-    title: 'Flexibility Lab',
-    comingSoon: true,
-    subtitle: 'Live · 1x per week',
-    subtitleKey: 'live',
-    category: 'live',
-    price: 59,
-    color: '#C8A96E',
-    zoomLink: 'https://zoom.us/j/YOUR_FLEX_ZOOM_LINK',
-    schedule: { en: 'Monday · 19:00', tr: 'Pazartesi · 19:00', de: 'Montag · 19:00' },
-    descKey: 'liveFlexDesc',
-    lessons: []
-  },
-  'live-power': {
-    title: 'Power Lab',
-    comingSoon: true,
-    subtitle: 'Live · 2x per week',
-    subtitleKey: 'live',
-    category: 'live',
-    price: 89,
-    color: '#9B6B6F',
-    zoomLink: 'https://zoom.us/j/YOUR_POWER_ZOOM_LINK',
-    schedule: { en: 'Wednesday · 19:00', tr: 'Çarşamba · 19:00', de: 'Mittwoch · 19:00' },
-    descKey: 'livePowerDesc',
-    lessons: []
-  },
-  'live-core': {
-    title: 'Core & Burn Lab',
-    comingSoon: true,
-    subtitle: 'Live · 2x per week',
-    subtitleKey: 'live',
-    category: 'live',
-    price: 89,
-    color: '#4A4548',
-    zoomLink: 'https://zoom.us/j/YOUR_CORE_ZOOM_LINK',
-    schedule: { en: 'Tuesday & Friday · 12:00', tr: 'Sali & Cuma - 12:00', de: 'Dienstag & Freitag · 12:00' },
-    descKey: 'liveCoreDesc',
+    zoomLink: 'https://zoom.us/j/YOUR_LIVELAB_ZOOM_LINK',
+    schedule: { en: 'Mon · Wed · Fri · 18:00', tr: 'Pzt · Çar · Cum · 18:00', de: 'Mo · Mi · Fr · 18:00' },
+    descKey: 'liveLabDesc',
     lessons: []
   }
 };

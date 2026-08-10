@@ -124,9 +124,10 @@
   <div class="login-card">
     <div class="login-logo">BUSE</div>
     <div class="login-sub">Admin Panel</div>
-    <input type="password" class="login-input" id="adminPass" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')checkPass()">
-    <button class="login-btn" onclick="checkPass()">Enter</button>
-    <div class="login-error" id="loginError">Incorrect password</div>
+    <input type="email" class="login-input" id="adminEmail" placeholder="Email" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('adminPass').focus()">
+    <input type="password" class="login-input" id="adminPass" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkPass()">
+    <button class="login-btn" onclick="checkPass()">Sign In</button>
+    <div class="login-error" id="loginError">Incorrect email or password.</div>
   </div>
 </div>
 
@@ -161,26 +162,62 @@
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const ADMIN_PASS = 'BuseAdmin2026!';
+// SECURITY NOTE — read before relying on this panel:
+// This ADMIN_EMAILS allowlist is a UI convenience, not real access control. Anyone
+// with the public Supabase anon key (visible in config.js, by design) can call the
+// `bookings` table directly via the Supabase REST API regardless of what this page
+// checks client-side. The actual security boundary MUST be a Row Level Security (RLS)
+// policy on the `bookings` table in the Supabase dashboard, scoped to auth.uid() for
+// this admin account. Verify that RLS policy exists and is correct before treating
+// this page as a real access barrier — until then, treat bookings data as effectively
+// readable by anyone who inspects the client code.
+const ADMIN_EMAILS = ['hello@trainwithbuse.com']; // TODO: replace with your real admin login email(s)
+
 let allBookings = [];
 let currentFilter = 'all';
 
-function checkPass() {
-  const val = document.getElementById('adminPass').value;
-  if (val === ADMIN_PASS) {
-    document.getElementById('loginWrap').style.display = 'none';
-    document.getElementById('adminPanel').style.display = 'block';
-    loadBookings();
-  } else {
-    document.getElementById('loginError').style.display = 'block';
+async function checkPass() {
+  const email = document.getElementById('adminEmail').value.trim();
+  const password = document.getElementById('adminPass').value;
+  const errorEl = document.getElementById('loginError');
+  errorEl.style.display = 'none';
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if (error || !data.session) {
+    errorEl.textContent = 'Incorrect email or password.';
+    errorEl.style.display = 'block';
+    return;
   }
+  if (!ADMIN_EMAILS.includes(data.session.user.email)) {
+    errorEl.textContent = "This account doesn't have admin access.";
+    errorEl.style.display = 'block';
+    await sb.auth.signOut();
+    return;
+  }
+  showPanel();
 }
 
-function signOut() {
+function showPanel() {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  loadBookings();
+}
+
+async function signOut() {
+  await sb.auth.signOut();
   document.getElementById('loginWrap').style.display = 'flex';
   document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('adminEmail').value = '';
   document.getElementById('adminPass').value = '';
 }
+
+// If already signed in as an admin (e.g. returning visit), skip straight to the panel
+(async function initAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session && ADMIN_EMAILS.includes(session.user.email)) {
+    showPanel();
+  }
+})();
 
 async function loadBookings() {
   const { data, error } = await sb
@@ -241,6 +278,16 @@ function renderList() {
   list.innerHTML = html;
 }
 
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function bookingCard(b) {
   const d = new Date(b.requested_date + 'T00:00:00');
   const dateStr = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
@@ -254,11 +301,11 @@ function bookingCard(b) {
   };
 
   // Parse notes for multiple slots
-  let slotsHtml = `<div class="slot-row"><div class="slot-dot primary"></div>${dateStr} · ${b.requested_time}</div>`;
+  let slotsHtml = `<div class="slot-row"><div class="slot-dot primary"></div>${escapeHtml(dateStr)} · ${escapeHtml(b.requested_time)}</div>`;
   if (b.notes && b.notes.includes('Preferred slots:')) {
     const lines = b.notes.split('\n').filter(l => l.startsWith('Option'));
     if (lines.length > 1) {
-      slotsHtml = lines.map((l, i) => `<div class="slot-row"><div class="slot-dot ${i===0?'primary':''}"></div>${l.replace(/^Option \d+: /,'')}</div>`).join('');
+      slotsHtml = lines.map((l, i) => `<div class="slot-row"><div class="slot-dot ${i===0?'primary':''}"></div>${escapeHtml(l.replace(/^Option \d+: /,''))}</div>`).join('');
     }
   }
 
@@ -270,11 +317,11 @@ function bookingCard(b) {
   if (b.status === 'pending' || b.status === 'alternative_proposed') {
     actionsHtml = `
       <div class="bc-actions">
-        <button class="btn-confirm" onclick="confirmBooking('${b.id}','${b.requested_date}','${b.requested_time}','${b.user_email}')">
-          Confirm ${b.requested_time}
+        <button class="btn-confirm" onclick="confirmBooking('${b.id}')">
+          Confirm ${escapeHtml(b.requested_time)}
         </button>
         <button class="btn-alt" onclick="toggleAlt('${b.id}')">Propose Alternative</button>
-        <button class="btn-decline" onclick="declineBooking('${b.id}','${b.user_email}')">Decline</button>
+        <button class="btn-decline" onclick="declineBooking('${b.id}')">Decline</button>
       </div>
       <div class="alt-panel" id="alt-${b.id}">
         <div style="font-size:12px;color:var(--charcoal-light);margin-bottom:10px;">Propose a different date & time:</div>
@@ -282,26 +329,26 @@ function bookingCard(b) {
           <input type="date" id="alt-date-${b.id}" min="${new Date().toISOString().split('T')[0]}">
           <input type="time" id="alt-time-${b.id}" value="10:00" style="width:120px;">
         </div>
-        <button class="btn-send-alt" onclick="proposeAlternative('${b.id}','${b.user_email}')">Send Alternative →</button>
+        <button class="btn-send-alt" onclick="proposeAlternative('${b.id}')">Send Alternative →</button>
       </div>`;
   } else if (b.status === 'confirmed') {
     const cd = b.confirmed_date || b.requested_date;
     const ct = b.confirmed_time || b.requested_time;
     const cDate = new Date(cd + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
-    actionsHtml = `<div class="confirmed-info">Session confirmed for ${cDate} at ${ct}</div>`;
+    actionsHtml = `<div class="confirmed-info">Session confirmed for ${escapeHtml(cDate)} at ${escapeHtml(ct)}</div>`;
   }
 
   return `
     <div class="booking-card" id="card-${b.id}">
       <div class="bc-top">
         <div>
-          <div class="bc-name">${b.user_email}<span class="bc-type">${typeLabel}</span></div>
+          <div class="bc-name">${escapeHtml(b.user_email)}<span class="bc-type">${typeLabel}</span></div>
           <div class="bc-email">${new Date(b.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})}</div>
         </div>
         ${badgeMap[b.status] || ''}
       </div>
       <div class="bc-slots">${slotsHtml}</div>
-      ${notesText ? `<div class="bc-note">${notesText}</div>` : ''}
+      ${notesText ? `<div class="bc-note">${escapeHtml(notesText)}</div>` : ''}
       ${actionsHtml}
     </div>`;
 }
@@ -310,7 +357,11 @@ function toggleAlt(id) {
   document.getElementById('alt-' + id).classList.toggle('show');
 }
 
-async function confirmBooking(id, date, time, email) {
+async function confirmBooking(id) {
+  const b = allBookings.find(x => x.id === id);
+  if (!b) return;
+  const date = b.requested_date, time = b.requested_time;
+
   const { error } = await sb.from('bookings').update({
     status: 'confirmed',
     confirmed_date: date,
@@ -320,12 +371,14 @@ async function confirmBooking(id, date, time, email) {
   if (error) { alert('Error: ' + error.message); return; }
 
   // Send confirmation email
-  await sendEmail(email, 'confirmed', { date, time });
+  await sendEmail(b.user_email, 'confirmed', { date, time });
 
   await loadBookings();
 }
 
-async function proposeAlternative(id, email) {
+async function proposeAlternative(id) {
+  const b = allBookings.find(x => x.id === id);
+  if (!b) return;
   const date = document.getElementById('alt-date-' + id).value;
   const time = document.getElementById('alt-time-' + id).value;
 
@@ -339,17 +392,19 @@ async function proposeAlternative(id, email) {
 
   if (error) { alert('Error: ' + error.message); return; }
 
-  await sendEmail(email, 'alternative', { date, time });
+  await sendEmail(b.user_email, 'alternative', { date, time });
   await loadBookings();
 }
 
-async function declineBooking(id, email) {
+async function declineBooking(id) {
+  const b = allBookings.find(x => x.id === id);
+  if (!b) return;
   if (!confirm('Are you sure you want to decline this booking?')) return;
 
   const { error } = await sb.from('bookings').update({ status: 'cancelled' }).eq('id', id);
   if (error) { alert('Error: ' + error.message); return; }
 
-  await sendEmail(email, 'cancelled', {});
+  await sendEmail(b.user_email, 'cancelled', {});
   await loadBookings();
 }
 

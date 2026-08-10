@@ -40,8 +40,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{--blush:#E8B4B8;--blush-light:#F5D5D8;--nude:#D4A89A;--cream:#FDF6F0;--cream-deep:#F5EBE0;--rose:#C1848B;--rose-dark:#9B6B6F;--charcoal:#2D2A2E;--charcoal-light:#4A4548;--warm-white:#FFFAF7;--gold:#C8A96E}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--charcoal);min-height:100vh}.topbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(253,246,240,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}.topbar-logo{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--charcoal);text-decoration:none;letter-spacing:3px}.topbar-back{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--charcoal-light);font-size:13px;font-weight:400;letter-spacing:1px;transition:color .3s}.topbar-back:hover{color:var(--rose)}.plans-hero{padding:140px 40px 60px;text-align:center;background:linear-gradient(180deg,var(--cream) 0%,var(--cream-deep) 100%);position:relative;overflow:hidden}.plans-hero::before{content:'';position:absolute;top:-30%;right:-15%;width:600px;height:600px;background:radial-gradient(circle,rgba(232,180,184,.15) 0%,transparent 70%);border-radius:50%}.plans-hero-inner{position:relative;z-index:2;max-width:640px;margin:0 auto}.plans-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--rose);margin-bottom:20px;font-weight:500}.plans-tag::before{content:'';width:30px;height:1.5px;background:var(--blush)}.plans-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,56px);font-weight:300;color:var(--charcoal);line-height:1.2;margin-bottom:16px}.plans-hero h1 em{font-style:italic;color:var(--rose);font-weight:400}.plans-hero p{font-size:16px;color:var(--charcoal-light);line-height:1.7;margin-bottom:24px}.quiz-hint{display:inline-flex;align-items:center;gap:8px;background:#fff;padding:12px 24px;border-radius:50px;font-size:13px;color:var(--charcoal-light);text-decoration:none;border:1px solid rgba(232,180,184,.3);transition:all .3s}.quiz-hint:hover{border-color:var(--rose);color:var(--rose);transform:translateY(-2px);box-shadow:0 8px 25px rgba(200,160,155,.15)}.quiz-hint span{font-size:16px}.plans-section{padding:60px 40px 80px;max-width:1200px;margin:0 auto}.plans-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch}.plan-card{background:#fff;border-radius:24px;padding:36px 28px;border:1px solid rgba(232,180,184,.15);transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;display:flex;flex-direction:column}.plan-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(200,160,155,.2);border-color:var(--blush)}.plan-card.featured{border:2px solid var(--rose);box-shadow:0 12px 40px rgba(193,132,139,.15)}.plan-card.featured::before{content:'Beliebteste Wahl';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:5px 18px;border-radius:50px;white-space:nowrap}.plan-icon{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:20px}.plan-icon.online{background:linear-gradient(135deg,#E8D5F5,#D5C4E8)}.plan-icon.inperson{background:linear-gradient(135deg,var(--blush-light),var(--blush))}.plan-icon.group{background:linear-gradient(135deg,#D5E8D5,#B8D4B8)}.plan-icon.program{background:linear-gradient(135deg,#D5E0E8,#B8C8D4)}.plan-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--charcoal);margin-bottom:8px;line-height:1.2}.plan-desc{font-size:14px;color:var(--charcoal-light);line-height:1.6;margin-bottom:24px;flex-grow:1}.plan-price{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid rgba(232,180,184,.15)}.plan-price-amount{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:600;color:var(--charcoal);line-height:1}.plan-price-period{font-size:14px;color:var(--charcoal-light);margin-top:4px}.plan-features{list-style:none;margin-bottom:28px;flex-grow:1}.plan-features li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;font-size:13px;color:var(--charcoal-light);line-height:1.5}.plan-features li::before{content:'✓';color:var(--rose);font-weight:700;font-size:14px;flex-shrink:0;margin-top:1px}.plan-cta{display:block;width:100%;padding:16px;text-align:center;border-radius:50px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all .3s;cursor:pointer;border:none}.plan-cta.primary{background:var(--charcoal);color:var(--cream)}.plan-cta.primary:hover{background:var(--rose-dark);transform:translateY(-2px);box-shadow:0 8px 25px rgba(45,42,46,.25)}.plan-cta.secondary{background:transparent;color:var(--charcoal);border:2px solid var(--charcoal)}.plan-cta.secondary:hover{background:var(--charcoal);color:var(--cream);transform:translateY(-2px)}.plan-cta.disabled,.bundle-cta.disabled{background:rgba(45,42,46,.12)!important;color:var(--charcoal-light)!important;cursor:default!important;pointer-events:none;box-shadow:none!important;transform:none!important}.plan-ideal{margin-top:16px;padding:12px 16px;background:var(--cream);border-radius:12px;font-size:12px;color:var(--charcoal-light);line-height:1.5}.plan-ideal strong{color:var(--rose);font-weight:600}.compare-strip{background:var(--charcoal);padding:50px 40px;text-align:center}.compare-strip h2{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;color:var(--cream);margin-bottom:12px}.compare-strip h2 em{font-style:italic;color:var(--blush)}.compare-strip p{font-size:15px;color:rgba(253,246,240,.5);margin-bottom:28px}.compare-strip-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--blush),var(--rose));color:var(--charcoal);padding:16px 40px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all .3s}.compare-strip-btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(232,180,184,.3)}.faq-section{padding:80px 40px;max-width:720px;margin:0 auto}.faq-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;text-align:center;margin-bottom:40px;color:var(--charcoal)}.faq-title em{font-style:italic;color:var(--rose)}.faq-item{border-bottom:1px solid rgba(232,180,184,.2)}.faq-question{width:100%;display:flex;justify-content:space-between;align-items:center;padding:20px 0;background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;color:var(--charcoal);text-align:left;gap:16px}.faq-question:hover{color:var(--rose)}.faq-toggle{width:28px;height:28px;border-radius:50%;border:1px solid rgba(232,180,184,.3);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--rose);flex-shrink:0;transition:all .3s}.faq-item.open .faq-toggle{background:var(--rose);color:#fff;border-color:var(--rose)}.faq-answer{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1)}.faq-answer-inner{padding:0 0 20px;font-size:14px;color:var(--charcoal-light);line-height:1.7}.plans-footer{text-align:center;padding:40px;font-size:13px;color:var(--charcoal-light);border-top:1px solid rgba(232,180,184,.15)}.plans-footer a{color:var(--rose);text-decoration:none}.plans-footer a:hover{text-decoration:underline}@media(max-width:1024px){.plans-grid{grid-template-columns:1fr 1fr;gap:20px}.topbar{padding:16px 24px}}@media(max-width:600px){.plans-grid{grid-template-columns:1fr;gap:16px;max-width:400px;margin:0 auto}.plans-hero{padding:120px 24px 40px}.plans-section{padding:40px 24px 60px}.plan-card{padding:28px 24px}.faq-section{padding:60px 24px}.compare-strip{padding:40px 24px}}@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}.plan-card:nth-child(1){animation:fadeUp .6s ease .1s both}.plan-card:nth-child(2){animation:fadeUp .6s ease .2s both}.plan-card:nth-child(3){animation:fadeUp .6s ease .3s both}.plan-card:nth-child(4){animation:fadeUp .6s ease .4s both}
-  .back-home{font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.8;transition:all .3s}
-  .back-home:hover{opacity:1}
+  .back-home{font-family:'Outfit',sans-serif;font-size:15px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.85;transition:all .3s}
+  .back-home:hover{opacity:1;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -57,7 +57,7 @@
     <div class="plans-tag">Pläne & Preise</div>
     <h1>Finde den passenden <em>Plan</em> für dich</h1>
     <p>Jeder Plan wurde von einer Sportwissenschaftlerin entwickelt und basiert auf Neurowissenschaft. Ob persönliches Coaching oder eigenständiges Training — hier findest du das Richtige.</p>
-    <a href="quiz.html" class="quiz-hint">
+    <a href="quiz.html?lang=de" class="quiz-hint">
       <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-1.07-4.81A3 3 0 1 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 1.07-4.81A3 3 0 1 0 14.5 2z"/></svg></span> Nicht sicher? Mach das 2-Minuten-Quiz →
     </a>
   </div>
@@ -88,7 +88,7 @@
     </div>
     <div class="plan-card lab-card">
       <div class="plan-badge">Definieren</div>
-      <div class="plan-icon movement"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+      <div class="plan-icon sculpt"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
       <div class="plan-name">The Sculpt Lab</div>
       <div class="plan-desc">Präzises Sculpting durch Bewegungswissenschaft. Form, Definition und Kraft.</div>
       <div class="plan-price"><div class="plan-price-amount">€89</div><div class="plan-price-period">einmalig</div></div>
@@ -104,7 +104,7 @@
     </div>
     <div class="plan-card lab-card">
       <div class="plan-badge">Aufbauen</div>
-      <div class="plan-icon movement"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+      <div class="plan-icon strength"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
       <div class="plan-name">The Strength Lab</div>
       <div class="plan-desc">Neuronales Krafttraining — zuerst wird das Gehirn stärker, dann der Körper.</div>
       <div class="plan-price"><div class="plan-price-amount">€89</div><div class="plan-price-period">einmalig</div></div>
@@ -120,7 +120,7 @@
     </div>
     <div class="plan-card lab-card">
       <div class="plan-badge">Verbrennen</div>
-      <div class="plan-icon movement"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div class="plan-icon metabolic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
       <div class="plan-name">The Metabolic Lab</div>
       <div class="plan-desc">Hochintensives metabolisches Training — Fett verbrennen und Ausdauer aufbauen.</div>
       <div class="plan-price"><div class="plan-price-amount">€89</div><div class="plan-price-period">einmalig</div></div>
@@ -142,9 +142,9 @@
       <div class="bundle-title">Erstelle dein <em>Bundle</em></div>
       <div class="bundle-desc">Kombiniere beliebige Labs und spare.</div>
       <div class="bundle-options">
-        <div class="bundle-option"><div class="bundle-opt-label">2 Labs</div><div class="bundle-opt-discount">15% Rabatt</div></div>
-        <div class="bundle-option"><div class="bundle-opt-label">3 Labs</div><div class="bundle-opt-discount">20% Rabatt</div></div>
-        <div class="bundle-option featured-bundle"><div class="bundle-opt-label">Alle 4 Labs</div><div class="bundle-opt-discount">30% Rabatt</div><div class="bundle-opt-note">€151 statt €178</div></div>
+        <div class="bundle-option"><div class="bundle-opt-label">2 Labs</div><div class="bundle-opt-discount">15% Rabatt</div><div class="bundle-opt-note">€151 statt €178</div></div>
+        <div class="bundle-option"><div class="bundle-opt-label">3 Labs</div><div class="bundle-opt-discount">20% Rabatt</div><div class="bundle-opt-note">€214 statt €267</div></div>
+        <div class="bundle-option featured-bundle"><div class="bundle-opt-label">Alle 4 Labs</div><div class="bundle-opt-discount">25% Rabatt</div><div class="bundle-opt-note">€267 statt €356</div></div>
       </div>
       <span class="bundle-cta disabled" aria-disabled="true">Demnächst</span>
     </div>
@@ -179,21 +179,10 @@
     <div class="plan-card">
       <div class="plan-icon online"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg></div>
       <div class="plan-name">1:1 Online Coaching</div>
-      <div class="plan-desc">Deine persönliche Sportwissenschaftlerin, wo auch immer du bist.</div>
-      <div class="plan-price" style="flex-direction:column;align-items:flex-start;gap:12px;">
-        <div style="display:flex;align-items:baseline;gap:6px;">
-          <span style="font-size:28px;font-weight:600;color:var(--charcoal);">€89<span style="font-size:14px;font-weight:300"> / Einheit</span></span>
-        </div>
-        <div style="display:flex;align-items:baseline;gap:6px;">
-          <span style="font-size:28px;font-weight:600;color:var(--charcoal);">€619<span style="font-size:14px;font-weight:300">/Mo</span></span>
-          <span style="font-size:12px;color:var(--rose);font-weight:500;">8 Einheiten · 1 gratis</span>
-        </div>
-      </div>
-      <ul class="plan-features"><li>Vollständig personalisiertes Programm</li><li>Wöchentliche Video-Check-ins</li><li>Individuelle Ernährungsberatung</li><li>WhatsApp-Support</li><li>Monatliche Plananpassungen</li></ul>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <a href="https://buy.stripe.com/8x2dR835f1Fi1FO5YC1kA0j" target="_blank" class="plan-cta secondary" style="flex:1;min-width:140px;text-align:center;">Einzeln €89 →</a>
-        <a href="https://buy.stripe.com/00w6oGfS1do0cksaeS1kA0n" target="_blank" class="plan-cta primary" style="flex:1;min-width:140px;text-align:center;">8 Einheiten €619 →</a>
-      </div>
+      <div class="plan-desc">Deine persönliche Sportwissenschaftlerin, wo auch immer du bist — 1 Live-Session pro Woche, plus ein individuelles Trainingsprogramm, das dich die restliche Zeit begleitet.</div>
+      <div class="plan-price"><div class="plan-price-amount">€199</div><div class="plan-price-period">/Monat</div></div>
+      <ul class="plan-features"><li>1 Live-Session pro Woche</li><li>Individuelles Trainingsprogramm zur Begleitung</li><li>Individuelle Ernährungsberatung</li><li>WhatsApp-Support</li><li>Monatliche Plananpassungen</li></ul>
+      <a href="https://buy.stripe.com/3cI3cu7lvbfS0BK2Mq1kA0f" target="_blank" class="plan-cta primary">Jetzt starten →</a>
       <div class="plan-ideal"><strong>Am besten für:</strong> Überall auf der Welt — für ernsthafte Ergebnisse.</div>
     </div>
     <div class="plan-card">
@@ -210,7 +199,7 @@
           <span style="font-size:12px;color:var(--rose);font-weight:500;">1 Einheit gratis</span>
         </div>
       </div>
-      <ul class="plan-features"><li>60-minütige Einzel-Sessions</li><li>Echtzeit-Bewegungsanalyse</li><li>Monatliche Fortschrittsbewertung</li><li>Digitale Trainingsaufzeichnungen</li><li>Zuhause oder Gym — deine Wahl</li></ul>
+      <ul class="plan-features"><li>50-minütige Einzel-Sessions</li><li>Echtzeit-Bewegungsanalyse</li><li>Monatliche Fortschrittsbewertung</li><li>Digitale Trainingsaufzeichnungen</li><li>Zuhause oder Gym — deine Wahl</li></ul>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <a href="https://buy.stripe.com/fZueVcgW56ZCdowfzc1kA0h" target="_blank" class="plan-cta secondary" style="flex:1;min-width:140px;text-align:center;">Einzeln €119 →</a>
         <a href="https://buy.stripe.com/28E4gyaxH83G4S086K1kA0i" target="_blank" class="plan-cta primary" style="flex:1;min-width:140px;text-align:center;">10 Einheiten €1.071 →</a>
@@ -223,7 +212,7 @@
 <section class="compare-strip">
   <h2>Noch unentschlossen? Wir <em>helfen.</em></h2>
   <p>Beantworte ein paar kurze Fragen und wir empfehlen dir den perfekten Plan.</p>
-  <a href="quiz.html" class="compare-strip-btn">Quiz Starten →</a>
+  <a href="quiz.html?lang=de" class="compare-strip-btn">Quiz Starten →</a>
 </section>
 
 <section class="faq-section">
@@ -256,7 +245,7 @@
 </section>
 
 <div class="plans-footer">
-  <p>© 2026 Buse. Alle Rechte vorbehalten. · <a href="de.html">Startseite</a> · <a href="quiz.html">Quiz Starten</a></p>
+  <p>© 2026 Buse. Alle Rechte vorbehalten. · <a href="de.html">Startseite</a> · <a href="quiz.html?lang=de">Quiz Starten</a></p>
 </div>
 
 <script>

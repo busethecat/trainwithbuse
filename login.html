@@ -58,8 +58,8 @@
   .forgot a{font-size:12px;color:var(--nude);text-decoration:none;transition:color .3s}
   .forgot a:hover{color:var(--rose)}
   @media(max-width:500px){.card{padding:40px 24px;margin:80px 16px 20px}.top-bar{padding:16px 20px}}
-  .back-home{font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.8;transition:all .3s}
-  .back-home:hover{opacity:1}
+  .back-home{font-family:'Outfit',sans-serif;font-size:15px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.85;transition:all .3s}
+  .back-home:hover{opacity:1;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -148,6 +148,20 @@
     </button>
     <div id="signupMsg" class="msg"></div>
   </div>
+
+  <div id="resetForm" class="form-section">
+    <p style="font-size:13px;color:var(--charcoal-light);margin-bottom:18px;line-height:1.6;" data-i18n="resetIntro">Enter a new password for your account.</p>
+    <div class="form-group">
+      <label data-i18n="newPasswordLabel">New Password</label>
+      <input type="password" id="resetPassword" data-i18n-ph="newPasswordPh" placeholder="Min. 8 characters">
+    </div>
+    <div class="form-group">
+      <label data-i18n="confirmPasswordLabel">Confirm New Password</label>
+      <input type="password" id="resetPasswordConfirm" data-i18n-ph="confirmPasswordPh" placeholder="Re-enter your new password">
+    </div>
+    <button class="btn" id="resetBtn" onclick="handleReset()" data-i18n="resetBtn">Set New Password</button>
+    <div id="resetMsg" class="msg"></div>
+  </div>
 </div>
 
 <script>
@@ -165,6 +179,9 @@ const T = {
     errEmailFirst:'Please enter your email address first.',
     loginLoading:'Signing in...', signupLoading:'Creating account...', dobLabel:'Date of Birth', genderLabel:'Gender', optFemale:'Female', optMale:'Male', optOther:'Other / Prefer not to say',
     rememberMe:'Remember Me',
+    resetIntro:'Enter a new password for your account.', newPasswordLabel:'New Password', newPasswordPh:'Min. 8 characters',
+    confirmPasswordLabel:'Confirm New Password', confirmPasswordPh:'Re-enter your new password', resetBtn:'Set New Password',
+    resetLoading:'Updating password...', errPasswordMismatch:'Passwords do not match.', successReset:'✓ Password updated! Redirecting...',
   },
   tr: {
     back:'Ana Sayfa', portal:'Üye Portalı', signin:'Giriş Yap', register:'Kayıt Ol',
@@ -179,6 +196,9 @@ const T = {
     errEmailFirst:'Önce e-posta adresini gir.',
     loginLoading:'Giriş yapılıyor...', signupLoading:'Hesap oluşturuluyor...', dobLabel:'Doğum Tarihi', genderLabel:'Cinsiyet', optFemale:'Kadın', optMale:'Erkek', optOther:'Diğer',
     rememberMe:'Beni Hatırla',
+    resetIntro:'Hesabın için yeni bir şifre belirle.', newPasswordLabel:'Yeni Şifre', newPasswordPh:'En az 8 karakter',
+    confirmPasswordLabel:'Yeni Şifreyi Onayla', confirmPasswordPh:'Yeni şifreni tekrar gir', resetBtn:'Yeni Şifreyi Kaydet',
+    resetLoading:'Şifre güncelleniyor...', errPasswordMismatch:'Şifreler eşleşmiyor.', successReset:'✓ Şifren güncellendi! Yönlendiriliyorsun...',
   },
   de: {
     back:'Startseite', portal:'Mitgliederbereich', signin:'Anmelden', register:'Registrieren',
@@ -193,6 +213,9 @@ const T = {
     errEmailFirst:'Bitte zuerst E-Mail-Adresse eingeben.',
     loginLoading:'Anmeldung läuft...', signupLoading:'Konto wird erstellt...', dobLabel:'Geburtsdatum', genderLabel:'Geschlecht', optFemale:'Weiblich', optMale:'Männlich', optOther:'Andere',
     rememberMe:'E-Mail-Adresse merken',
+    resetIntro:'Lege ein neues Passwort für dein Konto fest.', newPasswordLabel:'Neues Passwort', newPasswordPh:'Mind. 8 Zeichen',
+    confirmPasswordLabel:'Neues Passwort bestätigen', confirmPasswordPh:'Neues Passwort erneut eingeben', resetBtn:'Neues Passwort speichern',
+    resetLoading:'Passwort wird aktualisiert...', errPasswordMismatch:'Die Passwörter stimmen nicht überein.', successReset:'✓ Passwort aktualisiert! Du wirst weitergeleitet...',
   }
 };
 
@@ -223,7 +246,53 @@ if (rememberedEmail) {
 // Auth
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-sb.auth.getSession().then(({ data: { session } }) => { if (session) window.location.href = 'dashboard.html'; });
+
+// Password-recovery links land here with #type=recovery in the URL hash.
+// That hash carries a temporary Supabase session — it must NOT be treated as a
+// normal login, or the user skips straight to the dashboard without ever setting
+// a new password. Detect it before any auto-redirect decision is made.
+const _recoveryHashParams = new URLSearchParams(window.location.hash.slice(1));
+const isPasswordRecovery = _recoveryHashParams.get('type') === 'recovery';
+
+if (isPasswordRecovery) {
+  showResetForm();
+} else {
+  sb.auth.getSession().then(({ data: { session } }) => { if (session) window.location.href = 'dashboard.html'; });
+}
+
+// Belt-and-suspenders: Supabase also fires this event once it finishes processing
+// the recovery token, in case our synchronous hash check above ever misses it.
+sb.auth.onAuthStateChange((event) => {
+  if (event === 'PASSWORD_RECOVERY') showResetForm();
+});
+
+function showResetForm() {
+  document.getElementById('tabLogin').style.display = 'none';
+  document.getElementById('tabSignup').style.display = 'none';
+  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('resetForm').classList.add('active');
+}
+
+async function handleReset() {
+  const pw1 = document.getElementById('resetPassword').value;
+  const pw2 = document.getElementById('resetPasswordConfirm').value;
+  if (!pw1 || !pw2) return showMsg('resetMsg', t('errFields'), 'error');
+  if (pw1.length < 8) return showMsg('resetMsg', t('errPassword'), 'error');
+  if (pw1 !== pw2) return showMsg('resetMsg', t('errPasswordMismatch'), 'error');
+
+  const btn = document.getElementById('resetBtn');
+  btn.disabled = true; btn.textContent = t('resetLoading');
+
+  const { error } = await sb.auth.updateUser({ password: pw1 });
+  if (error) {
+    showMsg('resetMsg', error.message, 'error');
+    btn.disabled = false; btn.textContent = t('resetBtn');
+    return;
+  }
+
+  showMsg('resetMsg', t('successReset'), 'success');
+  setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+}
 
 function switchTab(tab) {
   document.getElementById('tabLogin').classList.toggle('active', tab==='login');
@@ -306,7 +375,8 @@ function showForgot() {
 
 document.addEventListener('keydown', e => {
   if (e.key !== 'Enter') return;
-  if (document.getElementById('loginForm').classList.contains('active')) handleLogin();
+  if (document.getElementById('resetForm').classList.contains('active')) handleReset();
+  else if (document.getElementById('loginForm').classList.contains('active')) handleLogin();
   else handleSignup();
 });
 </script>

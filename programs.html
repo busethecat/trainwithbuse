@@ -125,8 +125,8 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
   .progress-overview{grid-template-columns:1fr 1fr}
   .prog-stat{border-right:none;border-bottom:1px solid var(--cream-deep);padding:20px 0}
 }
-  .back-home{font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.8;transition:all .3s}
-  .back-home:hover{opacity:1}
+  .back-home{font-family:'Outfit',sans-serif;font-size:15px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.85;transition:all .3s}
+  .back-home:hover{opacity:1;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -277,7 +277,7 @@ async function loadData(){
 function render(){
   const tl=T[lang];
   const content=document.getElementById('content');
-  const liveIds=['live-flexibility','live-power','live-core'];
+  const liveIds=['live-lab-classes'];
   const myCourses=Object.entries(COURSES).filter(([id])=>_purchases.has(id)&&!liveIds.includes(id));
   const storeCourses=Object.entries(COURSES).filter(([id])=>!_purchases.has(id)&&!liveIds.includes(id));
   const myLives=liveIds.filter(id=>_purchases.has(id));
@@ -336,7 +336,7 @@ function render(){
 
     // Group banner
     if(myLives.length>0){
-      const emojis={'live-booty':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>','live-flexibility':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>','live-power':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>','live-core':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>'};
+      const emojis={'live-lab-classes':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'};
       html+=`<div style="margin-top:32px">
         <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--nude);margin-bottom:20px">${tl.liveTitle}</div>
         <div style="display:flex;flex-direction:column;gap:0">`;
@@ -397,17 +397,11 @@ function render(){
         <div class="store-grid">`;
 
       const liveIcons={
-        'live-flexibility':'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>',
-        'live-power':'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
-        'live-booty':'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>',
-        'live-core':'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>'
+        'live-lab-classes':'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'
       };
 
       const liveDescs={
-        'live-flexibility':'Deep mobility and movement quality work. Improve your range of motion, reduce tension, and move with more ease. Science-backed sequencing for lasting flexibility.',
-        'live-power':'Progressive strength training using bodyweight and functional movements. Build real, lasting strength through neural adaptation and progressive overload principles.',
-        'live-booty':'Targeted glute and hip work rooted in movement science. Shape, strengthen and activate with precision.',
-        'live-core':'High-intensity core and metabolic conditioning. Burn, stabilise, and build functional strength from the inside out.'
+        'live-lab-classes':'3 live classes a week — HIIT, Strength & Mobility, rotating through the week. Small-group coaching that actually watches you move.'
       };
 
       storeLives.forEach((id,i)=>{
@@ -455,7 +449,7 @@ async function buyCourse(courseId){
     'strength-lab-1':'https://buy.stripe.com/YOUR_LINK_ST1',
     'strength-lab-2':'https://buy.stripe.com/YOUR_LINK_ST2',
     'strength-lab-3':'https://buy.stripe.com/YOUR_LINK_ST3',
-    'group-classes':'https://buy.stripe.com/YOUR_LINK_GROUP',
+    'live-lab-classes':'https://buy.stripe.com/YOUR_LINK_GROUP',
   };
   const base=links[courseId];
   if(!base||base.includes('YOUR_LINK')){alert('Payment link not configured yet.');return;}
@@ -494,10 +488,7 @@ async function logout(){await sb.auth.signOut();window.location.href='index.html
 
 <script>
 const liveDescsDetail = {
-  'live-flexibility': 'Deep mobility and movement quality work. Improve your range of motion, reduce tension, and move with more ease. Science-backed sequencing for lasting flexibility gains — not just stretching, but genuine neuromuscular reprogramming.',
-  'live-power': 'Progressive strength training using bodyweight and functional movements. Build real, lasting strength through neural adaptation and progressive overload principles. Every session is designed to make you stronger, more resilient, and more capable.',
-  'live-booty': 'Targeted glute and hip work rooted in movement science. Shape, strengthen and activate with precision. This is not generic glute work — it is anatomy-informed, sequenced for real results.',
-  'live-core': 'High-intensity core and metabolic conditioning. Burn, stabilise, and build functional strength from the inside out. Designed for maximum efficiency — short, intense, and highly effective.'
+  'live-lab-classes': '3 live Zoom classes a week, rotating through HIIT, Strength, and Mobility. Small-group coaching that actually watches you move — real-time form corrections, real coaching, not just a video feed.'
 };
 
 function openLiveDetail(id) {

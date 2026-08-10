@@ -414,8 +414,8 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
   .modal-h{padding:24px 24px 0}.modal-b{padding:20px 24px 36px}
   .upcoming-banner{margin:0;border-radius:16px}
 }
-  .back-home{font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.8;transition:all .3s}
-  .back-home:hover{opacity:1}
+  .back-home{font-family:'Outfit',sans-serif;font-size:15px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.85;transition:all .3s}
+  .back-home:hover{opacity:1;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -936,13 +936,10 @@ en:{
   sb_completed:'Completed Lessons',sb_remaining:'Remaining Lessons',
   sb_invoices:'My Invoices',sb_invoicesSub:'Purchase history',
   sb_labsTitle:'The Lab',sb_discoverLabs:'Discover Labs',sb_discoverLabsSub:'Explore all programs',sb_myPurchases:'My Lab Purchases',sb_myPurchasesSub:'Your active labs',
-  sb_liveTitle:'Live Classes',sb_liveClasses:'Live Classes',sb_liveClassesSub:'Join Booty, Flex, Power & Core',
+  sb_liveTitle:'Live Classes',sb_liveClasses:'Live Classes',sb_liveClassesSub:'Join Live Lab Classes',
   m_liveTag:'Live',m_liveTitle:'Live Classes',
   liveJoin:'Join Now ->',livePurchase:'Join This Lab ->',livePerMonth:'/mo',
-  liveBootyDesc:'Shape and sculpt with targeted glute and hip work. Science-backed sequencing for real results.',
-  liveFlexDesc:'Deep mobility work guided by movement science. For bodies that want to move better, feel better.',
-  livePowerDesc:'Full body strength training - compound lifts, progressive overload, and nervous system priming.',
-  liveCoreDesc:'High-intensity core and metabolic conditioning. Burn, stabilise, and build from the inside out.',
+  liveLabDesc:'3 live classes a week — HIIT, Strength & Mobility, rotating through the week. Small-group coaching that actually watches you move.',
   liveSchedule:'Schedule',
   m_purchasesTag:'The Lab',m_purchasesTitle:'My Lab Purchases',
   noLabsYet:'No labs yet.',noLabsBtn:'Get Your First Lab ->',noLabsSub:'Step into the Lab and start your science-backed transformation.',labPurchasedOn:'Purchased on',labActive:'Active',
@@ -1039,13 +1036,10 @@ tr:{
   noLabsYet:'Henuz lab yok.',noLabsBtn:'Ilk Labini Edin ->',
   noLabsSub:'The Lab e adim at ve bilim destekli donusumune basla.',
   labPurchasedOn:'Satin alindi',labActive:'Aktif',
-  sb_liveTitle:'Canli Dersler',sb_liveClasses:'Canli Dersler',sb_liveClassesSub:'Booty, Flex, Power & Core',
+  sb_liveTitle:'Canli Dersler',sb_liveClasses:'Canli Dersler',sb_liveClassesSub:'Live Lab Classes\'a katil',
   m_liveTag:'Canli',m_liveTitle:'Canli Dersler',
   liveJoin:'Katil ->',livePurchase:'Bu Laba Katil ->',livePerMonth:'/ay',
-  liveBootyDesc:'Hedefli gluteus calismasi ile gercek sonuclar.',
-  liveFlexDesc:'Hareket bilimi rehberliginde derin mobilite calismasi.',
-  livePowerDesc:'Tam vucut kuvvet antrenman programi.',
-  liveCoreDesc:'Yogun core ve metabolik kondisyon calismasi.',
+  liveLabDesc:'Haftada 3 canli ders — HIIT, Kuvvet ve Mobilite dönüsümlü olarak islenir. Hareketini gercekten takip eden kücük grup koclugu.',
   liveSchedule:'Takvim',
   sb_upcoming:'Gelecek Derslerim',sb_upcomingSub:'Canli ders takvimi',
   sb_support:'Destek',sb_faqSub:'Sik sorulan sorular',
@@ -1136,13 +1130,10 @@ de:{
   sb_completed:'Abgeschlossene Lektionen',sb_remaining:'Verbleibende Lektionen',
   sb_invoices:'Meine Rechnungen',sb_invoicesSub:'Kaufhistorie',
   sb_labsTitle:'The Lab',sb_discoverLabs:'Labs entdecken',sb_discoverLabsSub:'Alle Programme erkunden',sb_myPurchases:'Meine Lab-Kaufe',sb_myPurchasesSub:'Deine aktiven Labs',
-  sb_liveTitle:'Live-Kurse',sb_liveClasses:'Live-Kurse',sb_liveClassesSub:'Booty, Flex, Power & Core',
+  sb_liveTitle:'Live-Kurse',sb_liveClasses:'Live-Kurse',sb_liveClassesSub:'Live Lab Classes beitreten',
   m_liveTag:'Live',m_liveTitle:'Live-Kurse',
   liveJoin:'Beitreten ->',livePurchase:'Diesem Lab beitreten ->',livePerMonth:'/Mo.',
-  liveBootyDesc:'Forme und gestalte mit gezielter Gesass- und Huftarbeit. Wissenschaftlich fundierte Sequenzierung fur echte Ergebnisse.',
-  liveFlexDesc:'Tiefe Mobilitatsarbeit gefuhrt von Bewegungswissenschaft. Fur Korper die sich besser bewegen wollen.',
-  livePowerDesc:'Ganzkorper-Krafttraining - Verbundubungen, progressive Uberlastung und Nervensystem-Priming.',
-  liveCoreDesc:'Hochintensives Core- und metabolisches Konditionstraining. Von innen nach aussen verbrennen und aufbauen.',
+  liveLabDesc:'3 Live-Kurse pro Woche — HIIT, Kraft & Mobilitat im wochentlichen Wechsel. Kleingruppen-Coaching, das wirklich hinschaut.',
   liveSchedule:'Stundenplan',
   m_purchasesTag:'The Lab',m_purchasesTitle:'Meine Lab-Kaufe',
   noLabsYet:'Noch keine Labs.',noLabsBtn:'Dein erstes Lab holen ->',noLabsSub:'Betritt das Lab und starte deine wissenschaftlich fundierte Transformation.',labPurchasedOn:'Gekauft am',labActive:'Aktiv',
@@ -1347,7 +1338,7 @@ async function loadData(){
   (prog||[]).forEach(p=>{if(!_progress[p.course_id])_progress[p.course_id]=new Set();_progress[p.course_id].add(p.lesson_id);});
   const totalDone=(prog||[]).length;
   let totalLeft=0;
-  const liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  const liveIds=['live-lab-classes'];
   _purchases.forEach(id=>{if(!liveIds.includes(id)&&COURSES[id]&&COURSES[id].lessons.length>0){const d=_progress[id]?_progress[id].size:0;totalLeft+=COURSES[id].lessons.length-d;}});
   document.getElementById('sbCompletedSub').textContent=t('completedSub')(totalDone);
   document.getElementById('sbRemainingSub').textContent=t('remainingSub')(totalLeft);
@@ -1506,7 +1497,7 @@ function renderCounter(){
 // ══════════════════════════════
 function renderWorkout(){
   const tl=T[lang];
-  const _liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  const _liveIds=['live-lab-classes'];
   const active=Object.entries(COURSES).find(([id,c])=>_purchases.has(id)&&!_liveIds.includes(id)&&c.lessons&&c.lessons.length>0&&(_progress[id]?_progress[id].size:0)<c.lessons.length);
   if(!active)return;
   const [id,course]=active;
@@ -1528,7 +1519,7 @@ function renderWorkout(){
 // UPCOMING BANNER
 // ══════════════════════════════
 function renderUpcomingBanner(){
-  const _lIds=['live-booty','live-flexibility','live-power','live-core'];
+  const _lIds=['live-lab-classes'];
   const ownedLive=_lIds.find(id=>_purchases.has(id));
   if(!ownedLive)return;
   const banner=document.getElementById('upcomingBanner');
@@ -1730,7 +1721,7 @@ function removeFav(id){const f=getFavs().filter(x=>x!==id);localStorage.setItem(
 // ══════════════════════════════
 function renderCompleted(){
   const tl=T[lang];const body=document.getElementById('completedBody');const items=[];
-  const __liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  const __liveIds=['live-lab-classes'];
   _purchases.forEach(id=>{if(__liveIds.includes(id)||!COURSES[id]||!COURSES[id].lessons.length)return;const c=COURSES[id];const done=_progress[id]?[..._progress[id]]:[];
     done.forEach(lid=>{const l=c.lessons.find(x=>x.id===lid);if(l)items.push({course:c.title,lesson:l.title,color:c.color});});});
   if(!items.length){body.innerHTML=`<div class="pempty">${tl.noProgress}</div>`;return;}
@@ -1738,7 +1729,7 @@ function renderCompleted(){
 }
 function renderRemaining(){
   const tl=T[lang];const body=document.getElementById('remainingBody');const items=[];
-  const ___liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  const ___liveIds=['live-lab-classes'];
   _purchases.forEach(id=>{if(___liveIds.includes(id)||!COURSES[id]||!COURSES[id].lessons.length)return;const c=COURSES[id];const done=_progress[id]||new Set();
     c.lessons.forEach(l=>{if(!done.has(l.id))items.push({course:c.title,lesson:l.title,color:c.color});});});
   if(!items.length){body.innerHTML=`<div class="pempty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></div>`;return;}
@@ -1747,12 +1738,11 @@ function renderRemaining(){
 function renderLiveClasses(){
   const tl=T[lang];
   const body=document.getElementById('liveClassesBody');
-  const liveIds=['live-booty','live-flexibility','live-power','live-core'];
+  const liveIds=['live-lab-classes'];
   const descKeys={
-    'live-booty':'liveBootyDesc','live-flexibility':'liveFlexDesc',
-    'live-power':'livePowerDesc','live-core':'liveCoreDesc'
+    'live-lab-classes':'liveLabDesc'
   };
-  const emojis={'live-booty':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>','live-flexibility':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>','live-power':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>','live-core':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>'};
+  const emojis={'live-lab-classes':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'};
 
   body.innerHTML=liveIds.map(id=>{
     const c=COURSES[id];if(!c)return'';
@@ -1786,10 +1776,7 @@ function renderLiveClasses(){
 
 async function buyLive(courseId){
   const links={
-    'live-booty':'https://buy.stripe.com/YOUR_BOOTY_LINK',
-    'live-flexibility':'https://buy.stripe.com/YOUR_FLEX_LINK',
-    'live-power':'https://buy.stripe.com/YOUR_POWER_LINK',
-    'live-core':'https://buy.stripe.com/YOUR_CORE_LINK',
+    'live-lab-classes':'https://buy.stripe.com/YOUR_LIVELAB_LINK',
   };
   const base=links[courseId];
   if(!base||base.includes('YOUR')){alert('Payment link not configured yet.');return;}
@@ -1801,7 +1788,7 @@ async function buyLive(courseId){
 function renderPurchases(){
   const tl=T[lang];const body=document.getElementById('purchasesBody');
 
-  const _pLiveIds=['live-booty','live-flexibility','live-power','live-core'];
+  const _pLiveIds=['live-lab-classes'];
   const labPurchases=_purchasesRaw.filter(p=>!_pLiveIds.includes(p.course_id));
   if(!labPurchases.length){
     body.innerHTML=`<div style="text-align:center;padding:48px 20px"><div style="margin-bottom:16px;display:flex;justify-content:center"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14l-2-2 5-5"/><path d="M11 4l2 2-5 5"/></svg></div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;font-style:italic;color:var(--charcoal);margin-bottom:10px">${tl.noLabsYet}</div><div style="font-size:14px;color:var(--charcoal-light);line-height:1.7;margin-bottom:28px;max-width:300px;margin-left:auto;margin-right:auto">${tl.noLabsSub}</div><a href="programs.html" onclick="closeModal('purchasesModal')" style="display:inline-block;background:var(--charcoal);color:white;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none">${tl.noLabsBtn}</a></div>`;

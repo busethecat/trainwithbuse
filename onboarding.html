@@ -93,37 +93,18 @@ const PRODUCTS = {
   'online-single': {
     type: 'coaching',
     tag: 'Welcome',
-    title: 'Your session is <em>ready.</em>',
-    subtitle: 'Thank you for booking with Buse. Your 1:1 Online Coaching session is confirmed. Let\'s get you scheduled.',
+    title: 'Your coaching is <em>ready.</em>',
+    subtitle: 'Thank you for booking with Buse. Your 1:1 Online Coaching is confirmed — 1 live session a week, plus a personalized follow-up training program. Let\'s get your first session scheduled.',
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px;stroke:var(--rose)"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>`,
     iconBg: 'rgba(193,132,139,.1)',
-    product: '1:1 Online Coaching — Single Session',
-    duration: '50 minutes via Zoom',
+    product: '1:1 Online Coaching — Monthly',
+    duration: '1 live session per week via Zoom + personalized follow-up program',
     steps: [
       { text: '<strong>Book your session</strong> — select your preferred date and time below.' },
       { text: '<strong>Complete the questionnaire</strong> — help Buse prepare the perfect session for you.' },
       { text: '<strong>Check your email</strong> — Buse will confirm within 12 hours with a Zoom link.' },
     ],
     cta: 'Book Your Session →',
-    ctaLink: 'booking.html',
-    secondary: 'Go to Dashboard',
-    secondaryLink: 'dashboard.html',
-  },
-  'online-8pack': {
-    type: 'coaching',
-    tag: 'Welcome',
-    title: 'Your 8 sessions are <em>ready.</em>',
-    subtitle: 'Thank you for investing in your transformation. Your 8-session Online Coaching pack is active. Let\'s book your first session.',
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px;stroke:var(--rose)"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>`,
-    iconBg: 'rgba(193,132,139,.1)',
-    product: '1:1 Online Coaching — 8 Sessions',
-    duration: '50 minutes each via Zoom · 1 session free',
-    steps: [
-      { text: '<strong>Book your first session</strong> — select your preferred date and time below.' },
-      { text: '<strong>Complete the questionnaire</strong> — help Buse prepare the perfect session for you.' },
-      { text: '<strong>Check your email</strong> — Buse will confirm within 12 hours with a Zoom link.' },
-    ],
-    cta: 'Book Your First Session →',
     ctaLink: 'booking.html',
     secondary: 'Go to Dashboard',
     secondaryLink: 'dashboard.html',
@@ -273,13 +254,18 @@ function render() {
       <div class="schedule-card">
         <div class="schedule-row">
           <div class="schedule-day">Monday</div>
-          <div class="schedule-class">Flexibility Lab</div>
-          <div class="schedule-time">19:00</div>
+          <div class="schedule-class">Live Lab Classes — HIIT</div>
+          <div class="schedule-time">18:00</div>
         </div>
         <div class="schedule-row">
           <div class="schedule-day">Wednesday</div>
-          <div class="schedule-class">Power Lab</div>
-          <div class="schedule-time">19:00</div>
+          <div class="schedule-class">Live Lab Classes — Strength</div>
+          <div class="schedule-time">18:00</div>
+        </div>
+        <div class="schedule-row">
+          <div class="schedule-day">Friday</div>
+          <div class="schedule-class">Live Lab Classes — Mobility</div>
+          <div class="schedule-time">18:00</div>
         </div>
       </div>
 
