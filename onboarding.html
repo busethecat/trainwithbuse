@@ -93,12 +93,12 @@ const PRODUCTS = {
   'online-single': {
     type: 'coaching',
     tag: 'Welcome',
-    title: 'Your coaching is <em>ready.</em>',
-    subtitle: 'Thank you for booking with Buse. Your 1:1 Online Coaching is confirmed — 1 live session a week, plus a personalized follow-up training program. Let\'s get your first session scheduled.',
+    title: 'Your session is <em>ready.</em>',
+    subtitle: 'Thank you for booking with Buse. Your 1:1 Online Coaching session is confirmed. Let\'s get you scheduled.',
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px;stroke:var(--rose)"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>`,
     iconBg: 'rgba(193,132,139,.1)',
-    product: '1:1 Online Coaching — Monthly',
-    duration: '1 live session per week via Zoom + personalized follow-up program',
+    product: '1:1 Online Coaching — Single Session',
+    duration: '50 minutes via Zoom',
     steps: [
       { text: '<strong>Book your session</strong> — select your preferred date and time below.' },
       { text: '<strong>Complete the questionnaire</strong> — help Buse prepare the perfect session for you.' },
@@ -106,8 +106,6 @@ const PRODUCTS = {
     ],
     cta: 'Book Your Session →',
     ctaLink: 'booking.html',
-    secondary: 'Go to Dashboard',
-    secondaryLink: 'dashboard.html',
   },
   // In-Person
   'inperson-single': {
@@ -126,8 +124,6 @@ const PRODUCTS = {
     ],
     cta: 'Book Your Session →',
     ctaLink: 'booking.html',
-    secondary: 'Go to Dashboard',
-    secondaryLink: 'dashboard.html',
   },
   'inperson-10pack': {
     type: 'coaching',
@@ -145,8 +141,6 @@ const PRODUCTS = {
     ],
     cta: 'Book Your First Session →',
     ctaLink: 'booking.html',
-    secondary: 'Go to Dashboard',
-    secondaryLink: 'dashboard.html',
   },
   // Live Labs
   'live-labs-monthly': {
@@ -187,9 +181,9 @@ function render() {
     content.innerHTML = `
       <div class="tag">Welcome</div>
       <div class="title">You're <em>in.</em></div>
-      <div class="subtitle">Your purchase is confirmed. Head to your dashboard to get started.</div>
+      <div class="subtitle">Your purchase is confirmed. Sign in to get started.</div>
       <div class="divider"></div>
-      <a href="dashboard.html" class="btn-primary">Go to Dashboard →</a>
+      <a href="login.html" class="btn-primary">Sign In →</a>
     `;
     return;
   }
@@ -226,7 +220,7 @@ function render() {
       </div>
 
       <a href="${p.ctaLink}" class="btn-primary">${p.cta}</a>
-      <a href="${p.secondaryLink}" class="btn-secondary">${p.secondary}</a>
+      <a href="login.html" class="btn-secondary">Sign In to Your Dashboard</a>
     `;
     return;
   }
@@ -276,7 +270,7 @@ function render() {
 
       <div class="divider"></div>
 
-      <a href="dashboard.html" class="btn-primary">Go to Dashboard →</a>
+      <a href="login.html" class="btn-primary">Sign In to Your Dashboard →</a>
     `;
     return;
   }
@@ -298,7 +292,7 @@ function render() {
         <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Track your progress</strong> — every completed lesson is logged automatically.</div></div>
       </div>
 
-      <a href="dashboard.html" class="btn-primary">Start Your Program →</a>
+      <a href="login.html" class="btn-primary">Sign In to Start →</a>
     `;
     return;
   }

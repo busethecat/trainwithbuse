@@ -1350,7 +1350,7 @@ const results = {
       badge: "YOUR PERFECT MATCH",
       title: "In-Person Personal Training",
       price: "€119",
-      pricePer: "per session · or €1,071 for 10 (1 free)",
+      pricePer: "per session · single sessions or packs",
       features: [
         "1:1 sessions in Berlin with Buse",
         "Custom training plan built for your body",
@@ -1364,14 +1364,14 @@ const results = {
     online: {
       badge: "YOUR PERFECT MATCH",
       title: "1:1 Online Coaching",
-      price: "€199",
-      pricePer: "per month",
+      price: "€89",
+      pricePer: "per session",
       features: [
-        "1 live session per week",
-        "Personalized follow-up training program",
+        "Fully personalized training program",
+        "Video coaching sessions with Buse",
         "Custom nutrition plan",
         "24/7 WhatsApp support",
-        "Monthly plan adjustments"
+        "Available as single sessions or packs"
       ],
       cta: "Book a Free 15-Min Call",
       link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
@@ -1458,7 +1458,7 @@ const results = {
       badge: "SİZE EN UYGUN PLAN",
       title: "Yüz Yüze Kişisel Antrenman",
       price: "€119",
-      pricePer: "seans başına · veya 10 seans €1.071 (1 bedava)",
+      pricePer: "seans başına · tekli veya paket seçenekleri",
       features: [
         "Berlin'de Buse ile birebir seanslar",
         "Vücudunuza özel antrenman planı",
@@ -1472,14 +1472,14 @@ const results = {
     online: {
       badge: "SİZE EN UYGUN PLAN",
       title: "1:1 Online Koçluk",
-      price: "€199",
-      pricePer: "ayda",
+      price: "€89",
+      pricePer: "seans başına",
       features: [
-        "Haftada 1 canlı ders",
-        "Kişisel takip antrenman programı",
+        "Tamamen kişiselleştirilmiş antrenman programı",
+        "Buse ile video koçluk seansları",
         "Özel beslenme planı",
         "7/24 WhatsApp desteği",
-        "Aylık plan güncellemeleri"
+        "Tekli veya paket seans seçenekleri"
       ],
       cta: "Ücretsiz 15 Dk Görüşme",
       link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
@@ -1564,7 +1564,7 @@ const results = {
       badge: "DEIN PERFEKTER PLAN",
       title: "Personal Training vor Ort",
       price: "€119",
-      pricePer: "pro Einheit · oder €1.071 für 10 (1 gratis)",
+      pricePer: "pro Einheit · einzeln oder im Paket",
       features: [
         "1:1 Sessions in Berlin mit Buse",
         "Individueller Trainingsplan für deinen Körper",
@@ -1578,14 +1578,14 @@ const results = {
     online: {
       badge: "DEIN PERFEKTER PLAN",
       title: "1:1 Online Coaching",
-      price: "€199",
-      pricePer: "pro Monat",
+      price: "€89",
+      pricePer: "pro Einheit",
       features: [
-        "1 Live-Session pro Woche",
-        "Individuelles Trainingsprogramm zur Begleitung",
+        "Voll personalisiertes Trainingsprogramm",
+        "Video-Coaching-Sessions mit Buse",
         "Individueller Ernährungsplan",
         "24/7 WhatsApp Support",
-        "Monatliche Plananpassungen"
+        "Als Einzeleinheit oder im Paket erhältlich"
       ],
       cta: "Kostenloses 15-Min Gespräch buchen",
       link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
@@ -1945,13 +1945,12 @@ const STRIPE_LINKS = {
   strength: 'https://buy.stripe.com/14A4gyfS13NqesAgDg1kA0b',
   metabolic:'https://buy.stripe.com/8x23cu7lv97Kbgo1Im1kA0c',
   group:    'https://buy.stripe.com/6oUcN48pz3Nqbgodr41kA0d',
-  online:   'https://buy.stripe.com/3cI3cu7lvbfS0BK2Mq1kA0f',
-  inperson: 'https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g',
-  program:  'https://buy.stripe.com/6oUeVc5dnfw8ackev81kA0g'
+  online:   'https://buy.stripe.com/8x2dR835f1Fi1FO5YC1kA0j',
+  inperson: 'https://buy.stripe.com/fZueVcgW56ZCdowfzc1kA0h'
 };
 
 // The Lab System (video programs) is temporarily paused — see LAB_PLANS below.
-const LAB_PLANS = ['movement', 'sculpt', 'strength', 'metabolic'];
+const LAB_PLANS = ['movement', 'sculpt', 'strength', 'metabolic', 'program'];
 
 function showResult() {
   const plan = determinePlan();
