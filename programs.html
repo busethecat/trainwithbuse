@@ -9,7 +9,6 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <style>
 :root{
@@ -162,6 +161,7 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
   <div id="content"><div class="spin-wrap"><div class="spinner"></div></div></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const T={
   en:{
@@ -259,6 +259,9 @@ sb.auth.getSession().then(({data:{session}})=>{
   currentUser=session.user;
   startIdleTimer();
   loadData();
+}).catch(err=>{
+  console.error('Session check failed:', err);
+  window.location.href='login.html';
 });
 
 async function loadData(){

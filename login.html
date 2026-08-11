@@ -9,7 +9,6 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <style>
   :root {
@@ -164,6 +163,7 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const T = {
   en: {
@@ -257,7 +257,7 @@ const isPasswordRecovery = _recoveryHashParams.get('type') === 'recovery';
 if (isPasswordRecovery) {
   showResetForm();
 } else {
-  sb.auth.getSession().then(({ data: { session } }) => { if (session) window.location.href = 'dashboard.html'; });
+  sb.auth.getSession().then(({ data: { session } }) => { if (session) window.location.href = 'dashboard.html'; }).catch(err => console.error('Session check failed:', err));
 }
 
 // Belt-and-suspenders: Supabase also fires this event once it finishes processing
@@ -343,7 +343,7 @@ async function handleSignup() {
   // Save core profile to Supabase
   if (data?.user) {
     const nameParts = name.split(' ');
-    await sb.from('user_profiles').upsert({
+    const { error: profileError } = await sb.from('user_profiles').upsert({
       user_id: data.user.id,
       email: email,
       first_name: nameParts[0] || name,
@@ -352,6 +352,10 @@ async function handleSignup() {
       gender: gender || null,
       updated_at: new Date().toISOString()
     }, { onConflict: 'user_id' });
+    // Account creation already succeeded above — don't block signup on this,
+    // but don't fail silently either. Profile fields can be re-entered on the
+    // dashboard (saveProfile) if this write didn't go through.
+    if (profileError) console.error('Profile save failed after signup:', profileError.message);
     // Save to localStorage for immediate use
     const profile = { fn: nameParts[0] || name, ln: nameParts.slice(1).join(' ') || '', dob: dob, gender: gender };
     localStorage.setItem('twb_profile_' + data.user.id, JSON.stringify(profile));

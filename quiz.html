@@ -2152,7 +2152,7 @@ async function submitQuizEmail(plan, planTitle) {
 
   // Send personalised email to user via Cloudflare Worker
   try {
-    await fetch('https://quiz-email-sender.trainwithbuse.workers.dev', {
+    const emailRes = await fetch('https://quiz-email-sender.trainwithbuse.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -2163,6 +2163,7 @@ async function submitQuizEmail(plan, planTitle) {
         firstName: ''
       })
     });
+    if (!emailRes.ok) throw new Error('Email send failed with status ' + emailRes.status);
     const row = document.querySelector('.email-capture-row');
     const success = document.getElementById('emailSuccess');
     if (row) row.style.display = 'none';

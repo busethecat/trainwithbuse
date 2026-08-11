@@ -9,7 +9,6 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <style>
   :root {
@@ -192,6 +191,7 @@
 </div>
 <div class="confetti-container" id="confettiContainer"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ============================================================
 // TRANSLATIONS
@@ -304,6 +304,9 @@ sb.auth.getSession().then(({ data: { session } }) => {
   currentUser = session.user;
   startIdleTimer();
   init();
+}).catch(err => {
+  console.error('Session check failed:', err);
+  window.location.href = 'login.html';
 });
 
 async function init() {
@@ -410,10 +413,11 @@ function renderLesson(lessonId) {
 
 async function markComplete(lessonId) {
   if (completedLessons.has(lessonId)) return;
-  await sb.from('lesson_progress').upsert({
+  const { error } = await sb.from('lesson_progress').upsert({
     user_id: currentUser.id, course_id: courseId, lesson_id: lessonId,
     completed_at: new Date().toISOString()
   });
+  if (error) { console.error('Progress save failed:', error.message); return; }
   completedLessons.add(lessonId);
   updateProgress();
   renderLesson(lessonId);

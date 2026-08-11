@@ -9,7 +9,6 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <style>
 :root{
@@ -917,6 +916,7 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ══════════════════════════════
 // TRANSLATIONS
@@ -1306,7 +1306,7 @@ function startIdleTimer(){
 // Apply saved theme immediately to avoid flash
 applyTheme(null);
 
-sb.auth.getSession().then(({data:{session}})=>{
+sb.auth.getSession().then(async ({data:{session}})=>{
   if(!session){window.location.href='login.html';return;}
   currentUser=session.user;
   startIdleTimer();
@@ -1321,10 +1321,16 @@ sb.auth.getSession().then(({data:{session}})=>{
   renderMotto();
   renderSubstack();
   renderCycle();
-    loadBuseInbox();
+  // Awaited so _inboxMessages is fully populated before loadData() -> checkBirthday()
+  // can unshift a birthday message into it — otherwise a slower inbox fetch resolving
+  // afterward would overwrite the array and silently drop that message.
+  await loadBuseInbox();
   renderCounter();
   // Then load Supabase data for purchases/progress
-  loadData();
+  await loadData();
+}).catch(err=>{
+  console.error('Session check failed:', err);
+  window.location.href='login.html';
 });
 
 async function loadData(){
@@ -1663,14 +1669,15 @@ async function saveProfile(){
   const stored=JSON.parse(localStorage.getItem('twb_profile_'+(currentUser?.id||''))||'{}');
   p.fn=stored.fn||p.fn;p.ln=stored.ln||p.ln;p.dob=stored.dob||p.dob;p.gender=stored.gender||p.gender;
   localStorage.setItem('twb_profile_'+(currentUser?.id||''),JSON.stringify(p));
-  await sb.from('user_profiles').upsert({
+  const btn=document.getElementById('saveProfileBtn');
+  const {error}=await sb.from('user_profiles').upsert({
     user_id:currentUser.id,email:currentUser.email,
     first_name:p.fn,last_name:p.ln,date_of_birth:p.dob||null,gender:p.gender,
     height_cm:p.h?parseInt(p.h):null,weight_kg:p.w?parseFloat(p.w):null,
     fitness_goal:p.goal,fitness_level:p.level,health_notes:p.health,injuries:p.inj,
     updated_at:new Date().toISOString()
   },{onConflict:'user_id',ignoreDuplicates:false});
-  const btn=document.getElementById('saveProfileBtn');
+  if(error){alert('Could not save your profile: '+error.message);return;}
   btn.textContent=t('saved');
   setTimeout(()=>{btn.textContent=t('save');closeModal('profileModal');checkBirthday();},1400);
 }

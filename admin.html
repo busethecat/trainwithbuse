@@ -225,6 +225,7 @@ async function loadBookings() {
     .select('*')
     .order('created_at', { ascending: false });
 
+  if (error) { console.error('Failed to load bookings:', error.message); alert('Could not load bookings: ' + error.message); return; }
   allBookings = data || [];
   renderStats();
   renderList();
@@ -410,12 +411,13 @@ async function declineBooking(id) {
 
 async function sendEmail(toEmail, type, data) {
   try {
-    await fetch('https://booking-notify.trainwithbuse.workers.dev/admin', {
+    const res = await fetch('https://booking-notify.trainwithbuse.workers.dev/admin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ toEmail, type, data }),
     });
-  } catch(e) { console.log('Email error:', e); }
+    if (!res.ok) console.error('Email notify failed with status:', res.status);
+  } catch(e) { console.error('Email error:', e); }
 }
 </script>
 </body>
