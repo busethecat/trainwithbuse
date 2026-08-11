@@ -474,8 +474,8 @@ body::before{
 <script>
 (function() {
   const BUNDLE_PRICE = 89;
-  const BUNDLE_LINKS = { 2: 'BUNDLE_2_LINK', 3: 'BUNDLE_3_LINK', 4: 'BUNDLE_4_LINK' };
-  const BUNDLE_DISCOUNTS = { 1: 0, 2: 0.05, 3: 0.10, 4: 0.15 };
+  const BUNDLE_LINKS = { 2: 'https://buy.stripe.com/5kQ14m5dnfw85W4ev81kA0o', 3: 'https://buy.stripe.com/3cIbJ08pz2Jm3NWev81kA0p', 4: 'https://buy.stripe.com/4gM4gy8pzfw8gAI5YC1kA0q' };
+  const BUNDLE_TOTALS = { 2: 169, 3: 240, 4: 300 };
   const selectedLabs = new Set();
 
   window.toggleBundleLab = function(id) {
@@ -493,8 +493,7 @@ body::before{
   function updateBundleSummary() {
     const count = selectedLabs.size;
     const original = count * BUNDLE_PRICE;
-    const discount = BUNDLE_DISCOUNTS[count] || 0;
-    const total = Math.round(original * (1 - discount));
+    const total = BUNDLE_TOTALS[count] || original;
 
     const countEl = document.getElementById('bundleCount');
     const originalEl = document.getElementById('bundleOriginal');
@@ -509,7 +508,8 @@ body::before{
       originalEl.style.display = 'none';
       totalEl.textContent = '€' + original;
     } else {
-      countEl.textContent = count + ' Labs selected — ' + Math.round(discount * 100) + '% off';
+      const discountPct = Math.round((1 - total / original) * 100);
+      countEl.textContent = count + ' Labs selected — ' + discountPct + '% off';
       originalEl.style.display = 'inline';
       originalEl.textContent = '€' + original;
       totalEl.textContent = '€' + total;
