@@ -182,6 +182,53 @@
     border-radius: 2px;
   }
 
+  /* ========== SERVICES DROPDOWN ========== */
+  .nav-dropdown { position: relative; }
+  .nav-dropdown-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .nav-dropdown-caret { transition: transform 0.25s ease; }
+  .nav-dropdown:hover .nav-dropdown-caret,
+  .nav-dropdown.open .nav-dropdown-caret { transform: rotate(180deg); }
+  .nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 18px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: rgba(253, 246, 240, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(45, 42, 46, 0.14);
+    padding: 10px;
+    min-width: 250px;
+    list-style: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  }
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown.open .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  .nav-dropdown-menu li a {
+    display: block;
+    padding: 12px 16px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    color: var(--charcoal-light);
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .nav-dropdown-menu li a::after { display: none; }
+  .nav-dropdown-menu li a:hover { background: rgba(200, 169, 110, 0.08); color: var(--rose); }
+
+  /* ========== MINI SERVICES GRID ========== */
+  .mini-services-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+
   /* ========== HERO SECTION ========== */
   .hero {
     min-height: 100vh;
@@ -1501,6 +1548,7 @@
     .hero-image-wrapper { max-width: 360px; margin: 0 auto; }
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
     .services-grid, .programs-grid, .blog-grid, .testimonials-grid { grid-template-columns: 1fr 1fr; }
+    .mini-services-grid { grid-template-columns: 1fr 1fr; }
     .booking-wrapper { grid-template-columns: 1fr; padding: 50px 30px; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
   }
@@ -1521,10 +1569,24 @@
       gap: 20px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
+    .nav-dropdown-menu {
+      position: static;
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      display: none;
+      box-shadow: none;
+      background: rgba(200, 169, 110, 0.05);
+      margin-top: 6px;
+      width: 100%;
+    }
+    .nav-dropdown.open .nav-dropdown-menu { display: block; }
     .hero h1 { font-size: 36px; }
     .hero-stats { left: 10px; bottom: -10px; }
     .floating-badge { right: 0px; top: 20px; }
     .services-grid, .programs-grid, .blog-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    .mini-services-grid { grid-template-columns: 1fr; }
     .hero-buttons { flex-direction: column; }
     .btn-primary, .btn-secondary { text-align: center; }
     .about-numbers { grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -1899,12 +1961,19 @@
   <a href="#" class="nav-logo">BUSE</a>
   <ul class="nav-links" id="navLinks">
     <li><a href="about-tr.html">Hakkımda</a></li>
-    <li><a href="#services">Hizmetler</a></li>
-    <li><a href="lab-system.html" style="color:var(--gold,#C8A96E);font-weight:500;">The Lab System</a></li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-toggle">Hizmetler <svg class="nav-dropdown-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="classes-tr.html">Online Classes</a></li>
+        <li><a href="online-coaching-tr.html">1:1 Online Coaching</a></li>
+        <li><a href="personal-training.html">The Buse Method (Yüz Yüze)</a></li>
+        <li><a href="lab-system-tr.html">The Lab System</a></li>
+      </ul>
+    </li>
 <li><a href="https://substack.com/@trainwithbuse" target="_blank">Blog</a></li>
 <li><a href="corporate.html">Kurumsal</a></li>
 <li><a href="login.html" class="nav-login">Üye Girişi</a></li>
-<li><a href="personal-training.html" class="nav-cta">Birebir Koçluk Al</a></li>
+<li><a href="book-coaching-tr.html" class="nav-cta">Birebir Koçluk Al</a></li>
 
   </ul>
   <div class="lang-switcher">
@@ -1990,114 +2059,31 @@
       <img src="photos/team-buse-final.jpg" alt="Buse koçluk yaparken" style="width:100%;height:auto;display:block;">
     </div>
 
-    <!-- 2 Service Cards -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
-      
-      <!-- 1:1 Online -->
-      <div class="reveal" style="background:white;border-radius:24px;padding:44px;border:1px solid rgba(232,180,184,.15);position:relative;overflow:hidden;transition:all .3s;" onmouseover="this.style.boxShadow='0 20px 60px rgba(200,160,155,.15)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
-        <div style="position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(200,169,110,.06) 0%,transparent 70%);pointer-events:none;"></div>
-        <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C8A96E;margin-bottom:16px;">Uzaktan · Dünya Genelinde</div>
-        <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:var(--charcoal);margin-bottom:8px;">Birebir Online<br>Koçluk</h3>
-        <p style="font-size:14px;color:#4A4548;line-height:1.7;margin-bottom:28px;">Kendi programın, kendi koçun — bedenine, hedeflerine ve hayatına göre kişiselleştirilmiş antrenman. Buse her adımda yanında.</p>
-        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:32px;">
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            Bedenine özel hazırlanmış antrenman programı
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            Buse ile video koçluk seansları
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            Beslenme rehberliği dahil
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            Seanslar arasında WhatsApp desteği
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid rgba(232,180,184,.15);">
-          <div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--charcoal);line-height:1;">€89</div>
-            <div style="font-size:11px;color:#D4A89A;letter-spacing:1px;">/seans</div>
-          </div>
-          <a href="https://buy.stripe.com/8x2dR835f1Fi1FO5YC1kA0j" target="_blank" style="background:#2D2A2E;color:white;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all .3s;" onmouseover="this.style.background='#9B6B6F'" onmouseout="this.style.background='#2D2A2E'">Hemen Başla →</a>
-        </div>
+    <!-- 3 Mini Service Cards -->
+    <div class="mini-services-grid">
+
+      <!-- Online Classes -->
+      <div class="reveal" style="background:white;border-radius:24px;padding:36px;border:1px solid rgba(232,180,184,.15);position:relative;overflow:hidden;transition:all .3s;display:flex;flex-direction:column;" onmouseover="this.style.boxShadow='0 20px 60px rgba(200,160,155,.15)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+        <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C1848B;margin-bottom:14px;">Canlı · Online · Grup</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--charcoal);margin-bottom:10px;">Online Classes</h3>
+        <p style="font-size:13.5px;color:#4A4548;line-height:1.7;margin-bottom:24px;flex:1;">Haftada 3 canlı Zoom dersi — HIIT, Kuvvet ve Mobilite. Küçük grup koçluğu, aylık €59'dan.</p>
+        <a href="classes-tr.html" style="color:#C8A96E;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;font-weight:500;">Devamını Gör →</a>
       </div>
 
-      <!-- In-Person Berlin -->
-      <div class="reveal" style="background:#2D2A2E;border-radius:24px;padding:44px;position:relative;overflow:hidden;transition:all .3s;" onmouseover="this.style.boxShadow='0 20px 60px rgba(45,42,46,.3)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
-        <div style="position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(193,132,139,.1) 0%,transparent 70%);pointer-events:none;"></div>
-        <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Berlin · Premium</div>
-        <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:white;margin-bottom:8px;">Yüz Yüze<br>Antrenman</h3>
-        <p style="font-size:14px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:28px;">Buse Method'un tamamı — Berlin'de. Hareket ve antrenman bilimi, gerçek zamanlı ve uygulamalı olarak hayata geçiyor. Seni hem fiziksel hem bilişsel olarak geliştirmek için tasarlanan programlar, uzun vadeli dönüşüm için hareket bilimini bilim destekli araçlarla birleştiriyor.</p>
-        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:32px;">
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            Berlin'de 50 dakikalık özel seanslar
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            Hareket ve antrenman bilimi metodolojisi
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            Fiziksel & bilişsel gelişim odaklı
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.6);">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            Aylık hareket değerlendirmesi & takip
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid rgba(255,255,255,.08);">
-          <div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:white;line-height:1;">€119</div>
-            <div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:1px;">/seans</div>
-          </div>
-          <a href="https://buy.stripe.com/fZueVcgW56ZCdowfzc1kA0h" target="_blank" style="background:#C8A96E;color:#2D2A2E;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Seans Ayırt →</a>
-        </div>
+      <!-- 1:1 Online Coaching -->
+      <div class="reveal" style="background:white;border-radius:24px;padding:36px;border:1px solid rgba(232,180,184,.15);position:relative;overflow:hidden;transition:all .3s;display:flex;flex-direction:column;" onmouseover="this.style.boxShadow='0 20px 60px rgba(200,160,155,.15)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+        <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C8A96E;margin-bottom:14px;">Uzaktan · Dünya Genelinde</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--charcoal);margin-bottom:10px;">1:1 Online Coaching</h3>
+        <p style="font-size:13.5px;color:#4A4548;line-height:1.7;margin-bottom:24px;flex:1;">Bedenine ve hayatına göre kişiselleştirilmiş birebir koçluk. Seans ücreti €89'dan başlıyor.</p>
+        <a href="online-coaching-tr.html" style="color:#C8A96E;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;font-weight:500;">Devamını Gör →</a>
       </div>
-    </div>
 
-    <!-- Live Lab Classes Card -->
-    <div class="reveal" style="background:linear-gradient(135deg,rgba(193,132,139,.06),rgba(200,169,110,.04));border:1px solid rgba(193,132,139,.2);border-radius:24px;padding:44px;position:relative;overflow:hidden;transition:all .3s;margin-bottom:24px;" onmouseover="this.style.boxShadow='0 20px 60px rgba(200,160,155,.15)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
-      <div style="position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(193,132,139,.08) 0%,transparent 70%);pointer-events:none;"></div>
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:32px;">
-        <div style="flex:1;min-width:280px;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-            <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C1848B;">Canlı · Online · Zoom</div>
-            <span style="background:#C8A96E;color:#2D2A2E;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:50px;font-weight:600;">Kurucu Üye</span>
-          </div>
-          <h3 style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:var(--charcoal);margin-bottom:8px;">Canlı Lab<br>Dersleri</h3>
-          <p style="font-size:14px;color:#4A4548;line-height:1.7;margin-bottom:24px;">Haftada 3 canlı Zoom dersi — HIIT, Kuvvet ve Mobilite. Topluluğumuzla tanış, Buse'nin enerjisi ve etkili koçluğuyla eğlenerek vücudunu ve bedenini dönüştür.</p>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              Pazartesi · Çarşamba · Cuma akşamları Zoom üzerinden
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              HIIT · Güç · Mobilite — haftada 3 ders
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              48 saat tekrar izleme
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#4A4548;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              Panel erişimi dahil
-            </div>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:24px;">
-          <div style="text-align:right;">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--charcoal);line-height:1;">€59</div>
-            <div style="font-size:11px;color:#D4A89A;letter-spacing:1px;">/ay · kurucu üye</div>
-            <div style="font-size:11px;color:#D4A89A;text-decoration:line-through;opacity:.6;">Lansmandan sonra €89/ay</div>
-          </div>
-          <a href="https://buy.stripe.com/6oUcN48pz3Nqbgodr41kA0d" target="_blank" style="background:#C1848B;color:white;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;white-space:nowrap;" onmouseover="this.style.background='#9B6B6F'" onmouseout="this.style.background='#C1848B'">Şimdi Katıl →</a>
-        </div>
+      <!-- In-Person / Buse Method -->
+      <div class="reveal" style="background:#2D2A2E;border-radius:24px;padding:36px;position:relative;overflow:hidden;transition:all .3s;display:flex;flex-direction:column;" onmouseover="this.style.boxShadow='0 20px 60px rgba(45,42,46,.3)';this.style.transform='translateY(-4px)'" onmouseout="this.style.boxShadow='none';this.style.transform='none'">
+        <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Berlin · Premium</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:white;margin-bottom:10px;">The Buse Method<br><span style="font-size:16px;color:rgba(255,255,255,.5);">Yüz Yüze</span></h3>
+        <p style="font-size:13.5px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:24px;flex:1;">Berlin'de uygulamalı koçluk — hareket ve antrenman bilimi gerçek zamanlı. €119/seanstan başlıyor.</p>
+        <a href="personal-training.html" style="color:var(--gold);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;font-weight:500;">Devamını Gör →</a>
       </div>
     </div>
 
@@ -2173,7 +2159,7 @@
     </div>
 
     <!-- CTA -->
-    <a href="welcome.html" style="display:inline-block;background:#C8A96E;color:#2D2A2E;padding:20px 56px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;box-shadow:0 0 40px rgba(200,169,110,.2);" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">The Lab System'i Keşfet →</a>
+    <a href="lab-system-tr.html" style="display:inline-block;background:#C8A96E;color:#2D2A2E;padding:20px 56px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;box-shadow:0 0 40px rgba(200,169,110,.2);" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">The Lab System'i Keşfet →</a>
 
   </div>
 </section>
@@ -2401,15 +2387,15 @@
     <div class="footer-col">
       <h4>Hızlı Bağlantılar</h4>
       <a href="about-tr.html">Hakkımda</a>
-      <a href="#services">Hizmetler</a>
-      <a href="lab-system.html" style="color:var(--gold,#C8A96E);font-weight:500;">The Lab System</a>
+      <a href="classes-tr.html">Online Classes</a>
+      <a href="lab-system-tr.html" style="color:var(--gold,#C8A96E);font-weight:500;">The Lab System</a>
       <a href="https://substack.com/@trainwithbuse" target="_blank">Blog</a>
     </div>
     <div class="footer-col">
       <h4>Hizmetler</h4>
-      <a href="#booking">Online Koçluk</a>
-      <a href="#booking">Yüz Yüze Antrenman</a>
-      <a href="#booking">Grup Dersleri</a>
+      <a href="online-coaching-tr.html">Online Koçluk</a>
+      <a href="personal-training.html">Yüz Yüze Antrenman</a>
+      <a href="classes-tr.html">Grup Dersleri</a>
       <a href="welcome.html" target="_blank">Video Programlar</a>
     </div>
     <div class="footer-col">
@@ -2439,9 +2425,38 @@
     navLinks.classList.toggle('open');
   });
 
-  // Close menu on link click
+  // Close menu on link click (but not the Services dropdown toggle itself)
   navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => navLinks.classList.remove('open'));
+    link.addEventListener('click', () => {
+      if (link.classList.contains('nav-dropdown-toggle')) return;
+      navLinks.classList.remove('open');
+    });
+  });
+  // Services dropdown toggle
+  document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
+    toggle.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggle.closest('.nav-dropdown').classList.toggle('open');
+    });
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.nav-dropdown')) {
+      document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+    }
+  });
+  // Hover-intent tolerance: bridges the visual gap between the toggle and the
+  // panel so a mouse moving diagonally toward the menu doesn't lose :hover
+  // mid-transit and close it prematurely.
+  document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+    let closeTimer;
+    dropdown.addEventListener('mouseenter', () => {
+      clearTimeout(closeTimer);
+      dropdown.classList.add('open');
+    });
+    dropdown.addEventListener('mouseleave', () => {
+      closeTimer = setTimeout(() => dropdown.classList.remove('open'), 300);
+    });
   });
   // Scroll reveal
   const revealElements = document.querySelectorAll('.reveal');

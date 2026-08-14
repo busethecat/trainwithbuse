@@ -61,6 +61,25 @@
     .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; color: var(--charcoal); line-height: 1; margin-bottom: 4px; }
     .stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-light); }
 
+    /* TABS */
+    .tabs-row { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid rgba(232,180,184,.15); }
+    .tab-btn { padding: 10px 4px; margin-right: 20px; font-size: 13px; font-weight: 500; letter-spacing: .3px; cursor: pointer; border: none; background: none; color: var(--charcoal-light); border-bottom: 2px solid transparent; transition: all .2s; font-family: 'Outfit', sans-serif; }
+    .tab-btn:hover { color: var(--charcoal); }
+    .tab-btn.active { color: var(--rose-dark); border-bottom-color: var(--rose); }
+
+    /* INQUIRY CARD */
+    .inquiry-card { background: #fff; border-radius: 18px; padding: 20px 22px; margin-bottom: 12px; border: 1px solid rgba(232,180,184,.15); }
+    .iq-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; gap: 12px; }
+    .iq-name { font-size: 15px; font-weight: 500; color: var(--charcoal); margin-bottom: 3px; }
+    .iq-contact { font-size: 12px; color: var(--charcoal-light); }
+    .iq-date { font-size: 11px; color: var(--charcoal-light); white-space: nowrap; }
+    .iq-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; margin-bottom: 12px; }
+    .iq-field-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--charcoal-light); margin-bottom: 2px; }
+    .iq-field-value { font-size: 13px; color: var(--charcoal); }
+    .iq-parq-flag { color: var(--red); font-weight: 600; }
+    .iq-note { font-size: 13px; color: var(--charcoal-light); background: var(--cream-deep); border-radius: 10px; padding: 10px 12px; margin-top: 8px; line-height: 1.6; white-space: pre-wrap; }
+    .iq-note-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--charcoal-light); margin-bottom: 6px; margin-top: 12px; }
+
     /* FILTER */
     .filter-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
     .filter-btn { padding: 7px 16px; border-radius: 50px; font-size: 12px; letter-spacing: .5px; cursor: pointer; border: 1.5px solid rgba(232,180,184,.25); background: #fff; color: var(--charcoal-light); transition: all .2s; font-family: 'Outfit', sans-serif; }
@@ -144,17 +163,29 @@
   </div>
 
   <div class="layout">
-    <div class="stats" id="statsRow"></div>
-
-    <div class="filter-row">
-      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
-      <button class="filter-btn" onclick="setFilter('pending',this)">Pending</button>
-      <button class="filter-btn" onclick="setFilter('confirmed',this)">Confirmed</button>
-      <button class="filter-btn" onclick="setFilter('alternative_proposed',this)">Alternative Sent</button>
-      <button class="filter-btn" onclick="setFilter('cancelled',this)">Declined</button>
+    <div class="tabs-row">
+      <button class="tab-btn active" id="tabBookingsBtn" onclick="switchTab('bookings')">Bookings</button>
+      <button class="tab-btn" id="tabInquiriesBtn" onclick="switchTab('inquiries')">Inquiries</button>
     </div>
 
-    <div id="bookingsList"></div>
+    <div id="bookingsPanel">
+      <div class="stats" id="statsRow"></div>
+
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+        <button class="filter-btn" onclick="setFilter('pending',this)">Pending</button>
+        <button class="filter-btn" onclick="setFilter('confirmed',this)">Confirmed</button>
+        <button class="filter-btn" onclick="setFilter('alternative_proposed',this)">Alternative Sent</button>
+        <button class="filter-btn" onclick="setFilter('cancelled',this)">Declined</button>
+      </div>
+
+      <div id="bookingsList"></div>
+    </div>
+
+    <div id="inquiriesPanel" style="display:none;">
+      <div class="stats" id="inquiriesStatsRow"></div>
+      <div id="inquiriesList"></div>
+    </div>
   </div>
 </div>
 
@@ -287,6 +318,95 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// ============================================================
+// INQUIRIES TAB (The Buse Method applications)
+// ============================================================
+let allInquiries = [];
+let inquiriesLoaded = false;
+
+function switchTab(tab) {
+  document.getElementById('tabBookingsBtn').classList.toggle('active', tab === 'bookings');
+  document.getElementById('tabInquiriesBtn').classList.toggle('active', tab === 'inquiries');
+  document.getElementById('bookingsPanel').style.display = tab === 'bookings' ? 'block' : 'none';
+  document.getElementById('inquiriesPanel').style.display = tab === 'inquiries' ? 'block' : 'none';
+  if (tab === 'inquiries' && !inquiriesLoaded) loadInquiries();
+}
+
+async function loadInquiries() {
+  const { data, error } = await sb
+    .from('inquiries')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Failed to load inquiries:', error.message);
+    document.getElementById('inquiriesList').innerHTML = `<div class="empty">Could not load inquiries: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+  inquiriesLoaded = true;
+  allInquiries = data || [];
+  renderInquiriesStats();
+  renderInquiriesList();
+}
+
+function renderInquiriesStats() {
+  const total = allInquiries.length;
+  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const thisWeek = allInquiries.filter(i => new Date(i.created_at).getTime() >= weekAgo).length;
+  const flagged = allInquiries.filter(i => i.parq && Object.values(i.parq).some(v => v === true)).length;
+
+  document.getElementById('inquiriesStatsRow').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Total</div></div>
+    <div class="stat-card"><div class="stat-num">${thisWeek}</div><div class="stat-label">This Week</div></div>
+    <div class="stat-card"><div class="stat-num">${flagged}</div><div class="stat-label">Health Flags</div></div>
+  `;
+}
+
+function renderInquiriesList() {
+  const list = document.getElementById('inquiriesList');
+  if (allInquiries.length === 0) {
+    list.innerHTML = `<div class="empty">No applications yet.</div>`;
+    return;
+  }
+  list.innerHTML = allInquiries.map(i => inquiryCard(i)).join('');
+}
+
+const PARQ_LABELS = {
+  heart: 'Heart condition',
+  chestPain: 'Chest pain during activity',
+  balance: 'Dizziness / balance loss',
+  jointBone: 'Bone or joint problem',
+  medication: 'Currently on medication',
+};
+
+function inquiryCard(i) {
+  const dateStr = new Date(i.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  const parq = i.parq || {};
+  const parqFlags = Object.keys(PARQ_LABELS)
+    .filter(k => parq[k] === true)
+    .map(k => PARQ_LABELS[k]);
+  const goals = Array.isArray(i.goals) ? i.goals.join(', ') : '';
+
+  return `<div class="inquiry-card">
+    <div class="iq-top">
+      <div>
+        <div class="iq-name">${escapeHtml(i.full_name || '(no name)')}</div>
+        <div class="iq-contact">${escapeHtml(i.email)}${i.phone ? ' · ' + escapeHtml(i.phone) : ''}</div>
+      </div>
+      <div class="iq-date">${dateStr}</div>
+    </div>
+    <div class="iq-fields">
+      <div><div class="iq-field-label">Age</div><div class="iq-field-value">${escapeHtml(i.age ?? '—')}</div></div>
+      <div><div class="iq-field-label">Preferred Location</div><div class="iq-field-value">${escapeHtml(i.location || '—')}</div></div>
+      <div><div class="iq-field-label">Goals</div><div class="iq-field-value">${escapeHtml(goals || '—')}</div></div>
+      <div><div class="iq-field-label">Days / Week</div><div class="iq-field-value">${escapeHtml(i.days_per_week || '—')}</div></div>
+      <div style="grid-column:1/-1;"><div class="iq-field-label">Health Screening (PAR-Q)</div><div class="iq-field-value">${parqFlags.length ? `<span class="iq-parq-flag">⚠ ${parqFlags.map(escapeHtml).join(', ')}</span>` : 'No flags'}</div></div>
+      <div style="grid-column:1/-1;"><div class="iq-field-label">Injuries / Limitations</div><div class="iq-field-value">${escapeHtml(i.injuries || 'None stated')}</div></div>
+    </div>
+    ${i.intro ? `<div class="iq-note-label">Self-Introduction</div><div class="iq-note">${escapeHtml(i.intro)}</div>` : ''}
+  </div>`;
 }
 
 function bookingCard(b) {

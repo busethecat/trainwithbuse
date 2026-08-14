@@ -112,6 +112,34 @@ nav.scrolled {
 }
 .hamburger span { width: 26px; height: 2px; background: var(--charcoal); transition: all .3s; border-radius: 2px; }
 
+/* ── SERVICES DROPDOWN ── */
+.nav-dropdown { position: relative; }
+.nav-dropdown-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.nav-dropdown-caret { transition: transform 0.25s ease; }
+.nav-dropdown:hover .nav-dropdown-caret,
+.nav-dropdown.open .nav-dropdown-caret { transform: rotate(180deg); }
+.nav-dropdown-menu {
+  position: absolute; top: calc(100% + 18px); left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background: rgba(253, 246, 240, 0.98);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-radius: 14px; box-shadow: 0 20px 50px rgba(45, 42, 46, 0.14);
+  padding: 10px; min-width: 250px; list-style: none;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+}
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown.open .nav-dropdown-menu {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.nav-dropdown-menu li a {
+  display: block; padding: 12px 16px; font-size: 12px; letter-spacing: 0.5px;
+  text-transform: none; color: var(--charcoal-light); border-radius: 8px; white-space: nowrap;
+}
+.nav-dropdown-menu li a::after { display: none; }
+.nav-dropdown-menu li a:hover { background: rgba(200, 169, 110, 0.08); color: var(--rose); }
+
 /* ── HERO ── */
 .hero-about {
   min-height: 100vh;
@@ -497,6 +525,13 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
   }
   .nav-links a { font-size: 22px; }
   .hamburger { display: flex; z-index: 1001; }
+  .nav-dropdown-menu {
+    position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto;
+    display: none; box-shadow: none; background: rgba(200, 169, 110, 0.06);
+    margin-top: 12px; min-width: 0; text-align: center;
+  }
+  .nav-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu li a { font-size: 16px; }
   .hero-about { padding: 110px 24px 60px; }
   .hero-inner { grid-template-columns: 1fr; gap: 48px; }
   .hero-img-wrap { order: -1; max-width: 320px; }
@@ -533,12 +568,19 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
   <a href="de.html" class="nav-logo">BUSE</a>
   <ul class="nav-links" id="navLinks">
     <li><a href="about-de.html" class="nav-active">Über mich</a></li>
-    <li><a href="de.html#services">Leistungen</a></li>
-    <li><a href="lab-system.html" style="color:var(--gold);font-weight:500;">The Lab System</a></li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-toggle">Leistungen <svg class="nav-dropdown-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="classes-de.html">Online Classes</a></li>
+        <li><a href="online-coaching-de.html">1:1 Online Coaching</a></li>
+        <li><a href="personal-training-de.html">The Buse Method (Vor Ort)</a></li>
+        <li><a href="lab-system-de.html">The Lab System</a></li>
+      </ul>
+    </li>
     <li><a href="https://substack.com/@trainwithbuse" target="_blank">Blog</a></li>
     <li><a href="corporate-de.html">Unternehmen</a></li>
     <li><a href="login.html" class="nav-login">Mitglieder-Login</a></li>
-    <li><a href="personal-training.html" class="nav-cta">1:1 Buchen</a></li>
+    <li><a href="book-coaching-de.html" class="nav-cta">1:1 Buchen</a></li>
   </ul>
   <div class="lang-switcher">
     <a href="about.html" class="lang-pill">EN</a>
@@ -561,7 +603,7 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
       <h1>I knew from<br>the beginning.<br><em>I just had to<br>catch up.</em></h1>
       <p class="hero-sub">Manche Menschen finden ihren Weg. Ich wurde auf meinem geboren.</p>
       <div class="hero-ctas">
-        <a href="personal-training.html" class="btn-dark">Zusammenarbeiten →</a>
+        <a href="book-coaching-de.html" class="btn-dark">Zusammenarbeiten →</a>
         <a href="lab-system.html" class="btn-outline">Das Lab System entdecken</a>
       </div>
     </div>
@@ -876,7 +918,7 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
   <h2>Bereit,<br><em>zusammenzuarbeiten?</em></h2>
   <p>Ob du in Berlin bist oder irgendwo auf der Welt — es gibt einen Weg, mit mir zu arbeiten.</p>
   <div class="cta-btns">
-    <a href="personal-training.html" class="btn-gold">1:1-Sitzung buchen →</a>
+    <a href="book-coaching-de.html" class="btn-gold">1:1-Sitzung buchen →</a>
     <a href="lab-system.html" class="btn-ghost">Das Lab System entdecken</a>
     <a href="index.html#booking" class="btn-ghost">Online-Coaching starten</a>
   </div>
@@ -904,7 +946,35 @@ window.addEventListener('scroll', () => {
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
 hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
-navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  if (a.classList.contains('nav-dropdown-toggle')) return;
+  navLinks.classList.remove('open');
+}));
+document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
+  toggle.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggle.closest('.nav-dropdown').classList.toggle('open');
+  });
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-dropdown')) {
+    document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+  }
+});
+// Hover-intent tolerance: bridges the visual gap between the toggle and the
+  // panel so a mouse moving diagonally toward the menu doesn't lose :hover
+  // mid-transit and close it prematurely.
+document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+  let closeTimer;
+  dropdown.addEventListener('mouseenter', () => {
+    clearTimeout(closeTimer);
+    dropdown.classList.add('open');
+  });
+  dropdown.addEventListener('mouseleave', () => {
+    closeTimer = setTimeout(() => dropdown.classList.remove('open'), 300);
+  });
+});
 
 
 const obs = new IntersectionObserver((entries) => {
