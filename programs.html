@@ -235,6 +235,19 @@ document.querySelectorAll('#langSwitcher .lang-pill').forEach((p,i)=>p.classList
 
 const {createClient}=supabase;
 const sb=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+// ── Leave-site sign-out (see dashboard.html for full explanation) ──────
+const INTERNAL_PAGES=['dashboard.html','programs.html','course.html','booking.html'];
+let _internalNav=false;
+function markInternalNav(){_internalNav=true;}
+document.addEventListener('click',(e)=>{
+  const a=e.target.closest('a[href]');
+  if(!a)return;
+  const path=(a.getAttribute('href')||'').split('?')[0].split('#')[0];
+  if(INTERNAL_PAGES.includes(path))markInternalNav();
+},true);
+window.addEventListener('pagehide',()=>{ if(!_internalNav) sb.auth.signOut(); });
+window.addEventListener('beforeunload',()=>{ if(!_internalNav) sb.auth.signOut(); });
 let currentUser=null,_purchases=new Set(),_progress={},_purchasesRaw=[];
 
 // 30-minute inactivity timeout — signs the user out and sends them back to login

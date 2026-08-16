@@ -376,7 +376,7 @@ body::before{
 
 <!-- CREATE YOUR OWN BUNDLE -->
 <section style="background:rgba(0,0,0,.2);padding:80px 0;">
-  <div style="max-width:900px;margin:0 auto;padding:0 40px;">
+  <div class="bundle-wrap" style="max-width:900px;margin:0 auto;padding:0 40px;">
     <div style="text-align:center;margin-bottom:16px;">
       <span style="display:inline-block;background:rgba(200,169,110,.15);color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:5px 16px;border-radius:50px;font-weight:600;">Coming Soon</span>
     </div>
@@ -468,6 +468,10 @@ body::before{
   }
   @media (max-width: 700px) {
     #bundlePicker { grid-template-columns: 1fr 1fr !important; }
+    .bundle-wrap { padding: 0 18px !important; }
+  }
+  @media (max-width: 420px) {
+    #bundlePicker { grid-template-columns: 1fr !important; }
   }
 </style>
 

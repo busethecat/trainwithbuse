@@ -127,6 +127,19 @@
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--charcoal); color: var(--cream); padding: 14px 24px; border-radius: 50px; font-size: 13px; transition: transform .4s cubic-bezier(.16,1,.3,1); z-index: 999; white-space: nowrap; }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
+    /* SESSION TYPE CHOICE MODAL */
+    .session-choice-overlay { position: fixed; inset: 0; background: rgba(45,42,46,.55); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 24px; }
+    .session-choice-overlay.show { display: flex; }
+    .session-choice-card { background: #fff; border-radius: 24px; padding: 36px; max-width: 440px; width: 100%; box-shadow: 0 20px 60px rgba(45,42,46,.25); }
+    .session-choice-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: var(--charcoal); margin-bottom: 8px; text-align: center; }
+    .session-choice-card p { font-size: 13px; color: var(--charcoal-light); text-align: center; margin-bottom: 24px; line-height: 1.6; }
+    .session-choice-options { display: flex; flex-direction: column; gap: 12px; }
+    .session-choice-btn { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-radius: 14px; border: 1.5px solid rgba(232,180,184,.25); background: var(--cream-deep); text-decoration: none; color: var(--charcoal); transition: all .2s; }
+    .session-choice-btn:hover { border-color: var(--rose); background: #fff; }
+    .session-choice-btn .sc-label { font-size: 14px; font-weight: 500; }
+    .session-choice-btn .sc-price { font-size: 12px; color: var(--rose-dark); }
+    .session-choice-close { display: block; margin: 20px auto 0; background: none; border: none; color: var(--charcoal-light); font-size: 12px; cursor: pointer; text-decoration: underline; font-family: 'Outfit', sans-serif; }
+
     /* AUTH GUARD */
     .auth-guard { display: none; text-align: center; padding: 100px 24px; }
     .auth-guard h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; margin-bottom: 12px; }
@@ -183,7 +196,7 @@
         <div class="selected-date-display" id="selectedDateDisplay"></div>
 
         <div id="noPurchaseMsg" class="no-purchase-note" style="display:none;">
-          You don't have an active coaching session. <a href="https://buy.stripe.com/8x2dR835f1Fi1FO5YC1kA0j" target="_blank">Book a Single Session →</a>
+          You don't have an active coaching session. <a href="#" onclick="openSessionTypeChoice(event)">Book a Single Session →</a>
         </div>
 
         <div id="bookingFormInner">
@@ -247,10 +260,49 @@
 
 <div class="toast" id="toast"></div>
 
+<div class="session-choice-overlay" id="sessionChoiceOverlay" onclick="if(event.target===this)closeSessionTypeChoice()">
+  <div class="session-choice-card">
+    <h3>Online or in-person?</h3>
+    <p>Choose the format for your single session.</p>
+    <div class="session-choice-options">
+      <a class="session-choice-btn" href="https://buy.stripe.com/8x2dR835f1Fi1FO5YC1kA0j" target="_blank">
+        <span class="sc-label">1:1 Online Coaching</span>
+        <span class="sc-price">€89</span>
+      </a>
+      <a class="session-choice-btn" href="https://buy.stripe.com/fZueVcgW56ZCdowfzc1kA0h" target="_blank">
+        <span class="sc-label">In-Person (Berlin)</span>
+        <span class="sc-price">€119</span>
+      </a>
+    </div>
+    <button class="session-choice-close" onclick="closeSessionTypeChoice()">Cancel</button>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ── Leave-site sign-out (see dashboard.html for full explanation) ──────
+const INTERNAL_PAGES = ['dashboard.html','programs.html','course.html','booking.html'];
+let _internalNav = false;
+function markInternalNav(){ _internalNav = true; }
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href]');
+  if (!a) return;
+  const path = (a.getAttribute('href') || '').split('?')[0].split('#')[0];
+  if (INTERNAL_PAGES.includes(path)) markInternalNav();
+}, true);
+window.addEventListener('pagehide', () => { if (!_internalNav) sb.auth.signOut(); });
+window.addEventListener('beforeunload', () => { if (!_internalNav) sb.auth.signOut(); });
+
+function openSessionTypeChoice(e){
+  if (e) e.preventDefault();
+  document.getElementById('sessionChoiceOverlay').classList.add('show');
+}
+function closeSessionTypeChoice(){
+  document.getElementById('sessionChoiceOverlay').classList.remove('show');
+}
 
 let currentUser = null;
 let allBookings = [];

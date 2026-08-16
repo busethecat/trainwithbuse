@@ -1558,7 +1558,7 @@
   <h2 class="section-title">Lass uns gemeinsam einen <em>gesünderen Arbeitsplatz</em> schaffen</h2>
   <p class="section-desc">Fülle das Formular aus und ich melde mich innerhalb von 24 Stunden mit Verfügbarkeit und einem individuellen Angebot.</p>
 
-  <form class="contact-form" action="https://formspree.io/f/xjkvqpqr" method="POST">
+  <form class="contact-form" id="corporateForm" action="https://formspree.io/f/xjkvqpqr" method="POST" onsubmit="return handleCorporateSubmit(event)">
     <div class="form-row">
       <div class="form-group">
         <label>Dein Name *</label>
@@ -1606,9 +1606,14 @@
       <textarea name="message" placeholder="Erzähl uns von den Bedürfnissen deines Teams, Terminwünschen oder spezifischen Zielen..."></textarea>
     </div>
     <input type="hidden" name="_subject" value="Corporate Wellness Inquiry — trainwithbuse.com">
-    <button type="submit" class="form-submit">Anfrage senden →</button>
+    <button type="submit" class="form-submit" id="corporateSubmitBtn">Anfrage senden →</button>
     <p class="form-note">Kostenloses Kennenlerngespräch inklusive. Keine Verpflichtung.</p>
+    <p class="form-note" id="corporateFormError" style="display:none;color:#c0392b;">Beim Senden deiner Anfrage ist ein Fehler aufgetreten. Bitte versuche es erneut oder schreibe direkt an hello@trainwithbuse.com.</p>
   </form>
+  <div id="corporateFormSuccess" style="display:none;text-align:center;padding:40px 0;">
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;margin-bottom:12px;">Vielen Dank!</h3>
+    <p class="form-note">Deine Anfrage ist eingegangen. Buse meldet sich innerhalb von 24 Stunden mit Verfügbarkeit und einem individuellen Angebot bei dir.</p>
+  </div>
 </section>
 
 <!-- FOOTER -->
@@ -1616,7 +1621,56 @@
   <p>© 2026 Train With Buse. Alle Rechte vorbehalten. · <a href="de.html">Startseite</a> · <a href="plans-de.html">Individuelle Pläne</a> · <a href="policy-de.html">Datenschutz & AGB</a></p>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
 <script>
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async function handleCorporateSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('corporateForm');
+  const btn = document.getElementById('corporateSubmitBtn');
+  const errorEl = document.getElementById('corporateFormError');
+  errorEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Wird gesendet...';
+
+  const fd = new FormData(form);
+  const payload = {
+    name: fd.get('name'),
+    title: fd.get('title') || null,
+    company: fd.get('company'),
+    email: fd.get('email'),
+    team_size: fd.get('team_size') || null,
+    interest: fd.get('interest') || null,
+    message: fd.get('message') || null,
+  };
+
+  const { error: dbError } = await sb.from('corporate_inquiries').insert(payload);
+  if (dbError) {
+    console.error('Failed to save corporate inquiry:', dbError.message);
+    btn.disabled = false;
+    btn.textContent = 'Anfrage senden →';
+    errorEl.style.display = 'block';
+    return false;
+  }
+
+  try {
+    await fetch(form.action, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: fd,
+    });
+  } catch (err) {
+    console.error('Formspree notification failed (inquiry was still saved):', err);
+  }
+
+  form.style.display = 'none';
+  document.getElementById('corporateFormSuccess').style.display = 'block';
+  return false;
+}
+
 (function() {
   function fmt(n) {
     return '€' + Math.round(n).toLocaleString('de-DE');

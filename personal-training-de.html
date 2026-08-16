@@ -728,13 +728,14 @@ async function submitApplication(){
   ].join('\n');
 
   try {
-    await fetch('https://booking-notify.trainwithbuse.workers.dev/admin', {
+    await fetch('https://booking-notify.trainwithbuse.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        toEmail: 'trainwithbuse@gmail.com',
-        type: 'buse_method_application',
-        data: { email: a.email, notes: notes },
+        userEmail: a.email,
+        sessionType: 'The Buse Method — Bewerbung',
+        slots: [],
+        notes: `Name: ${a.name || ''}\n` + notes,
       })
     });
   } catch (err) {

@@ -116,6 +116,12 @@
     .btn-alt:hover { border-color: var(--purple); color: var(--purple); }
     .btn-decline { font-size: 12px; padding: 7px 14px; border-radius: 10px; border: 1px solid var(--red); background: var(--red-light); color: var(--red); cursor: pointer; font-family: 'Outfit', sans-serif; transition: all .2s; }
     .btn-decline:hover { background: var(--red); color: #fff; }
+    .btn-contacted { font-size: 12px; padding: 7px 14px; border-radius: 10px; border: 1px solid var(--amber); background: var(--amber-light); color: var(--amber); cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 500; transition: all .2s; }
+    .btn-contacted:hover { background: var(--amber); color: #fff; }
+    .btn-contacted.is-contacted { border-color: var(--green); background: var(--green-light); color: var(--green); }
+    .btn-contacted.is-contacted:hover { background: var(--green); color: #fff; }
+    .btn-delete { font-size: 11px; padding: 7px 12px; border-radius: 10px; border: 1px solid transparent; background: none; color: var(--charcoal-light); cursor: pointer; font-family: 'Outfit', sans-serif; transition: all .2s; margin-left: auto; }
+    .btn-delete:hover { color: var(--red); border-color: var(--red); background: var(--red-light); }
 
     .alt-panel { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(232,180,184,.15); }
     .alt-panel.show { display: block; }
@@ -133,6 +139,10 @@
       .stats { grid-template-columns: repeat(2, 1fr); }
       .topbar { padding: 0 16px; }
       .layout { padding: 16px; }
+      .iq-fields { grid-template-columns: 1fr; }
+      .tabs-row { gap: 4px; }
+      .tab-btn { margin-right: 12px; font-size: 12px; }
+      .iq-top { flex-direction: column; gap: 6px; }
     }
   </style>
 </head>
@@ -166,6 +176,8 @@
     <div class="tabs-row">
       <button class="tab-btn active" id="tabBookingsBtn" onclick="switchTab('bookings')">Bookings</button>
       <button class="tab-btn" id="tabInquiriesBtn" onclick="switchTab('inquiries')">Inquiries</button>
+      <button class="tab-btn" id="tabCorporateBtn" onclick="switchTab('corporate')">Corporate</button>
+      <button class="tab-btn" id="tabParticipantsBtn" onclick="switchTab('participants')">Participants</button>
     </div>
 
     <div id="bookingsPanel">
@@ -184,7 +196,27 @@
 
     <div id="inquiriesPanel" style="display:none;">
       <div class="stats" id="inquiriesStatsRow"></div>
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="setInquiryFilter('new',this)">New</button>
+        <button class="filter-btn" onclick="setInquiryFilter('accepted',this)">Accepted</button>
+        <button class="filter-btn" onclick="setInquiryFilter('rejected',this)">Rejected</button>
+      </div>
       <div id="inquiriesList"></div>
+    </div>
+
+    <div id="corporatePanel" style="display:none;">
+      <div class="stats" id="corporateStatsRow"></div>
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="setCorporateFilter('new',this)">New</button>
+        <button class="filter-btn" onclick="setCorporateFilter('accepted',this)">Accepted</button>
+        <button class="filter-btn" onclick="setCorporateFilter('rejected',this)">Rejected</button>
+      </div>
+      <div id="corporateList"></div>
+    </div>
+
+    <div id="participantsPanel" style="display:none;">
+      <div class="stats" id="participantsStatsRow"></div>
+      <div id="participantsList"></div>
     </div>
   </div>
 </div>
@@ -321,17 +353,69 @@ function escapeHtml(str) {
 }
 
 // ============================================================
-// INQUIRIES TAB (The Buse Method applications)
+// SHARED WORKFLOW HELPERS (Accept / Reject / Contacted / Delete)
+// Used by both the Inquiries tab (table: inquiries) and the
+// Corporate tab (table: corporate_inquiries) — same status model:
+// status: 'new' | 'accepted' | 'rejected', contacted: boolean
+// (contacted is only meaningful once accepted).
+// ============================================================
+async function setEntryStatus(table, id, status, reloadFn) {
+  const { error } = await sb.from(table).update({ status }).eq('id', id);
+  if (error) { alert('Error: ' + error.message); return; }
+  await reloadFn();
+}
+async function toggleEntryContacted(table, id, current, reloadFn) {
+  const { error } = await sb.from(table).update({ contacted: !current }).eq('id', id);
+  if (error) { alert('Error: ' + error.message); return; }
+  await reloadFn();
+}
+async function deleteEntry(table, id, label, reloadFn) {
+  if (!confirm(`Delete this ${label} permanently? This cannot be undone.`)) return;
+  const { error } = await sb.from(table).delete().eq('id', id);
+  if (error) { alert('Error: ' + error.message); return; }
+  await reloadFn();
+}
+function workflowActionsHtml(table, id, status, contacted, reloadFnName) {
+  if (status === 'new') {
+    return `<button class="btn-confirm" onclick="setEntryStatus('${table}','${id}','accepted',${reloadFnName})">Accept</button>
+      <button class="btn-decline" onclick="setEntryStatus('${table}','${id}','rejected',${reloadFnName})">Reject</button>
+      <button class="btn-delete" onclick="deleteEntry('${table}','${id}','entry',${reloadFnName})">Delete</button>`;
+  }
+  if (status === 'accepted') {
+    return `<button class="btn-contacted${contacted ? ' is-contacted' : ''}" onclick="toggleEntryContacted('${table}','${id}',${contacted},${reloadFnName})">${contacted ? '✓ Contacted' : 'Not yet contacted'}</button>
+      <button class="btn-delete" onclick="deleteEntry('${table}','${id}','entry',${reloadFnName})">Delete</button>`;
+  }
+  // rejected
+  return `<button class="btn-alt" onclick="setEntryStatus('${table}','${id}','new',${reloadFnName})">Move back to New</button>
+    <button class="btn-delete" onclick="deleteEntry('${table}','${id}','entry',${reloadFnName})">Delete</button>`;
+}
+
+// ============================================================
+// INQUIRIES TAB (The Buse Method individual applications)
 // ============================================================
 let allInquiries = [];
 let inquiriesLoaded = false;
+let currentInquiryFilter = 'new';
 
 function switchTab(tab) {
   document.getElementById('tabBookingsBtn').classList.toggle('active', tab === 'bookings');
   document.getElementById('tabInquiriesBtn').classList.toggle('active', tab === 'inquiries');
+  document.getElementById('tabCorporateBtn').classList.toggle('active', tab === 'corporate');
+  document.getElementById('tabParticipantsBtn').classList.toggle('active', tab === 'participants');
   document.getElementById('bookingsPanel').style.display = tab === 'bookings' ? 'block' : 'none';
   document.getElementById('inquiriesPanel').style.display = tab === 'inquiries' ? 'block' : 'none';
+  document.getElementById('corporatePanel').style.display = tab === 'corporate' ? 'block' : 'none';
+  document.getElementById('participantsPanel').style.display = tab === 'participants' ? 'block' : 'none';
   if (tab === 'inquiries' && !inquiriesLoaded) loadInquiries();
+  if (tab === 'corporate' && !corporateLoaded) loadCorporateInquiries();
+  if (tab === 'participants' && !participantsLoaded) loadParticipants();
+}
+
+function setInquiryFilter(filter, btn) {
+  currentInquiryFilter = filter;
+  btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderInquiriesList();
 }
 
 async function loadInquiries() {
@@ -353,24 +437,26 @@ async function loadInquiries() {
 
 function renderInquiriesStats() {
   const total = allInquiries.length;
-  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-  const thisWeek = allInquiries.filter(i => new Date(i.created_at).getTime() >= weekAgo).length;
+  const newCount = allInquiries.filter(i => (i.status || 'new') === 'new').length;
+  const notContacted = allInquiries.filter(i => i.status === 'accepted' && !i.contacted).length;
   const flagged = allInquiries.filter(i => i.parq && Object.values(i.parq).some(v => v === true)).length;
 
   document.getElementById('inquiriesStatsRow').innerHTML = `
     <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Total</div></div>
-    <div class="stat-card"><div class="stat-num">${thisWeek}</div><div class="stat-label">This Week</div></div>
+    <div class="stat-card"><div class="stat-num">${newCount}</div><div class="stat-label">New</div></div>
+    <div class="stat-card"><div class="stat-num">${notContacted}</div><div class="stat-label">Awaiting Contact</div></div>
     <div class="stat-card"><div class="stat-num">${flagged}</div><div class="stat-label">Health Flags</div></div>
   `;
 }
 
 function renderInquiriesList() {
   const list = document.getElementById('inquiriesList');
-  if (allInquiries.length === 0) {
-    list.innerHTML = `<div class="empty">No applications yet.</div>`;
+  const items = allInquiries.filter(i => (i.status || 'new') === currentInquiryFilter);
+  if (items.length === 0) {
+    list.innerHTML = `<div class="empty">No ${currentInquiryFilter} applications.</div>`;
     return;
   }
-  list.innerHTML = allInquiries.map(i => inquiryCard(i)).join('');
+  list.innerHTML = items.map(i => inquiryCard(i)).join('');
 }
 
 const PARQ_LABELS = {
@@ -388,6 +474,7 @@ function inquiryCard(i) {
     .filter(k => parq[k] === true)
     .map(k => PARQ_LABELS[k]);
   const goals = Array.isArray(i.goals) ? i.goals.join(', ') : '';
+  const status = i.status || 'new';
 
   return `<div class="inquiry-card">
     <div class="iq-top">
@@ -406,6 +493,81 @@ function inquiryCard(i) {
       <div style="grid-column:1/-1;"><div class="iq-field-label">Injuries / Limitations</div><div class="iq-field-value">${escapeHtml(i.injuries || 'None stated')}</div></div>
     </div>
     ${i.intro ? `<div class="iq-note-label">Self-Introduction</div><div class="iq-note">${escapeHtml(i.intro)}</div>` : ''}
+    <div class="bc-actions" style="margin-top:14px;">${workflowActionsHtml('inquiries', i.id, status, !!i.contacted, 'loadInquiries')}</div>
+  </div>`;
+}
+
+// ============================================================
+// CORPORATE TAB (corporate.html contact form submissions)
+// ============================================================
+let allCorporate = [];
+let corporateLoaded = false;
+let currentCorporateFilter = 'new';
+
+function setCorporateFilter(filter, btn) {
+  currentCorporateFilter = filter;
+  btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCorporateList();
+}
+
+async function loadCorporateInquiries() {
+  const { data, error } = await sb
+    .from('corporate_inquiries')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Failed to load corporate inquiries:', error.message);
+    document.getElementById('corporateList').innerHTML = `<div class="empty">Could not load corporate inquiries: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+  corporateLoaded = true;
+  allCorporate = data || [];
+  renderCorporateStats();
+  renderCorporateList();
+}
+
+function renderCorporateStats() {
+  const total = allCorporate.length;
+  const newCount = allCorporate.filter(c => (c.status || 'new') === 'new').length;
+  const notContacted = allCorporate.filter(c => c.status === 'accepted' && !c.contacted).length;
+
+  document.getElementById('corporateStatsRow').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Total</div></div>
+    <div class="stat-card"><div class="stat-num">${newCount}</div><div class="stat-label">New</div></div>
+    <div class="stat-card"><div class="stat-num">${notContacted}</div><div class="stat-label">Awaiting Contact</div></div>
+  `;
+}
+
+function renderCorporateList() {
+  const list = document.getElementById('corporateList');
+  const items = allCorporate.filter(c => (c.status || 'new') === currentCorporateFilter);
+  if (items.length === 0) {
+    list.innerHTML = `<div class="empty">No ${currentCorporateFilter} corporate inquiries.</div>`;
+    return;
+  }
+  list.innerHTML = items.map(c => corporateCard(c)).join('');
+}
+
+function corporateCard(c) {
+  const dateStr = new Date(c.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  const status = c.status || 'new';
+
+  return `<div class="inquiry-card">
+    <div class="iq-top">
+      <div>
+        <div class="iq-name">${escapeHtml(c.name)}${c.title ? ' · ' + escapeHtml(c.title) : ''}</div>
+        <div class="iq-contact">${escapeHtml(c.company)} · ${escapeHtml(c.email)}</div>
+      </div>
+      <div class="iq-date">${dateStr}</div>
+    </div>
+    <div class="iq-fields">
+      <div><div class="iq-field-label">Team Size</div><div class="iq-field-value">${escapeHtml(c.team_size || '—')}</div></div>
+      <div><div class="iq-field-label">Interested In</div><div class="iq-field-value">${escapeHtml(c.interest || '—')}</div></div>
+    </div>
+    ${c.message ? `<div class="iq-note-label">Message</div><div class="iq-note">${escapeHtml(c.message)}</div>` : ''}
+    <div class="bc-actions" style="margin-top:14px;">${workflowActionsHtml('corporate_inquiries', c.id, status, !!c.contacted, 'loadCorporateInquiries')}</div>
   </div>`;
 }
 
@@ -538,6 +700,74 @@ async function sendEmail(toEmail, type, data) {
     });
     if (!res.ok) console.error('Email notify failed with status:', res.status);
   } catch(e) { console.error('Email error:', e); }
+}
+
+// ============================================================
+// PARTICIPANTS TAB (Live Lab Classes — captured via Stripe custom
+// checkout fields by the stripe-webhook-worker, read-only here)
+// ============================================================
+let allParticipants = [];
+let participantsLoaded = false;
+
+const CLASS_TIER_LABELS = { founding: 'Founding', standard: 'Standard', annual: 'Annual' };
+
+async function loadParticipants() {
+  const { data, error } = await sb
+    .from('participants')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Failed to load participants:', error.message);
+    document.getElementById('participantsList').innerHTML = `<div class="empty">Could not load participants: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+  participantsLoaded = true;
+  allParticipants = data || [];
+  renderParticipantsStats();
+  renderParticipantsList();
+}
+
+function renderParticipantsStats() {
+  const total = allParticipants.length;
+  const byTier = {};
+  allParticipants.forEach(p => { byTier[p.class_tier] = (byTier[p.class_tier] || 0) + 1; });
+
+  const tierCards = Object.keys(CLASS_TIER_LABELS).map(tier =>
+    `<div class="stat-card"><div class="stat-num">${byTier[tier] || 0}</div><div class="stat-label">${CLASS_TIER_LABELS[tier]}</div></div>`
+  ).join('');
+
+  document.getElementById('participantsStatsRow').innerHTML =
+    `<div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Total</div></div>` + tierCards;
+}
+
+function renderParticipantsList() {
+  const list = document.getElementById('participantsList');
+  if (allParticipants.length === 0) {
+    list.innerHTML = `<div class="empty">No participants yet — they'll appear here automatically once someone completes checkout with the custom fields filled in.</div>`;
+    return;
+  }
+  list.innerHTML = allParticipants.map(p => participantCard(p)).join('');
+}
+
+function participantCard(p) {
+  const dateStr = new Date(p.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  const tierLabel = CLASS_TIER_LABELS[p.class_tier] || p.class_tier;
+  return `<div class="inquiry-card">
+    <div class="iq-top">
+      <div>
+        <div class="iq-name">${escapeHtml(p.full_name || '(no name captured)')}</div>
+        <div class="iq-contact">${escapeHtml(p.email)}</div>
+      </div>
+      <div class="iq-date">${dateStr}</div>
+    </div>
+    <div class="iq-fields">
+      <div style="grid-column:1/-1;"><div class="iq-field-label">Class Tier</div><div class="iq-field-value">${escapeHtml(tierLabel)}</div></div>
+    </div>
+    <div class="bc-actions" style="margin-top:14px;">
+      <button class="btn-delete" onclick="deleteEntry('participants','${p.id}','participant',loadParticipants)">Delete</button>
+    </div>
+  </div>`;
 }
 </script>
 </body>

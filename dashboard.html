@@ -1284,6 +1284,24 @@ document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('cli
 // ══════════════════════════════
 const {createClient}=supabase;
 const sb=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+// ── Leave-site sign-out ──────────────────────────────────────────────
+// Signs out the moment the user actually leaves the member area (closes
+// the tab/browser, or navigates to a different site) — but NOT when
+// navigating between dashboard/programs/course/booking, since those are
+// separate page loads in this multi-page app and marking every internal
+// link avoids forcing a re-login on each click between them.
+const INTERNAL_PAGES=['dashboard.html','programs.html','course.html','booking.html'];
+let _internalNav=false;
+function markInternalNav(){_internalNav=true;}
+document.addEventListener('click',(e)=>{
+  const a=e.target.closest('a[href]');
+  if(!a)return;
+  const path=(a.getAttribute('href')||'').split('?')[0].split('#')[0];
+  if(INTERNAL_PAGES.includes(path))markInternalNav();
+},true);
+window.addEventListener('pagehide',()=>{ if(!_internalNav) sb.auth.signOut(); });
+window.addEventListener('beforeunload',()=>{ if(!_internalNav) sb.auth.signOut(); });
 let currentUser=null,_purchases=new Set(),_progress={},_purchasesRaw=[];
 
 // 30-minute inactivity timeout — signs the user out and sends them back to login
@@ -1714,7 +1732,7 @@ function renderFavs(){
   const sub=(tl.subtitles||{});
   body.innerHTML=favs.map(id=>{
     const c=COURSES[id];if(!c)return'';
-    return`<div class="fav-item" onclick="window.location.href='course.html?id=${id}'">
+    return`<div class="fav-item" onclick="markInternalNav();window.location.href='course.html?id=${id}'">
       <div style="width:10px;height:10px;border-radius:50%;background:${c.color};flex-shrink:0"></div>
       <div style="flex:1"><div style="font-size:15px">${c.title}</div><div style="font-size:12px;color:var(--nude);margin-top:2px">${sub[c.subtitleKey]||c.subtitle}</div></div>
       <button class="fav-remove" onclick="event.stopPropagation();removeFav('${id}')">✕</button>
