@@ -227,6 +227,19 @@ body.theme-male .assessment-program{color:#F0EBE4}
 body.theme-male .assessment-reason{color:#A09488;border-left-color:var(--gold)}
 body.theme-male .btn-assessment-primary{background:var(--gold);color:#141210}
 body.theme-male .btn-assessment-primary:hover{background:#D4B87A}
+
+/* ── NEXT STEP ── */
+.nextstep-section{padding:24px 0 0}
+.nextstep-card{background:linear-gradient(135deg,rgba(200,169,110,.08),rgba(193,132,139,.06));border:1px solid rgba(200,169,110,.2);border-radius:20px;padding:26px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.nextstep-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.nextstep-title{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:500;color:var(--charcoal);margin-bottom:4px}
+.nextstep-sub{font-size:13px;color:var(--charcoal-light);line-height:1.5}
+.nextstep-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:8px;background:var(--charcoal);color:white;padding:13px 26px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .3s}
+.nextstep-btn:hover{background:var(--rose-dark);transform:translateY(-1px)}
+body.theme-male .nextstep-card{background:linear-gradient(135deg,rgba(200,169,110,.1),rgba(30,26,23,.5));border-color:rgba(200,169,110,.25)}
+body.theme-male .nextstep-title{color:#F0EBE4}
+body.theme-male .nextstep-btn{background:var(--gold);color:#141210}
+body.theme-male .nextstep-btn:hover{background:#D4B87A}
 .programs-cta:hover .programs-arrow{transform:translateX(8px)}
 .programs-cta:hover .programs-title{color:var(--rose)}
 .programs-left{}
@@ -541,6 +554,8 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
 .timeline-note-date{font-size:10px;letter-spacing:1px;color:var(--nude);margin-bottom:3px}
 .timeline-note-text{font-size:13px;line-height:1.6;color:var(--charcoal)}
 .timeline-empty{font-size:13px;font-style:italic;color:var(--charcoal-light);opacity:.75;padding:6px 0}
+.community-line{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--nude);letter-spacing:.3px}
+.community-line::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
 
 @media(max-width:600px){
   .badges-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px}
@@ -733,6 +748,11 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
     <div class="hero-eyebrow" id="heroEyebrow">Member Portal</div>
     <div class="hero-name" id="heroName">Welcome, <em>loading...</em> <span class="star">✦</span></div>
     <div class="hero-date" id="heroDate">—</div>
+  </section>
+
+  <!-- NEXT STEP -->
+  <section class="nextstep-section">
+    <div id="nextStepContent"></div>
   </section>
 
   <!-- ASSESSMENT REPORT -->
@@ -1101,6 +1121,17 @@ en:{
   substackLabel:"Today's Read",cycleLabel:'Cycle Tracker',counterEyebrow:'Right Now',
   momentumLabel:'Your Rhythm',
   momentumMsgs:['Every journey starts with a first step.','A gentle beginning — small steps add up.','Good rhythm building this month.','Strong consistency this month.','Incredible rhythm — you showed up every week.'],
+  nextStepEyebrow:'Your Next Step',
+  nextStepConfirmed:'Confirmed — see you then.',
+  nextStepPending:'Awaiting confirmation — Buse will confirm within 12 hours.',
+  nextStepSessionOn:(dateStr,time)=>`Session on ${dateStr} at ${time}`,
+  nextStepManage:'Manage Booking',
+  nextStepBookTitle:'Ready for your next session?',
+  nextStepBookSub:'Book your next 1:1 with Buse in one click.',
+  nextStepBookBtn:'Book Now →',
+  nextStepExploreTitle:'Start your first Lab',
+  nextStepExploreSub:'Step into science-backed training built around you.',
+  nextStepExploreBtn:'Explore Labs →',
   counterLabel:'people are training with Buse right now',counterLive:'Live',
   progEyebrow:'My Space',progTitle:'My Programs',progSub:'Continue where you left off',
   upcomingEyebrow:'Live Class',upcomingTitle:'You have a class - join now',
@@ -1122,6 +1153,7 @@ en:{
   whyThisLab:'Why this Lab',timelineTitle:'Movement Timeline',
   timelineEmpty:"Buse hasn't logged an assessment for this Lab yet.",
   timelineMobility:'Mobility',timelineStrength:'Strength',timelineBalance:'Balance',
+  communityCount:(n)=>`${n} ${n===1?'person':'people'} completed this Lab this week`,
   sb_upcoming:'Upcoming Classes',sb_upcomingSub:'Your live schedule',
   sb_support:'Support',sb_faqSub:'Frequently asked questions',
   sb_contact:'Contact',sb_legal:'Legal',
@@ -1216,6 +1248,17 @@ tr:{
   substackLabel:'Gunun Yazisi',cycleLabel:'Dongu Takibi',counterEyebrow:'Su An',
   momentumLabel:'Ritmin',
   momentumMsgs:['Her yolculuk bir adimla baslar.','Yumusak bir baslangic — kucuk adimlar birikir.','Bu ay iyi bir ritim yakaliyorsun.','Bu ay guclu bir tutarlilik gosterdin.','Inanilmaz bir ritim — her hafta oradaydin.'],
+  nextStepEyebrow:'Sonraki Adimin',
+  nextStepConfirmed:'Onaylandi — o zaman gorusuruz.',
+  nextStepPending:'Onay bekleniyor — Buse 12 saat icinde onaylayacak.',
+  nextStepSessionOn:(dateStr,time)=>`${dateStr} tarihinde saat ${time} seans`,
+  nextStepManage:'Rezervasyonu Yonet',
+  nextStepBookTitle:'Bir sonraki seansa hazir misin?',
+  nextStepBookSub:'Buse ile 1:1 seansini tek tikla ayirt.',
+  nextStepBookBtn:'Simdi Ayirt ->',
+  nextStepExploreTitle:'Ilk Labini basla',
+  nextStepExploreSub:'Senin icin kurulmus, bilim destekli antrenmana adim at.',
+  nextStepExploreBtn:'Lablari Kesfet ->',
   counterLabel:'kisi su an Buse ile antrenman yapiyor',counterLive:'Canli',
   progEyebrow:'Alanim',progTitle:'Programlarim',progSub:'Kaldigin yerden devam et',
   upcomingEyebrow:'Canli Ders',upcomingTitle:'Bugun bir dersin var',
@@ -1234,6 +1277,7 @@ tr:{
   whyThisLab:'Bu Lab neden onemli',timelineTitle:'Hareket Zaman Cizelgesi',
   timelineEmpty:'Buse bu Lab icin henuz bir degerlendirme girmedi.',
   timelineMobility:'Mobilite',timelineStrength:'Kuvvet',timelineBalance:'Denge',
+  communityCount:(n)=>`${n} kisi bu hafta bu Lab'i tamamladi`,
   labPurchasedOn:'Satin alindi',labActive:'Aktif',
   sb_liveTitle:'Canli Dersler',sb_liveClasses:'Canli Dersler',sb_liveClassesSub:'Live Lab Classes\'a katil',
   m_liveTag:'Canli',m_liveTitle:'Canli Dersler',
@@ -1335,6 +1379,17 @@ de:{
   substackLabel:'Heutiger Artikel',cycleLabel:'Zyklus-Tracker',counterEyebrow:'Gerade jetzt',
   momentumLabel:'Dein Rhythmus',
   momentumMsgs:['Jede Reise beginnt mit einem ersten Schritt.','Ein sanfter Anfang — kleine Schritte summieren sich.','Guter Rhythmus diesen Monat.','Starke Konstanz diesen Monat.','Unglaublicher Rhythmus — du warst jede Woche dabei.'],
+  nextStepEyebrow:'Dein nachster Schritt',
+  nextStepConfirmed:'Bestatigt — bis dann.',
+  nextStepPending:'Wartet auf Bestatigung — Buse bestatigt innerhalb von 12 Stunden.',
+  nextStepSessionOn:(dateStr,time)=>`Termin am ${dateStr} um ${time} Uhr`,
+  nextStepManage:'Termin verwalten',
+  nextStepBookTitle:'Bereit fur deine nachste Einheit?',
+  nextStepBookSub:'Buche deine nachste 1:1-Einheit mit Buse mit einem Klick.',
+  nextStepBookBtn:'Jetzt buchen ->',
+  nextStepExploreTitle:'Starte dein erstes Lab',
+  nextStepExploreSub:'Steige ein in wissenschaftlich fundiertes Training, das genau auf dich zugeschnitten ist.',
+  nextStepExploreBtn:'Labs entdecken ->',
   counterLabel:'Personen trainieren gerade mit Buse',counterLive:'Live',
   progEyebrow:'Mein Bereich',progTitle:'Meine Programme',progSub:'Weitermachen wo du aufgehort hast',
   upcomingEyebrow:'Live-Kurs',upcomingTitle:'Du hast heute einen Kurs',
@@ -1356,6 +1411,7 @@ de:{
   whyThisLab:'Warum dieses Lab',timelineTitle:'Bewegungsverlauf',
   timelineEmpty:'Buse hat fuer dieses Lab noch keine Bewertung erfasst.',
   timelineMobility:'Beweglichkeit',timelineStrength:'Kraft',timelineBalance:'Balance',
+  communityCount:(n)=>`${n} ${n===1?'Person hat':'Menschen haben'} dieses Lab diese Woche abgeschlossen`,
   sb_upcoming:'Kommende Kurse',sb_upcomingSub:'Dein Live-Stundenplan',
   sb_support:'Support',sb_faqSub:'Haufig gestellte Fragen',
   sb_contact:'Kontakt',sb_legal:'Rechtliches',
@@ -1610,7 +1666,7 @@ async function loadData(){
   checkAutoBadges();
 }
 
-function renderAll(){applyT();renderHero();renderWorkout();renderUpcomingBanner();renderMomentum();renderCycle();}
+function renderAll(){applyT();renderHero();renderWorkout();renderUpcomingBanner();renderMomentum();renderCycle();renderNextStep();}
 
 // ══════════════════════════════
 // BADGES
@@ -1681,6 +1737,46 @@ function renderMomentum(){
       <div class="momentum-label-small">${tl.momentumLabel}</div>
       <div class="momentum-msg">${msg}</div>
     </div>`;
+}
+
+// ══════════════════════════════
+// NEXT STEP — single top-of-dashboard action, no clutter
+// ══════════════════════════════
+async function renderNextStep(){
+  const tl=T[lang];const el=document.getElementById('nextStepContent');
+  if(!el||!currentUser)return;
+  const todayStr=new Date().toISOString().split('T')[0];
+  const{data:futureBookings}=await sb.from('bookings').select('requested_date,requested_time,status')
+    .eq('user_id',currentUser.id).neq('status','cancelled').gte('requested_date',todayStr)
+    .order('requested_date',{ascending:true}).limit(1);
+  const nextBooking=(futureBookings&&futureBookings[0])||null;
+  const hasLab=[..._purchases].some(id=>id!=='live-lab-classes');
+  let html;
+  if(nextBooking){
+    const dateStr=new Date(nextBooking.requested_date+'T00:00:00').toLocaleDateString(lang==='tr'?'tr-TR':lang==='de'?'de-DE':'en-US',{day:'numeric',month:'long'});
+    const statusText=nextBooking.status==='confirmed'?tl.nextStepConfirmed:tl.nextStepPending;
+    html=`<div class="nextstep-card">
+      <div><div class="nextstep-eyebrow">${tl.nextStepEyebrow}</div>
+        <div class="nextstep-title">${tl.nextStepSessionOn(dateStr,nextBooking.requested_time)}</div>
+        <div class="nextstep-sub">${statusText}</div></div>
+      <button class="nextstep-btn" onclick="openModal('myBookingsModal')">${tl.nextStepManage}</button>
+    </div>`;
+  }else if(hasLab){
+    html=`<div class="nextstep-card">
+      <div><div class="nextstep-eyebrow">${tl.nextStepEyebrow}</div>
+        <div class="nextstep-title">${tl.nextStepBookTitle}</div>
+        <div class="nextstep-sub">${tl.nextStepBookSub}</div></div>
+      <button class="nextstep-btn" onclick="openModal('bookingModal')">${tl.nextStepBookBtn}</button>
+    </div>`;
+  }else{
+    html=`<div class="nextstep-card">
+      <div><div class="nextstep-eyebrow">${tl.nextStepEyebrow}</div>
+        <div class="nextstep-title">${tl.nextStepExploreTitle}</div>
+        <div class="nextstep-sub">${tl.nextStepExploreSub}</div></div>
+      <a class="nextstep-btn" href="programs.html">${tl.nextStepExploreBtn}</a>
+    </div>`;
+  }
+  el.innerHTML=html;
 }
 
 async function checkAutoBadges(){
@@ -2307,6 +2403,13 @@ async function renderPurchases(){
     (assessData||[]).forEach(a=>{(assessByLab[a.lab]=assessByLab[a.lab]||[]).push(a);});
   }
 
+  const labCategories=[...new Set(labPurchases.map(p=>COURSES[p.course_id]?.category).filter(Boolean))];
+  const weeklyCounts={};
+  await Promise.all(labCategories.map(async cat=>{
+    const{data,error}=await sb.rpc('get_lab_weekly_count',{p_category:cat});
+    weeklyCounts[cat]=(!error&&typeof data==='number')?data:null;
+  }));
+
   body.innerHTML=`<div class="plist">${labPurchases.map(p=>{
     const c=COURSES[p.course_id];
     const done=_progress[p.course_id]?_progress[p.course_id].size:0;
@@ -2338,6 +2441,7 @@ async function renderPurchases(){
         <div style="height:3px;background:var(--cream-deep);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${c.color},var(--rose));border-radius:2px"></div></div>
       </div>`:''}
       ${whyText?`<div class="why-blurb"><span class="why-blurb-label">${tl.whyThisLab}</span>${whyText}</div>`:''}
+      ${category&&weeklyCounts[category]!=null?`<div class="community-line">${tl.communityCount(weeklyCounts[category])}</div>`:''}
       <div class="timeline-block">
         <div class="timeline-title">${tl.timelineTitle}</div>
         ${timelineHtml}
