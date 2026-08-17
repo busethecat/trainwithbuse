@@ -123,6 +123,18 @@
     .btn-delete { font-size: 11px; padding: 7px 12px; border-radius: 10px; border: 1px solid transparent; background: none; color: var(--charcoal-light); cursor: pointer; font-family: 'Outfit', sans-serif; transition: all .2s; margin-left: auto; }
     .btn-delete:hover { color: var(--red); border-color: var(--red); background: var(--red-light); }
 
+    /* BADGES TAB */
+    .award-badge-card { background: #fff; border-radius: 18px; padding: 20px 22px; margin-bottom: 24px; border: 1px solid rgba(232,180,184,.15); }
+    .award-badge-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .award-badge-row input, .award-badge-row select { flex: 1; min-width: 160px; padding: 10px 13px; border-radius: 10px; border: 1.5px solid rgba(232,180,184,.25); font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--charcoal); outline: none; background: #fff; }
+    .award-badge-row input:focus, .award-badge-row select:focus { border-color: var(--rose); }
+    .award-badge-msg { font-size: 12.5px; margin-top: 10px; display: none; }
+    .award-badge-msg.ok { display: block; color: var(--green); }
+    .award-badge-msg.err { display: block; color: var(--red); }
+    .badge-award-item { background: #fff; border-radius: 14px; padding: 14px 18px; margin-bottom: 10px; border: 1px solid rgba(232,180,184,.15); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .badge-award-info { font-size: 13px; color: var(--charcoal); }
+    .badge-award-info span { color: var(--charcoal-light); font-size: 12px; }
+
     .alt-panel { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(232,180,184,.15); }
     .alt-panel.show { display: block; }
     .alt-row { display: flex; gap: 10px; margin-bottom: 10px; }
@@ -178,6 +190,8 @@
       <button class="tab-btn" id="tabInquiriesBtn" onclick="switchTab('inquiries')">Inquiries</button>
       <button class="tab-btn" id="tabCorporateBtn" onclick="switchTab('corporate')">Corporate</button>
       <button class="tab-btn" id="tabParticipantsBtn" onclick="switchTab('participants')">Participants</button>
+      <button class="tab-btn" id="tabBadgesBtn" onclick="switchTab('badges')">Badges</button>
+      <button class="tab-btn" id="tabAssessmentsBtn" onclick="switchTab('assessments')">Assessments</button>
     </div>
 
     <div id="bookingsPanel">
@@ -217,6 +231,45 @@
     <div id="participantsPanel" style="display:none;">
       <div class="stats" id="participantsStatsRow"></div>
       <div id="participantsList"></div>
+    </div>
+
+    <div id="badgesPanel" style="display:none;">
+      <div class="award-badge-card">
+        <div class="section-label" style="margin-top:0;">Award a Manual Badge</div>
+        <div class="award-badge-row">
+          <input type="email" id="badgeAwardEmail" placeholder="Customer email">
+          <select id="badgeAwardSelect"></select>
+          <button class="btn-confirm" onclick="awardBadge()">Award</button>
+        </div>
+        <div class="award-badge-msg" id="badgeAwardMsg"></div>
+      </div>
+      <div class="section-label">Recently Awarded (manual badges)</div>
+      <div id="badgesAwardedList"></div>
+    </div>
+
+    <div id="assessmentsPanel" style="display:none;">
+      <div class="award-badge-card">
+        <div class="section-label" style="margin-top:0;">Log a Movement Assessment</div>
+        <div class="award-badge-row" style="margin-bottom:10px;">
+          <input type="email" id="assessEmail" placeholder="Customer email" onblur="loadClientAssessments()">
+          <select id="assessLab">
+            <option value="movement">Movement Lab</option>
+            <option value="sculpt">Sculpt Lab</option>
+            <option value="strength">Strength Lab</option>
+            <option value="metabolic">Metabolic Lab</option>
+          </select>
+        </div>
+        <div class="award-badge-row" style="margin-bottom:10px;">
+          <input type="number" id="assessMobility" min="1" max="10" placeholder="Mobility (1-10)">
+          <input type="number" id="assessStrength" min="1" max="10" placeholder="Strength (1-10)">
+          <input type="number" id="assessBalance" min="1" max="10" placeholder="Balance (1-10)">
+        </div>
+        <textarea id="assessNote" placeholder="Short note for the client (optional) — this is what makes the timeline feel personal, not just numbers." style="width:100%;min-height:70px;padding:10px 13px;border-radius:10px;border:1.5px solid rgba(232,180,184,.25);font-family:'Outfit',sans-serif;font-size:13px;color:var(--charcoal);outline:none;margin-bottom:10px;resize:vertical;"></textarea>
+        <button class="btn-confirm" onclick="submitAssessment()">Log Assessment</button>
+        <div class="award-badge-msg" id="assessMsg"></div>
+      </div>
+      <div class="section-label">History for This Client</div>
+      <div id="assessmentsHistoryList"><div class="empty">Enter a client email above to see their assessment history.</div></div>
     </div>
   </div>
 </div>
@@ -402,13 +455,18 @@ function switchTab(tab) {
   document.getElementById('tabInquiriesBtn').classList.toggle('active', tab === 'inquiries');
   document.getElementById('tabCorporateBtn').classList.toggle('active', tab === 'corporate');
   document.getElementById('tabParticipantsBtn').classList.toggle('active', tab === 'participants');
+  document.getElementById('tabBadgesBtn').classList.toggle('active', tab === 'badges');
+  document.getElementById('tabAssessmentsBtn').classList.toggle('active', tab === 'assessments');
   document.getElementById('bookingsPanel').style.display = tab === 'bookings' ? 'block' : 'none';
   document.getElementById('inquiriesPanel').style.display = tab === 'inquiries' ? 'block' : 'none';
   document.getElementById('corporatePanel').style.display = tab === 'corporate' ? 'block' : 'none';
   document.getElementById('participantsPanel').style.display = tab === 'participants' ? 'block' : 'none';
+  document.getElementById('badgesPanel').style.display = tab === 'badges' ? 'block' : 'none';
+  document.getElementById('assessmentsPanel').style.display = tab === 'assessments' ? 'block' : 'none';
   if (tab === 'inquiries' && !inquiriesLoaded) loadInquiries();
   if (tab === 'corporate' && !corporateLoaded) loadCorporateInquiries();
   if (tab === 'participants' && !participantsLoaded) loadParticipants();
+  if (tab === 'badges' && !badgesLoaded) initBadgesTab();
 }
 
 function setInquiryFilter(filter, btn) {
@@ -768,6 +826,171 @@ function participantCard(p) {
       <button class="btn-delete" onclick="deleteEntry('participants','${p.id}','participant',loadParticipants)">Delete</button>
     </div>
   </div>`;
+}
+
+// ============================================================
+// BADGES TAB — manual awarding (auto badges are awarded by the
+// dashboard itself; this tab is only for the qualitative ones Buse
+// judges by hand, e.g. "First Full-Depth Squat")
+// ============================================================
+let badgesLoaded = false;
+let allAwardedBadges = [];
+
+function initBadgesTab() {
+  badgesLoaded = true;
+  const select = document.getElementById('badgeAwardSelect');
+  const manualIds = Object.keys(BADGES).filter(id => BADGES[id].type === 'manual');
+  select.innerHTML = manualIds.map(id => `<option value="${id}">${escapeHtml(BADGES[id].name)}</option>`).join('');
+  loadAwardedBadges();
+}
+
+async function awardBadge() {
+  const emailEl = document.getElementById('badgeAwardEmail');
+  const email = emailEl.value.trim();
+  const badgeId = document.getElementById('badgeAwardSelect').value;
+  const msgEl = document.getElementById('badgeAwardMsg');
+  msgEl.className = 'award-badge-msg';
+
+  if (!email || !email.includes('@')) {
+    msgEl.textContent = 'Enter a valid email first.';
+    msgEl.classList.add('err');
+    return;
+  }
+
+  const { error } = await sb.from('user_badges').insert({ email, badge_id: badgeId });
+  if (error) {
+    msgEl.textContent = error.message.includes('duplicate') || error.code === '23505'
+      ? 'This person already has that badge.'
+      : 'Error: ' + error.message;
+    msgEl.classList.add('err');
+    return;
+  }
+
+  msgEl.textContent = `Awarded "${BADGES[badgeId].name}" to ${email}.`;
+  msgEl.classList.add('ok');
+  emailEl.value = '';
+  loadAwardedBadges();
+}
+
+async function loadAwardedBadges() {
+  const manualIds = Object.keys(BADGES).filter(id => BADGES[id].type === 'manual');
+  const { data, error } = await sb
+    .from('user_badges')
+    .select('*')
+    .in('badge_id', manualIds)
+    .order('earned_at', { ascending: false });
+
+  const list = document.getElementById('badgesAwardedList');
+  if (error) {
+    console.error('Failed to load awarded badges:', error.message);
+    list.innerHTML = `<div class="empty">Could not load badges: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+  allAwardedBadges = data || [];
+  if (allAwardedBadges.length === 0) {
+    list.innerHTML = `<div class="empty">No manual badges awarded yet.</div>`;
+    return;
+  }
+  list.innerHTML = allAwardedBadges.map(b => {
+    const dateStr = new Date(b.earned_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const badge = BADGES[b.badge_id];
+    return `<div class="badge-award-item">
+      <div class="badge-award-info"><strong>${escapeHtml(badge ? badge.name : b.badge_id)}</strong> — ${escapeHtml(b.email)} <span>· ${dateStr}</span></div>
+      <button class="btn-delete" onclick="deleteEntry('user_badges','${b.id}','badge award',loadAwardedBadges)">Revoke</button>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// ASSESSMENTS TAB — manual mobility/strength/balance logging,
+// drives the Movement Timeline on the client's dashboard.
+// ============================================================
+const LAB_LABELS = { movement: 'Movement Lab', sculpt: 'Sculpt Lab', strength: 'Strength Lab', metabolic: 'Metabolic Lab' };
+
+async function submitAssessment() {
+  const email = document.getElementById('assessEmail').value.trim();
+  const lab = document.getElementById('assessLab').value;
+  const mobilityRaw = document.getElementById('assessMobility').value;
+  const strengthRaw = document.getElementById('assessStrength').value;
+  const balanceRaw = document.getElementById('assessBalance').value;
+  const note = document.getElementById('assessNote').value.trim();
+  const msgEl = document.getElementById('assessMsg');
+  msgEl.className = 'award-badge-msg';
+
+  if (!email || !email.includes('@')) {
+    msgEl.textContent = 'Enter a valid client email first.';
+    msgEl.classList.add('err');
+    return;
+  }
+  if (!mobilityRaw && !strengthRaw && !balanceRaw && !note) {
+    msgEl.textContent = 'Fill in at least one metric or a note.';
+    msgEl.classList.add('err');
+    return;
+  }
+
+  const { error } = await sb.from('movement_assessments').insert({
+    email, lab,
+    mobility: mobilityRaw ? parseInt(mobilityRaw) : null,
+    strength: strengthRaw ? parseInt(strengthRaw) : null,
+    balance: balanceRaw ? parseInt(balanceRaw) : null,
+    note: note || null,
+  });
+
+  if (error) {
+    msgEl.textContent = 'Error: ' + error.message;
+    msgEl.classList.add('err');
+    return;
+  }
+
+  msgEl.textContent = `Logged for ${email} — ${LAB_LABELS[lab]}.`;
+  msgEl.classList.add('ok');
+  document.getElementById('assessMobility').value = '';
+  document.getElementById('assessStrength').value = '';
+  document.getElementById('assessBalance').value = '';
+  document.getElementById('assessNote').value = '';
+  loadClientAssessments();
+}
+
+async function loadClientAssessments() {
+  const email = document.getElementById('assessEmail').value.trim();
+  const list = document.getElementById('assessmentsHistoryList');
+  if (!email || !email.includes('@')) {
+    list.innerHTML = `<div class="empty">Enter a client email above to see their assessment history.</div>`;
+    return;
+  }
+
+  const { data, error } = await sb
+    .from('movement_assessments')
+    .select('*')
+    .eq('email', email)
+    .order('assessed_at', { ascending: false });
+
+  if (error) {
+    console.error('Failed to load assessments:', error.message);
+    list.innerHTML = `<div class="empty">Could not load history: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+  if (!data || data.length === 0) {
+    list.innerHTML = `<div class="empty">No assessments logged yet for this client.</div>`;
+    return;
+  }
+  list.innerHTML = data.map(a => {
+    const dateStr = new Date(a.assessed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const metrics = ['mobility', 'strength', 'balance']
+      .filter(m => a[m] !== null)
+      .map(m => `${m[0].toUpperCase() + m.slice(1)}: ${a[m]}/10`)
+      .join(' · ');
+    return `<div class="inquiry-card">
+      <div class="iq-top">
+        <div><div class="iq-name">${LAB_LABELS[a.lab] || a.lab}</div>${metrics ? `<div class="iq-contact">${escapeHtml(metrics)}</div>` : ''}</div>
+        <div class="iq-date">${dateStr}</div>
+      </div>
+      ${a.note ? `<div class="iq-note">${escapeHtml(a.note)}</div>` : ''}
+      <div class="bc-actions" style="margin-top:14px;">
+        <button class="btn-delete" onclick="deleteEntry('movement_assessments','${a.id}','assessment',loadClientAssessments)">Delete</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 </script>
 </body>

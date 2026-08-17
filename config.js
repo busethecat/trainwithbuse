@@ -208,3 +208,84 @@ const COURSES = {
     lessons: []
   }
 };
+
+// ============================================================
+// BADGES — catalog of all achievements. Earned records live in the
+// Supabase `user_badges` table (email-keyed); this is just the static
+// "menu" of what exists, same pattern as COURSES above.
+// type: 'auto'   — computed client-side in dashboard.html from existing
+//                   lesson_progress data, user awards it to themselves
+// type: 'manual' — awarded by Buse via admin.html (qualitative judgment
+//                   an algorithm can't make, e.g. movement quality)
+// category matches the Lab colors used elsewhere on the site (welcome.html
+// bundle picker): movement=gold, sculpt=rose, strength=rose-dark,
+// metabolic=nude. general uses gold as the default achievement tone.
+// ============================================================
+const BADGES = {
+  'first-step': {
+    category: 'general', color: '#C8A96E', type: 'auto', name: 'First Step',
+    icon: 'footprint', nameKey: 'badgeFirstStep', descKey: 'badgeFirstStepDesc',
+  },
+  'getting-started': {
+    category: 'general', color: '#C8A96E', type: 'auto', name: 'Getting Started',
+    icon: 'calendar', nameKey: 'badgeGettingStarted', descKey: 'badgeGettingStartedDesc',
+  },
+  'monthly-consistency': {
+    category: 'general', color: '#C8A96E', type: 'auto', name: 'Monthly Consistency',
+    icon: 'trending-up', nameKey: 'badgeMonthlyConsistency', descKey: 'badgeMonthlyConsistencyDesc',
+  },
+  '100-lessons': {
+    category: 'general', color: '#C8A96E', type: 'auto', name: '100 Lessons Completed',
+    icon: 'trophy', nameKey: 'badge100Lessons', descKey: 'badge100LessonsDesc',
+  },
+  'movement-first-squat': {
+    category: 'movement', color: '#C8A96E', type: 'manual', name: 'First Full-Depth Squat (Movement)',
+    icon: 'squat', nameKey: 'badgeFirstSquat', descKey: 'badgeFirstSquatDesc',
+  },
+  'movement-shoulder-mobility': {
+    category: 'movement', color: '#C8A96E', type: 'manual', name: 'Shoulder Mobility Milestone (Movement)',
+    icon: 'mobility', nameKey: 'badgeShoulderMobility', descKey: 'badgeShoulderMobilityDesc',
+  },
+  'sculpt-first-10-reps': {
+    category: 'sculpt', color: '#C1848B', type: 'manual', name: 'First 10 Reps Completed (Sculpt)',
+    icon: 'reps', nameKey: 'badgeFirst10Reps', descKey: 'badgeFirst10RepsDesc',
+  },
+  'strength-increase-20': {
+    category: 'strength', color: '#9B6B6F', type: 'manual', name: 'Strength Increase +20% (Strength)',
+    icon: 'strength', nameKey: 'badgeStrength20', descKey: 'badgeStrength20Desc',
+  },
+  'metabolic-recovery': {
+    category: 'metabolic', color: '#D4A89A', type: 'manual', name: 'Recovery Capacity Improved (Metabolic)',
+    icon: 'heart', nameKey: 'badgeRecovery', descKey: 'badgeRecoveryDesc',
+  },
+};
+
+// ============================================================
+// LAB_WHY — short "why this Lab" micro-education blurb per category.
+// Shared static content, embedded directly (not a T-object key) since
+// it's used identically from both dashboard.html and programs.html,
+// which each have their own separate T objects — same pattern already
+// used for COURSES[x].schedule above.
+// ============================================================
+const LAB_WHY = {
+  movement: {
+    en: "Mobility and joint control come first — you can't meaningfully strengthen a movement your body can't yet access or control.",
+    tr: 'Önce hareket alanı ve eklem kontrolü gelir — bedeninin erişemediği veya kontrol edemediği bir hareketi gerçek anlamda güçlendiremezsin.',
+    de: 'Beweglichkeit und Gelenkkontrolle kommen zuerst — eine Bewegung, die dein Körper noch nicht erreichen oder kontrollieren kann, lässt sich nicht sinnvoll kräftigen.',
+  },
+  sculpt: {
+    en: 'Structured training volume builds visible, functional muscle — not just for how you look, but for real strength, balance and long-term joint health.',
+    tr: 'Planlı antrenman hacmi, görünür ve işlevsel kas geliştirir — sadece görünüm için değil, gerçek kuvvet, denge ve uzun vadeli eklem sağlığı için.',
+    de: 'Strukturiertes Trainingsvolumen baut sichtbare, funktionale Muskulatur auf — nicht nur fürs Aussehen, sondern für echte Kraft, Balance und langfristige Gelenkgesundheit.',
+  },
+  strength: {
+    en: "Real strength isn't about lifting more. It's about controlling the force your body produces — safely, and with confidence.",
+    tr: 'Gerçek kuvvet daha ağır kaldırmak değildir. Bedeninin ürettiği kuvveti güvenle kontrol edebilmektir.',
+    de: 'Echte Kraft bedeutet nicht, mehr zu heben. Es bedeutet, die Kraft, die dein Körper erzeugt, sicher zu kontrollieren.',
+  },
+  metabolic: {
+    en: "Better conditioning isn't about exhausting you. It's about teaching your body to use energy more efficiently and recover faster.",
+    tr: 'Daha iyi kondisyon seni tüketmek değildir. Bedenine enerjiyi daha verimli kullanmayı ve daha hızlı toparlanmayı öğretmektir.',
+    de: 'Bessere Kondition soll dich nicht erschöpfen. Sie soll deinem Körper beibringen, Energie effizienter zu nutzen und schneller zu regenerieren.',
+  },
+};

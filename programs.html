@@ -102,6 +102,8 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
 .store-price{font-family:'Cormorant Garamond',serif;font-size:28px;margin-bottom:4px}
 .store-price span{font-size:15px}
 .store-desc{font-size:12px;color:var(--charcoal-light);line-height:1.6;margin-bottom:18px}
+.store-why{background:var(--cream-deep,#F5EFE6);border-radius:10px;padding:12px 14px;font-size:12px;line-height:1.6;color:var(--charcoal-light);font-style:italic;margin-bottom:18px}
+.store-why-label{display:block;font-style:normal;font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
 .btn-buy{width:100%;padding:12px;background:var(--charcoal);color:white;border:none;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
 .btn-buy:hover{background:var(--rose-dark)}
 
@@ -173,6 +175,7 @@ const T={
     totalLessons:'total lessons',
     start:'Start →', continue:'Continue →', completed:'Completed ✓',
     storeDesc:'12 lessons · Sequential progress · Completion certificate',
+    whyThisLab:'Why this Lab',
     perMonth:'/mo', buy:'Purchase',
     groupTitle:'Group Classes', groupDesc:'Live sessions twice a week via Zoom.',
     joinZoom:'Join Zoom →',
@@ -189,6 +192,7 @@ const T={
     totalLessons:'toplam ders',
     start:'Başla →', continue:'Devam Et →', completed:'Tamamlandı ✓',
     storeDesc:'12 ders · Sıralı ilerleme · Tamamlanma sertifikası',
+    whyThisLab:'Bu Lab neden önemli',
     perMonth:'/ay', buy:'Satın Al',
     groupTitle:'Grup Dersleri', groupDesc:'Haftada 2 kez canlı ders, Zoom üzerinden.',
     joinZoom:'Zoom\'a Katıl →',
@@ -205,6 +209,7 @@ const T={
     totalLessons:'Lektionen gesamt',
     start:'Starten →', continue:'Weiter →', completed:'Abgeschlossen ✓',
     storeDesc:'12 Lektionen · Sequentieller Fortschritt · Abschlusszertifikat',
+    whyThisLab:'Warum dieses Lab',
     perMonth:'/Mo.', buy:'Kaufen',
     groupTitle:'Gruppenklassen', groupDesc:'Live-Kurse zweimal pro Woche via Zoom.',
     joinZoom:'Zoom beitreten →',
@@ -394,7 +399,8 @@ function render(){
             <div class="store-sub">${sub}</div>
             <div class="store-price"><span>€</span>${course.price}</div>
             <div class="store-desc">${tl.storeDesc}</div>
-            ${course.comingSoon ? 
+            ${LAB_WHY[course.category]?`<div class="store-why"><span class="store-why-label">${tl.whyThisLab||'Why this Lab'}</span>${LAB_WHY[course.category][lang]}</div>`:''}
+            ${course.comingSoon ?
               '<button class="btn-buy" style="background:var(--nude);cursor:default;opacity:.7;" disabled>Coming Soon</button>' : 
               `<button class="btn-buy" onclick="buyCourse('${id}')">${tl.buy}</button>`}
           </div>
