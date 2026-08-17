@@ -361,6 +361,18 @@ async function handleSignup() {
     localStorage.setItem('twb_profile_' + data.user.id, JSON.stringify(profile));
     // Save gender theme immediately
     if (gender) localStorage.setItem('twb_theme_gender', gender);
+    // Referral capture — code is just the referrer's email, base64-encoded
+    // (no lookup table needed, decodes client-side both ways).
+    try {
+      const ref = new URLSearchParams(window.location.search).get('ref');
+      if (ref) {
+        const referrerEmail = atob(decodeURIComponent(ref));
+        if (referrerEmail && referrerEmail.includes('@') && referrerEmail !== email) {
+          const { error: refError } = await sb.from('referrals').insert({ referrer_email: referrerEmail, referred_email: email });
+          if (refError) console.error('Referral insert failed:', refError.message);
+        }
+      }
+    } catch (e) { console.warn('Referral code decode failed:', e); }
   }
   showMsg('signupMsg', t('successSignup'), 'success');
   btn.disabled = false; btn.textContent = t('createAccount');

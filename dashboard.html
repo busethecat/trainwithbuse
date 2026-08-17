@@ -240,6 +240,20 @@ body.theme-male .nextstep-card{background:linear-gradient(135deg,rgba(200,169,11
 body.theme-male .nextstep-title{color:#F0EBE4}
 body.theme-male .nextstep-btn{background:var(--gold);color:#141210}
 body.theme-male .nextstep-btn:hover{background:#D4B87A}
+
+/* ── MY DATA ── */
+.mydata-list{margin-bottom:4px}
+.mydata-item{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--cream-deep)}
+.mydata-item:last-child{border-bottom:none}
+.mydata-item-label{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;margin-bottom:3px}
+.mydata-item-desc{font-size:12px;color:var(--charcoal-light);line-height:1.5;max-width:340px}
+.mydata-tag{flex-shrink:0;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;border-radius:20px;white-space:nowrap;margin-top:2px}
+.mydata-tag.local{background:rgba(139,195,74,.15);color:#5a8f2e}
+.mydata-tag.server{background:rgba(200,169,110,.15);color:var(--gold)}
+.mydata-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.mydata-msg{margin-top:14px;font-size:13px;padding:10px 14px;border-radius:10px}
+.mydata-msg.ok{background:rgba(139,195,74,.12);color:#3d6b1f}
+.mydata-msg.err{background:#fff0f0;color:#c0392b}
 .programs-cta:hover .programs-arrow{transform:translateX(8px)}
 .programs-cta:hover .programs-title{color:var(--rose)}
 .programs-left{}
@@ -267,6 +281,24 @@ body.theme-male .nextstep-btn:hover{background:#D4B87A}
 .momentum-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600}
 .momentum-label-small{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--nude);margin-bottom:4px}
 .momentum-msg{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--charcoal);line-height:1.3}
+
+/* ── READINESS / CHECK-IN ── */
+.readiness-section{padding:28px 0;border-bottom:1px solid var(--cream-deep)}
+.checkin-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--nude);margin-bottom:14px}
+.checkin-q{margin-bottom:16px}
+.checkin-q-label{font-size:13px;color:var(--charcoal);margin-bottom:8px}
+.checkin-dots{display:flex;gap:8px}
+.checkin-dot{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--cream-deep);background:#fff;cursor:pointer;font-family:'Outfit',sans-serif;font-size:12px;color:var(--charcoal-light);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.checkin-dot:hover{border-color:var(--rose)}
+.checkin-dot.sel{background:var(--gold);border-color:var(--gold);color:#fff}
+.checkin-actions{display:flex;align-items:center;gap:16px;margin-top:18px}
+.checkin-submit{background:var(--charcoal);color:white;border:none;padding:12px 26px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.checkin-submit:hover{background:var(--rose-dark)}
+.checkin-skip{font-size:11px;letter-spacing:1px;color:var(--nude);background:none;border:none;cursor:pointer}
+.readiness-inner{display:flex;align-items:center;gap:22px}
+.readiness-ring-wrap{position:relative;width:70px;height:70px;flex-shrink:0}
+.readiness-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600}
+.readiness-msg{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--charcoal);line-height:1.3}
 
 /* ── LIVE COUNTER ── */
 .counter-section{padding:80px 0 40px;text-align:center;border-top:1px solid var(--cream-deep)}
@@ -631,6 +663,16 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
       <div><div class="sb-item-label" id="sb_badges">My Badges</div><div class="sb-item-sub" id="sb_badgesSub">Your achievements</div></div>
       <span class="sb-item-arrow">›</span>
     </div>
+    <div class="sb-item" onclick="openModal('progressReportModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+      <div><div class="sb-item-label" id="sb_shareProgress">Share Progress</div><div class="sb-item-sub" id="sb_shareProgressSub">Monthly report</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+    <div class="sb-item" onclick="openModal('referralModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div><div class="sb-item-label" id="sb_referral">Invite a Friend</div><div class="sb-item-sub" id="sb_referralSub">Share your link</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
   </div>
 
   <div class="sb-section">
@@ -693,6 +735,11 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
     <div class="sb-item" onclick="openModal('privacyModal')">
       <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
       <div><div class="sb-item-label" id="sb_privacy">Privacy & Security</div><div class="sb-item-sub" id="sb_privacySub">Data protection</div></div>
+      <span class="sb-item-arrow">›</span>
+    </div>
+    <div class="sb-item" onclick="openModal('myDataModal')">
+      <div class="sb-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg></div>
+      <div><div class="sb-item-label" id="sb_myData">My Data</div><div class="sb-item-sub" id="sb_myDataSub">View or delete your data</div></div>
       <span class="sb-item-arrow">›</span>
     </div>
   </div>
@@ -813,6 +860,11 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
   <!-- MOMENTUM -->
   <section class="momentum-section">
     <div id="momentumContent" class="momentum-inner"><div class="spin-wrap"><div class="spinner"></div></div></div>
+  </section>
+
+  <!-- READINESS / CHECK-IN -->
+  <section class="readiness-section" id="readinessSection" style="display:none">
+    <div id="readinessContent"></div>
   </section>
 
   <!-- MID ROW: Substack + Cycle -->
@@ -941,6 +993,41 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
   </div>
 </div>
 
+<!-- PROGRESS REPORT -->
+<div class="modal-overlay" id="progressReportModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_reportTag">Share</div><div class="modal-title" id="m_reportTitle">Your Progress</div></div>
+      <button class="modal-x" onclick="closeModal('progressReportModal')">✕</button>
+    </div>
+    <div class="modal-b" id="reportBody" style="text-align:center">
+      <canvas id="reportCanvas" width="600" height="750" style="width:100%;max-width:340px;display:block;margin:0 auto 22px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.14)"></canvas>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-setup" onclick="downloadProgressReport()" id="reportDownloadBtn">Download</button>
+        <button class="btn-setup" onclick="shareProgressReport()" id="reportShareBtn" style="display:none">Share</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REFERRAL -->
+<div class="modal-overlay" id="referralModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_referralTag">Invite</div><div class="modal-title" id="m_referralTitle">Invite a Friend</div></div>
+      <button class="modal-x" onclick="closeModal('referralModal')">✕</button>
+    </div>
+    <div class="modal-b">
+      <p id="referralIntro" style="font-size:13px;color:var(--charcoal-light);margin-bottom:20px;line-height:1.6">Share your link — friends who join through it help this stay a personal, word-of-mouth community.</p>
+      <div style="display:flex;gap:10px;margin-bottom:14px">
+        <input class="finput" id="referralLinkInput" readonly style="flex:1" onclick="this.select()">
+        <button class="btn-primary" id="referralCopyBtn" onclick="copyReferralLink()" style="flex-shrink:0;padding:0 22px">Copy</button>
+      </div>
+      <div id="referralCount" style="font-size:12px;color:var(--nude);letter-spacing:.5px"></div>
+    </div>
+  </div>
+</div>
+
 <!-- COMPLETED -->
 <div class="modal-overlay" id="completedModal">
   <div class="modal">
@@ -1040,6 +1127,17 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
   </div>
 </div>
 
+<!-- MY DATA -->
+<div class="modal-overlay" id="myDataModal">
+  <div class="modal">
+    <div class="modal-h">
+      <div><div class="modal-tag" id="m_myDataTag">Legal</div><div class="modal-title" id="m_myDataTitle">My Data</div></div>
+      <button class="modal-x" onclick="closeModal('myDataModal')">✕</button>
+    </div>
+    <div class="modal-b" id="myDataBody"></div>
+  </div>
+</div>
+
 <!-- CYCLE SETUP -->
 <div class="modal-overlay" id="cycleSetupModal">
   <div class="modal">
@@ -1132,6 +1230,25 @@ en:{
   nextStepExploreTitle:'Start your first Lab',
   nextStepExploreSub:'Step into science-backed training built around you.',
   nextStepExploreBtn:'Explore Labs →',
+  checkinLabel:'Weekly Check-in',
+  checkinEnergyQ:"How's your energy this week?",
+  checkinSorenessQ:'Any soreness or discomfort?',
+  checkinMotivationQ:'How motivated do you feel?',
+  checkinSubmit:'Submit',checkinSkip:'Not now',
+  readinessLabel:'Readiness',
+  notifReadinessLowTitle:'Low readiness this week',
+  notifReadinessLowBody:'Your check-in suggests low readiness — a gentler session today is completely fine.',
+  notifCyclePhaseTitle:(name)=>`Now in your ${name}`,
+  readinessMsgs:['Low readiness — take it easy today, gentle movement is enough.','Moderate readiness — a steady, moderate session suits today.','Good readiness — solid day for your regular training.','High readiness — a great day to push yourself.'],
+  sb_shareProgress:'Share Progress',sb_shareProgressSub:'Monthly report',
+  m_reportTag:'Share',m_reportTitle:'Your Progress',
+  reportHeadline:'Your Progress',reportLessonsLabel:'Lessons Completed',reportBadgesLabel:'Badges Earned',reportMomentumLabel:'Momentum',
+  reportDownloadBtn:'Download',reportShareBtn:'Share',
+  sb_referral:'Invite a Friend',sb_referralSub:'Share your link',
+  m_referralTag:'Invite',m_referralTitle:'Invite a Friend',
+  referralIntro:'Share your link — friends who join through it help this stay a personal, word-of-mouth community.',
+  referralCopyBtn:'Copy',referralCopiedBtn:'Copied ✓',
+  referralCount:(n)=>`${n} ${n===1?'friend has':'friends have'} joined through your link`,
   counterLabel:'people are training with Buse right now',counterLive:'Live',
   progEyebrow:'My Space',progTitle:'My Programs',progSub:'Continue where you left off',
   upcomingEyebrow:'Live Class',upcomingTitle:'You have a class - join now',
@@ -1159,6 +1276,23 @@ en:{
   sb_contact:'Contact',sb_legal:'Legal',
   sb_rules:'Terms of Use',sb_rulesSub:'Course usage rules',
   sb_privacy:'Privacy & Security',sb_privacySub:'Data protection',
+  sb_myData:'My Data',sb_myDataSub:'View or delete your data',
+  m_myDataTag:'Legal',m_myDataTitle:'My Data',
+  myDataProfile:'Profile Details',myDataProfileDesc:'Name, date of birth, gender, and body metrics — stored on this device only.',
+  myDataCycle:'Cycle Tracking',myDataCycleDesc:'Your cycle start date and length — stored on this device only, never sent to our servers.',
+  myDataNotes:'Personal Notes',myDataNotesDesc:"Notes you've written for yourself — stored on this device only.",
+  myDataFavs:'Favorites',myDataFavsDesc:"Lessons you've starred — stored on this device only.",
+  myDataPurchases:'Purchases & Lesson Progress',myDataPurchasesDesc:"What you've bought and which lessons you've completed.",
+  myDataBadges:'Badges',myDataBadgesDesc:"Achievements you've earned.",
+  myDataAssessments:'Lab Assessments',myDataAssessmentsDesc:'Mobility, strength and balance evaluations logged by Buse.',
+  myDataCheckins:'Weekly Check-ins',myDataCheckinsDesc:'Your energy, soreness and motivation answers.',
+  myDataBookings:'Booking Requests',myDataBookingsDesc:'Your 1:1 session requests and their status.',
+  myDataLocalTag:'On This Device',myDataServerTag:'Secure Server',
+  myDataClearBtn:'Clear Local Data',myDataDeleteBtn:'Request Account Deletion',
+  myDataDeleteConfirm:'This will send Buse a request to permanently delete your account and all associated data. Continue?',
+  myDataClearedMsg:'Local data cleared from this device.',
+  myDataDeleteSentMsg:'Your deletion request has been sent. It will be processed within 30 days.',
+  myDataDeleteError:'Something went wrong. Please email hello@trainwithbuse.com directly.',
   m_profileTag:'My Account',m_profileTitle:'Personal Information',
   lbl_fn:'First Name',lbl_ln:'Last Name',lbl_dob:'Date of Birth',lbl_gender:'Gender',
   opt_f:'Female',opt_m:'Male',opt_o:'Other / Prefer not to say',
@@ -1259,6 +1393,25 @@ tr:{
   nextStepExploreTitle:'Ilk Labini basla',
   nextStepExploreSub:'Senin icin kurulmus, bilim destekli antrenmana adim at.',
   nextStepExploreBtn:'Lablari Kesfet ->',
+  checkinLabel:'Haftalik Check-in',
+  checkinEnergyQ:'Bu hafta enerjin nasil?',
+  checkinSorenessQ:'Herhangi bir kas agrisi ya da rahatsizlik var mi?',
+  checkinMotivationQ:'Motivasyonun ne durumda?',
+  checkinSubmit:'Gonder',checkinSkip:'Simdi degil',
+  readinessLabel:'Hazirlik',
+  notifReadinessLowTitle:'Bu hafta hazirlik dusuk',
+  notifReadinessLowBody:'Check-in cevaplarina gore hazirligin dusuk — bugun daha hafif bir seans gayet uygun.',
+  notifCyclePhaseTitle:(name)=>`Simdi ${name} donemindesin`,
+  readinessMsgs:['Dusuk hazirlik — bugun hafif tut, nazik bir hareket yeterli.','Orta hazirlik — bugun icin dengeli, orta yogunlukta bir seans uygun.','Iyi hazirlik — normal antrenmanin icin saglam bir gun.','Yuksek hazirlik — kendini zorlamak icin harika bir gun.'],
+  sb_shareProgress:'Ilerlemeni Paylas',sb_shareProgressSub:'Aylik rapor',
+  m_reportTag:'Paylas',m_reportTitle:'Ilerlemen',
+  reportHeadline:'Ilerlemen',reportLessonsLabel:'Tamamlanan Ders',reportBadgesLabel:'Kazanilan Rozet',reportMomentumLabel:'Momentum',
+  reportDownloadBtn:'Indir',reportShareBtn:'Paylas',
+  sb_referral:'Bir Arkadasini Davet Et',sb_referralSub:'Linkini paylas',
+  m_referralTag:'Davet',m_referralTitle:'Bir Arkadasini Davet Et',
+  referralIntro:'Linkini paylas — onun uzerinden katilan arkadaslar burayi kisisel, agizdan agiza bir topluluk olarak tutmamiza yardimci olur.',
+  referralCopyBtn:'Kopyala',referralCopiedBtn:'Kopyalandi ✓',
+  referralCount:(n)=>`Linkin uzerinden ${n} arkadasin katildi`,
   counterLabel:'kisi su an Buse ile antrenman yapiyor',counterLive:'Canli',
   progEyebrow:'Alanim',progTitle:'Programlarim',progSub:'Kaldigin yerden devam et',
   upcomingEyebrow:'Canli Ders',upcomingTitle:'Bugun bir dersin var',
@@ -1289,6 +1442,23 @@ tr:{
   sb_contact:'Iletisim',sb_legal:'Yasal',
   sb_rules:'Kullanim Kosullari',sb_rulesSub:'Ders kullanim kurallari',
   sb_privacy:'Gizlilik & Guvenlik',sb_privacySub:'Veri koruma',
+  sb_myData:'Verilerim',sb_myDataSub:'Verini gor veya sil',
+  m_myDataTag:'Yasal',m_myDataTitle:'Verilerim',
+  myDataProfile:'Profil Bilgileri',myDataProfileDesc:'Ad, dogum tarihi, cinsiyet ve vucut olculeri — sadece bu cihazda saklanir.',
+  myDataCycle:'Dongu Takibi',myDataCycleDesc:'Dongu baslangic tarihin ve uzunlugun — sadece bu cihazda saklanir, sunucularimiza asla gonderilmez.',
+  myDataNotes:'Kisisel Notlar',myDataNotesDesc:'Kendin icin yazdigin notlar — sadece bu cihazda saklanir.',
+  myDataFavs:'Favoriler',myDataFavsDesc:'Yildizladigin dersler — sadece bu cihazda saklanir.',
+  myDataPurchases:'Satin Almalar & Ders Ilerlemesi',myDataPurchasesDesc:'Ne satin aldigin ve hangi dersleri tamamladigin.',
+  myDataBadges:'Rozetler',myDataBadgesDesc:'Kazandigin basarilar.',
+  myDataAssessments:'Lab Degerlendirmeleri',myDataAssessmentsDesc:'Buse tarafindan girilen mobilite, kuvvet ve denge degerlendirmeleri.',
+  myDataCheckins:"Haftalik Check-in'ler",myDataCheckinsDesc:'Enerji, kas agrisi ve motivasyon cevaplarin.',
+  myDataBookings:'Rezervasyon Talepleri',myDataBookingsDesc:'1:1 seans taleplerin ve durumlari.',
+  myDataLocalTag:'Bu Cihazda',myDataServerTag:'Guvenli Sunucu',
+  myDataClearBtn:'Yerel Veriyi Temizle',myDataDeleteBtn:'Hesap Silme Talep Et',
+  myDataDeleteConfirm:"Bu, Buse'ye hesabini ve tum ilgili verilerini kalici olarak silme talebi gonderecek. Devam edilsin mi?",
+  myDataClearedMsg:'Yerel veri bu cihazdan temizlendi.',
+  myDataDeleteSentMsg:'Silme talebin gonderildi. 30 gun icinde islenecek.',
+  myDataDeleteError:'Bir sorun olustu. Lutfen dogrudan hello@trainwithbuse.com adresine yaz.',
   m_profileTag:'Hesabim',m_profileTitle:'Kisisel Bilgiler',
   lbl_fn:'Ad',lbl_ln:'Soyad',lbl_dob:'Dogum Tarihi',lbl_gender:'Cinsiyet',
   opt_f:'Kadin',opt_m:'Erkek',opt_o:'Diger',
@@ -1390,6 +1560,25 @@ de:{
   nextStepExploreTitle:'Starte dein erstes Lab',
   nextStepExploreSub:'Steige ein in wissenschaftlich fundiertes Training, das genau auf dich zugeschnitten ist.',
   nextStepExploreBtn:'Labs entdecken ->',
+  checkinLabel:'Wochen-Check-in',
+  checkinEnergyQ:'Wie ist dein Energielevel diese Woche?',
+  checkinSorenessQ:'Muskelkater oder Beschwerden?',
+  checkinMotivationQ:'Wie motiviert fuhlst du dich?',
+  checkinSubmit:'Absenden',checkinSkip:'Jetzt nicht',
+  readinessLabel:'Bereitschaft',
+  notifReadinessLowTitle:'Niedrige Bereitschaft diese Woche',
+  notifReadinessLowBody:'Dein Check-in deutet auf niedrige Bereitschaft hin — eine sanftere Einheit heute ist vollkommen in Ordnung.',
+  notifCyclePhaseTitle:(name)=>`Jetzt in deiner ${name}`,
+  readinessMsgs:['Niedrige Bereitschaft — heute locker angehen, sanfte Bewegung reicht.','Mittlere Bereitschaft — eine gleichmassige, moderate Einheit passt heute.','Gute Bereitschaft — solider Tag fur dein regulares Training.','Hohe Bereitschaft — ein grossartiger Tag, um dich zu fordern.'],
+  sb_shareProgress:'Fortschritt teilen',sb_shareProgressSub:'Monatsbericht',
+  m_reportTag:'Teilen',m_reportTitle:'Dein Fortschritt',
+  reportHeadline:'Dein Fortschritt',reportLessonsLabel:'Abgeschlossene Lektionen',reportBadgesLabel:'Verdiente Abzeichen',reportMomentumLabel:'Momentum',
+  reportDownloadBtn:'Herunterladen',reportShareBtn:'Teilen',
+  sb_referral:'Freund einladen',sb_referralSub:'Teile deinen Link',
+  m_referralTag:'Einladen',m_referralTitle:'Freund einladen',
+  referralIntro:'Teile deinen Link — Freunde, die daruber beitreten, helfen dabei, dies eine personliche Mundpropaganda-Community bleiben zu lassen.',
+  referralCopyBtn:'Kopieren',referralCopiedBtn:'Kopiert ✓',
+  referralCount:(n)=>`${n} ${n===1?'Freund ist':'Freunde sind'} uber deinen Link beigetreten`,
   counterLabel:'Personen trainieren gerade mit Buse',counterLive:'Live',
   progEyebrow:'Mein Bereich',progTitle:'Meine Programme',progSub:'Weitermachen wo du aufgehort hast',
   upcomingEyebrow:'Live-Kurs',upcomingTitle:'Du hast heute einen Kurs',
@@ -1409,7 +1598,7 @@ de:{
   m_purchasesTag:'The Lab',m_purchasesTitle:'Meine Lab-Kaufe',
   noLabsYet:'Noch keine Labs.',noLabsBtn:'Dein erstes Lab holen ->',noLabsSub:'Betritt das Lab und starte deine wissenschaftlich fundierte Transformation.',labPurchasedOn:'Gekauft am',labActive:'Aktiv',
   whyThisLab:'Warum dieses Lab',timelineTitle:'Bewegungsverlauf',
-  timelineEmpty:'Buse hat fuer dieses Lab noch keine Bewertung erfasst.',
+  timelineEmpty:'Buse hat fur dieses Lab noch keine Bewertung erfasst.',
   timelineMobility:'Beweglichkeit',timelineStrength:'Kraft',timelineBalance:'Balance',
   communityCount:(n)=>`${n} ${n===1?'Person hat':'Menschen haben'} dieses Lab diese Woche abgeschlossen`,
   sb_upcoming:'Kommende Kurse',sb_upcomingSub:'Dein Live-Stundenplan',
@@ -1417,6 +1606,23 @@ de:{
   sb_contact:'Kontakt',sb_legal:'Rechtliches',
   sb_rules:'Nutzungsbedingungen',sb_rulesSub:'Kursregeln',
   sb_privacy:'Datenschutz',sb_privacySub:'Datenschutz',
+  sb_myData:'Meine Daten',sb_myDataSub:'Daten einsehen oder loschen',
+  m_myDataTag:'Rechtliches',m_myDataTitle:'Meine Daten',
+  myDataProfile:'Profildaten',myDataProfileDesc:'Name, Geburtsdatum, Geschlecht und Korpermasse — nur auf diesem Gerat gespeichert.',
+  myDataCycle:'Zyklus-Tracking',myDataCycleDesc:'Dein Zyklusstart und deine Zykluslange — nur auf diesem Gerat gespeichert, nie an unsere Server gesendet.',
+  myDataNotes:'Personliche Notizen',myDataNotesDesc:'Notizen, die du fur dich geschrieben hast — nur auf diesem Gerat gespeichert.',
+  myDataFavs:'Favoriten',myDataFavsDesc:'Lektionen, die du markiert hast — nur auf diesem Gerat gespeichert.',
+  myDataPurchases:'Kaufe & Lektionsfortschritt',myDataPurchasesDesc:'Was du gekauft hast und welche Lektionen du abgeschlossen hast.',
+  myDataBadges:'Abzeichen',myDataBadgesDesc:'Deine verdienten Erfolge.',
+  myDataAssessments:'Lab-Bewertungen',myDataAssessmentsDesc:'Von Buse erfasste Mobilitats-, Kraft- und Balance-Bewertungen.',
+  myDataCheckins:'Wochen-Check-ins',myDataCheckinsDesc:'Deine Antworten zu Energie, Muskelkater und Motivation.',
+  myDataBookings:'Terminanfragen',myDataBookingsDesc:'Deine 1:1-Terminanfragen und deren Status.',
+  myDataLocalTag:'Auf diesem Gerat',myDataServerTag:'Sicherer Server',
+  myDataClearBtn:'Lokale Daten loschen',myDataDeleteBtn:'Kontoloschung beantragen',
+  myDataDeleteConfirm:'Dies sendet Buse eine Anfrage, dein Konto und alle zugehorigen Daten dauerhaft zu loschen. Fortfahren?',
+  myDataClearedMsg:'Lokale Daten wurden von diesem Gerat geloscht.',
+  myDataDeleteSentMsg:'Deine Loschanfrage wurde gesendet. Sie wird innerhalb von 30 Tagen bearbeitet.',
+  myDataDeleteError:'Etwas ist schiefgelaufen. Bitte schreibe direkt an hello@trainwithbuse.com.',
   m_profileTag:'Mein Konto',m_profileTitle:'Personliche Informationen',
   lbl_fn:'Vorname',lbl_ln:'Nachname',lbl_dob:'Geburtsdatum',lbl_gender:'Geschlecht',
   opt_f:'Weiblich',opt_m:'Mannlich',opt_o:'Divers',
@@ -1527,7 +1733,10 @@ function applyT(){
     'm_notesTag','m_notesTitle','m_favsTag','m_favsTitle','m_completedTag','m_completedTitle',
     'm_remainingTag','m_remainingTitle','m_invoicesTag','m_invoicesTitle','m_upcomingTag','m_upcomingTitle',
     'm_faqTag','m_rulesTag','m_rulesTitle','m_privacyTag','m_privacyTitle','m_cycleTag','m_cycleTitle',
-    'lbl_cycleStart','lbl_cycleLen','sb_achievementsTitle','sb_badges','sb_badgesSub','m_badgesTag','m_badgesTitle'];
+    'lbl_cycleStart','lbl_cycleLen','sb_achievementsTitle','sb_badges','sb_badgesSub','m_badgesTag','m_badgesTitle',
+    'sb_shareProgress','sb_shareProgressSub','m_reportTag','m_reportTitle','reportDownloadBtn','reportShareBtn',
+    'sb_myData','sb_myDataSub','m_myDataTag','m_myDataTitle',
+    'sb_referral','sb_referralSub','m_referralTag','m_referralTitle','referralIntro','referralCopyBtn'];
   ids.forEach(k=>{const el=document.getElementById(k);if(el&&tl[k]!==undefined)el.textContent=tl[k];});
   document.getElementById('logoutBtn').textContent=tl.logout;
   document.getElementById('sbLogoutBtn').textContent=tl.logout;
@@ -1563,6 +1772,9 @@ function openModal(id){
   if(id==='profileModal')loadProfile();
   if(id==='faqModal')renderFAQ();
   if(id==='badgesModal')renderBadgesModal();
+  if(id==='progressReportModal')renderProgressReport();
+  if(id==='myDataModal')renderMyDataModal();
+  if(id==='referralModal')renderReferralModal();
   if(id==='rulesModal')document.getElementById('rulesText').innerHTML=T[lang].rules;
   if(id==='privacyModal')document.getElementById('privacyText').innerHTML=T[lang].privacy;
   if(id==='upcomingModal')document.getElementById('upcomingText').textContent=t('upcomingModalText');
@@ -1666,7 +1878,7 @@ async function loadData(){
   checkAutoBadges();
 }
 
-function renderAll(){applyT();renderHero();renderWorkout();renderUpcomingBanner();renderMomentum();renderCycle();renderNextStep();}
+function renderAll(){applyT();renderHero();renderWorkout();renderUpcomingBanner();renderMomentum();renderCycle();renderNextStep();renderReadiness();}
 
 // ══════════════════════════════
 // BADGES
@@ -1777,6 +1989,250 @@ async function renderNextStep(){
     </div>`;
   }
   el.innerHTML=html;
+}
+
+// ══════════════════════════════
+// READINESS — weekly check-in + adaptive score
+// ══════════════════════════════
+let _checkinAnswers={energy:0,soreness:0,motivation:0};
+window._latestReadinessScore=null;
+async function renderReadiness(){
+  const section=document.getElementById('readinessSection');const el=document.getElementById('readinessContent');
+  if(!section||!el||!currentUser)return;
+  const{data:recent}=await sb.from('checkins').select('*').eq('email',currentUser.email).order('created_at',{ascending:false}).limit(1);
+  const latest=(recent&&recent[0])||null;
+  const nowWeek=isoWeekKey(new Date());
+  const latestWeek=latest?isoWeekKey(new Date(latest.created_at)):null;
+  section.style.display='block';
+  if(latest&&latestWeek===nowWeek){
+    renderReadinessScore(latest);
+    return;
+  }
+  const dismissKey='twb_checkin_dismissed_'+nowWeek+'_'+(currentUser?.id||'');
+  if(localStorage.getItem(dismissKey)){
+    section.style.display='none';
+    return;
+  }
+  renderCheckinForm();
+}
+function renderCheckinForm(){
+  const tl=T[lang];const el=document.getElementById('readinessContent');
+  _checkinAnswers={energy:0,soreness:0,motivation:0};
+  const dotsRow=(key,label)=>`<div class="checkin-q"><div class="checkin-q-label">${label}</div><div class="checkin-dots" id="checkinDots_${key}">${[1,2,3,4,5].map(n=>`<button type="button" class="checkin-dot" onclick="selectCheckinValue('${key}',${n})">${n}</button>`).join('')}</div></div>`;
+  el.innerHTML=`<div class="checkin-label">${tl.checkinLabel}</div>
+    ${dotsRow('energy',tl.checkinEnergyQ)}
+    ${dotsRow('soreness',tl.checkinSorenessQ)}
+    ${dotsRow('motivation',tl.checkinMotivationQ)}
+    <div class="checkin-actions">
+      <button class="checkin-submit" onclick="submitCheckin()">${tl.checkinSubmit}</button>
+      <button class="checkin-skip" onclick="dismissCheckin()">${tl.checkinSkip}</button>
+    </div>`;
+}
+function selectCheckinValue(key,n){
+  _checkinAnswers[key]=n;
+  const row=document.getElementById('checkinDots_'+key);
+  if(row)[...row.children].forEach((btn,i)=>btn.classList.toggle('sel',i+1===n));
+}
+function dismissCheckin(){
+  const nowWeek=isoWeekKey(new Date());
+  localStorage.setItem('twb_checkin_dismissed_'+nowWeek+'_'+(currentUser?.id||''),'1');
+  const section=document.getElementById('readinessSection');
+  if(section)section.style.display='none';
+}
+async function submitCheckin(){
+  const{energy,soreness,motivation}=_checkinAnswers;
+  if(!energy||!soreness||!motivation)return;
+  const{data,error}=await sb.from('checkins').insert({email:currentUser.email,energy,soreness,motivation}).select().single();
+  if(error){console.error('Checkin insert error:',error.message);return;}
+  renderReadinessScore(data);
+}
+function readinessScoreFrom(c){
+  const sum=c.energy+c.motivation+(6-c.soreness);
+  return Math.round((sum/15)*100);
+}
+function renderReadinessScore(c){
+  const tl=T[lang];const el=document.getElementById('readinessContent');
+  const pct=readinessScoreFrom(c);
+  window._latestReadinessScore=pct;
+  const band=pct>=80?3:pct>=60?2:pct>=40?1:0;
+  const colors=['#C1848B','#D4A89A','#C8A96E','#9B6B6F'];
+  const ringColor=colors[band];
+  const msg=tl.readinessMsgs[band];
+  const R=30,C=2*Math.PI*R;
+  const dash=C*(pct/100);
+  el.innerHTML=`<div class="readiness-inner">
+    <div class="readiness-ring-wrap">
+      <svg viewBox="0 0 70 70" width="70" height="70">
+        <circle cx="35" cy="35" r="${R}" fill="none" stroke="var(--cream-deep)" stroke-width="6"/>
+        <circle cx="35" cy="35" r="${R}" fill="none" stroke="${ringColor}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${dash} ${C}" transform="rotate(-90 35 35)"/>
+      </svg>
+      <div class="readiness-pct" style="color:${ringColor}">${pct}</div>
+    </div>
+    <div class="momentum-text">
+      <div class="momentum-label-small">${tl.readinessLabel}</div>
+      <div class="readiness-msg">${msg}</div>
+    </div>
+  </div>`;
+  if(band===0){
+    addSmartNotification('readiness-low-'+isoWeekKey(new Date()),
+      {en:T.en.notifReadinessLowTitle,tr:T.tr.notifReadinessLowTitle,de:T.de.notifReadinessLowTitle},
+      {en:T.en.notifReadinessLowBody,tr:T.tr.notifReadinessLowBody,de:T.de.notifReadinessLowBody});
+  }
+}
+
+// ══════════════════════════════
+// SHAREABLE PROGRESS REPORT — canvas-rendered, no PDF library
+// ══════════════════════════════
+async function renderProgressReport(){
+  const tl=T[lang];
+  const canvas=document.getElementById('reportCanvas');
+  if(!canvas||!currentUser)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+
+  try{await document.fonts.load('300 42px "Cormorant Garamond"');await document.fonts.load('600 15px Outfit');}catch(e){}
+
+  const now=new Date();
+  const monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+  const lessonsThisMonth=_lessonProgressRaw.filter(p=>p.completed_at&&new Date(p.completed_at)>=monthStart).length;
+  const{data:badgeRows}=await sb.from('user_badges').select('badge_id').eq('email',currentUser.email);
+  const badgeCount=(badgeRows||[]).length;
+  const activeLabs=[..._purchases].filter(id=>id!=='live-lab-classes').map(id=>COURSES[id]?.title).filter(Boolean);
+  const weekKeys=[];for(let i=0;i<4;i++){const d=new Date(now.getTime()-i*7*864e5);weekKeys.push(isoWeekKey(d));}
+  const activeWeeks=new Set();
+  _lessonProgressRaw.forEach(p=>{if(!p.completed_at)return;const wk=isoWeekKey(new Date(p.completed_at));if(weekKeys.includes(wk))activeWeeks.add(wk);});
+  const momentumPct=Math.round((activeWeeks.size/4)*100);
+
+  ctx.fillStyle='#FDF6F0';
+  ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(200,169,110,.35)';ctx.lineWidth=2;
+  ctx.strokeRect(16,16,W-32,H-32);
+
+  ctx.textAlign='center';
+  ctx.fillStyle='#C8A96E';
+  ctx.font='600 15px Outfit, sans-serif';
+  ctx.fillText('TRAIN WITH BUSE',W/2,80);
+
+  ctx.fillStyle='#2D2A2E';
+  ctx.font='italic 300 42px "Cormorant Garamond", serif';
+  ctx.fillText(tl.reportHeadline,W/2,140);
+
+  const monthName=now.toLocaleDateString(lang==='tr'?'tr-TR':lang==='de'?'de-DE':'en-US',{month:'long',year:'numeric'});
+  ctx.fillStyle='#8A8078';
+  ctx.font='400 16px Outfit, sans-serif';
+  ctx.fillText(monthName,W/2,175);
+
+  const stats=[
+    {label:tl.reportLessonsLabel,value:lessonsThisMonth},
+    {label:tl.reportBadgesLabel,value:badgeCount},
+    {label:tl.reportMomentumLabel,value:momentumPct+'%'},
+  ];
+  let y=260;
+  stats.forEach(s=>{
+    ctx.fillStyle='#C1848B';
+    ctx.font='300 56px "Cormorant Garamond", serif';
+    ctx.fillText(String(s.value),W/2,y);
+    ctx.fillStyle='#8A8078';
+    ctx.font='600 11px Outfit, sans-serif';
+    ctx.fillText(s.label.toUpperCase(),W/2,y+28);
+    y+=110;
+  });
+
+  if(activeLabs.length){
+    ctx.fillStyle='#2D2A2E';
+    ctx.font='400 15px Outfit, sans-serif';
+    ctx.fillText(activeLabs.join('  ·  '),W/2,y+10);
+  }
+
+  ctx.fillStyle='#C8A96E';
+  ctx.font='400 13px Outfit, sans-serif';
+  ctx.fillText('trainwithbuse.com',W/2,H-40);
+
+  const shareBtn=document.getElementById('reportShareBtn');
+  if(shareBtn)shareBtn.style.display=(navigator.canShare&&navigator.share)?'inline-block':'none';
+}
+function downloadProgressReport(){
+  const canvas=document.getElementById('reportCanvas');
+  if(!canvas)return;
+  const link=document.createElement('a');
+  link.download='train-with-buse-progress.png';
+  link.href=canvas.toDataURL('image/png');
+  link.click();
+}
+async function shareProgressReport(){
+  const canvas=document.getElementById('reportCanvas');
+  if(!canvas)return;
+  canvas.toBlob(async(blob)=>{
+    if(!blob)return;
+    const file=new File([blob],'train-with-buse-progress.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      try{await navigator.share({files:[file],title:'Train With Buse'});}catch(e){}
+    }
+  },'image/png');
+}
+
+// ══════════════════════════════
+// MY DATA — transparent privacy panel
+// ══════════════════════════════
+function renderMyDataModal(){
+  const tl=T[lang];const el=document.getElementById('myDataBody');
+  if(!el)return;
+  const items=[
+    {label:tl.myDataProfile,desc:tl.myDataProfileDesc,tag:'local'},
+    {label:tl.myDataCycle,desc:tl.myDataCycleDesc,tag:'local'},
+    {label:tl.myDataNotes,desc:tl.myDataNotesDesc,tag:'local'},
+    {label:tl.myDataFavs,desc:tl.myDataFavsDesc,tag:'local'},
+    {label:tl.myDataPurchases,desc:tl.myDataPurchasesDesc,tag:'server'},
+    {label:tl.myDataBadges,desc:tl.myDataBadgesDesc,tag:'server'},
+    {label:tl.myDataAssessments,desc:tl.myDataAssessmentsDesc,tag:'server'},
+    {label:tl.myDataCheckins,desc:tl.myDataCheckinsDesc,tag:'server'},
+    {label:tl.myDataBookings,desc:tl.myDataBookingsDesc,tag:'server'},
+  ];
+  el.innerHTML=`<div class="mydata-list">${items.map(i=>`<div class="mydata-item"><div><div class="mydata-item-label">${i.label}</div><div class="mydata-item-desc">${i.desc}</div></div><span class="mydata-tag ${i.tag}">${i.tag==='local'?tl.myDataLocalTag:tl.myDataServerTag}</span></div>`).join('')}</div>
+    <div class="mydata-actions">
+      <button class="btn-setup" onclick="clearLocalData()">${tl.myDataClearBtn}</button>
+      <button class="btn-setup" style="background:var(--rose-dark)" onclick="requestDataDeletion()">${tl.myDataDeleteBtn}</button>
+    </div>
+    <div id="myDataMsg"></div>`;
+}
+function clearLocalData(){
+  const tl=T[lang];const uid=currentUser?.id||'';
+  ['twb_profile_','twb_cycle_','twb_notes_','twb_favs_'].forEach(prefix=>localStorage.removeItem(prefix+uid));
+  const msg=document.getElementById('myDataMsg');
+  if(msg){msg.className='mydata-msg ok';msg.textContent=tl.myDataClearedMsg;}
+  renderCycle();
+}
+async function requestDataDeletion(){
+  const tl=T[lang];
+  if(!confirm(tl.myDataDeleteConfirm))return;
+  const{error}=await sb.from('deletion_requests').insert({email:currentUser.email});
+  const msg=document.getElementById('myDataMsg');
+  if(!msg)return;
+  if(error){msg.className='mydata-msg err';msg.textContent=tl.myDataDeleteError;return;}
+  msg.className='mydata-msg ok';msg.textContent=tl.myDataDeleteSentMsg;
+}
+
+// ══════════════════════════════
+// REFERRAL — tracking + link sharing only, no reward logic (deferred)
+// ══════════════════════════════
+async function renderReferralModal(){
+  if(!currentUser)return;
+  const code=encodeURIComponent(btoa(currentUser.email));
+  const link=`${location.origin}/login.html?ref=${code}`;
+  const input=document.getElementById('referralLinkInput');
+  if(input)input.value=link;
+  const countEl=document.getElementById('referralCount');
+  const tl=T[lang];
+  const{count,error}=await sb.from('referrals').select('id',{count:'exact',head:true}).eq('referrer_email',currentUser.email);
+  if(countEl)countEl.textContent=error?'':tl.referralCount(count??0);
+}
+function copyReferralLink(){
+  const input=document.getElementById('referralLinkInput');
+  if(!input)return;
+  input.select();
+  navigator.clipboard?.writeText(input.value).catch(()=>{document.execCommand('copy');});
+  const btn=document.getElementById('referralCopyBtn');
+  if(btn){const tl=T[lang];const orig=btn.textContent;btn.textContent=tl.referralCopiedBtn;setTimeout(()=>{btn.textContent=orig;},1800);}
 }
 
 async function checkAutoBadges(){
@@ -2040,6 +2496,14 @@ function renderCycle(){
         </div>
       </div>
     </div>`;
+  const lastPhaseKey='twb_last_cycle_phase_'+(currentUser?.id||'');
+  const lastPhase=localStorage.getItem(lastPhaseKey);
+  if(lastPhase&&lastPhase!==phase){
+    addSmartNotification('cycle-phase-'+phase+'-'+isoWeekKey(new Date()),
+      {en:T.en.notifCyclePhaseTitle(T.en.cyclePhases[phase].name),tr:T.tr.notifCyclePhaseTitle(T.tr.cyclePhases[phase].name),de:T.de.notifCyclePhaseTitle(T.de.cyclePhases[phase].name)},
+      {en:T.en.cyclePhases[phase].suggestion,tr:T.tr.cyclePhases[phase].suggestion,de:T.de.cyclePhases[phase].suggestion});
+  }
+  localStorage.setItem(lastPhaseKey,phase);
 }
 function getMoonPhase(){
   const tl=T[lang];const mp=tl.moonPhases;
@@ -2641,6 +3105,22 @@ function renderInboxModal(readSet){
       <div class="buse-msg-full">${body}</div>
     </div>`;
   }).join('');
+}
+
+// Client-computed, session-level notifications injected into the same Inbox
+// feed used for broadcast messages — no new UI surface, no server storage.
+// `id` encodes the dedupe window (e.g. per ISO week) so a given notification
+// appears once until that window passes; the existing read/unread tracking
+// takes care of the rest.
+function addSmartNotification(id, titleObj, bodyObj){
+  if(_inboxMessages.some(m=>m.id===id))return;
+  _inboxMessages.unshift({id,date:new Date().toISOString().split('T')[0],title:titleObj,body:bodyObj,pinned:false});
+  const readKey = 'twb_read_msgs_' + (currentUser?.id || '');
+  const readSet = new Set(JSON.parse(localStorage.getItem(readKey) || '[]'));
+  const unread = _inboxMessages.filter(m => !readSet.has(m.id));
+  const dot = document.getElementById('navMsgDot');
+  if(dot) dot.style.display = unread.length > 0 ? 'block' : 'none';
+  renderInboxModal(readSet);
 }
 
 function toggleInboxModal(){

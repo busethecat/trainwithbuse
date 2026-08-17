@@ -192,6 +192,7 @@
       <button class="tab-btn" id="tabParticipantsBtn" onclick="switchTab('participants')">Participants</button>
       <button class="tab-btn" id="tabBadgesBtn" onclick="switchTab('badges')">Badges</button>
       <button class="tab-btn" id="tabAssessmentsBtn" onclick="switchTab('assessments')">Assessments</button>
+      <button class="tab-btn" id="tabDeletionsBtn" onclick="switchTab('deletions')">Deletions</button>
     </div>
 
     <div id="bookingsPanel">
@@ -270,6 +271,11 @@
       </div>
       <div class="section-label">History for This Client</div>
       <div id="assessmentsHistoryList"><div class="empty">Enter a client email above to see their assessment history.</div></div>
+    </div>
+
+    <div id="deletionsPanel" style="display:none;">
+      <div class="section-label" style="margin-top:0;">Pending Data Deletion Requests</div>
+      <div id="deletionsList"><div class="empty">Loading...</div></div>
     </div>
   </div>
 </div>
@@ -457,16 +463,19 @@ function switchTab(tab) {
   document.getElementById('tabParticipantsBtn').classList.toggle('active', tab === 'participants');
   document.getElementById('tabBadgesBtn').classList.toggle('active', tab === 'badges');
   document.getElementById('tabAssessmentsBtn').classList.toggle('active', tab === 'assessments');
+  document.getElementById('tabDeletionsBtn').classList.toggle('active', tab === 'deletions');
   document.getElementById('bookingsPanel').style.display = tab === 'bookings' ? 'block' : 'none';
   document.getElementById('inquiriesPanel').style.display = tab === 'inquiries' ? 'block' : 'none';
   document.getElementById('corporatePanel').style.display = tab === 'corporate' ? 'block' : 'none';
   document.getElementById('participantsPanel').style.display = tab === 'participants' ? 'block' : 'none';
   document.getElementById('badgesPanel').style.display = tab === 'badges' ? 'block' : 'none';
   document.getElementById('assessmentsPanel').style.display = tab === 'assessments' ? 'block' : 'none';
+  document.getElementById('deletionsPanel').style.display = tab === 'deletions' ? 'block' : 'none';
   if (tab === 'inquiries' && !inquiriesLoaded) loadInquiries();
   if (tab === 'corporate' && !corporateLoaded) loadCorporateInquiries();
   if (tab === 'participants' && !participantsLoaded) loadParticipants();
   if (tab === 'badges' && !badgesLoaded) initBadgesTab();
+  if (tab === 'deletions' && !deletionsLoaded) loadDeletionRequests();
 }
 
 function setInquiryFilter(filter, btn) {
@@ -835,6 +844,7 @@ function participantCard(p) {
 // ============================================================
 let badgesLoaded = false;
 let allAwardedBadges = [];
+let deletionsLoaded = false;
 
 function initBadgesTab() {
   badgesLoaded = true;
@@ -988,6 +998,43 @@ async function loadClientAssessments() {
       ${a.note ? `<div class="iq-note">${escapeHtml(a.note)}</div>` : ''}
       <div class="bc-actions" style="margin-top:14px;">
         <button class="btn-delete" onclick="deleteEntry('movement_assessments','${a.id}','assessment',loadClientAssessments)">Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// DELETIONS TAB — data/account deletion requests from the
+// dashboard's "My Data" privacy panel. Actual account/data
+// removal (Supabase Admin API) happens manually — this list
+// is just the queue; "Mark Handled" clears a request once done.
+// ============================================================
+async function loadDeletionRequests() {
+  const { data, error } = await sb
+    .from('deletion_requests')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  const list = document.getElementById('deletionsList');
+  if (error) {
+    console.error('Failed to load deletion requests:', error.message);
+    list.innerHTML = `<div class="empty">Could not load deletion requests: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+  deletionsLoaded = true;
+  if (!data || data.length === 0) {
+    list.innerHTML = `<div class="empty">No pending deletion requests.</div>`;
+    return;
+  }
+  list.innerHTML = data.map(d => {
+    const dateStr = new Date(d.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return `<div class="inquiry-card">
+      <div class="iq-top">
+        <div><div class="iq-name">${escapeHtml(d.email)}</div></div>
+        <div class="iq-date">${dateStr}</div>
+      </div>
+      <div class="bc-actions" style="margin-top:14px;">
+        <button class="btn-delete" onclick="deleteEntry('deletion_requests','${d.id}','deletion request',loadDeletionRequests)">Mark Handled</button>
       </div>
     </div>`;
   }).join('');
