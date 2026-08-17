@@ -278,6 +278,7 @@ body.theme-male .nextstep-btn:hover{background:#D4B87A}
 .momentum-inner{display:flex;align-items:center;gap:22px}
 .momentum-ring-wrap{position:relative;width:70px;height:70px;flex-shrink:0}
 .momentum-ring-wrap svg circle{transition:stroke-dasharray .8s cubic-bezier(.34,1.3,.64,1)}
+.readiness-ring-wrap svg circle{transition:stroke-dasharray .8s cubic-bezier(.34,1.3,.64,1)}
 .momentum-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600}
 .momentum-label-small{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--nude);margin-bottom:4px}
 .momentum-msg{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--charcoal);line-height:1.3}
@@ -570,6 +571,8 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
   100%{opacity:0;left:120%}
 }
 @keyframes buFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes buCardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade-in-up{animation:buCardIn .55s cubic-bezier(.16,1,.3,1) both}
 
 .why-blurb{width:100%;background:var(--cream-deep,#F5EFE6);border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.65;color:var(--charcoal-light);font-style:italic}
 .why-blurb-label{display:block;font-style:normal;font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
@@ -798,7 +801,7 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
   </section>
 
   <!-- NEXT STEP -->
-  <section class="nextstep-section">
+  <section class="nextstep-section fade-in-up">
     <div id="nextStepContent"></div>
   </section>
 
@@ -858,17 +861,17 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
   </div>
 
   <!-- MOMENTUM -->
-  <section class="momentum-section">
+  <section class="momentum-section fade-in-up" style="animation-delay:70ms">
     <div id="momentumContent" class="momentum-inner"><div class="spin-wrap"><div class="spinner"></div></div></div>
   </section>
 
   <!-- READINESS / CHECK-IN -->
-  <section class="readiness-section" id="readinessSection" style="display:none">
+  <section class="readiness-section fade-in-up" id="readinessSection" style="display:none;animation-delay:140ms">
     <div id="readinessContent"></div>
   </section>
 
   <!-- MID ROW: Substack + Cycle -->
-  <div class="mid-row">
+  <div class="mid-row fade-in-up" style="animation-delay:210ms">
     <div class="substack-section">
       <div class="substack-label" id="substackLabel">Today's Read</div>
       <div id="substackContent"><div class="spin-wrap"><div class="spinner"></div></div></div>
@@ -881,7 +884,7 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
 
 
   <!-- LIVE COUNTER -->
-  <section class="counter-section">
+  <section class="counter-section fade-in-up" style="animation-delay:280ms">
     <div class="counter-eyebrow" id="counterEyebrow">Right Now</div>
     <div class="counter-row">
       <div class="counter-plus-minus">
@@ -1331,6 +1334,17 @@ en:{
   badgeFirst10Reps:'First 10 Reps Completed',badgeFirst10RepsDesc:'You completed 10 clean reps of a key Sculpt Lab movement.',
   badgeStrength20:'Strength Increase +20%',badgeStrength20Desc:'Buse confirmed a 20% increase in your working strength.',
   badgeRecovery:'Recovery Capacity Improved',badgeRecoveryDesc:'Your recovery between efforts has measurably improved.',
+  badgeQuarterlyConsistency:'3-Month Consistency',badgeQuarterlyConsistencyDesc:'You showed up in at least 10 of the last 12 weeks.',
+  badge250Lessons:'250 Lessons Completed',badge250LessonsDesc:'A quarter-thousand lessons — remarkable dedication.',
+  badgeFullSpectrum:'Full Spectrum',badgeFullSpectrumDesc:"You've trained across all four Labs — Movement, Sculpt, Strength, and Metabolic.",
+  badgeHipHinge:'Hip Hinge Mastery',badgeHipHingeDesc:'You showed clean, controlled hip-hinge mechanics — a foundational strength pattern.',
+  badgeSingleLegBalance:'Single-Leg Balance Milestone',badgeSingleLegBalanceDesc:'Your single-leg stability and control reached a new level.',
+  badge20Reps:'20-Rep Milestone',badge20RepsDesc:'You completed 20 controlled reps of a target exercise.',
+  badgeFullPushup:'Full Range Push-Up',badgeFullPushupDesc:'Your first push-up through a complete, controlled range of motion.',
+  badgeStrength50:'Strength Increase +50%',badgeStrength50Desc:'Your working load has grown by half since you started — real, measurable strength.',
+  badgeDeadlift:'Deadlift Technique Mastery',badgeDeadliftDesc:'Clean, controlled technique under load — form before force.',
+  badgeEndurance:'Endurance Breakthrough',badgeEnduranceDesc:'Your sustained work capacity took a real step forward.',
+  badgeFasterRecovery:'Faster Recovery',badgeFasterRecoveryDesc:'Your body is returning to baseline faster after effort — a sign of real conditioning.',
   substackLoading:'Loading latest article...',
   substackEmpty:'No articles yet - check back soon.',
   substackRead:'Read ->',
@@ -1497,6 +1511,17 @@ tr:{
   badgeFirst10Reps:'Ilk 10 Tekrar Tamamlandi',badgeFirst10RepsDesc:"Sculpt Lab'daki kilit bir hareketten 10 temiz tekrar tamamladin.",
   badgeStrength20:'Kuvvette %20 Artis',badgeStrength20Desc:"Buse, calisma kuvvetinde %20'lik bir artisi onayladi.",
   badgeRecovery:'Toparlanma Kapasitesi Gelisti',badgeRecoveryDesc:'Efor sonrasi toparlanma kapasiten olculebilir sekilde gelisti.',
+  badgeQuarterlyConsistency:'3 Aylik Tutarlilik',badgeQuarterlyConsistencyDesc:"Son 12 haftanin en az 10'unda antrenmana geldin.",
+  badge250Lessons:'250 Ders Tamamlandi',badge250LessonsDesc:'Ceyrek bin ders — dikkat cekici bir baglilik.',
+  badgeFullSpectrum:'Tum Lablar',badgeFullSpectrumDesc:"Dort Lab'in hepsinde de antrenman yaptin — Movement, Sculpt, Strength ve Metabolic.",
+  badgeHipHinge:'Kalca Mentesesi Ustaligi',badgeHipHingeDesc:'Temiz ve kontrollu bir kalca mentesesi hareketi gosterdin — temel bir kuvvet paterni.',
+  badgeSingleLegBalance:'Tek Bacak Denge Kilometre Tasi',badgeSingleLegBalanceDesc:'Tek bacak stabilite ve kontrolun yeni bir seviyeye ulasti.',
+  badge20Reps:'20 Tekrar Kilometre Tasi',badge20RepsDesc:'Hedef bir hareketten 20 kontrollu tekrar tamamladin.',
+  badgeFullPushup:'Tam Aciklikta Sinav',badgeFullPushupDesc:'Tam ve kontrollu bir hareket araligindaki ilk sinavin.',
+  badgeStrength50:'Kuvvet Artisi +%50',badgeStrength50Desc:'Basladigindan beri calisma yukun yariya kadar artti — gercek, olculebilir bir kuvvet.',
+  badgeDeadlift:'Deadlift Teknik Ustaligi',badgeDeadliftDesc:'Yuk altinda temiz ve kontrollu teknik — kuvvetten once form.',
+  badgeEndurance:'Dayaniklilik Atilimi',badgeEnduranceDesc:'Surdurulebilir calisma kapasitende gercek bir adim attin.',
+  badgeFasterRecovery:'Daha Hizli Toparlanma',badgeFasterRecoveryDesc:'Bedenin efor sonrasi baslangic seviyesine daha hizli donuyor — gercek bir kondisyon isareti.',
   substackLoading:'Yukleniyor...',
   substackEmpty:'Henuz yazi yok.',
   substackRead:'Oku ->',
@@ -1661,6 +1686,17 @@ de:{
   badgeFirst10Reps:'Erste 10 Wiederholungen geschafft',badgeFirst10RepsDesc:'Du hast 10 saubere Wiederholungen einer zentralen Sculpt-Lab-Ubung geschafft.',
   badgeStrength20:'Kraftsteigerung +20%',badgeStrength20Desc:'Buse hat eine Kraftsteigerung von 20% bestatigt.',
   badgeRecovery:'Regenerationsfahigkeit verbessert',badgeRecoveryDesc:'Deine Erholung zwischen den Belastungen hat sich messbar verbessert.',
+  badgeQuarterlyConsistency:'Vierteljahres-Konstanz',badgeQuarterlyConsistencyDesc:'Du warst in mindestens 10 der letzten 12 Wochen aktiv.',
+  badge250Lessons:'250 Lektionen abgeschlossen',badge250LessonsDesc:'Ein Viertel-Tausend Lektionen — bemerkenswerte Hingabe.',
+  badgeFullSpectrum:'Volles Spektrum',badgeFullSpectrumDesc:'Du hast in allen vier Labs trainiert — Movement, Sculpt, Strength und Metabolic.',
+  badgeHipHinge:'Huftbeuge-Meisterschaft',badgeHipHingeDesc:'Du hast eine saubere, kontrollierte Huftbeuge-Mechanik gezeigt — ein grundlegendes Kraftmuster.',
+  badgeSingleLegBalance:'Einbein-Balance-Meilenstein',badgeSingleLegBalanceDesc:'Deine Einbein-Stabilitat und -Kontrolle hat ein neues Niveau erreicht.',
+  badge20Reps:'20-Wiederholungen-Meilenstein',badge20RepsDesc:'Du hast 20 kontrollierte Wiederholungen einer Zielubung abgeschlossen.',
+  badgeFullPushup:'Liegestutz in vollem Bewegungsumfang',badgeFullPushupDesc:'Dein erster Liegestutz durch einen vollstandigen, kontrollierten Bewegungsumfang.',
+  badgeStrength50:'Kraftzuwachs +50%',badgeStrength50Desc:'Dein Arbeitsgewicht ist seit deinem Start um die Halfte gewachsen — echte, messbare Kraft.',
+  badgeDeadlift:'Kreuzheben-Technikmeisterschaft',badgeDeadliftDesc:'Saubere, kontrollierte Technik unter Last — Form vor Kraft.',
+  badgeEndurance:'Ausdauer-Durchbruch',badgeEnduranceDesc:'Deine Arbeitskapazitat unter Dauerbelastung hat einen echten Sprung gemacht.',
+  badgeFasterRecovery:'Schnellere Erholung',badgeFasterRecoveryDesc:'Dein Korper kehrt nach Belastung schneller zum Ausgangsniveau zuruck — ein Zeichen echter Kondition.',
   substackLoading:'Lade neuesten Artikel...',
   substackEmpty:'Noch keine Artikel - bald verfugbar.',
   substackRead:'Lesen ->',
@@ -1893,6 +1929,17 @@ const BADGE_ICONS={
   reps:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7v10M18 7v10M2 10v4h4v-4H2zm16 0v4h4v-4h-4zM6 12h12"/></svg>',
   strength:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>',
   heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+  'calendar-check':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8.5 15.5l2 2 4-4.5"/></svg>',
+  flag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="22" x2="4" y2="3"/><path d="M4 4h14l-3 4 3 4H4"/></svg>',
+  grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>',
+  'hip-hinge':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="4" r="2"/><path d="M8 6l2 6M10 12l5-3M10 12l-2 8M8 20h5"/></svg>',
+  'balance-pose':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M12 6v7M12 13l4 6M12 13l-3-2M9 21h6M16 8l-5 3"/></svg>',
+  plates:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="12" x2="22" y2="12"/><rect x="4" y="7" width="3" height="10" rx="1"/><rect x="17" y="7" width="3" height="10" rx="1"/><rect x="8" y="9" width="2" height="6" rx="1"/><rect x="14" y="9" width="2" height="6" rx="1"/></svg>',
+  pushup:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="4" cy="8" r="2"/><path d="M4 10l4 2h12M8 12v8M16 12l2 8M4 18l2-4"/></svg>',
+  'bars-up':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="14"/><line x1="9" y1="20" x2="9" y2="10"/><line x1="14" y1="20" x2="14" y2="6"/><line x1="19" y1="20" x2="19" y2="3"/></svg>',
+  deadlift:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="4" r="2"/><path d="M6 6l2 7M8 13l5 1 1 6M6 20h8"/><line x1="2" y1="19" x2="8" y2="19"/><line x1="14" y1="19" x2="20" y2="19"/><circle cx="3" cy="19" r="2"/><circle cx="21" cy="19" r="2"/></svg>',
+  stopwatch:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><line x1="12" y1="13" x2="12" y2="9"/><line x1="12" y1="13" x2="15" y2="15"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="12" y1="2" x2="12" y2="5"/></svg>',
+  'heart-pulse':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/><polyline points="6 12 9 12 10.5 9 13 15 14.5 12 18 12"/></svg>',
 };
 
 const BADGE_CATEGORY_LABELS={
@@ -1915,6 +1962,21 @@ function isoWeekKey(date){
 // ══════════════════════════════
 // MOMENTUM — soft weekly consistency indicator (no streak, no shaming)
 // ══════════════════════════════
+// Small dependency-free count-up used by the ring widgets and badge count —
+// keeps numeric jumps feeling alive without any animation library.
+function animateCountUp(el,from,to,duration,suffix){
+  if(!el)return;
+  const start=performance.now();
+  function tick(now){
+    const p=Math.min(1,(now-start)/duration);
+    const eased=1-Math.pow(1-p,3);
+    const val=Math.round(from+(to-from)*eased);
+    el.textContent=val+(suffix||'');
+    if(p<1)requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
 function renderMomentum(){
   const tl=T[lang];const el=document.getElementById('momentumContent');
   if(!el)return;
@@ -1941,14 +2003,20 @@ function renderMomentum(){
     <div class="momentum-ring-wrap">
       <svg viewBox="0 0 70 70" width="70" height="70">
         <circle cx="35" cy="35" r="${R}" fill="none" stroke="var(--cream-deep)" stroke-width="6"/>
-        <circle cx="35" cy="35" r="${R}" fill="none" stroke="${ringColor}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${dash} ${C}" transform="rotate(-90 35 35)"/>
+        <circle class="momentum-ring-fill" cx="35" cy="35" r="${R}" fill="none" stroke="${ringColor}" stroke-width="6" stroke-linecap="round" stroke-dasharray="0 ${C}" transform="rotate(-90 35 35)"/>
       </svg>
-      <div class="momentum-pct" style="color:${ringColor}">${pct}%</div>
+      <div class="momentum-pct" id="momentumPct" style="color:${ringColor}">0%</div>
     </div>
     <div class="momentum-text">
       <div class="momentum-label-small">${tl.momentumLabel}</div>
       <div class="momentum-msg">${msg}</div>
     </div>`;
+  const ringFill=el.querySelector('.momentum-ring-fill');
+  const pctEl=document.getElementById('momentumPct');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    if(ringFill)ringFill.setAttribute('stroke-dasharray',`${dash} ${C}`);
+    animateCountUp(pctEl,0,pct,800,'%');
+  }));
 }
 
 // ══════════════════════════════
@@ -2064,15 +2132,21 @@ function renderReadinessScore(c){
     <div class="readiness-ring-wrap">
       <svg viewBox="0 0 70 70" width="70" height="70">
         <circle cx="35" cy="35" r="${R}" fill="none" stroke="var(--cream-deep)" stroke-width="6"/>
-        <circle cx="35" cy="35" r="${R}" fill="none" stroke="${ringColor}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${dash} ${C}" transform="rotate(-90 35 35)"/>
+        <circle class="readiness-ring-fill" cx="35" cy="35" r="${R}" fill="none" stroke="${ringColor}" stroke-width="6" stroke-linecap="round" stroke-dasharray="0 ${C}" transform="rotate(-90 35 35)"/>
       </svg>
-      <div class="readiness-pct" style="color:${ringColor}">${pct}</div>
+      <div class="readiness-pct" id="readinessPct" style="color:${ringColor}">0</div>
     </div>
     <div class="momentum-text">
       <div class="momentum-label-small">${tl.readinessLabel}</div>
       <div class="readiness-msg">${msg}</div>
     </div>
   </div>`;
+  const ringFill=el.querySelector('.readiness-ring-fill');
+  const pctEl=document.getElementById('readinessPct');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    if(ringFill)ringFill.setAttribute('stroke-dasharray',`${dash} ${C}`);
+    animateCountUp(pctEl,0,pct,800,'');
+  }));
   if(band===0){
     addSmartNotification('readiness-low-'+isoWeekKey(new Date()),
       {en:T.en.notifReadinessLowTitle,tr:T.tr.notifReadinessLowTitle,de:T.de.notifReadinessLowTitle},
@@ -2248,6 +2322,7 @@ async function checkAutoBadges(){
 
   if(totalDone>=1&&!earnedIds.has('first-step'))toAward.push('first-step');
   if(totalDone>=100&&!earnedIds.has('100-lessons'))toAward.push('100-lessons');
+  if(totalDone>=250&&!earnedIds.has('250-lessons'))toAward.push('250-lessons');
 
   if(!earnedIds.has('getting-started')&&currentUser.created_at){
     const createdAt=new Date(currentUser.created_at).getTime();
@@ -2269,6 +2344,22 @@ async function checkAutoBadges(){
       if(t.getTime()>=cutoff)weeksSet.add(isoWeekKey(t));
     });
     if(weeksSet.size>=4)toAward.push('monthly-consistency');
+  }
+
+  if(!earnedIds.has('quarterly-consistency')){
+    const cutoff=Date.now()-84*24*60*60*1000;
+    const weeksSet=new Set();
+    _lessonProgressRaw.forEach(p=>{
+      if(!p.completed_at)return;
+      const t=new Date(p.completed_at);
+      if(t.getTime()>=cutoff)weeksSet.add(isoWeekKey(t));
+    });
+    if(weeksSet.size>=10)toAward.push('quarterly-consistency');
+  }
+
+  if(!earnedIds.has('full-spectrum')){
+    const cats=new Set([..._purchases].map(id=>COURSES[id]?.category).filter(Boolean));
+    if(['movement','sculpt','strength','metabolic'].every(c=>cats.has(c)))toAward.push('full-spectrum');
   }
 
   for(const badgeId of toAward){
@@ -2339,7 +2430,7 @@ async function renderBadgesModal(){
   const tl=T[lang];
   const earnedIds=window._earnedBadgeIds||new Set();
   const categories=['general','movement','sculpt','strength','metabolic'];
-  let html=`<div class="badges-count-note">${earnedIds.size} / ${Object.keys(BADGES).length}</div><div class="badges-grid">`;
+  let html=`<div class="badges-count-note"><span id="badgesEarnedCount">0</span> / ${Object.keys(BADGES).length}</div><div class="badges-grid">`;
   categories.forEach(cat=>{
     const ids=Object.keys(BADGES).filter(id=>BADGES[id].category===cat);
     if(ids.length===0)return;
@@ -2359,6 +2450,7 @@ async function renderBadgesModal(){
   });
   html+=`</div>`;
   document.getElementById('badgesBody').innerHTML=html;
+  animateCountUp(document.getElementById('badgesEarnedCount'),0,earnedIds.size,700,'');
 }
 
 // ══════════════════════════════

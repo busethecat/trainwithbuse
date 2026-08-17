@@ -258,6 +258,51 @@ const BADGES = {
     category: 'metabolic', color: '#D4A89A', type: 'manual', name: 'Recovery Capacity Improved (Metabolic)',
     icon: 'heart', nameKey: 'badgeRecovery', descKey: 'badgeRecoveryDesc',
   },
+  // Phase 8 additions
+  'quarterly-consistency': {
+    category: 'general', color: '#C8A96E', type: 'auto', name: '3-Month Consistency',
+    icon: 'calendar-check', nameKey: 'badgeQuarterlyConsistency', descKey: 'badgeQuarterlyConsistencyDesc',
+  },
+  '250-lessons': {
+    category: 'general', color: '#C8A96E', type: 'auto', name: '250 Lessons Completed',
+    icon: 'flag', nameKey: 'badge250Lessons', descKey: 'badge250LessonsDesc',
+  },
+  'full-spectrum': {
+    category: 'general', color: '#C8A96E', type: 'auto', name: 'Full Spectrum',
+    icon: 'grid', nameKey: 'badgeFullSpectrum', descKey: 'badgeFullSpectrumDesc',
+  },
+  'movement-hip-hinge': {
+    category: 'movement', color: '#C8A96E', type: 'manual', name: 'Hip Hinge Mastery (Movement)',
+    icon: 'hip-hinge', nameKey: 'badgeHipHinge', descKey: 'badgeHipHingeDesc',
+  },
+  'movement-single-leg-balance': {
+    category: 'movement', color: '#C8A96E', type: 'manual', name: 'Single-Leg Balance Milestone (Movement)',
+    icon: 'balance-pose', nameKey: 'badgeSingleLegBalance', descKey: 'badgeSingleLegBalanceDesc',
+  },
+  'sculpt-20-reps': {
+    category: 'sculpt', color: '#C1848B', type: 'manual', name: '20-Rep Milestone (Sculpt)',
+    icon: 'plates', nameKey: 'badge20Reps', descKey: 'badge20RepsDesc',
+  },
+  'sculpt-full-pushup': {
+    category: 'sculpt', color: '#C1848B', type: 'manual', name: 'Full Range Push-Up (Sculpt)',
+    icon: 'pushup', nameKey: 'badgeFullPushup', descKey: 'badgeFullPushupDesc',
+  },
+  'strength-increase-50': {
+    category: 'strength', color: '#9B6B6F', type: 'manual', name: 'Strength Increase +50% (Strength)',
+    icon: 'bars-up', nameKey: 'badgeStrength50', descKey: 'badgeStrength50Desc',
+  },
+  'strength-deadlift': {
+    category: 'strength', color: '#9B6B6F', type: 'manual', name: 'Deadlift Technique Mastery (Strength)',
+    icon: 'deadlift', nameKey: 'badgeDeadlift', descKey: 'badgeDeadliftDesc',
+  },
+  'metabolic-endurance': {
+    category: 'metabolic', color: '#D4A89A', type: 'manual', name: 'Endurance Breakthrough (Metabolic)',
+    icon: 'stopwatch', nameKey: 'badgeEndurance', descKey: 'badgeEnduranceDesc',
+  },
+  'metabolic-faster-recovery': {
+    category: 'metabolic', color: '#D4A89A', type: 'manual', name: 'Faster Recovery (Metabolic)',
+    icon: 'heart-pulse', nameKey: 'badgeFasterRecovery', descKey: 'badgeFasterRecoveryDesc',
+  },
 };
 
 // ============================================================
