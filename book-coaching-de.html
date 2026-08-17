@@ -67,6 +67,8 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .compare-inner { max-width: 1160px; margin: 0 auto; padding: 0 60px; }
 .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; }
 .compare-card { border-radius: 28px; padding: 48px 44px; display: flex; flex-direction: column; transition: all .3s; }
+.compare-card-photo { margin: -48px -44px 28px; border-radius: 28px 28px 0 0; overflow: hidden; }
+.compare-card-photo img { width: 100%; height: 400px; object-fit: cover; object-position: center center; display: block; }
 .compare-card:hover { transform: translateY(-4px); }
 .compare-card.light { background: white; border: 1px solid rgba(232,180,184,.15); box-shadow: 0 4px 30px rgba(200,160,155,.08); }
 .compare-card.light:hover { box-shadow: 0 20px 60px rgba(200,160,155,.16); }
@@ -125,6 +127,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   .compare-inner { padding: 0 24px; }
   .compare-grid { grid-template-columns: 1fr; }
   .compare-card { padding: 36px 28px; }
+  .compare-card-photo { margin: -36px -28px 28px; } .compare-card-photo img { height: 320px; }
   .footer-mini { padding: 24px; flex-direction: column; text-align: center; }
 }
 </style>
@@ -169,6 +172,9 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 
       <!-- ONLINE -->
       <div class="compare-card light reveal">
+        <div class="compare-card-photo">
+          <img src="photos/book-coaching-online.jpg" alt="Buse beim Online-Coaching">
+        </div>
         <div class="compare-badge light">Remote · Weltweit</div>
         <h2>1:1 Online Coaching</h2>
         <p class="compare-body">Trainiere von überall, mit derselben Aufmerksamkeit wie bei einer Session vor Ort. Video-Coaching, individuelle Trainingsplanung und direktes Feedback – abgestimmt auf deinen Körper, deine Ziele und deinen Alltag. Das richtige Format, wenn du professionelles Coaching möchtest, ohne an eine Stadt, ein Studio oder einen festen wöchentlichen Termin gebunden zu sein.</p>
@@ -189,6 +195,9 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 
       <!-- IN-PERSON -->
       <div class="compare-card dark reveal" style="transition-delay:.1s">
+        <div class="compare-card-photo">
+          <img src="photos/book-coaching-inperson.jpg" alt="Buse beim Personal Training in Berlin">
+        </div>
         <div class="compare-badge dark">Berlin · Nach Bewerbung</div>
         <h2>The Buse Method<br>— Vor Ort</h2>
         <p class="compare-body">Trainiere persönlich mit mir in Berlin. Ich beobachte deine Bewegungen aus verschiedenen Perspektiven, korrigiere deine Position unmittelbar und helfe dir — selbstverständlich nur mit deinem Einverständnis — durch taktiles Feedback zu verstehen, wie sich eine Bewegung anfühlen sollte. Eine Präzision, die kein Videoanruf vollständig ersetzen kann. Das richtige Format, wenn du das höchstmögliche Maß an Korrektur möchtest oder an etwas arbeitest, bei dem die persönliche Anwesenheit wirklich zählt.</p>

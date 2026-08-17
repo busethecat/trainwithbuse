@@ -67,6 +67,8 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .compare-inner { max-width: 1160px; margin: 0 auto; padding: 0 60px; }
 .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; }
 .compare-card { border-radius: 28px; padding: 48px 44px; display: flex; flex-direction: column; transition: all .3s; }
+.compare-card-photo { margin: -48px -44px 28px; border-radius: 28px 28px 0 0; overflow: hidden; }
+.compare-card-photo img { width: 100%; height: 400px; object-fit: cover; object-position: center center; display: block; }
 .compare-card:hover { transform: translateY(-4px); }
 .compare-card.light { background: white; border: 1px solid rgba(232,180,184,.15); box-shadow: 0 4px 30px rgba(200,160,155,.08); }
 .compare-card.light:hover { box-shadow: 0 20px 60px rgba(200,160,155,.16); }
@@ -125,6 +127,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   .compare-inner { padding: 0 24px; }
   .compare-grid { grid-template-columns: 1fr; }
   .compare-card { padding: 36px 28px; }
+  .compare-card-photo { margin: -36px -28px 28px; } .compare-card-photo img { height: 320px; }
   .footer-mini { padding: 24px; flex-direction: column; text-align: center; }
 }
 </style>
@@ -169,6 +172,9 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 
       <!-- ONLINE -->
       <div class="compare-card light reveal">
+        <div class="compare-card-photo">
+          <img src="photos/book-coaching-online.jpg" alt="Buse online koclukta">
+        </div>
         <div class="compare-badge light">Uzaktan · Dünya Genelinde</div>
         <h2>1:1 Online Coaching</h2>
         <p class="compare-body">Bulunduğun yerden, yüz yüze bir seansla aynı derinlikte ilgiyle antrenman yap. Video koçluk, kişiselleştirilmiş programlama ve doğrudan geri bildirim — bedenine, hedeflerine ve programına göre kurulu. Tek bir şehre, salona ya da haftalık sabit saate bağlı kalmadan uzman koçluk istiyorsan doğru format bu.</p>
@@ -189,6 +195,9 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 
       <!-- IN-PERSON -->
       <div class="compare-card dark reveal" style="transition-delay:.1s">
+        <div class="compare-card-photo">
+          <img src="photos/book-coaching-inperson.jpg" alt="Buse Berlin'de yuz yuze antrenmanda">
+        </div>
         <div class="compare-badge dark">Berlin · Başvuru ile</div>
         <h2>The Buse Method<br>— Yüz Yüze</h2>
         <p class="compare-body">Berlin'de benimle yüz yüze çalış. Hareketini birden fazla açıdan gözlemler, pozisyonunu anında düzeltirim ve — sadece senin onayınla — dokunsal geri bildirimle bir hareketin nasıl hissettirmesi gerektiğini anlamana yardım ederim. Bu, hiçbir görüntülü görüşmenin tam olarak sağlayamayacağı bir hassasiyet seviyesi. En derin düzeltme seviyesini istiyorsan, ya da odada olmanın önemli olduğu kadar karmaşık bir konuyla uğraşıyorsan doğru format bu.</p>

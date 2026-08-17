@@ -83,6 +83,8 @@ body { background: var(--charcoal); color: white; }
 .labs-inner { max-width: 1100px; margin: 0 auto; padding: 0 60px; }
 .labs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .lab-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: 24px; padding: 40px 36px; transition: all .3s; }
+.lab-card-photo { margin: -40px -36px 24px; border-radius: 24px 24px 0 0; overflow: hidden; }
+.lab-card-photo img { width: 100%; height: 400px; object-fit: cover; object-position: center 15%; display: block; }
 .lab-card:hover { border-color: rgba(200,169,110,.3); transform: translateY(-4px); }
 .lab-name { font-family: 'Cormorant Garamond', serif; font-size: 30px; color: var(--gold); margin-bottom: 10px; }
 .lab-tagline { font-size: 13px; color: rgba(255,255,255,.4); letter-spacing: .3px; margin-bottom: 18px; font-style: italic; }
@@ -90,6 +92,8 @@ body { background: var(--charcoal); color: white; }
 
 .final-section { padding: 90px 0; }
 .final-inner { max-width: 760px; margin: 0 auto; padding: 0 60px; text-align: center; }
+.final-photo { max-width: 700px; margin: 0 auto 36px; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,.35); }
+.final-photo img { width: 100%; height: 460px; object-fit: cover; object-position: center 55%; display: block; }
 .final-inner p { font-size: 15.5px; color: rgba(255,255,255,.55); line-height: 1.9; margin-bottom: 20px; text-align: left; }
 .final-tagline { font-family: 'Cormorant Garamond', serif; font-size: clamp(22px,3vw,32px); font-weight: 300; color: white; text-align: center; margin-top: 40px; line-height: 1.4; }
 .final-tagline em { font-style: italic; color: var(--rose); }
@@ -126,7 +130,7 @@ body { background: var(--charcoal); color: white; }
   .nav-dropdown.open .nav-dropdown-menu { display: block; }
   .hero { padding: 130px 24px 60px; }
   .prose-inner, .labs-inner, .final-inner { padding: 0 24px; }
-  .labs-grid { grid-template-columns: 1fr; }
+  .labs-grid { grid-template-columns: 1fr; } .lab-card-photo img { height: 300px; } .final-photo img { height: 320px; }
   .closing-section { padding: 72px 24px; }
   .notify-form { flex-direction: column; }
   .footer-mini { padding: 24px; flex-direction: column; text-align: center; }
@@ -185,21 +189,25 @@ body { background: var(--charcoal); color: white; }
   <div class="labs-inner">
     <div class="labs-grid">
       <div class="lab-card reveal">
+        <div class="lab-card-photo"><img src="photos/lab-movement.jpg" alt="Buse in einem ruhigen, meditativen Moment, Hand auf dem Herzen" style="object-position:center 60%"></div>
         <div class="lab-name">Movement Lab</div>
         <div class="lab-tagline">Deine Fähigkeit, dich zu bewegen</div>
         <p class="lab-desc">Movement Lab entwickelt Mobility, Gelenkkontrolle, Koordination und Körperwahrnehmung. Es bildet das Fundament des Systems — denn eine Bewegung, die dein Körper weder erreichen noch kontrollieren kann, lässt sich nicht sinnvoll kräftigen.</p>
       </div>
       <div class="lab-card reveal" style="transition-delay:.1s">
+        <div class="lab-card-photo"><img src="photos/lab-sculpt.jpg" alt="Buse in einer Pilates-basierten Kraftsession"></div>
         <div class="lab-name">Sculpt Lab</div>
         <div class="lab-tagline">Deine Fähigkeit, deinen Körper gezielt zu formen</div>
         <p class="lab-desc">Sculpt Lab arbeitet mit strukturiertem Trainingsvolumen, um Muskelaufbau und körperliche Definition zu fördern. Es geht nicht nur darum, dein Aussehen zu verändern — sondern um ein nachhaltiges Zusammenspiel von Ästhetik, Kraft, Balance und Funktion.</p>
       </div>
       <div class="lab-card reveal" style="transition-delay:.2s">
+        <div class="lab-card-photo"><img src="photos/lab-strength.jpg" alt="Buse in einer dynamischen, kontrollierten Kraftubung"></div>
         <div class="lab-name">Strength Lab</div>
         <div class="lab-tagline">Deine Fähigkeit, Kraft zu erzeugen und zu kontrollieren</div>
         <p class="lab-desc">Strength Lab verbessert deine Fähigkeit, Kraft zu entwickeln, zu steuern und äußere Belastungen souveräner zu bewältigen — denn Kraft bedeutet nicht einfach, mehr Gewicht zu bewegen, sondern die eigene Kraft kontrollieren zu können.</p>
       </div>
       <div class="lab-card reveal" style="transition-delay:.3s">
+        <div class="lab-card-photo"><img src="photos/lab-metabolic.jpg" alt="Buse voller Energie bei der Vorbereitung, goldene Stunde"></div>
         <div class="lab-name">Metabolic Lab</div>
         <div class="lab-tagline">Deine Fähigkeit, Leistung aufrechtzuerhalten und dich zu erholen</div>
         <p class="lab-desc">Metabolic Lab entwickelt deine Herz-Kreislauf-Leistungsfähigkeit, muskuläre Ausdauer und Regeneration nach intensiven Belastungen. Dein Körper soll lernen, Energie effizienter einzusetzen und sich an höhere Anforderungen anzupassen.</p>
@@ -237,6 +245,9 @@ body { background: var(--charcoal); color: white; }
     <div class="section-header reveal">
       <div class="section-tag">Mehr als das Äußere</div>
       <h2 class="section-title">Dein bestes Selbst ist mehr<br>als das <em>Aussehen deines Körpers.</em></h2>
+    </div>
+    <div class="reveal final-photo">
+      <img src="photos/lab-system-final.jpg" alt="Buse in einem stillen Moment der Selbstverbindung">
     </div>
     <p class="reveal">The Lab System soll nicht einfach nur einen schlankeren, stärkeren oder beweglicheren Körper hervorbringen. Es soll dir helfen, deinen Körper zu verstehen, deine körperlichen Möglichkeiten selbstbewusst zu nutzen und eine stärkere Verbindung zu deinen eigenen Bedürfnissen aufzubauen.</p>
     <p class="reveal">Denn Bewegung wirkt nicht nur auf deine Muskeln. Sie beeinflusst auch deine Energie, deinen Fokus, dein Selbstvertrauen und die Beziehung, die du zu dir selbst hast. The Lab System widmet sich diesen Bedürfnissen zunächst einzeln und führt sie anschließend wieder zusammen – damit eine stärkere, leistungsfähigere und ganzheitlichere Version deiner selbst entstehen kann.</p>

@@ -57,6 +57,14 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .lang-pill-active{background:white;color:var(--charcoal);font-weight:500;box-shadow:0 1px 4px rgba(45,42,46,.1)}
 .lang-pill-active:hover{background:white}
 .hero { padding: 160px 60px 100px; max-width: 1100px; margin: 0 auto; text-align: center; }
+.hero-photo { max-width: 900px; margin: 0 auto 36px; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 70px rgba(45,42,46,.2); }
+.hero-photo img { width: 100%; height: 560px; object-fit: cover; display: block; }
+.section-photo { max-width: 800px; margin: 0 auto 36px; border-radius: 24px; overflow: hidden; }
+.section-photo img { width: 100%; height: 440px; object-fit: cover; display: block; }
+.hero-photo-tall { max-width: 560px; margin: 0 auto 36px; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 70px rgba(45,42,46,.2); }
+.hero-photo-tall img { width: 100%; height: 680px; object-fit: cover; display: block; }
+.section-photo-tall { max-width: 480px; margin: 0 auto 36px; border-radius: 24px; overflow: hidden; }
+.section-photo-tall img { width: 100%; height: 560px; object-fit: cover; object-position: center 25%; display: block; }
 .hero-eyebrow { font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 12px; }
 .hero-eyebrow::before, .hero-eyebrow::after { content:''; width: 32px; height: 1px; background: var(--gold); }
 .hero h1 { font-size: clamp(36px, 5vw, 60px); color: var(--charcoal); margin-bottom: 26px; font-weight: 300; letter-spacing: -1px; line-height: 1.1; max-width: 820px; margin-left: auto; margin-right: auto; }
@@ -143,8 +151,9 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(253,246,240,.98); backdrop-filter: blur(20px); padding: 30px; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.1); }
   .nav-dropdown-menu { position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; display: none; box-shadow: none; background: rgba(200,169,110,.05); margin-top: 6px; width: 100%; }
   .nav-dropdown.open .nav-dropdown-menu { display: block; }
-  .hero { padding: 120px 24px 60px; }
+  .hero { padding: 120px 24px 60px; } .hero-photo, .section-photo { max-width: 100%; } .hero-photo img { height: 340px; } .section-photo img { height: 280px; } .hero-photo-tall, .section-photo-tall { max-width: 100%; } .hero-photo-tall img { height: 460px; } .section-photo-tall img { height: 380px; }
   .prose-inner, .format-inner, .process-inner, .foryou-inner, .membership-inner { padding: 0 24px; }
+  .photo-duo-grid { grid-template-columns: 1fr !important; } .photo-duo-grid img { height: 300px !important; }
   .format-grid { grid-template-columns: 1fr; }
   .format-list ul { grid-template-columns: 1fr; }
   .process-steps { grid-template-columns: 1fr 1fr; }
@@ -186,6 +195,9 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 <section class="hero">
   <div class="hero-eyebrow">Online Classes</div>
   <h1>Bulunduğun yer değişebilir.<br><em>Antrenman düzenin değişmek zorunda değil.</em></h1>
+  <div class="hero-photo">
+    <img src="photos/classes-hero.jpg" alt="Buse bir online dersi yonetirken">
+  </div>
   <p class="hero-desc">Her hafta üç canlı online ders: HIIT, kuvvet ve mobilite. Gerçek zamanlı koçluk, bilimsel temelli programlama ve grubun motive edici enerjisi tek bir sistemde. Bu, kaydedip sonra hiç açmayacağın bir egzersiz videosu değil. Takviminde sana ait net bir zaman, seni gerçekten gören bir koç ve devam etmeni kolaylaştıran bir topluluk.</p>
   <p class="hero-price">Kurucu üyelik aylık <em>€59'dan</em> başlıyor.</p>
   <a href="#membership" class="btn-dark">Bir Derse Katıl →</a>
@@ -245,6 +257,10 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
     <div class="section-header reveal">
       <div class="section-tag">Denge</div>
       <h2 class="section-title">Grup enerjisi ile<br><em>bireysel dikkat buluşuyor.</em></h2>
+    </div>
+    <div class="reveal photo-duo-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:36px;">
+      <div style="border-radius:20px;overflow:hidden;"><img src="photos/classes-duo-1.jpg" alt="Buse evde, samimi bir antrenman ani" style="width:100%;height:380px;object-fit:cover;display:block;"></div>
+      <div style="border-radius:20px;overflow:hidden;"><img src="photos/classes-duo-2.jpg" alt="Buse odaklanmis, bireysel bir an" style="width:100%;height:380px;object-fit:cover;display:block;"></div>
     </div>
     <p class="reveal">Grup hâlinde antrenman yapmak motivasyonu, enerjiyi ve devamlılığı artırır. Ancak kalabalık ve anonim derslerde gerçekten görülmek çoğu zaman mümkün değildir.</p>
     <p class="reveal">Online Classes, bu iki deneyim arasında seçim yapmak zorunda kalmaman için tasarlandı. Bir grupla birlikte hareket etmenin enerjisinden ve sorumluluk hissinden yararlanırken, aynı zamanda gerçek zamanlı yönlendirme, hareket düzeltmeleri ve bedenine uygun egzersiz alternatifleri alırsın.</p>

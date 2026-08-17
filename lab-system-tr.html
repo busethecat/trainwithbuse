@@ -83,6 +83,8 @@ body { background: var(--charcoal); color: white; }
 .labs-inner { max-width: 1100px; margin: 0 auto; padding: 0 60px; }
 .labs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .lab-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: 24px; padding: 40px 36px; transition: all .3s; }
+.lab-card-photo { margin: -40px -36px 24px; border-radius: 24px 24px 0 0; overflow: hidden; }
+.lab-card-photo img { width: 100%; height: 400px; object-fit: cover; object-position: center 15%; display: block; }
 .lab-card:hover { border-color: rgba(200,169,110,.3); transform: translateY(-4px); }
 .lab-name { font-family: 'Cormorant Garamond', serif; font-size: 30px; color: var(--gold); margin-bottom: 10px; }
 .lab-tagline { font-size: 13px; color: rgba(255,255,255,.4); letter-spacing: .3px; margin-bottom: 18px; font-style: italic; }
@@ -90,6 +92,8 @@ body { background: var(--charcoal); color: white; }
 
 .final-section { padding: 90px 0; }
 .final-inner { max-width: 760px; margin: 0 auto; padding: 0 60px; text-align: center; }
+.final-photo { max-width: 700px; margin: 0 auto 36px; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,.35); }
+.final-photo img { width: 100%; height: 460px; object-fit: cover; object-position: center 55%; display: block; }
 .final-inner p { font-size: 15.5px; color: rgba(255,255,255,.55); line-height: 1.9; margin-bottom: 20px; text-align: left; }
 .final-tagline { font-family: 'Cormorant Garamond', serif; font-size: clamp(24px,3.2vw,34px); font-weight: 300; color: white; text-align: center; margin-top: 40px; line-height: 1.4; }
 .final-tagline em { font-style: italic; color: var(--rose); }
@@ -126,7 +130,7 @@ body { background: var(--charcoal); color: white; }
   .nav-dropdown.open .nav-dropdown-menu { display: block; }
   .hero { padding: 130px 24px 60px; }
   .prose-inner, .labs-inner, .final-inner { padding: 0 24px; }
-  .labs-grid { grid-template-columns: 1fr; }
+  .labs-grid { grid-template-columns: 1fr; } .lab-card-photo img { height: 300px; } .final-photo img { height: 320px; }
   .closing-section { padding: 72px 24px; }
   .notify-form { flex-direction: column; }
   .footer-mini { padding: 24px; flex-direction: column; text-align: center; }
@@ -185,21 +189,25 @@ body { background: var(--charcoal); color: white; }
   <div class="labs-inner">
     <div class="labs-grid">
       <div class="lab-card reveal">
+        <div class="lab-card-photo"><img src="photos/lab-movement.jpg" alt="Buse sakin, meditatif bir anda, eli kalbinde" style="object-position:center 60%"></div>
         <div class="lab-name">Movement Lab</div>
         <div class="lab-tagline">Hareket edebilme kapasiten</div>
         <p class="lab-desc">Movement Lab, bedeninin hareket alanını, eklem kontrolünü, koordinasyonunu ve beden farkındalığını geliştirir. Sistemin temelini oluşturur — çünkü bedeninin erişemediği veya kontrol edemediği bir hareketi gerçek anlamda güçlendiremezsin.</p>
       </div>
       <div class="lab-card reveal" style="transition-delay:.1s">
+        <div class="lab-card-photo"><img src="photos/lab-sculpt.jpg" alt="Buse pilates temelli bir kuvvet seansinda"></div>
         <div class="lab-name">Sculpt Lab</div>
         <div class="lab-tagline">Bedenini bilinçli şekilde şekillendirme kapasiten</div>
         <p class="lab-desc">Sculpt Lab, kas gelişimi ve fiziksel şekillenme için planlı antrenman hacmi kullanır. Amaç yalnızca nasıl göründüğünü değiştirmek değil — görünüm, kuvvet, denge ve fonksiyon arasında daha sürdürülebilir bir ilişki kurmaktır.</p>
       </div>
       <div class="lab-card reveal" style="transition-delay:.2s">
+        <div class="lab-card-photo"><img src="photos/lab-strength.jpg" alt="Buse dinamik, kontrollu bir kuvvet hareketinde"></div>
         <div class="lab-name">Strength Lab</div>
         <div class="lab-tagline">Kuvvet üretme ve yönetme kapasiten</div>
         <p class="lab-desc">Strength Lab, bedeninin kuvvet üretmesini, bu kuvveti kontrol etmesini ve dışarıdan gelen yüklerle daha güvenli biçimde başa çıkmasını geliştirir — çünkü güçlü olmak yalnızca daha ağır kaldırmak değil, ürettiğin kuvvet üzerinde kontrol sahibi olmaktır.</p>
       </div>
       <div class="lab-card reveal" style="transition-delay:.3s">
+        <div class="lab-card-photo"><img src="photos/lab-metabolic.jpg" alt="Buse enerjiyle hazirlanirken, altin saatte"></div>
         <div class="lab-name">Metabolic Lab</div>
         <div class="lab-tagline">Enerji üretme, sürdürme ve toparlanma kapasiten</div>
         <p class="lab-desc">Metabolic Lab, efor kapasiteni, kassal dayanıklılığını ve yüksek tempodan sonra toparlanabilme becerini geliştirir. Amaç seni yalnızca yormak değil — bedeninin enerjiyi daha etkili kullanmasını öğretmektir.</p>
@@ -237,6 +245,9 @@ body { background: var(--charcoal); color: white; }
     <div class="section-header reveal">
       <div class="section-tag">Görünümün Ötesinde</div>
       <h2 class="section-title">En iyi hâlin, yalnızca<br>nasıl <em>göründüğün değildir.</em></h2>
+    </div>
+    <div class="reveal final-photo">
+      <img src="photos/lab-system-final.jpg" alt="Buse kendine baglandigi sessiz bir an">
     </div>
     <p class="reveal">The Lab System'ın hedefi yalnızca daha fit, daha güçlü veya daha hareketli bir beden yaratmak değildir. Asıl hedef; bedenini tanıyan, kapasitesini kullanabilen, fiziksel olarak kendine güvenen ve kendi ihtiyaçlarıyla daha güçlü bir bağ kurabilen bir insan geliştirmektir.</p>
     <p class="reveal">Çünkü hareket yalnızca kaslarda gerçekleşmez. Enerjini, odağını, öz güvenini ve kendinle kurduğun ilişkiyi de etkiler. The Lab System, bedeninin ve zihninin farklı ihtiyaçlarına tek tek odaklanır; sonra bu parçaları daha güçlü, daha işlevsel ve daha bütün bir "sen" yaratmak için yeniden bir araya getirir.</p>

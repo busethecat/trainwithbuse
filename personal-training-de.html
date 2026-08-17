@@ -57,6 +57,10 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .lang-pill-active:hover{background:white}
 
 .hero { padding: 160px 60px 100px; max-width: 1100px; margin: 0 auto; text-align: center; }
+.hero-photo { max-width: 900px; margin: 0 auto 36px; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 70px rgba(45,42,46,.2); }
+.hero-photo img { width: 100%; height: 560px; object-fit: cover; display: block; }
+.hero-photo-tall { max-width: 560px; margin: 0 auto 36px; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 70px rgba(45,42,46,.2); }
+.hero-photo-tall img { width: 100%; height: 680px; object-fit: cover; display: block; }
 .hero-eyebrow { font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 12px; }
 .hero-eyebrow::before, .hero-eyebrow::after { content:''; width: 32px; height: 1px; background: var(--gold); }
 .hero h1 { font-size: clamp(32px, 4.6vw, 54px); color: var(--charcoal); margin-bottom: 26px; font-weight: 300; letter-spacing: -1px; line-height: 1.15; max-width: 800px; margin-left: auto; margin-right: auto; }
@@ -210,7 +214,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(253,246,240,.98); backdrop-filter: blur(20px); padding: 30px; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.1); }
   .nav-dropdown-menu { position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; display: none; box-shadow: none; background: rgba(200,169,110,.05); margin-top: 6px; width: 100%; }
   .nav-dropdown.open .nav-dropdown-menu { display: block; }
-  .hero { padding: 120px 24px 60px; }
+  .hero { padding: 120px 24px 60px; } .hero-photo { max-width: 100%; } .hero-photo img { height: 340px; } .hero-photo-tall { max-width: 100%; } .hero-photo-tall img { height: 460px; }
   .prose-inner, .process-inner, .limited-inner, .package-inner, .foryou-inner { padding: 0 24px; }
   .diff-list { grid-template-columns: 1fr; }
   .process-steps { grid-template-columns: 1fr 1fr; }
@@ -254,6 +258,9 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 <section class="hero">
   <div class="hero-eyebrow">The Buse Method</div>
   <h1>Personal Training in Berlin –<br><em>konsequent auf dich abgestimmt.</em></h1>
+  <div class="hero-photo-tall">
+    <img src="photos/personal-training-hero.jpg" alt="Buse Kosif, Personal Trainerin in Berlin">
+  </div>
   <p class="hero-desc">Ein exklusives, wissenschaftlich fundiertes Trainingserlebnis, das präzise Beobachtung, manuelle Korrekturen, intelligente Trainingsplanung und meine ungeteilte Aufmerksamkeit miteinander verbindet.</p>
   <p class="hero-price">Persönliche Sessions ab <em>119 €.</em> Zugang nur nach Bewerbung.</p>
   <button class="btn-dark" onclick="openApply()">Jetzt bewerben</button>
