@@ -399,14 +399,29 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 <script>
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
+let scrollLockY = 0;
+function lockBodyScroll() {
+  scrollLockY = window.scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollLockY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+}
+function unlockBodyScroll() {
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  window.scrollTo(0, scrollLockY);
+}
 hamburger.addEventListener('click', () => {
   const isOpen = navLinks.classList.toggle('open');
-  document.body.style.overflow = isOpen ? 'hidden' : '';
+  isOpen ? lockBodyScroll() : unlockBodyScroll();
 });
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   if (a.classList.contains('nav-dropdown-toggle')) return;
   navLinks.classList.remove('open');
-  document.body.style.overflow = '';
+  unlockBodyScroll();
 }));
 document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
   toggle.addEventListener('click', e => {

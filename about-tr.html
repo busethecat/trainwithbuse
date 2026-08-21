@@ -524,7 +524,7 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
     justify-content: center; align-items: center; gap: 32px; z-index: 999;
   }
   nav:has(.nav-links.open) { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; transition: none !important; }
-  .nav-links a { font-size: 22px; }
+  .nav-links a { font-size: 17px; }
   .hamburger { display: flex; position: relative; z-index: 1002; }
   .nav-dropdown-menu {
     position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto;
@@ -537,8 +537,8 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
   @media (max-width: 700px) {
     .nav-dropdown-toggle { display: none; }
     .nav-dropdown-menu { display: block !important; position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; box-shadow: none; background: none; margin: 0; padding: 0; min-width: 0; text-align: center; }
-    .nav-dropdown-menu li a { font-size: 22px !important; }
-    .nav-cta, .nav-login { font-size: 16px !important; }
+    .nav-dropdown-menu li a { font-size: 17px !important; }
+    .nav-cta, .nav-login { font-size: 14px !important; }
   }
   .nav-dropdown-menu li a { font-size: 16px; }
   .hero-about { padding: 110px 24px 60px; }
@@ -970,10 +970,29 @@ window.addEventListener('scroll', () => {
 // Hamburger
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+let scrollLockY = 0;
+function lockBodyScroll() {
+  scrollLockY = window.scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollLockY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+}
+function unlockBodyScroll() {
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  window.scrollTo(0, scrollLockY);
+}
+hamburger.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  isOpen ? lockBodyScroll() : unlockBodyScroll();
+});
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   if (a.classList.contains('nav-dropdown-toggle')) return;
   navLinks.classList.remove('open');
+  unlockBodyScroll();
 }));
 document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
   toggle.addEventListener('click', e => {
