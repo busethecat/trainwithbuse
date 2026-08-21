@@ -170,8 +170,8 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 @media (max-width: 900px) {
   nav { padding: 16px 24px; }
   .nav-links { display: none; }
-  .hamburger { display: flex; }
-  .nav-links.open { display: flex; flex-direction: column; position: fixed; inset: 0; background: var(--cream); padding: 30px; gap: 24px; justify-content: center; align-items: center; overflow-y: auto; box-shadow: none; } nav:has(.nav-links.open) { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  .hamburger { display: flex; position: relative; z-index: 1002; }
+  .nav-links.open { display: flex; flex-direction: column; position: fixed; inset: 0; background: var(--cream); padding: 30px; gap: 24px; justify-content: center; align-items: center; overflow-y: auto; box-shadow: none; } nav:has(.nav-links.open) { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; transition: none !important; }
   .nav-dropdown-menu { position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; display: none; box-shadow: none; background: rgba(200,169,110,.05); margin-top: 6px; width: 100%; }
   .nav-dropdown.open .nav-dropdown-menu { display: block; }
 
