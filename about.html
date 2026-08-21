@@ -523,6 +523,7 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
     inset: 0; background: var(--cream);
     justify-content: center; align-items: center; gap: 32px; z-index: 999;
   }
+  nav:has(.nav-links.open) { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
   .nav-links a { font-size: 22px; }
   .hamburger { display: flex; z-index: 1001; }
   .nav-dropdown-menu {
@@ -537,12 +538,13 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
     .nav-dropdown-toggle { display: none; }
     .nav-dropdown-menu { display: block !important; position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; box-shadow: none; background: none; margin: 0; padding: 0; min-width: 0; text-align: center; }
     .nav-dropdown-menu li a { font-size: 22px !important; }
+    .nav-cta, .nav-login { font-size: 22px !important; }
   }
   .nav-dropdown-menu li a { font-size: 16px; }
   .hero-about { padding: 110px 24px 60px; }
   .hero-inner { grid-template-columns: 1fr; gap: 48px; }
   .hero-img-wrap { order: -1; max-width: 320px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  .stat-float, .badge-float { position: static; inset: auto; }
+  .stat-float, .badge-float { display: none; }
   .section-inner, .diff-inner { padding: 0 24px; }
   .section { padding: 72px 0; }
   .origin-grid, .science-grid, .charite-grid, .diff-grid, .berlin-grid { grid-template-columns: 1fr; gap: 40px; }
