@@ -39,7 +39,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .nav-cta::after { display: none !important; }
 .nav-login { font-size: 12px !important; letter-spacing: 2px !important; color: rgba(255,255,255,.6) !important; border: 1.5px solid rgba(255,255,255,0.15) !important; padding: 9px 20px !important; border-radius: 50px !important; transition: all 0.3s !important; text-transform: uppercase !important; }
 .nav-login:hover { border-color: var(--gold) !important; color: white !important; } .nav-login::after { display: none !important; }
-.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 15px; }
 .hamburger span { width: 26px; height: 2px; background: white; transition: all 0.3s; border-radius: 2px; }
 .nav-dropdown { position: relative; }
 .nav-dropdown-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--gold) !important; font-weight: 500; }
@@ -52,7 +52,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .nav-dropdown-menu li a:hover { background: rgba(200,169,110,.1); color: var(--gold) !important; }
 .nav-dropdown-menu li a.active-page { color: var(--gold) !important; font-weight: 500 !important; }
 .lang-switcher{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.08);border-radius:50px;padding:4px;margin-left:8px}
-.lang-pill{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:7px 14px;border-radius:50px;color:rgba(255,255,255,.6);transition:all .25s}
+.lang-pill{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding: 12px 16px;border-radius:50px;color:rgba(255,255,255,.6);transition:all .25s}
 .lang-pill:hover{color:white;background:rgba(255,255,255,.08)}
 .lang-pill-active{background:var(--gold);color:var(--charcoal);font-weight:500}
 .lang-pill-active:hover{background:var(--gold);color:var(--charcoal)}
@@ -107,7 +107,7 @@ body { background: var(--charcoal); color: white; }
 .btn-outline-gold:hover { border-color: var(--gold); background: rgba(200,169,110,.08); }
 
 .notify-form { max-width: 420px; margin: 0 auto; display: flex; gap: 10px; }
-.notify-form input { flex: 1; padding: 14px 20px; border-radius: 50px; border: 1.5px solid rgba(255,255,255,.15); background: rgba(255,255,255,.05); color: white; font-family: 'Outfit', sans-serif; font-size: 13px; }
+.notify-form input { flex: 1; padding: 14px 20px; border-radius: 50px; border: 1.5px solid rgba(255,255,255,.15); background: rgba(255,255,255,.05); color: white; font-family: 'Outfit', sans-serif; font-size: 16px; }
 .notify-form input::placeholder { color: rgba(255,255,255,.35); }
 .notify-form input:focus { outline: none; border-color: var(--gold); }
 .notify-form button { white-space: nowrap; }
@@ -125,9 +125,16 @@ body { background: var(--charcoal); color: white; }
   nav { padding: 16px 24px; }
   .nav-links { display: none; }
   .hamburger { display: flex; }
-  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(45,42,46,.98); backdrop-filter: blur(20px); padding: 30px; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(45,42,46,.98); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); padding: 30px; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
   .nav-dropdown-menu { position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; display: none; box-shadow: none; background: rgba(200,169,110,.06); margin-top: 6px; width: 100%; }
   .nav-dropdown.open .nav-dropdown-menu { display: block; }
+
+  /* Phone-only: flatten Services into the main menu (tablets/iPad keep the accordion) */
+  @media (max-width: 700px) {
+    .nav-dropdown-toggle { display: none; }
+    .nav-dropdown-menu { display: block !important; position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; box-shadow: none; background: none; margin: 0; padding: 0; width: auto; min-width: 0; }
+    .nav-dropdown-menu li a { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+  }
   .hero { padding: 130px 24px 60px; }
   .prose-inner, .labs-inner, .final-inner { padding: 0 24px; }
   .labs-grid { grid-template-columns: 1fr; } .lab-card-photo img { height: 300px; } .final-photo img { height: 320px; }
@@ -189,25 +196,25 @@ body { background: var(--charcoal); color: white; }
   <div class="labs-inner">
     <div class="labs-grid">
       <div class="lab-card reveal">
-        <div class="lab-card-photo"><img src="photos/lab-movement.jpg" alt="Buse sakin, meditatif bir anda, eli kalbinde" style="object-position:center 60%"></div>
+        <div class="lab-card-photo"><img src="photos/lab-movement.jpg" alt="Buse sakin, meditatif bir anda, eli kalbinde" style="object-position:center 60%" loading="lazy"></div>
         <div class="lab-name">Movement Lab</div>
         <div class="lab-tagline">Hareket edebilme kapasiten</div>
         <p class="lab-desc">Movement Lab, bedeninin hareket alanını, eklem kontrolünü, koordinasyonunu ve beden farkındalığını geliştirir. Sistemin temelini oluşturur — çünkü bedeninin erişemediği veya kontrol edemediği bir hareketi gerçek anlamda güçlendiremezsin.</p>
       </div>
       <div class="lab-card reveal" style="transition-delay:.1s">
-        <div class="lab-card-photo"><img src="photos/lab-sculpt.jpg" alt="Buse pilates temelli bir kuvvet seansinda"></div>
+        <div class="lab-card-photo"><img src="photos/lab-sculpt.jpg" alt="Buse pilates temelli bir kuvvet seansinda" loading="lazy"></div>
         <div class="lab-name">Sculpt Lab</div>
         <div class="lab-tagline">Bedenini bilinçli şekilde şekillendirme kapasiten</div>
         <p class="lab-desc">Sculpt Lab, kas gelişimi ve fiziksel şekillenme için planlı antrenman hacmi kullanır. Amaç yalnızca nasıl göründüğünü değiştirmek değil — görünüm, kuvvet, denge ve fonksiyon arasında daha sürdürülebilir bir ilişki kurmaktır.</p>
       </div>
       <div class="lab-card reveal" style="transition-delay:.2s">
-        <div class="lab-card-photo"><img src="photos/lab-strength.jpg" alt="Buse dinamik, kontrollu bir kuvvet hareketinde"></div>
+        <div class="lab-card-photo"><img src="photos/lab-strength.jpg" alt="Buse dinamik, kontrollu bir kuvvet hareketinde" loading="lazy"></div>
         <div class="lab-name">Strength Lab</div>
         <div class="lab-tagline">Kuvvet üretme ve yönetme kapasiten</div>
         <p class="lab-desc">Strength Lab, bedeninin kuvvet üretmesini, bu kuvveti kontrol etmesini ve dışarıdan gelen yüklerle daha güvenli biçimde başa çıkmasını geliştirir — çünkü güçlü olmak yalnızca daha ağır kaldırmak değil, ürettiğin kuvvet üzerinde kontrol sahibi olmaktır.</p>
       </div>
       <div class="lab-card reveal" style="transition-delay:.3s">
-        <div class="lab-card-photo"><img src="photos/lab-metabolic.jpg" alt="Buse enerjiyle hazirlanirken, altin saatte"></div>
+        <div class="lab-card-photo"><img src="photos/lab-metabolic.jpg" alt="Buse enerjiyle hazirlanirken, altin saatte" loading="lazy"></div>
         <div class="lab-name">Metabolic Lab</div>
         <div class="lab-tagline">Enerji üretme, sürdürme ve toparlanma kapasiten</div>
         <p class="lab-desc">Metabolic Lab, efor kapasiteni, kassal dayanıklılığını ve yüksek tempodan sonra toparlanabilme becerini geliştirir. Amaç seni yalnızca yormak değil — bedeninin enerjiyi daha etkili kullanmasını öğretmektir.</p>
@@ -247,7 +254,7 @@ body { background: var(--charcoal); color: white; }
       <h2 class="section-title">En iyi hâlin, yalnızca<br>nasıl <em>göründüğün değildir.</em></h2>
     </div>
     <div class="reveal final-photo">
-      <img src="photos/lab-system-final.jpg" alt="Buse kendine baglandigi sessiz bir an">
+      <img src="photos/lab-system-final.jpg" alt="Buse kendine baglandigi sessiz bir an" loading="lazy">
     </div>
     <p class="reveal">The Lab System'ın hedefi yalnızca daha fit, daha güçlü veya daha hareketli bir beden yaratmak değildir. Asıl hedef; bedenini tanıyan, kapasitesini kullanabilen, fiziksel olarak kendine güvenen ve kendi ihtiyaçlarıyla daha güçlü bir bağ kurabilen bir insan geliştirmektir.</p>
     <p class="reveal">Çünkü hareket yalnızca kaslarda gerçekleşmez. Enerjini, odağını, öz güvenini ve kendinle kurduğun ilişkiyi de etkiler. The Lab System, bedeninin ve zihninin farklı ihtiyaçlarına tek tek odaklanır; sonra bu parçaları daha güçlü, daha işlevsel ve daha bütün bir "sen" yaratmak için yeniden bir araya getirir.</p>
@@ -283,10 +290,14 @@ body { background: var(--charcoal); color: white; }
 <script>
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+hamburger.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+});
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   if (a.classList.contains('nav-dropdown-toggle')) return;
   navLinks.classList.remove('open');
+  document.body.style.overflow = '';
 }));
 document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
   toggle.addEventListener('click', e => {

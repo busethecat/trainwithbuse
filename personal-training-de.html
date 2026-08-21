@@ -38,7 +38,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .nav-cta::after { display: none !important; }
 .nav-login { font-size: 12px !important; letter-spacing: 2px !important; color: var(--charcoal-light) !important; border: 1.5px solid rgba(45,42,46,0.15) !important; padding: 9px 20px !important; border-radius: 50px !important; transition: all 0.3s !important; text-transform: uppercase !important; }
 .nav-login:hover { border-color: #C8A96E !important; color: var(--charcoal) !important; } .nav-login::after { display: none !important; }
-.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 15px; }
 .hamburger span { width: 26px; height: 2px; background: var(--charcoal); transition: all 0.3s; border-radius: 2px; }
 .nav-dropdown { position: relative; }
 .nav-dropdown-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--gold) !important; font-weight: 500; }
@@ -51,7 +51,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .nav-dropdown-menu li a:hover { background: rgba(200,169,110,.08); color: var(--rose) !important; }
 .nav-dropdown-menu li a.active-page { color: var(--rose) !important; font-weight: 500 !important; }
 .lang-switcher{display:flex;align-items:center;gap:4px;background:rgba(45,42,46,.06);border-radius:50px;padding:4px;margin-left:8px}
-.lang-pill{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:7px 14px;border-radius:50px;color:var(--charcoal-light);transition:all .25s}
+.lang-pill{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding: 12px 16px;border-radius:50px;color:var(--charcoal-light);transition:all .25s}
 .lang-pill:hover{color:var(--charcoal);background:rgba(45,42,46,.07)}
 .lang-pill-active{background:white;color:var(--charcoal);font-weight:500;box-shadow:0 1px 4px rgba(45,42,46,.1)}
 .lang-pill-active:hover{background:white}
@@ -165,7 +165,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .apply-step-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; text-align: center; }
 .apply-question { font-family: 'Cormorant Garamond', serif; font-size: clamp(24px,3.2vw,34px); font-weight: 300; color: white; text-align: center; margin-bottom: 12px; line-height: 1.3; }
 .apply-subtext { font-size: 13.5px; color: rgba(255,255,255,.45); text-align: center; margin-bottom: 44px; line-height: 1.7; }
-.apply-input, .apply-textarea { width: 100%; padding: 16px 20px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,.15); background: rgba(255,255,255,.04); color: white; font-family: 'Outfit', sans-serif; font-size: 15px; margin-bottom: 8px; }
+.apply-input, .apply-textarea { width: 100%; padding: 16px 20px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,.15); background: rgba(255,255,255,.04); color: white; font-family: 'Outfit', sans-serif; font-size: 16px; margin-bottom: 8px; }
 .apply-input::placeholder, .apply-textarea::placeholder { color: rgba(255,255,255,.3); }
 .apply-input:focus, .apply-textarea:focus { outline: none; border-color: var(--gold); }
 .apply-textarea { min-height: 130px; resize: vertical; font-family: 'Outfit', sans-serif; line-height: 1.6; }
@@ -211,9 +211,16 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   nav { padding: 16px 24px; }
   .nav-links { display: none; }
   .hamburger { display: flex; }
-  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(253,246,240,.98); backdrop-filter: blur(20px); padding: 30px; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.1); }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(253,246,240,.98); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); padding: 30px; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.1); }
   .nav-dropdown-menu { position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; display: none; box-shadow: none; background: rgba(200,169,110,.05); margin-top: 6px; width: 100%; }
   .nav-dropdown.open .nav-dropdown-menu { display: block; }
+
+  /* Phone-only: flatten Services into the main menu (tablets/iPad keep the accordion) */
+  @media (max-width: 700px) {
+    .nav-dropdown-toggle { display: none; }
+    .nav-dropdown-menu { display: block !important; position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; box-shadow: none; background: none; margin: 0; padding: 0; width: auto; min-width: 0; }
+    .nav-dropdown-menu li a { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+  }
   .hero { padding: 120px 24px 60px; } .hero-photo { max-width: 100%; } .hero-photo img { height: 340px; } .hero-photo-tall { max-width: 100%; } .hero-photo-tall img { height: 460px; }
   .prose-inner, .process-inner, .limited-inner, .package-inner, .foryou-inner { padding: 0 24px; }
   .diff-list { grid-template-columns: 1fr; }
@@ -448,10 +455,14 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+hamburger.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+});
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   if (a.classList.contains('nav-dropdown-toggle')) return;
   navLinks.classList.remove('open');
+  document.body.style.overflow = '';
 }));
 document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
   toggle.addEventListener('click', e => {

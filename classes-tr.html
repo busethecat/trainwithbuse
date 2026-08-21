@@ -39,7 +39,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .nav-cta::after { display: none !important; }
 .nav-login { font-size: 12px !important; letter-spacing: 2px !important; color: var(--charcoal-light) !important; border: 1.5px solid rgba(45,42,46,0.15) !important; padding: 9px 20px !important; border-radius: 50px !important; transition: all 0.3s !important; text-transform: uppercase !important; }
 .nav-login:hover { border-color: #C8A96E !important; color: var(--charcoal) !important; } .nav-login::after { display: none !important; }
-.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 15px; }
 .hamburger span { width: 26px; height: 2px; background: var(--charcoal); transition: all 0.3s; border-radius: 2px; }
 .nav-dropdown { position: relative; }
 .nav-dropdown-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--gold) !important; font-weight: 500; }
@@ -52,7 +52,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .nav-dropdown-menu li a:hover { background: rgba(200,169,110,.08); color: var(--rose) !important; }
 .nav-dropdown-menu li a.active-page { color: var(--rose) !important; font-weight: 500 !important; }
 .lang-switcher{display:flex;align-items:center;gap:4px;background:rgba(45,42,46,.06);border-radius:50px;padding:4px;margin-left:8px}
-.lang-pill{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:7px 14px;border-radius:50px;color:var(--charcoal-light);transition:all .25s}
+.lang-pill{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding: 12px 16px;border-radius:50px;color:var(--charcoal-light);transition:all .25s}
 .lang-pill:hover{color:var(--charcoal);background:rgba(45,42,46,.07)}
 .lang-pill-active{background:white;color:var(--charcoal);font-weight:500;box-shadow:0 1px 4px rgba(45,42,46,.1)}
 .lang-pill-active:hover{background:white}
@@ -148,9 +148,16 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   nav { padding: 16px 24px; }
   .nav-links { display: none; }
   .hamburger { display: flex; }
-  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(253,246,240,.98); backdrop-filter: blur(20px); padding: 30px; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.1); }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(253,246,240,.98); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); padding: 30px; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.1); }
   .nav-dropdown-menu { position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; display: none; box-shadow: none; background: rgba(200,169,110,.05); margin-top: 6px; width: 100%; }
   .nav-dropdown.open .nav-dropdown-menu { display: block; }
+
+  /* Phone-only: flatten Services into the main menu (tablets/iPad keep the accordion) */
+  @media (max-width: 700px) {
+    .nav-dropdown-toggle { display: none; }
+    .nav-dropdown-menu { display: block !important; position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; box-shadow: none; background: none; margin: 0; padding: 0; width: auto; min-width: 0; }
+    .nav-dropdown-menu li a { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+  }
   .hero { padding: 120px 24px 60px; } .hero-photo, .section-photo { max-width: 100%; } .hero-photo img { height: 340px; } .section-photo img { height: 280px; } .hero-photo-tall, .section-photo-tall { max-width: 100%; } .hero-photo-tall img { height: 460px; } .section-photo-tall img { height: 380px; }
   .prose-inner, .format-inner, .process-inner, .foryou-inner, .membership-inner { padding: 0 24px; }
   .photo-duo-grid { grid-template-columns: 1fr !important; } .photo-duo-grid img { height: 300px !important; }
@@ -259,8 +266,8 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
       <h2 class="section-title">Grup enerjisi ile<br><em>bireysel dikkat buluşuyor.</em></h2>
     </div>
     <div class="reveal photo-duo-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:36px;">
-      <div style="border-radius:20px;overflow:hidden;"><img src="photos/classes-duo-1.jpg" alt="Buse evde, samimi bir antrenman ani" style="width:100%;height:380px;object-fit:cover;display:block;"></div>
-      <div style="border-radius:20px;overflow:hidden;"><img src="photos/classes-duo-2.jpg" alt="Buse odaklanmis, bireysel bir an" style="width:100%;height:380px;object-fit:cover;display:block;"></div>
+      <div style="border-radius:20px;overflow:hidden;"><img src="photos/classes-duo-1.jpg" alt="Buse evde, samimi bir antrenman ani" loading="lazy" style="width:100%;height:380px;object-fit:cover;display:block;"></div>
+      <div style="border-radius:20px;overflow:hidden;"><img src="photos/classes-duo-2.jpg" alt="Buse odaklanmis, bireysel bir an" loading="lazy" style="width:100%;height:380px;object-fit:cover;display:block;"></div>
     </div>
     <p class="reveal">Grup hâlinde antrenman yapmak motivasyonu, enerjiyi ve devamlılığı artırır. Ancak kalabalık ve anonim derslerde gerçekten görülmek çoğu zaman mümkün değildir.</p>
     <p class="reveal">Online Classes, bu iki deneyim arasında seçim yapmak zorunda kalmaman için tasarlandı. Bir grupla birlikte hareket etmenin enerjisinden ve sorumluluk hissinden yararlanırken, aynı zamanda gerçek zamanlı yönlendirme, hareket düzeltmeleri ve bedenine uygun egzersiz alternatifleri alırsın.</p>
@@ -392,10 +399,14 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 <script>
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+hamburger.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+});
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
   if (a.classList.contains('nav-dropdown-toggle')) return;
   navLinks.classList.remove('open');
+  document.body.style.overflow = '';
 }));
 document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
   toggle.addEventListener('click', e => {
