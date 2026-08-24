@@ -522,9 +522,11 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
     display: flex; flex-direction: column; position: fixed;
     inset: 0; background: var(--cream);
     justify-content: center; align-items: center; gap: 32px; z-index: 999;
+    overflow-y: auto; overscroll-behavior: contain;
   }
   nav:has(.nav-links.open) { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; transition: none !important; }
-  .nav-links a { font-size: 17px; }
+  .nav-links a { font-size: 17px; text-transform: none !important; letter-spacing: 0.5px !important; }
+  .nav-cta, .nav-login { text-transform: none !important; letter-spacing: 0.5px !important; }
   .hamburger { display: flex; position: relative; z-index: 1002; }
   .nav-dropdown-menu {
     position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto;
@@ -960,18 +962,28 @@ window.addEventListener('scroll', () => {
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
 let scrollLockY = 0;
+function preventTouchMove(e) {
+  if (e.target.closest('.nav-links.open')) return;
+  e.preventDefault();
+}
 function lockBodyScroll() {
   scrollLockY = window.scrollY;
+  document.documentElement.style.overflow = 'hidden';
   document.body.style.position = 'fixed';
   document.body.style.top = `-${scrollLockY}px`;
   document.body.style.left = '0';
   document.body.style.right = '0';
+  document.body.style.width = '100%';
+  document.addEventListener('touchmove', preventTouchMove, { passive: false });
 }
 function unlockBodyScroll() {
+  document.documentElement.style.overflow = '';
   document.body.style.position = '';
   document.body.style.top = '';
   document.body.style.left = '';
   document.body.style.right = '';
+  document.body.style.width = '';
+  document.removeEventListener('touchmove', preventTouchMove);
   window.scrollTo(0, scrollLockY);
 }
 hamburger.addEventListener('click', () => {
