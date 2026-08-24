@@ -1566,6 +1566,7 @@
       align-items: center;
       gap: 32px;
       overflow-y: auto;
+      overflow-x: hidden;
       overscroll-behavior: contain;
       box-shadow: none;
     }
@@ -1594,7 +1595,7 @@
     @media (max-width: 700px) {
       .nav-dropdown-toggle { display: none; }
       .nav-dropdown-menu { display: block !important; position: static; transform: none; opacity: 1; visibility: visible; pointer-events: auto; box-shadow: none; background: none; margin: 0; padding: 0; width: auto; min-width: 0; }
-      .nav-dropdown-menu li a { font-size: 17px; }
+      .nav-dropdown-menu li a { font-size: 17px; white-space: normal; }
       .nav-cta, .nav-login { font-size: 14px !important; }
     }
     .hero h1 { font-size: 36px; }
