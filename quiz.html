@@ -1356,7 +1356,7 @@ const results = {
         "1:1 sessions in Berlin with Buse",
         "Custom training plan built for your body",
         "Real-time form correction & feedback",
-        "Neuroscience-backed training methods",
+        "Evidence-informed training methods",
         "Nutrition guidance included"
       ],
       cta: "Book a Free 15-Min Call",
@@ -1381,7 +1381,7 @@ const results = {
       badge: "YOUR LAB MATCH",
       title: "Live Lab Classes",
       price: "€59/mo · or €499/yr",
-      pricePer: "Founding Member price — first 50 only (2 months free on annual)",
+      pricePer: "Founding Member price — first 50 only (save €209/year vs. 12 monthly payments)",
       features: [
         "3 live classes a week — HIIT, Strength & Mobility",
         "Mon · Wed · Fri evenings, live with Buse",
@@ -1399,7 +1399,7 @@ const results = {
       features: [
         "3 levels — Foundation, Intermediate & Advanced",
         "12 sequential lessons per level",
-        "Rewire your nervous system's movement patterns",
+        "Mobility, coordination and joint control",
         "Science-backed bodyweight training",
         "Personal dashboard to track your progress"
       ],
@@ -1428,7 +1428,7 @@ const results = {
       pricePer: "one-time per level",
       features: [
         "3 levels — Foundation, Intermediate & Advanced",
-        "Neural drive & progressive overload principles",
+        "Progressive strength development",
         "Functional strength from the ground up",
         "12 sequential lessons per level",
         "Full progress tracking in your dashboard"
@@ -1443,7 +1443,7 @@ const results = {
       pricePer: "one-time",
       features: [
         "12 sequential science-based lessons",
-        "Rewire how your body moves",
+        "Build mobility, coordination and joint control",
         "Train at your own pace",
         "Personal dashboard with progress tracking",
         "Cycle tracker, daily motto & more"
@@ -1464,7 +1464,7 @@ const results = {
         "Berlin'de Buse ile birebir seanslar",
         "Vücudunuza özel antrenman planı",
         "Anlık form düzeltme & geri bildirim",
-        "Nörobilim destekli antrenman yöntemleri",
+        "Bilime dayalı antrenman yöntemleri",
         "Beslenme rehberliği dahil"
       ],
       cta: "Ücretsiz 15 Dk Görüşme",
@@ -1507,7 +1507,7 @@ const results = {
       features: [
         "3 seviye — Başlangıç, Orta & İleri",
         "Seviye başına 12 sıralı ders",
-        "Sinir sisteminizin hareket kalıplarını yeniden yapılandırın",
+        "Hareketlilik, koordinasyon ve eklem kontrolü geliştirin",
         "Bilim destekli vücut ağırlığı antrenmanı",
         "İlerlemenizi takip etmek için kişisel dashboard"
       ],
@@ -1535,7 +1535,7 @@ const results = {
       pricePer: "tek seferlik",
       features: [
         "3 seviye — Başlangıç, Orta & İleri",
-        "Nöral aktivasyon & ilerleyici aşırı yük prensipleri",
+        "İlerleyici güç gelişimi",
         "Temelden fonksiyonel kuvvet",
         "Seviye başına 12 sıralı ders"
       ],
@@ -1549,7 +1549,7 @@ const results = {
       pricePer: "tek seferlik",
       features: [
         "12 sıralı bilim temelli ders",
-        "Bedeninizin hareket ediş biçimini yeniden yapılandırın",
+        "Hareketlilik, koordinasyon ve eklem kontrolü geliştirin",
         "Kendi hızınızda antrenman yapın",
         "İlerleme takipli kişisel dashboard",
         "Döngü takibi, günlük motto ve daha fazlası"
@@ -1570,7 +1570,7 @@ const results = {
         "1:1 Sessions in Berlin mit Buse",
         "Individueller Trainingsplan für deinen Körper",
         "Echtzeit-Formkorrektur & Feedback",
-        "Neurowissenschaftlich fundierte Methoden",
+        "Evidenzbasierte Trainingsmethoden",
         "Ernährungsberatung inklusive"
       ],
       cta: "Kostenloses 15-Min Gespräch buchen",
@@ -1613,7 +1613,7 @@ const results = {
       features: [
         "3 Level — Einsteiger, Mittelstufe & Fortgeschritten",
         "12 sequentielle Lektionen pro Level",
-        "Bewegungsmuster deines Nervensystems neu programmieren",
+        "Mobilität, Koordination und Gelenkkontrolle aufbauen",
         "Wissenschaftlich fundiertes Körpergewichtstraining",
         "Persönliches Dashboard zur Fortschrittsverfolgung"
       ],
@@ -1641,7 +1641,7 @@ const results = {
       pricePer: "einmalig",
       features: [
         "3 Level — Einsteiger, Mittelstufe & Fortgeschritten",
-        "Neuronaler Antrieb & progressive Überlastung",
+        "Progressive Kraftentwicklung",
         "Funktionelle Kraft von Grund auf",
         "12 sequentielle Lektionen pro Level"
       ],
@@ -1674,6 +1674,13 @@ let answers = {};
 let slideHistory = [];
 let activeQuestions = [];
 let totalQuestions = 0;
+// Stable "Question N" numbering: each question keeps the number it was
+// FIRST shown with, even if a conditional question's applicability later
+// changes because the user went back and revised an earlier answer.
+// Without this, recomputing the position from scratch on every render
+// could show the same number for two different questions.
+let questionNumberMap = {};
+let nextQuestionNumber = 1;
 
 // ========== FUNCTIONS ==========
 function startQuiz() {
@@ -1701,7 +1708,9 @@ function selectLang(selectedLang, el) {
 function buildQuestionSlides() {
   // Remove old question slides
   document.querySelectorAll('.slide.question-slide').forEach(s => s.remove());
-  
+  questionNumberMap = {};
+  nextQuestionNumber = 1;
+
   const qs = questions[lang];
   activeQuestions = qs;
   totalQuestions = qs.filter(q => !q.condition).length; // Count non-conditional
@@ -1847,8 +1856,14 @@ function goToSlide(targetIndex) {
   if (target) {
     currentSlide = targetIndex;
     target.classList.add('active');
+    if (target.classList.contains('question-slide')) {
+      const qIndex = parseInt(target.dataset.questionIndex);
+      if (!(qIndex in questionNumberMap)) {
+        questionNumberMap[qIndex] = nextQuestionNumber++;
+      }
+    }
   }
-  
+
   updateProgress();
   updateBackButton();
 }
@@ -1908,19 +1923,15 @@ function updateProgress() {
   const applicableQs = qs.filter(q => !q.condition || (q.condition && q.condition(answers)));
   const total = applicableQs.length;
   
-  // Figure out which question we're on
+  // Figure out which question we're on — use the number it was first
+  // shown with (see questionNumberMap above), not a live recount, so the
+  // label can't repeat if an earlier answer changes a later question's
+  // applicability.
   const activeSlide = document.querySelector('.slide.active.question-slide');
   let currentQ = 0;
   if (activeSlide) {
     const qIndex = parseInt(activeSlide.dataset.questionIndex);
-    let count = 0;
-    for (let i = 0; i <= qIndex; i++) {
-      const q = qs[i];
-      if (!q.condition || (q.condition && q.condition(answers))) {
-        count++;
-      }
-    }
-    currentQ = count;
+    currentQ = questionNumberMap[qIndex] || 0;
   }
   
   const pct = Math.min((currentQ / total) * 100, 100);

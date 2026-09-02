@@ -257,7 +257,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
     </li>
     <li><a href="https://substack.com/@trainwithbuse" target="_blank">Blog</a></li>
     <li><a href="corporate.html">Corporate</a></li>
-    <li><a href="login.html" class="nav-login">Member Login</a></li>
+    <li style="display:none"><!-- hidden pre-launch, keep for later --><a href="login.html" class="nav-login">Member Login</a></li>
     <li><a href="index.html#booking" class="nav-cta">Book 1:1 Coaching</a></li>
   </ul>
   <div class="lang-switcher">
@@ -268,6 +268,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 </nav>
 
 <section class="hero">
+  <div id="langNotice" style="display:none;background:var(--charcoal-light,#4A4548);color:var(--cream,#FDF6F0);padding:12px 20px;border-radius:12px;font-size:13px;line-height:1.6;margin-bottom:28px;max-width:640px;margin-left:auto;margin-right:auto;">Bu sayfa şu an sadece İngilizce ve Almanca olarak mevcuttur. <a href="tr.html" style="color:var(--gold,#C8A96E);text-decoration:underline;">Türkçe ana sayfaya dön →</a></div>
   <div class="hero-eyebrow">The Buse Method</div>
   <h1>Personal training in Berlin,<br><em>built entirely around you.</em></h1>
   <div class="hero-photo-tall">
@@ -800,6 +801,13 @@ async function submitApplication(){
 if (new URLSearchParams(window.location.search).get('apply') === '1') {
   openApply();
   chooseBranch('individual');
+}
+
+// This page has no Turkish version yet; TR pages link here with ?lang=tr
+// so we can show a heads-up instead of silently switching languages on them.
+if (new URLSearchParams(window.location.search).get('lang') === 'tr') {
+  const notice = document.getElementById('langNotice');
+  if (notice) notice.style.display = 'block';
 }
 </script>
 
