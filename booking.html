@@ -243,8 +243,8 @@
       </div>
     </div>
 
-    <!-- Bookings list -->
-    <div class="card">
+    <!-- Bookings list (dashboard links here as booking.html#my-bookings) -->
+    <div class="card" id="my-bookings">
       <div class="bookings-header">
         <div class="bookings-title">My Bookings</div>
         <div class="filter-tabs">
@@ -377,6 +377,8 @@ sb.auth.getSession().then(async ({ data: { session } }) => {
   if (!(await loadData())) return;
   renderCalendar();
   renderBookingsList();
+  // The layout is hidden until data loads, so the browser can't jump to the hash itself
+  if (location.hash === '#my-bookings') document.getElementById('my-bookings').scrollIntoView();
 }).catch(err => {
   console.error('Session check failed:', err);
   document.getElementById('authGuard').style.display = 'block';

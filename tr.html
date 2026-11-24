@@ -918,153 +918,6 @@
   }
 
 
-  /* ========== BOOKING ========== */
-  .booking-wrapper {
-    background: linear-gradient(135deg, var(--charcoal) 0%, #3D393E 100%);
-    border-radius: 30px;
-    padding: 80px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-    color: white;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .booking-wrapper::before {
-    content: '';
-    position: absolute;
-    top: -100px;
-    right: -100px;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(232, 180, 184, 0.12) 0%, transparent 70%);
-  }
-
-  .booking-text h2 {
-    font-size: clamp(32px, 3.5vw, 48px);
-    color: white;
-    margin-bottom: 16px;
-    font-weight: 300;
-  }
-
-  .booking-text h2 em { color: var(--blush-light); }
-
-  .booking-text p {
-    font-size: 16px;
-    color: rgba(255,255,255,0.7);
-    line-height: 1.8;
-    margin-bottom: 30px;
-  }
-
-  .booking-steps {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .booking-steps li {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    font-size: 14px;
-    color: rgba(255,255,255,0.8);
-  }
-
-  .step-number {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 1.5px solid var(--blush);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    color: var(--blush-light);
-    flex-shrink: 0;
-  }
-
-  .booking-form-card {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: var(--radius);
-    padding: 40px;
-    backdrop-filter: blur(10px);
-  }
-
-  .booking-form-card h3 {
-    font-size: 26px;
-    color: white;
-    margin-bottom: 24px;
-  }
-
-  .form-group {
-    margin-bottom: 16px;
-  }
-
-  .form-group label {
-    display: block;
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 8px;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    padding: 14px 18px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: var(--radius-sm);
-    color: white;
-    font-family: 'Outfit', sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    outline: none;
-    transition: border 0.3s;
-  }
-
-  .form-group input::placeholder,
-  .form-group textarea::placeholder {
-    color: rgba(255,255,255,0.3);
-  }
-
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: var(--blush);
-  }
-
-  .form-group select option {
-    background: var(--charcoal);
-    color: white;
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .booking-form-card .btn-primary {
-    width: 100%;
-    margin-top: 8px;
-    background: var(--blush);
-    color: var(--charcoal);
-    font-weight: 500;
-    text-align: center;
-  }
-
-  .booking-form-card .btn-primary:hover {
-    background: var(--blush-light);
-  }
-
   /* ========== BLOG ========== */
   .blog-grid {
     display: grid;
@@ -1550,7 +1403,6 @@
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
     .services-grid, .programs-grid, .blog-grid, .testimonials-grid { grid-template-columns: 1fr 1fr; }
     .mini-services-grid { grid-template-columns: 1fr 1fr; }
-    .booking-wrapper { grid-template-columns: 1fr; padding: 50px 30px; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
   }
 
@@ -1607,12 +1459,9 @@
     .hero-buttons { flex-direction: column; }
     .btn-primary, .btn-secondary { text-align: center; }
     .about-numbers { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .form-row { grid-template-columns: 1fr; }
     .newsletter-form { flex-direction: column; }
     .footer-grid { grid-template-columns: 1fr; gap: 30px; }
     .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-    .booking-wrapper { padding: 40px 20px; }
-    .booking-form-card { padding: 24px; }
   
   /* Additional mobile fixes */
   .hero-content { flex-direction: column !important; gap: 40px !important; }
@@ -1622,7 +1471,6 @@
   .services-grid { grid-template-columns: 1fr !important; }
   .testimonials-grid { grid-template-columns: 1fr !important; }
   .blog-grid { grid-template-columns: 1fr !important; }
-  .booking-wrapper { grid-template-columns: 1fr !important; }
   .footer-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
   .nav-menu { gap: 16px !important; }
   [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
@@ -2186,36 +2034,6 @@
 </section>
 
 
-<!-- BOOKING -->
-<section id="booking">
-  <div class="section">
-    <div class="booking-wrapper reveal">
-      <div class="booking-text">
-        <h2>Başlamaya <em>Hazır mısın?</em></h2>
-        <p>Ücretsiz tanışma görüşmeni ya da ilk seansını ayırt. Hedeflerini konuşalım ve gerçekten işe yarayan bir plan oluşturalım.</p>
-        <ul class="booking-steps">
-          <li>
-            <div class="step-number">1</div>
-            Hizmetini ve uygun zamanını seç
-          </li>
-          <li>
-            <div class="step-number">2</div>
-            Kısa bir tanışma görüşmesi yapalım (ücretsiz!)
-          </li>
-          <li>
-            <div class="step-number">3</div>
-            Kişisel planını al ve antrenmana başla
-          </li>
-        </ul>
-      </div>
-      <div class="booking-form-card">
-        <h3>Seans Ayırt</h3>
-<div class="calendly-inline-widget" data-url="https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b" style="min-width:320px;height:700px;"></div>
-<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- TESTIMONIALS -->
 <section class="testimonials-bg" id="testimonials">
@@ -2400,7 +2218,7 @@
       <h4>İletişim</h4>
       <a href="mailto:hello@trainwithbuse.com">hello@trainwithbuse.com</a>
       <a href="#">Berlin, Almanya</a>
-      <a href="#booking">Görüşme Ayırt</a>
+      <a href="book-coaching-tr.html">Birebir Koçluk Al</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -2498,13 +2316,6 @@
 
   revealElements.forEach(el => observer.observe(el));
 
-  // Booking form
-  function handleBooking(e) {
-    e.preventDefault();
-    alert('Thank you! Your booking request has been sent. I\'ll get back to you within 24 hours.');
-    e.target.reset();
-  }
-
   // Smooth scroll for all anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
@@ -2517,37 +2328,6 @@
   });
 </script>
 
-<!-- BOOKING MODAL -->
-<div id="bookingModal" style="display:none;position:fixed;inset:0;background:rgba(45,42,46,.8);backdrop-filter:blur(10px);z-index:1000;align-items:center;justify-content:center;">
-  <div style="background:white;border-radius:24px;width:92%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative;">
-    <button onclick="closeBooking()" style="position:absolute;top:16px;right:16px;background:none;border:1.5px solid rgba(45,42,46,.1);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;color:#4A4548;z-index:1;display:flex;align-items:center;justify-content:center;">✕</button>
-    <div style="padding:36px 36px 0;">
-      <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#C8A96E;margin-bottom:10px;">Ücretsiz · 15 Dakika</div>
-      <h3 style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;color:#2D2A2E;margin-bottom:6px;">Seans Ayırt</h3>
-      <p style="font-size:14px;color:#4A4548;margin-bottom:24px;">Bir zaman seç, hedeflerini konuşalım.</p>
-    </div>
-    <div class="calendly-inline-widget" data-url="https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b" style="min-width:300px;height:600px;"></div>
-  </div>
-</div>
-<style>
-@keyframes popUp{from{transform:scale(.93);opacity:0}to{transform:scale(1);opacity:1}}
-</style>
-<script>
-function openBooking(){var m=document.getElementById('bookingModal');m.style.display='flex';}
-function closeBooking(){document.getElementById('bookingModal').style.display='none';}
-document.addEventListener('DOMContentLoaded',function(){
-  document.getElementById('bookingModal').addEventListener('click',function(e){if(e.target===this)closeBooking();});
-  document.querySelectorAll('a[href="#booking"]').forEach(function(a){
-    a.addEventListener('click',function(e){e.preventDefault();openBooking();});
-  });
-  // Also handle Book Now in nav
-  document.querySelectorAll('.nav-cta').forEach(function(a){
-    if(a.getAttribute('href')==='#booking'){
-      a.addEventListener('click',function(e){e.preventDefault();openBooking();});
-    }
-  });
-});
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script>

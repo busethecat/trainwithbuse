@@ -1359,8 +1359,8 @@ const results = {
         "Evidence-informed training methods",
         "Nutrition guidance included"
       ],
-      cta: "Book a Free 15-Min Call",
-      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+      cta: "Apply Now",
+      link: "personal-training.html?apply=1"
     },
     online: {
       badge: "YOUR PERFECT MATCH",
@@ -1374,8 +1374,8 @@ const results = {
         "Direct email support from Buse",
         "Available as single sessions or packs"
       ],
-      cta: "Book a Free 15-Min Call",
-      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+      cta: "Book 1:1 Coaching",
+      link: "book-coaching.html"
     },
     group: {
       badge: "YOUR LAB MATCH",
@@ -1451,7 +1451,7 @@ const results = {
       cta: "Enter The Lab System →",
       link: "welcome.html"
     },
-    callCta: "Not sure? Book a free 15-min call",
+    callCta: "Not sure? Compare coaching options",
     pregnancyNote: "As a mom-to-be / new mom, your plan prioritizes safe core recovery, pelvic floor strengthening, and gradual return to full training. 1:1 coaching is strongly recommended for your safety."
   },
   tr: {
@@ -1467,8 +1467,8 @@ const results = {
         "Bilime dayalı antrenman yöntemleri",
         "Beslenme rehberliği dahil"
       ],
-      cta: "Ücretsiz 15 Dk Görüşme",
-      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+      cta: "Hemen Başvur",
+      link: "personal-training.html?lang=tr&apply=1"
     },
     online: {
       badge: "SİZE EN UYGUN PLAN",
@@ -1482,8 +1482,8 @@ const results = {
         "Buse'den e-posta ile doğrudan destek",
         "Tekli veya paket seans seçenekleri"
       ],
-      cta: "Ücretsiz 15 Dk Görüşme",
-      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+      cta: "Birebir Koçluk Al",
+      link: "book-coaching-tr.html"
     },
     group: {
       badge: "SENIN LABIN",
@@ -1557,7 +1557,7 @@ const results = {
       cta: "Lab Sistemine Gir →",
       link: "welcome.html"
     },
-    callCta: "Emin değil misin? Ücretsiz 15 dk görüşme yap",
+    callCta: "Emin değil misin? Koçluk seçeneklerini karşılaştır",
     pregnancyNote: "Anne adayı / yeni anne olarak, planınız güvenli core toparlanması, pelvik taban güçlendirmesi ve kademeli antrenmana dönüş öncelikli olacak. Güvenliğiniz için birebir koçluk önerilir."
   },
   de: {
@@ -1573,8 +1573,8 @@ const results = {
         "Evidenzbasierte Trainingsmethoden",
         "Ernährungsberatung inklusive"
       ],
-      cta: "Kostenloses 15-Min Gespräch buchen",
-      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+      cta: "Jetzt bewerben",
+      link: "personal-training-de.html?apply=1"
     },
     online: {
       badge: "DEIN PERFEKTER PLAN",
@@ -1588,8 +1588,8 @@ const results = {
         "Direkter E-Mail-Support von Buse",
         "Als Einzeleinheit oder im Paket erhältlich"
       ],
-      cta: "Kostenloses 15-Min Gespräch buchen",
-      link: "https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b"
+      cta: "1:1-Coaching buchen",
+      link: "book-coaching-de.html"
     },
     group: {
       badge: "DEIN LAB",
@@ -1662,7 +1662,7 @@ const results = {
       cta: "Lab System betreten →",
       link: "welcome.html"
     },
-    callCta: "Nicht sicher? Buche ein kostenloses 15-Min Gespräch",
+    callCta: "Nicht sicher? Coaching-Optionen vergleichen",
     pregnancyNote: "Als werdende / frischgebackene Mama priorisiert dein Plan sichere Core-Erholung, Beckenbodenstärkung und schrittweise Rückkehr zum Training. 1:1 Coaching wird für deine Sicherheit empfohlen."
   }
 };
@@ -1957,9 +1957,17 @@ const STRIPE_LINKS = {
   strength: 'https://buy.stripe.com/14A4gyfS13NqesAgDg1kA0b',
   metabolic:'https://buy.stripe.com/8x23cu7lv97Kbgo1Im1kA0c',
   group:    'https://buy.stripe.com/6oUcN48pz3Nqbgodr41kA0d',
-  online:   'https://buy.stripe.com/8x2dR835f1Fi1FO5YC1kA0j',
-  inperson: 'https://buy.stripe.com/fZueVcgW56ZCdowfzc1kA0h'
+  online:   'https://buy.stripe.com/8x2dR835f1Fi1FO5YC1kA0j'
 };
+
+// In-person (The Buse Method) is by application only — never a direct purchase from the quiz.
+// The application flow exists in EN and DE; TR uses the EN page, which shows a language notice.
+const APPLY_URLS = {
+  en: 'personal-training.html?apply=1',
+  tr: 'personal-training.html?lang=tr&apply=1',
+  de: 'personal-training-de.html?apply=1'
+};
+const APPLY_LABELS = { en: 'Apply Now →', tr: 'Hemen Başvur →', de: 'Jetzt bewerben →' };
 
 // The Lab System (video programs) is temporarily paused — see LAB_PLANS below.
 const LAB_PLANS = ['movement', 'sculpt', 'strength', 'metabolic', 'program'];
@@ -2006,13 +2014,14 @@ function showResult() {
     ${LAB_PLANS.includes(plan) ? `
     <span class="btn-result btn-buy" style="background:rgba(45,42,46,.3);cursor:default;pointer-events:none;position:relative;display:inline-block">
       ${lang === 'tr' ? 'Yakında' : lang === 'de' ? 'Demnächst' : 'Coming Soon'}
-    </span>` : `
+    </span>` : plan === 'inperson' ? `
+    <a href="${APPLY_URLS[lang] || APPLY_URLS.en}" class="btn-result btn-buy" style="background:var(--charcoal)">${APPLY_LABELS[lang] || APPLY_LABELS.en}</a>` : `
     <a href="${STRIPE_LINKS[plan] || r.link}" class="btn-result btn-buy" target="_blank" style="background:var(--charcoal);position:relative">
       ${lang === 'tr' ? 'Hemen Başla' : lang === 'de' ? 'Jetzt starten' : 'Start Now'} — ${r.price} ${r.pricePer}
       <span style="position:absolute;top:-8px;right:-8px;background:var(--rose);color:white;font-size:9px;letter-spacing:1px;padding:3px 8px;border-radius:50px;text-transform:uppercase">${lang === 'tr' ? 'Özel' : lang === 'de' ? 'Exklusiv' : 'Exclusive'}</span>
     </a>`}
     <a href="plans.html" class="btn-result-secondary" target="_blank" style="font-size:12px;opacity:.7">${lang === 'tr' ? 'Diğer planları incele' : lang === 'de' ? 'Andere Programme ansehen' : 'Explore other programs'}</a>
-    ${plan !== 'program' ? '' : `<a href="https://calendly.com/trainwithbuse/30min?background_color=fdf6f0&text_color=2d2a2e&primary_color=c1848b" class="btn-result-secondary" target="_blank">${callLabel}</a>`}
+    ${plan !== 'program' ? '' : `<a href="book-coaching${lang === 'en' ? '' : '-' + lang}.html" class="btn-result-secondary">${callLabel}</a>`}
 
     <div class="email-capture" id="emailCapture">
       <div style="background:linear-gradient(135deg,rgba(200,169,110,0.12),rgba(200,169,110,0.06));border:1px solid rgba(200,169,110,0.3);border-radius:14px;padding:18px 20px;margin-bottom:16px;text-align:center;">
@@ -2192,14 +2201,15 @@ async function submitQuizEmail(plan, planTitle) {
         comingSoonBtn.textContent = comingSoonLabels[lang] || comingSoonLabels['en'];
         success.parentNode.insertBefore(comingSoonBtn, success.nextSibling);
       } else {
-        const stripeUrl = STRIPE_LINKS[plan];
-        if (stripeUrl) {
+        const isApply = plan === 'inperson';
+        const ctaUrl = isApply ? (APPLY_URLS[lang] || APPLY_URLS.en) : STRIPE_LINKS[plan];
+        if (ctaUrl) {
           const ctaBtn = document.createElement('a');
           ctaBtn.id = 'stripeCtaBtn';
-          ctaBtn.href = stripeUrl;
-          ctaBtn.target = '_blank';
+          ctaBtn.href = ctaUrl;
+          if (!isApply) ctaBtn.target = '_blank';
           ctaBtn.style.cssText = 'display:inline-block;margin-top:18px;padding:14px 32px;background:linear-gradient(135deg,#C1848B,#9B6B6F);color:#fff;font-family:Outfit,sans-serif;font-size:15px;font-weight:600;letter-spacing:1px;border-radius:50px;text-decoration:none;transition:opacity 0.3s;';
-          const btnLabels = {
+          const btnLabels = isApply ? APPLY_LABELS : {
             tr: 'Hemen Başla →',
             de: 'Jetzt starten →',
             en: 'Start Now →'
