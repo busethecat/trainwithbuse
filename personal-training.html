@@ -433,7 +433,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 </section>
 
 <div class="footer-mini">
-  <span>© 2026 Buse Kosif · Train With Buse</span>
+  <span>© 2026 Train With Buse. All rights reserved.</span>
   <div style="display:flex;gap:24px;flex-wrap:wrap;">
     <a href="index.html">Home</a>
     <a href="online-coaching.html">1:1 Online Coaching</a>
@@ -777,16 +777,17 @@ async function submitApplication(){
   ].join('\n');
 
   try {
-    await fetch('https://booking-notify.trainwithbuse.workers.dev', {
+    const notifyRes = await fetch('https://booking-notify.trainwithbuse.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         userEmail: a.email,
         sessionType: 'The Buse Method — Application',
         slots: [],
-        notes: `Name: ${a.name || ''}\n` + notes,
+        notes,
       })
     });
+    if (!notifyRes.ok) console.error('Application email alert failed with status ' + notifyRes.status + ' (application was still saved)');
   } catch (err) {
     console.error('Application email alert failed (application was still saved):', err);
   }

@@ -626,4 +626,29 @@
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-function showSection(id
+function showSection(id, el) {
+  // Hide all sections
+  document.querySelectorAll('.policy-section').forEach(s => s.classList.remove('active'));
+  // Show target
+  document.getElementById(id).classList.add('active');
+  // Update nav
+  document.querySelectorAll('.policy-nav a').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+  // Scroll to top on mobile
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Handle direct URL hash
+if (window.location.hash) {
+  const id = window.location.hash.replace('#', '');
+  const section = document.getElementById(id);
+  const link = document.querySelector(`.policy-nav a[href="#${id}"]`);
+  if (section && link) {
+    showSection(id, link);
+  }
+}
+</script>
+
+<div style="text-align:center;padding:20px 12px;font-size:12px;opacity:.7;"><a href="impressum-de.html" style="color:inherit;text-decoration:none;">Impressum</a></div>
+</body>
+</html>
