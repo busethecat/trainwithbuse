@@ -764,15 +764,24 @@ async function declineBooking(id) {
   await loadBookings();
 }
 
+// The Worker's /admin route only sends if this carries a live session for the admin account
 async function sendEmail(toEmail, type, data) {
   try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { alert('Your session has expired — please sign in again. The client was not emailed.'); return; }
     const res = await fetch('https://booking-notify.trainwithbuse.workers.dev/admin', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
       body: JSON.stringify({ toEmail, type, data }),
     });
-    if (!res.ok) console.error('Email notify failed with status:', res.status);
-  } catch(e) { console.error('Email error:', e); }
+    if (!res.ok) {
+      console.error('Email notify failed with status:', res.status);
+      alert('The booking was updated, but the email to the client failed (status ' + res.status + ').');
+    }
+  } catch(e) {
+    console.error('Email error:', e);
+    alert('The booking was updated, but the email to the client failed.');
+  }
 }
 
 // ============================================================
