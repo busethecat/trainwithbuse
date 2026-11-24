@@ -155,6 +155,10 @@
       .tab-btn { margin-right: 12px; font-size: 12px; }
       .iq-top { flex-direction: column; gap: 6px; }
     }
+    .admin-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 3000; max-width: calc(100% - 32px);
+      background: var(--charcoal); color: #fff; padding: 12px 20px; border-radius: 14px; font-size: 14px; line-height: 1.5;
+      box-shadow: 0 12px 32px rgba(45,42,46,.25); opacity: 0; transition: opacity .25s; pointer-events: none; }
+    .admin-toast.show { opacity: 1; }
   </style>
 </head>
 <body>
@@ -213,6 +217,7 @@
       <div class="filter-row">
         <button class="filter-btn active" onclick="setInquiryFilter('new',this)">New</button>
         <button class="filter-btn" onclick="setInquiryFilter('accepted',this)">Accepted</button>
+        <button class="filter-btn" onclick="setInquiryFilter('waitlist',this)">Waitlist</button>
         <button class="filter-btn" onclick="setInquiryFilter('rejected',this)">Rejected</button>
       </div>
       <div id="inquiriesList"></div>
@@ -282,8 +287,30 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script src="config.js"></script>
 <script>
+// ▼▼▼ FILL THIS IN ▼▼▼ Private Calendly link for the free 15-minute intro call.
+// It goes only into acceptance emails for approved Buse Method applicants.
+// Accepting an application is blocked until this is a real https:// link.
+const CALENDLY_URL = 'BURAYA_CALENDLY_LINKI';
+
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Short visible confirmation for actions that worked (errors still use alert())
+function notify(msg) {
+  let el = document.getElementById('adminToast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'adminToast';
+    el.className = 'admin-toast';
+    el.setAttribute('role', 'status');
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(notify._timer);
+  notify._timer = setTimeout(() => el.classList.remove('show'), 4500);
+}
+const NOT_FOUND_MSG = 'This entry is no longer in the list — please reload the page. Nothing was changed or sent.';
 
 // SECURITY NOTE — read before relying on this panel:
 // This ADMIN_EMAILS allowlist is a UI convenience, not real access control. Anyone
@@ -427,6 +454,9 @@ function escapeHtml(str) {
 async function setEntryStatus(table, id, status, reloadFn) {
   const { error } = await sb.from(table).update({ status }).eq('id', id);
   if (error) { alert('Error: ' + error.message); return; }
+  notify(table === 'corporate_inquiries'
+    ? 'Status updated. No email is sent for corporate inquiries — reply to the company directly.'
+    : 'Status updated. No email was sent.');
   await reloadFn();
 }
 async function toggleEntryContacted(table, id, current, reloadFn) {
@@ -438,9 +468,16 @@ async function deleteEntry(table, id, label, reloadFn) {
   if (!confirm(`Delete this ${label} permanently? This cannot be undone.`)) return;
   const { error } = await sb.from(table).delete().eq('id', id);
   if (error) { alert('Error: ' + error.message); return; }
+  notify('Deleted. No email was sent.');
   await reloadFn();
 }
 function workflowActionsHtml(table, id, status, contacted, reloadFnName) {
+  if (table === 'inquiries' && (status === 'new' || status === 'waitlist')) {
+    return `<button class="btn-confirm" onclick="decideApplication('${id}','accepted')">Accept &amp; email</button>
+      ${status === 'new' ? `<button class="btn-alt" onclick="decideApplication('${id}','waitlist')">Waitlist &amp; email</button>` : ''}
+      <button class="btn-decline" onclick="setEntryStatus('${table}','${id}','rejected',${reloadFnName})">Reject (no email)</button>
+      <button class="btn-delete" onclick="deleteEntry('${table}','${id}','entry',${reloadFnName})">Delete</button>`;
+  }
   if (status === 'new') {
     return `<button class="btn-confirm" onclick="setEntryStatus('${table}','${id}','accepted',${reloadFnName})">Accept</button>
       <button class="btn-decline" onclick="setEntryStatus('${table}','${id}','rejected',${reloadFnName})">Reject</button>
@@ -562,12 +599,41 @@ function inquiryCard(i) {
       <div><div class="iq-field-label">Preferred Location</div><div class="iq-field-value">${escapeHtml(i.location || '—')}</div></div>
       <div><div class="iq-field-label">Goals</div><div class="iq-field-value">${escapeHtml(goals || '—')}</div></div>
       <div><div class="iq-field-label">Days / Week</div><div class="iq-field-value">${escapeHtml(i.days_per_week || '—')}</div></div>
+      <div><div class="iq-field-label">Email Language</div><div class="iq-field-value">${LANG_NAMES[i.language] || LANG_NAMES.en + ' (not recorded)'}</div></div>
       <div style="grid-column:1/-1;"><div class="iq-field-label">Health Screening (PAR-Q)</div><div class="iq-field-value">${parqFlags.length ? `<span class="iq-parq-flag">⚠ ${parqFlags.map(escapeHtml).join(', ')}</span>` : 'No flags'}</div></div>
       <div style="grid-column:1/-1;"><div class="iq-field-label">Injuries / Limitations</div><div class="iq-field-value">${escapeHtml(i.injuries || 'None stated')}</div></div>
     </div>
     ${i.intro ? `<div class="iq-note-label">Self-Introduction</div><div class="iq-note">${escapeHtml(i.intro)}</div>` : ''}
     <div class="bc-actions" style="margin-top:14px;">${workflowActionsHtml('inquiries', i.id, status, !!i.contacted, 'loadInquiries')}</div>
   </div>`;
+}
+
+const LANG_NAMES = { en: 'English', de: 'German', tr: 'Turkish' };
+
+// Accept or waitlist a Buse Method application and email the applicant in their language.
+// (Plain "Reject (no email)" goes through setEntryStatus instead.)
+async function decideApplication(id, decision) {
+  const i = allInquiries.find(x => String(x.id) === String(id));
+  if (!i) { alert(NOT_FOUND_MSG); return; }
+  if (!i.email) { alert('This application has no email address, so nothing was changed or sent. Contact the applicant another way.'); return; }
+  const accepted = decision === 'accepted';
+  if (accepted && !/^https:\/\/\S+$/.test(CALENDLY_URL)) {
+    alert('Set CALENDLY_URL at the top of admin.html to your private Calendly link first. Nothing was changed or sent.');
+    return;
+  }
+  const lang = LANG_NAMES[i.language] ? i.language : 'en';
+  const who = `${i.full_name || '(no name)'} <${i.email}>`;
+  const question = accepted
+    ? `Accept and email the applicant?\n\n${who} will get the acceptance email in ${LANG_NAMES[lang]} with your intro-call link.\n\nOK = accept and send · Cancel = do nothing`
+    : `Waitlist and email the applicant?\n\n${who} will get the waitlist email in ${LANG_NAMES[lang]} (no spot yet; you'll email them when one opens; meanwhile 1:1 Online Coaching).\n\nOK = waitlist and send · Cancel = do nothing`;
+  if (!confirm(question)) { notify('Nothing changed — no email was sent.'); return; }
+
+  const { error } = await sb.from('inquiries').update({ status: decision }).eq('id', id);
+  if (error) { alert('Could not update the application: ' + error.message + '\nNo email was sent.'); return; }
+
+  await sendEmail(i.email, accepted ? 'application_accepted' : 'application_waitlist',
+    accepted ? { name: i.full_name || '', callUrl: CALENDLY_URL } : { name: i.full_name || '' }, lang);
+  await loadInquiries();
 }
 
 // ============================================================
@@ -691,7 +757,8 @@ function bookingCard(b) {
     const cd = b.confirmed_date || b.requested_date;
     const ct = b.confirmed_time || b.requested_time;
     const cDate = new Date(cd + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
-    actionsHtml = `<div class="confirmed-info">Session confirmed for ${escapeHtml(cDate)} at ${escapeHtml(ct)}</div>`;
+    actionsHtml = `<div class="confirmed-info">Session confirmed for ${escapeHtml(cDate)} at ${escapeHtml(ct)}</div>
+      <div class="bc-actions"><button class="btn-decline" onclick="cancelConfirmedBooking('${b.id}')">Cancel session &amp; email</button></div>`;
   }
 
   return `
@@ -714,8 +781,8 @@ function toggleAlt(id) {
 }
 
 async function confirmBooking(id) {
-  const b = allBookings.find(x => x.id === id);
-  if (!b) return;
+  const b = allBookings.find(x => String(x.id) === String(id));
+  if (!b) { alert(NOT_FOUND_MSG); return; }
   const date = b.requested_date, time = b.requested_time;
 
   const { error } = await sb.from('bookings').update({
@@ -733,8 +800,8 @@ async function confirmBooking(id) {
 }
 
 async function proposeAlternative(id) {
-  const b = allBookings.find(x => x.id === id);
-  if (!b) return;
+  const b = allBookings.find(x => String(x.id) === String(id));
+  if (!b) { alert(NOT_FOUND_MSG); return; }
   const date = document.getElementById('alt-date-' + id).value;
   const time = document.getElementById('alt-time-' + id).value;
 
@@ -753,9 +820,12 @@ async function proposeAlternative(id) {
 }
 
 async function declineBooking(id) {
-  const b = allBookings.find(x => x.id === id);
-  if (!b) return;
-  if (!confirm('Are you sure you want to decline this booking?')) return;
+  const b = allBookings.find(x => String(x.id) === String(id));
+  if (!b) { alert(NOT_FOUND_MSG); return; }
+  if (!confirm(`Decline this booking and email the client?\n\n${b.user_email} will be told the slot isn't available.\n\nOK = decline and send · Cancel = do nothing`)) {
+    notify('Not declined — no email was sent.');
+    return;
+  }
 
   const { error } = await sb.from('bookings').update({ status: 'cancelled' }).eq('id', id);
   if (error) { alert('Error: ' + error.message); return; }
@@ -764,23 +834,44 @@ async function declineBooking(id) {
   await loadBookings();
 }
 
+async function cancelConfirmedBooking(id) {
+  const b = allBookings.find(x => String(x.id) === String(id));
+  if (!b) { alert(NOT_FOUND_MSG); return; }
+  const date = b.confirmed_date || b.requested_date;
+  const time = b.confirmed_time || b.requested_time;
+  if (!confirm(`Cancel this confirmed session and email the client?\n\n${b.user_email} will be told their session on ${date} at ${time} is cancelled.\n\nOK = cancel and send · Cancel = do nothing`)) {
+    notify('Session not cancelled — no email was sent.');
+    return;
+  }
+  const { error } = await sb.from('bookings').update({ status: 'cancelled' }).eq('id', id);
+  if (error) { alert('Error: ' + error.message + '\nNo email was sent.'); return; }
+  await sendEmail(b.user_email, 'session_cancelled', { date, time });
+  await loadBookings();
+}
+
 // The Worker's /admin route only sends if this carries a live session for the admin account
-async function sendEmail(toEmail, type, data) {
+// Every outcome is visible: a toast when the email went out, an alert when it didn't.
+async function sendEmail(toEmail, type, data, lang = 'en') {
+  const failed = detail => alert(`Saved — but the email to ${toEmail} was NOT sent (${detail}). Please email them directly.`);
   try {
     const { data: { session } } = await sb.auth.getSession();
-    if (!session) { alert('Your session has expired — please sign in again. The client was not emailed.'); return; }
+    if (!session) { failed('your admin session has expired — sign in again'); return false; }
     const res = await fetch('https://booking-notify.trainwithbuse.workers.dev/admin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
-      body: JSON.stringify({ toEmail, type, data }),
+      body: JSON.stringify({ toEmail, type, data, lang }),
     });
     if (!res.ok) {
       console.error('Email notify failed with status:', res.status);
-      alert('The booking was updated, but the email to the client failed (status ' + res.status + ').');
+      failed('status ' + res.status);
+      return false;
     }
+    notify(`Email sent to ${toEmail}.`);
+    return true;
   } catch(e) {
     console.error('Email error:', e);
-    alert('The booking was updated, but the email to the client failed.');
+    failed('network error');
+    return false;
   }
 }
 

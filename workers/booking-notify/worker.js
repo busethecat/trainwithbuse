@@ -1,6 +1,10 @@
-// Booking Notification Worker — v4
+// Booking Notification Worker — v5
 // Source of truth: workers/booking-notify/worker.js in the site repo.
 // Deployed separately in the Cloudflare dashboard (not part of the site build).
+//
+// v5 vs v4: new /admin email types — session_cancelled (a confirmed session is
+// cancelled), application_accepted / application_waitlist (Buse Method
+// applications, in the applicant's language: en / de / tr).
 //
 // v4 vs v3-FIXED:
 //  - Every user-submitted value is HTML-escaped before it goes into an email,
@@ -153,10 +157,16 @@ async function handleNewBooking({ userEmail, sessionType, slots, notes }, env) {
   return new Response('OK', { headers: CORS });
 }
 
-async function handleAdminEmail({ toEmail, type, data }, env) {
+async function handleAdminEmail({ toEmail, type, data, lang }, env) {
   let subject, html;
+  data = data || {};
 
-  if (type === 'confirmed') {
+  if (type === 'application_accepted' || type === 'application_waitlist') {
+    const email = applicationEmail(type, lang, data);
+    if (!email) return new Response('Invalid application email data', { status: 400, headers: CORS });
+    ({ subject, html } = email);
+
+  } else if (type === 'confirmed') {
     const d = new Date(data.date + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     subject = 'Your session is confirmed!';
     html = `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#F5EBE0;padding:32px 16px;">
@@ -214,6 +224,13 @@ async function handleAdminEmail({ toEmail, type, data }, env) {
       </td></tr>
     </table></body></html>`;
 
+  } else if (type === 'session_cancelled') {
+    const d = new Date(data.date + 'T00:00:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    subject = 'Your session has been cancelled';
+    html = emailShell(`
+        <div style="font-family:Georgia,serif;font-size:26px;color:#2D2A2E;margin-bottom:16px;">Your session has been cancelled.</div>
+        <p style="font-size:14px;color:#4A4548;line-height:1.7;margin-bottom:24px;">Your session on <strong>${escapeHtml(d)}</strong> at <strong>${escapeHtml(data.time)}</strong> has been cancelled. Please reply to this email and we'll find a new time that works for you.</p>`);
+
   } else {
     // Unknown type — v2 silently produced an empty email (no subject/html
     // check) for anything outside confirmed/alternative/cancelled. Fail
@@ -234,6 +251,115 @@ async function handleAdminEmail({ toEmail, type, data }, env) {
     return new Response('Email failed: ' + result.error, { status: 500, headers: CORS });
   }
   return new Response('OK', { headers: CORS });
+}
+
+// Shared frame for client emails (same look as the templates above)
+function emailShell(inner) {
+  return `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#F5EBE0;padding:32px 16px;">
+    <table width="560" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:20px;overflow:hidden;margin:0 auto;">
+      <tr><td style="background:#2D2A2E;padding:24px 32px;">
+        <div style="font-family:Georgia,serif;font-size:20px;color:#FDF6F0;letter-spacing:3px;font-weight:600;">BUSE</div>
+      </td></tr>
+      <tr><td style="padding:32px;">${inner}
+      </td></tr>
+    </table></body></html>`;
+}
+
+// Buse Method application emails. Copy lives here so all three languages stay side by side.
+// Waitlist emails point only to what has actually started: 1:1 Online Coaching
+// (not Live Lab Classes or The Lab System until they launch).
+const link = (href, label) => `<a href="${href}" style="color:#9B6B6F;text-decoration:underline;">${label}</a>`;
+
+const APPLICATION_COPY = {
+  en: {
+    subject: 'Your Buse Method application',
+    accepted: {
+      heading: name => name ? `Good news, ${name}: I have a spot for you!` : 'Good news: I have a spot for you!',
+      paragraphs: [
+        'I\'ve gone through your application, and I\'m sure we\'ll do great work together.',
+        'The next step is a free 15-minute intro call. We\'ll talk about your goals, answer your questions and look at how we\'ll move forward together. No strings attached.',
+      ],
+      button: 'Book your intro call →',
+      after: 'If none of the times work for you, just reply to this email and we\'ll find one that does. I can\'t wait to start working with you!',
+      signoff: 'See you soon,',
+    },
+    waitlist: {
+      heading: name => name ? `Thank you for your application, ${name}.` : 'Thank you for your application.',
+      paragraphs: [
+        'I work with a limited number of people in The Buse Method so that every client gets my full attention. Unfortunately I don\'t have an open spot right now — but as soon as one opens up, I\'ll let you know by email.',
+        `If you\'d rather not wait, you can start working with me right away through ${link('https://trainwithbuse.com/online-coaching', '1:1 Online Coaching')}.`,
+      ],
+      closing: 'Hope to see you soon!',
+      signoff: 'Warmly,',
+    },
+  },
+  de: {
+    subject: 'Deine Bewerbung für The Buse Method',
+    accepted: {
+      heading: name => name ? `Gute Nachrichten, ${name}: Ich habe einen Platz für dich!` : 'Gute Nachrichten: Ich habe einen Platz für dich!',
+      paragraphs: [
+        'Ich habe mir deine Bewerbung angesehen und bin mir sicher, dass wir gemeinsam richtig gute Arbeit leisten werden.',
+        'Als Nächstes folgt ein kostenloses 15-minütiges Kennenlerngespräch. Wir sprechen über deine Ziele, klären deine Fragen und schauen, wie wir gemeinsam vorgehen. Ganz unverbindlich.',
+      ],
+      button: 'Kennenlerngespräch buchen →',
+      after: 'Wenn keiner der Termine passt, antworte einfach auf diese E-Mail – wir finden einen. Ich freue mich schon sehr darauf, mit dir zu arbeiten!',
+      signoff: 'Bis bald,',
+    },
+    waitlist: {
+      heading: name => name ? `Danke für deine Bewerbung, ${name}.` : 'Danke für deine Bewerbung.',
+      paragraphs: [
+        'Bei The Buse Method arbeite ich bewusst mit wenigen Menschen, damit jede Person meine volle Aufmerksamkeit bekommt. Im Moment ist leider kein Platz frei – aber sobald einer frei wird, melde ich mich per E-Mail bei dir.',
+        `Wenn du nicht warten möchtest, kannst du mit dem ${link('https://trainwithbuse.com/online-coaching-de', '1:1 Online Coaching')} sofort mit mir starten.`,
+      ],
+      closing: 'Ich hoffe, wir sehen uns bald!',
+      signoff: 'Herzliche Grüße,',
+    },
+  },
+  tr: {
+    subject: 'The Buse Method başvurun',
+    accepted: {
+      heading: name => name ? `Güzel haber, ${name}: senin için yerim var!` : 'Güzel haber: senin için yerim var!',
+      paragraphs: [
+        'Başvurunu inceledim ve birlikte güzel bir iş çıkaracağımıza eminim.',
+        'Sıradaki adım ücretsiz, 15 dakikalık bir ön görüşme. Hedeflerini konuşur, sorularını yanıtlar, birlikte nasıl ilerleyebileceğimize bakarız. Hiçbir bağlayıcılığı yok.',
+      ],
+      button: 'Tanışma görüşmeni ayarla →',
+      after: 'Uygun bir saat bulamazsan bu e-postayı yanıtlaman yeterli, birlikte bir zaman buluruz. Seninle çalışmayı sabırsızlıkla bekliyorum!',
+      signoff: 'Görüşmek üzere,',
+    },
+    waitlist: {
+      heading: name => name ? `Başvurun için teşekkür ederim, ${name}.` : 'Başvurun için teşekkür ederim.',
+      paragraphs: [
+        'The Buse Method\'da her danışana tüm dikkatimi verebilmek için sınırlı sayıda kişiyle çalışıyorum. Ne yazık ki şu anda açık bir kontenjanım yok, ama ilk yer açıldığında sana e-postayla ulaşacağım.',
+        `Bu arada beklemek istemezsen ${link('https://trainwithbuse.com/online-coaching-tr', '1:1 Online Koçluk')} ile benimle hemen çalışmaya başlayabilirsin.`,
+      ],
+      closing: 'Yakında görüşmek dileğiyle!',
+      signoff: 'Sevgiler,',
+    },
+  },
+};
+
+// Returns { subject, html } or null if the data is unusable (e.g. a non-https call link)
+function applicationEmail(type, lang, data) {
+  const copy = APPLICATION_COPY[lang] || APPLICATION_COPY.en;
+  const accepted = type === 'application_accepted';
+  const c = accepted ? copy.accepted : copy.waitlist;
+  const name = escapeHtml(String(data.name || '').trim().split(/\s+/)[0] || '');
+  if (accepted && !/^https:\/\/\S+$/.test(data.callUrl || '')) return null;
+
+  const p = text => `<p style="font-size:14px;color:#4A4548;line-height:1.7;margin-bottom:16px;">${text}</p>`;
+  const button = accepted ? `
+        <div style="text-align:center;margin:28px 0;">
+          <a href="${escapeHtml(data.callUrl)}" style="display:inline-block;padding:13px 28px;background:#2D2A2E;color:#FDF6F0;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;border-radius:50px;">${c.button}</a>
+        </div>${p(c.after)}` : '';
+
+  return {
+    subject: copy.subject,
+    html: emailShell(`
+        <div style="font-family:Georgia,serif;font-size:26px;color:#2D2A2E;margin-bottom:20px;">${c.heading(name)}</div>
+        ${c.paragraphs.map(p).join('')}${button}${c.closing ? p(c.closing) : ''}
+        <p style="font-size:14px;color:#4A4548;line-height:1.7;margin-top:24px;">${c.signoff}<br>Buse</p>`),
+  };
 }
 
 async function sendResend(env, payload) {

@@ -624,7 +624,8 @@ function renderApply(){
   let fieldHtml = '';
   if (step.type === 'number' || step.type === 'tel' || step.type === 'email' || step.type === 'text'){
     const val = applyAnswers[step.key] || '';
-    fieldHtml = `<input class="apply-input" type="${step.type}" id="applyField" placeholder="${step.placeholder}" value="${escapeHtml(val)}">`;
+    const extra = step.key === 'age' ? ' min="16" max="100" step="1" inputmode="numeric"' : step.type === 'email' ? ' autocomplete="email"' : step.type === 'tel' ? ' autocomplete="tel"' : '';
+    fieldHtml = `<input class="apply-input" type="${step.type}" id="applyField" placeholder="${step.placeholder}" value="${escapeHtml(val)}"${extra}>`;
   } else if (step.type === 'textarea'){
     const val = applyAnswers[step.key] || '';
     fieldHtml = `<textarea class="apply-textarea" id="applyField" placeholder="${step.placeholder}">${escapeHtml(val)}</textarea>`;
@@ -697,25 +698,41 @@ function applyBack(){
   renderApply();
 }
 
-function validateStep(step){
-  if (!step.required) return true;
+// Returns an error message for the current step, or '' if it's fine
+function stepError(step){
   const val = applyAnswers[step.key];
-  if (step.type === 'multiselect') return Array.isArray(val) && val.length > 0;
-  if (step.type === 'parq') return val && step.items.every(it => typeof val[it.key] === 'boolean');
-  if (step.type === 'email') return val && /\S+@\S+\.\S+/.test(val);
-  return val !== undefined && String(val).trim() !== '';
+  const text = String(val ?? '').trim();
+  if (step.type === 'multiselect') return step.required && !(Array.isArray(val) && val.length) ? 'Bitte wähle mindestens eine Option.' : '';
+  if (step.type === 'parq') return val && step.items.every(it => typeof val[it.key] === 'boolean') ? '' : 'Bitte beantworte jede Frage mit Ja oder Nein.';
+  if (step.type === 'select') return step.required && !text ? 'Bitte wähle eine Option.' : '';
+  if (!text) return step.required ? (step.key === 'name' ? 'Bitte gib deinen Namen ein.' : 'Bitte fülle dieses Feld aus, bevor du fortfährst.') : '';
+  if (step.key === 'name' && text.length < 2) return 'Bitte gib deinen Namen ein.';
+  if (step.key === 'age'){
+    const age = Number(text);
+    return Number.isInteger(age) && age >= 16 && age <= 100 ? '' : 'Bitte gib dein Alter als Zahl zwischen 16 und 100 ein.';
+  }
+  if (step.type === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(text) ? '' : 'Bitte gib eine gültige E-Mail-Adresse ein, z. B. name@beispiel.de.';
+  if (step.type === 'tel'){
+    const digits = text.replace(/\D/g, '').length;
+    return /^[+\d\s()\/.-]+$/.test(text) && digits >= 6 && digits <= 15 ? '' : 'Bitte gib eine gültige Telefonnummer ein, z. B. +49 151 23456789.';
+  }
+  return '';
 }
 
 async function applyNext(){
   const step = APPLY_STEPS[applyIndex];
   const fieldEl = document.getElementById('applyField');
-  if (fieldEl) applyAnswers[step.key] = fieldEl.value;
+  if (fieldEl) applyAnswers[step.key] = fieldEl.value.trim();
 
-  if (!validateStep(step)){
-    document.getElementById('applyError').style.display = 'block';
+  const errorEl = document.getElementById('applyError');
+  const error = stepError(step);
+  if (error){
+    errorEl.textContent = error;
+    errorEl.style.display = 'block';
+    if (fieldEl) fieldEl.focus();
     return;
   }
-  document.getElementById('applyError').style.display = 'none';
+  errorEl.style.display = 'none';
 
   if (applyIndex === APPLY_STEPS.length - 1){
     await submitApplication();
@@ -733,9 +750,11 @@ async function submitApplication(){
 
   // Dauerhafter Datensatz — die Quelle der Wahrheit, sichtbar im Inquiries-Tab des Admin-Panels.
   // Schlägt das fehl, enthält die E-Mail unten trotzdem die vollständige Bewerbung — kein Lead geht verloren.
+  // In welcher Sprache die Antwort-E-Mail an die Person geht
+  const language = 'de';
   let dbError = null;
   try {
-    ({ error: dbError } = await sb.from('inquiries').insert({
+    const row = {
       full_name: a.name,
       age: a.age ? parseInt(a.age) : null,
       goals: a.goals || [],
@@ -746,7 +765,14 @@ async function submitApplication(){
       phone: a.phone || null,
       email: a.email,
       intro: a.intro || null,
-    }));
+      language,
+    };
+    ({ error: dbError } = await sb.from('inquiries').insert(row));
+    // Until the `language` column exists (supabase/inquiries_update.sql), save without it
+    if (dbError && /language/.test(dbError.message || '')) {
+      delete row.language;
+      ({ error: dbError } = await sb.from('inquiries').insert(row));
+    }
   } catch (err) {
     dbError = err;
   }
