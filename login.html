@@ -90,11 +90,11 @@
   <div id="loginForm" class="form-section active">
     <div class="form-group">
       <label data-i18n="emailLabel">E-mail</label>
-      <input type="email" id="loginEmail" placeholder="hello@example.com" autocomplete="off">
+      <input type="email" id="loginEmail" placeholder="hello@example.com" autocomplete="username">
     </div>
     <div class="form-group">
       <label data-i18n="passwordLabel">Password</label>
-      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="new-password">
+      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
     </div>
     <div class="forgot" style="display:flex;align-items:center;justify-content:space-between;">
       <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--charcoal-light);text-transform:none;letter-spacing:.3px;cursor:pointer;">
@@ -164,7 +164,7 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script>
 const T = {
   en: {
@@ -237,12 +237,16 @@ function applyTranslations() {
 
 applyTranslations();
 
-// Remember Me — only the email is ever stored, never the password
+// Remember Me — only the email is ever stored, never the password.
+// Prefill only when it was saved with the box checked; unchecking forgets it right away.
 const rememberedEmail = localStorage.getItem('twb_remember_email');
 if (rememberedEmail) {
   document.getElementById('loginEmail').value = rememberedEmail;
   document.getElementById('rememberMe').checked = true;
 }
+document.getElementById('rememberMe').addEventListener('change', (e) => {
+  if (!e.target.checked) localStorage.removeItem('twb_remember_email');
+});
 
 // Auth
 const { createClient } = supabase;
@@ -380,6 +384,8 @@ async function handleSignup() {
 }
 
 async function handleGoogle() {
+  // Google sign-in has no Remember Me step, so don't keep a previously saved email around
+  localStorage.removeItem('twb_remember_email');
   await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + '/dashboard.html' } });
 }
 

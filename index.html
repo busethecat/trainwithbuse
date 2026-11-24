@@ -1072,6 +1072,11 @@
     gap: 24px;
   }
 
+  @media (min-width: 769px) {
+    .blog-grid[data-count="1"] { grid-template-columns: minmax(0, 380px); justify-content: center; }
+    .blog-grid[data-count="2"] { grid-template-columns: repeat(2, minmax(0, 380px)); justify-content: center; }
+  }
+
   .blog-card {
     border-radius: var(--radius);
     overflow: hidden;
@@ -2276,45 +2281,63 @@
 </section>
 
 <!-- BLOG -->
-<section id="blog">
+<section id="blog" hidden>
   <div class="section">
     <div class="section-tag">Blog</div>
     <h2 class="section-title">Science <em>Simplified</em></h2>
     <p class="section-desc">Neuroscience, movement science, and wellness — explained so you can actually use it.</p>
-    <div class="blog-grid" id="blogGrid">
-      <div class="blog-card reveal visible">
-        <div class="blog-thumb blog-thumb-1"><span>01</span></div>
-        <div class="blog-content">
-          <div class="blog-category">[TODO: Month Year]</div>
-          <h3>[TODO: Article title]</h3>
-          <p>[TODO: One-sentence summary of this article.]</p>
-          <a href="https://trainwithbuse.substack.com" target="_blank" class="blog-read-more">Read on Substack →</a>
-        </div>
-      </div>
-      <div class="blog-card reveal visible">
-        <div class="blog-thumb blog-thumb-2"><span>02</span></div>
-        <div class="blog-content">
-          <div class="blog-category">[TODO: Month Year]</div>
-          <h3>[TODO: Article title]</h3>
-          <p>[TODO: One-sentence summary of this article.]</p>
-          <a href="https://trainwithbuse.substack.com" target="_blank" class="blog-read-more">Read on Substack →</a>
-        </div>
-      </div>
-      <div class="blog-card reveal visible">
-        <div class="blog-thumb blog-thumb-3"><span>03</span></div>
-        <div class="blog-content">
-          <div class="blog-category">[TODO: Month Year]</div>
-          <h3>[TODO: Article title]</h3>
-          <p>[TODO: One-sentence summary of this article.]</p>
-          <a href="https://trainwithbuse.substack.com" target="_blank" class="blog-read-more">Read on Substack →</a>
-        </div>
-      </div>
-    </div>
+    <div class="blog-grid" id="blogGrid"></div>
     <div style="text-align:center;margin-top:32px">
       <a href="https://trainwithbuse.substack.com" target="_blank" class="btn-secondary">View All Articles →</a>
     </div>
   </div>
 </section>
+<script>
+// Latest Substack posts via the rss-proxy Worker. The section stays hidden unless
+// at least one post loads, so a feed or Worker failure never shows broken cards.
+(async function loadBlogPosts() {
+  const section = document.getElementById('blog');
+  const grid = document.getElementById('blogGrid');
+  try {
+    const res = await fetch('https://rss-proxy.trainwithbuse.workers.dev');
+    if (!res.ok) throw new Error('RSS proxy returned ' + res.status);
+    const xml = new DOMParser().parseFromString(await res.text(), 'text/xml');
+    if (xml.querySelector('parsererror')) throw new Error('RSS feed could not be parsed');
+    const items = [...xml.querySelectorAll('item')].slice(0, 3);
+    if (!items.length) return;
+
+    const field = (item, tag) => (item.querySelector(tag)?.textContent || '').trim();
+    const isHttps = url => /^https:\/\//.test(url);
+    grid.replaceChildren(...items.map((item, i) => {
+      const link = field(item, 'link');
+      const date = new Date(field(item, 'pubDate'));
+      const summary = field(item, 'description').replace(/<[^>]*>/g, '');
+      const image = item.querySelector('enclosure')?.getAttribute('url') || '';
+
+      const card = document.createElement('div');
+      card.className = 'blog-card reveal visible';
+      card.innerHTML = `<div class="blog-thumb blog-thumb-${i + 1}"><span>${String(i + 1).padStart(2, '0')}</span></div>
+        <div class="blog-content"><div class="blog-category"></div><h3></h3><p></p>
+        <a target="_blank" rel="noopener" class="blog-read-more">Read on Substack →</a></div>`;
+      // Feed text goes in via textContent only, never as HTML
+      card.querySelector('.blog-category').textContent = isNaN(date) ? '' : date.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+      card.querySelector('h3').textContent = field(item, 'title');
+      card.querySelector('p').textContent = summary.length > 140 ? summary.slice(0, 140).trim() + '…' : summary;
+      card.querySelector('a').href = isHttps(link) ? link : 'https://trainwithbuse.substack.com';
+      if (isHttps(image)) {
+        const thumb = card.querySelector('.blog-thumb');
+        thumb.style.background = `center / cover no-repeat url("${encodeURI(image)}")`;
+        thumb.querySelector('span').remove();
+      }
+      return card;
+    }));
+    grid.dataset.count = items.length;
+    section.hidden = false;
+  } catch (err) {
+    console.warn('Blog section hidden — posts could not be loaded:', err);
+  }
+})();
+</script>
 
 <!-- NEWSLETTER -->
 <section class="newsletter-section">
@@ -2526,7 +2549,7 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script>
 (function() {
   var hash = window.location.hash;

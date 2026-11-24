@@ -450,11 +450,11 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   <div class="apply-body" id="applyBody"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script src="config.js"></script>
 <script>
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// null if the Supabase script failed to load — submitApplication then falls back to email only
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
@@ -732,28 +732,29 @@ async function submitApplication(){
   const a = applyAnswers;
 
   // Dauerhafter Datensatz — die Quelle der Wahrheit, sichtbar im Inquiries-Tab des Admin-Panels.
-  const { error: dbError } = await sb.from('inquiries').insert({
-    full_name: a.name,
-    age: a.age ? parseInt(a.age) : null,
-    goals: a.goals || [],
-    parq: a.parq || {},
-    injuries: a.injuries || null,
-    location: a.location || null,
-    days_per_week: a.daysPerWeek || null,
-    phone: a.phone || null,
-    email: a.email,
-    intro: a.intro || null,
-  });
-
-  if (dbError){
-    console.error('Failed to save application:', dbError.message);
-    if (btn){ btn.disabled = false; btn.textContent = 'Bewerbung absenden'; }
-    alert('Beim Speichern deiner Bewerbung ist ein Fehler aufgetreten. Bitte versuche es erneut oder schreibe direkt an hello@trainwithbuse.com.');
-    return;
+  // Schlägt das fehl, enthält die E-Mail unten trotzdem die vollständige Bewerbung — kein Lead geht verloren.
+  let dbError = null;
+  try {
+    ({ error: dbError } = await sb.from('inquiries').insert({
+      full_name: a.name,
+      age: a.age ? parseInt(a.age) : null,
+      goals: a.goals || [],
+      parq: a.parq || {},
+      injuries: a.injuries || null,
+      location: a.location || null,
+      days_per_week: a.daysPerWeek || null,
+      phone: a.phone || null,
+      email: a.email,
+      intro: a.intro || null,
+    }));
+  } catch (err) {
+    dbError = err;
   }
 
-  // Best-effort E-Mail-Benachrichtigung — die Bewerbung ist bereits gespeichert,
-  // ein Fehler hier darf den Bestätigungsbildschirm nicht blockieren.
+  if (dbError) console.error('Failed to save application:', dbError.message);
+
+  // E-Mail-Benachrichtigung — wird immer gesendet und ist die einzige Kopie, falls das Speichern oben fehlschlug.
+  // Eine Fehlermeldung sieht die Person nur, wenn BEIDES fehlschlägt.
   const parq = a.parq || {};
   const parqLines = APPLY_STEPS.find(s => s.type === 'parq').items
     .map(it => `  - ${it.text} ${parq[it.key] ? 'Ja' : 'Nein'}`).join('\n');
@@ -773,6 +774,7 @@ async function submitApplication(){
     a.intro || ''
   ].join('\n');
 
+  let emailSent = false;
   try {
     const notifyRes = await fetch('https://booking-notify.trainwithbuse.workers.dev', {
       method: 'POST',
@@ -781,12 +783,19 @@ async function submitApplication(){
         userEmail: a.email,
         sessionType: 'The Buse Method — Bewerbung',
         slots: [],
-        notes,
+        notes: (dbError ? '⚠ NICHT in Supabase gespeichert (' + dbError.message + ') — diese E-Mail ist die einzige Kopie.\n\n' : '') + notes,
       })
     });
-    if (!notifyRes.ok) console.error('Application email alert failed with status ' + notifyRes.status + ' (application was still saved)');
+    emailSent = notifyRes.ok;
+    if (!notifyRes.ok) console.error('Application email alert failed with status ' + notifyRes.status);
   } catch (err) {
-    console.error('Application email alert failed (application was still saved):', err);
+    console.error('Application email alert failed:', err);
+  }
+
+  if (dbError && !emailSent){
+    if (btn){ btn.disabled = false; btn.textContent = 'Bewerbung absenden'; }
+    alert('Beim Speichern deiner Bewerbung ist ein Fehler aufgetreten. Bitte versuche es erneut oder schreibe direkt an hello@trainwithbuse.com.');
+    return;
   }
 
   applyIndex = APPLY_STEPS.length;

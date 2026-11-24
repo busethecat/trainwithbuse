@@ -453,11 +453,11 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   <div class="apply-body" id="applyBody"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script src="config.js"></script>
 <script>
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// null if the Supabase script failed to load — submitApplication then falls back to email only
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
@@ -735,28 +735,29 @@ async function submitApplication(){
   const a = applyAnswers;
 
   // Persistent record — the source of truth, visible in the admin Inquiries tab.
-  const { error: dbError } = await sb.from('inquiries').insert({
-    full_name: a.name,
-    age: a.age ? parseInt(a.age) : null,
-    goals: a.goals || [],
-    parq: a.parq || {},
-    injuries: a.injuries || null,
-    location: a.location || null,
-    days_per_week: a.daysPerWeek || null,
-    phone: a.phone || null,
-    email: a.email,
-    intro: a.intro || null,
-  });
-
-  if (dbError){
-    console.error('Failed to save application:', dbError.message);
-    if (btn){ btn.disabled = false; btn.textContent = 'Submit Application'; }
-    alert('Something went wrong saving your application. Please try again, or email hello@trainwithbuse.com directly.');
-    return;
+  // If this fails, the email below still carries the full application, so the lead is never lost.
+  let dbError = null;
+  try {
+    ({ error: dbError } = await sb.from('inquiries').insert({
+      full_name: a.name,
+      age: a.age ? parseInt(a.age) : null,
+      goals: a.goals || [],
+      parq: a.parq || {},
+      injuries: a.injuries || null,
+      location: a.location || null,
+      days_per_week: a.daysPerWeek || null,
+      phone: a.phone || null,
+      email: a.email,
+      intro: a.intro || null,
+    }));
+  } catch (err) {
+    dbError = err;
   }
 
-  // Best-effort email alert — the application is already saved above, so a
-  // failure here must not block the confirmation screen.
+  if (dbError) console.error('Failed to save application:', dbError.message);
+
+  // Email alert — always sent, and the only copy if the save above failed.
+  // The user sees an error only if BOTH the save and the email failed.
   const parq = a.parq || {};
   const parqLines = APPLY_STEPS.find(s => s.type === 'parq').items
     .map(it => `  - ${it.text} ${parq[it.key] ? 'Yes' : 'No'}`).join('\n');
@@ -776,6 +777,7 @@ async function submitApplication(){
     a.intro || ''
   ].join('\n');
 
+  let emailSent = false;
   try {
     const notifyRes = await fetch('https://booking-notify.trainwithbuse.workers.dev', {
       method: 'POST',
@@ -784,12 +786,19 @@ async function submitApplication(){
         userEmail: a.email,
         sessionType: 'The Buse Method — Application',
         slots: [],
-        notes,
+        notes: (dbError ? '⚠ NOT SAVED in Supabase (' + dbError.message + ') — this email is the only copy.\n\n' : '') + notes,
       })
     });
-    if (!notifyRes.ok) console.error('Application email alert failed with status ' + notifyRes.status + ' (application was still saved)');
+    emailSent = notifyRes.ok;
+    if (!notifyRes.ok) console.error('Application email alert failed with status ' + notifyRes.status);
   } catch (err) {
-    console.error('Application email alert failed (application was still saved):', err);
+    console.error('Application email alert failed:', err);
+  }
+
+  if (dbError && !emailSent){
+    if (btn){ btn.disabled = false; btn.textContent = 'Submit Application'; }
+    alert('Something went wrong saving your application. Please try again, or email hello@trainwithbuse.com directly.');
+    return;
   }
 
   applyIndex = APPLY_STEPS.length;

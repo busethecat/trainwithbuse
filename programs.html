@@ -164,10 +164,11 @@ body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--warm-white
   <div id="content"><div class="spin-wrap"><div class="spinner"></div></div></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script>
 const T={
   en:{
+    loadError:"We couldn't load your programs right now.",retry:'Try again',
     logout:'Sign Out', back:'Back', heroEyebrow:'My Space',
     heroTitle:'My Programs', myPrograms:'Active Programs',
     discover:'Discover More', noPrograms:'No programs yet.',
@@ -185,6 +186,7 @@ const T={
     catLabels:{movement:'Movement',sculpt:'Sculpt',strength:'Strength',group:'Live'},
   },
   tr:{
+    loadError:'Programların şu anda yüklenemedi.',retry:'Tekrar dene',
     logout:'Çıkış', back:'Geri', heroEyebrow:'Alanım',
     heroTitle:'Programlarım', myPrograms:'Aktif Programlar',
     discover:'Daha Fazlasını Keşfet', noPrograms:'Henüz program yok.',
@@ -202,6 +204,7 @@ const T={
     catLabels:{movement:'Movement',sculpt:'Sculpt',strength:'Strength',group:'Canlı'},
   },
   de:{
+    loadError:'Deine Programme konnten gerade nicht geladen werden.',retry:'Erneut versuchen',
     logout:'Abmelden', back:'Zurück', heroEyebrow:'Mein Bereich',
     heroTitle:'Meine Programme', myPrograms:'Aktive Programme',
     discover:'Mehr entdecken', noPrograms:'Noch keine Programme.',
@@ -242,39 +245,56 @@ document.querySelectorAll('#langSwitcher .lang-pill').forEach((p,i)=>p.classList
 const {createClient}=supabase;
 const sb=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-// ── Leave-site sign-out (see dashboard.html for full explanation) ──────
-const INTERNAL_PAGES=['dashboard.html','programs.html','course.html','booking.html'];
-let _internalNav=false;
-function markInternalNav(){_internalNav=true;}
-document.addEventListener('click',(e)=>{
-  const a=e.target.closest('a[href]');
-  if(!a)return;
-  const path=(a.getAttribute('href')||'').split('?')[0].split('#')[0];
-  if(INTERNAL_PAGES.includes(path))markInternalNav();
-},true);
-window.addEventListener('pagehide',()=>{ if(!_internalNav) sb.auth.signOut(); });
-window.addEventListener('beforeunload',()=>{ if(!_internalNav) sb.auth.signOut(); });
 let currentUser=null,_purchases=new Set(),_progress={},_purchasesRaw=[];
 
-// 30-minute inactivity timeout — signs the user out and sends them back to login
-let _idleTimer;
+// 30-minute inactivity timeout — signs the user out and sends them back to login.
+// The last activity time is stored as well (twb_last_active), so the rule also
+// applies when a closed tab is reopened later, and activity in another open
+// member tab counts too.
+const IDLE_LIMIT_MS = 30*60*1000;
+let _idleTimer, _lastActiveWrite = 0;
+function lastActiveAt(user){
+  // The later of the stored activity time and the last sign-in, so a fresh
+  // login never trips over an old timestamp from a previous session
+  const stored = Number(localStorage.getItem('twb_last_active')) || 0;
+  return Math.max(stored, Date.parse(user?.last_sign_in_at) || 0);
+}
+function idleExpired(user){
+  // No stored timestamp yet (first visit with this feature) never counts as idle
+  if (!localStorage.getItem('twb_last_active')) return false;
+  return Date.now() - lastActiveAt(user) > IDLE_LIMIT_MS;
+}
+async function idleSignOut(){
+  localStorage.removeItem('twb_last_active');
+  await sb.auth.signOut();
+  window.location.href='login.html';
+}
 function startIdleTimer(){
-  const IDLE_LIMIT_MS = 30*60*1000;
-  function resetIdleTimer(){
+  function scheduleCheck(delay){
     clearTimeout(_idleTimer);
-    _idleTimer=setTimeout(async()=>{
-      await sb.auth.signOut();
-      window.location.href='login.html';
-    }, IDLE_LIMIT_MS);
+    _idleTimer=setTimeout(()=>{
+      // Another tab may have been active meanwhile — only sign out if truly idle
+      const remaining = IDLE_LIMIT_MS - (Date.now() - lastActiveAt(currentUser));
+      if (remaining > 0) scheduleCheck(remaining); else idleSignOut();
+    }, delay);
+  }
+  function recordActivity(){
+    const now = Date.now();
+    if (now - _lastActiveWrite > 15000) { // throttled: mousemove fires constantly
+      localStorage.setItem('twb_last_active', String(now));
+      _lastActiveWrite = now;
+    }
+    scheduleCheck(IDLE_LIMIT_MS);
   }
   ['mousemove','mousedown','keydown','scroll','touchstart','click'].forEach(evt=>{
-    document.addEventListener(evt, resetIdleTimer, {passive:true});
+    document.addEventListener(evt, recordActivity, {passive:true});
   });
-  resetIdleTimer();
+  recordActivity();
 }
 
 sb.auth.getSession().then(({data:{session}})=>{
   if(!session){window.location.href='login.html';return;}
+  if(idleExpired(session.user)){idleSignOut();return;}
   currentUser=session.user;
   startIdleTimer();
   loadData();
@@ -283,11 +303,22 @@ sb.auth.getSession().then(({data:{session}})=>{
   window.location.href='login.html';
 });
 
+function showLoadErrorBanner(msg,retry){
+  if(document.getElementById('loadErrorBanner'))return;
+  const b=document.createElement('div');
+  b.id='loadErrorBanner';b.setAttribute('role','alert');
+  b.style.cssText='position:fixed;left:16px;right:16px;bottom:16px;z-index:2000;max-width:520px;margin:0 auto;background:#2D2A2E;color:#fff;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;font-family:Outfit,sans-serif;font-size:14px;line-height:1.5;box-shadow:0 12px 32px rgba(45,42,46,.25)';
+  b.innerHTML=`<span style="flex:1">${msg}</span><button onclick="location.reload()" style="background:#fff;color:#2D2A2E;border:none;border-radius:50px;padding:9px 18px;font-family:Outfit,sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;white-space:nowrap">${retry}</button>`;
+  document.body.appendChild(b);
+}
+
 async function loadData(){
-  const [{data:pur},{data:prog}]=await Promise.all([
+  const [{data:pur,error:purErr},{data:prog,error:progErr}]=await Promise.all([
     sb.from('purchases').select('course_id,created_at').eq('user_id',currentUser.id),
     sb.from('lesson_progress').select('course_id,lesson_id').eq('user_id',currentUser.id),
   ]);
+  // Don't render as if the user owns nothing — keep the page as is and offer a retry
+  if(purErr||progErr){console.error('Programs data load failed:',(purErr||progErr).message);showLoadErrorBanner(t('loadError'),t('retry'));return;}
   _purchasesRaw=pur||[];
   _purchases=new Set(_purchasesRaw.map(p=>p.course_id));
   _progress={};

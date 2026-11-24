@@ -1211,13 +1211,14 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
 </div>
 <audio id="badgeUnlockAudio" src="sounds/badge-unlock.mp3" preload="none"></audio>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script>
 // ══════════════════════════════
 // TRANSLATIONS
 // ══════════════════════════════
 const T={
 en:{
+loadError:"We couldn't load your programs right now.",retry:'Try again',
   logout:'Sign Out',heroEyebrow:'Member Portal',mottoLabel:'Daily Motto',
   substackLabel:"Today's Read",cycleLabel:'Cycle Tracker',counterEyebrow:'Right Now',
   momentumLabel:'Your Rhythm',
@@ -1392,6 +1393,7 @@ en:{
   privacy:`<h3>Data We Collect</h3><p>We collect the following to provide you with a personalised experience:</p><ul><li>Name and email address</li><li>Fitness profile (age, height, weight, goals, health notes)</li><li>Lesson progress and completion history</li><li>Cycle tracking data (stored locally on your device only - never sent to our servers)</li><li>Notes and journal entries (stored locally on your device only)</li></ul><h3>How We Use It</h3><p>Your data is used solely to operate the platform - to personalise your experience, track your progress, and communicate about your programs. We do not use your data for advertising.</p><h3>Storage & Security</h3><p>Profile and progress data is stored securely via Supabase with row-level security. Only you and Train With Buse administration can access your data. All data is encrypted in transit and at rest.</p><h3>Payments</h3><p>All payments are processed by Stripe. We do not store, see, or access your card details at any point.</p><h3>Third Parties</h3><p>We do not sell, rent, or share your personal data with any third parties for marketing or commercial purposes.</p><h3>Your Rights</h3><p>You may request a copy of your data, corrections, or complete deletion at any time by emailing <a href="mailto:hello@trainwithbuse.com">hello@trainwithbuse.com</a>. Deletion requests are processed within 30 days.</p>`,
 },
 tr:{
+loadError:'Programların şu anda yüklenemedi.',retry:'Tekrar dene',
   logout:'Cikis',heroEyebrow:'Uye Portali',mottoLabel:'Gunun Mottosu',
   substackLabel:'Gunun Yazisi',cycleLabel:'Dongu Takibi',counterEyebrow:'Su An',
   momentumLabel:'Ritmin',
@@ -1570,6 +1572,7 @@ tr:{
 },
 
 de:{
+loadError:'Deine Programme konnten gerade nicht geladen werden.',retry:'Erneut versuchen',
   logout:'Abmelden',heroEyebrow:'Mitgliederbereich',mottoLabel:'Tages-Motto',
   substackLabel:'Heutiger Artikel',cycleLabel:'Zyklus-Tracker',counterEyebrow:'Gerade jetzt',
   momentumLabel:'Dein Rhythmus',
@@ -1824,40 +1827,51 @@ document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('cli
 const {createClient}=supabase;
 const sb=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-// ── Leave-site sign-out ──────────────────────────────────────────────
-// Signs out the moment the user actually leaves the member area (closes
-// the tab/browser, or navigates to a different site) — but NOT when
-// navigating between dashboard/programs/course/booking, since those are
-// separate page loads in this multi-page app and marking every internal
-// link avoids forcing a re-login on each click between them.
-const INTERNAL_PAGES=['dashboard.html','programs.html','course.html','booking.html'];
-let _internalNav=false;
-function markInternalNav(){_internalNav=true;}
-document.addEventListener('click',(e)=>{
-  const a=e.target.closest('a[href]');
-  if(!a)return;
-  const path=(a.getAttribute('href')||'').split('?')[0].split('#')[0];
-  if(INTERNAL_PAGES.includes(path))markInternalNav();
-},true);
-window.addEventListener('pagehide',()=>{ if(!_internalNav) sb.auth.signOut(); });
-window.addEventListener('beforeunload',()=>{ if(!_internalNav) sb.auth.signOut(); });
 let currentUser=null,_purchases=new Set(),_progress={},_purchasesRaw=[],_lessonProgressRaw=[];
 
-// 30-minute inactivity timeout — signs the user out and sends them back to login
-let _idleTimer;
+// 30-minute inactivity timeout — signs the user out and sends them back to login.
+// The last activity time is stored as well (twb_last_active), so the rule also
+// applies when a closed tab is reopened later, and activity in another open
+// member tab counts too.
+const IDLE_LIMIT_MS = 30*60*1000;
+let _idleTimer, _lastActiveWrite = 0;
+function lastActiveAt(user){
+  // The later of the stored activity time and the last sign-in, so a fresh
+  // login never trips over an old timestamp from a previous session
+  const stored = Number(localStorage.getItem('twb_last_active')) || 0;
+  return Math.max(stored, Date.parse(user?.last_sign_in_at) || 0);
+}
+function idleExpired(user){
+  // No stored timestamp yet (first visit with this feature) never counts as idle
+  if (!localStorage.getItem('twb_last_active')) return false;
+  return Date.now() - lastActiveAt(user) > IDLE_LIMIT_MS;
+}
+async function idleSignOut(){
+  localStorage.removeItem('twb_last_active');
+  await sb.auth.signOut();
+  window.location.href='login.html';
+}
 function startIdleTimer(){
-  const IDLE_LIMIT_MS = 30*60*1000;
-  function resetIdleTimer(){
+  function scheduleCheck(delay){
     clearTimeout(_idleTimer);
-    _idleTimer=setTimeout(async()=>{
-      await sb.auth.signOut();
-      window.location.href='login.html';
-    }, IDLE_LIMIT_MS);
+    _idleTimer=setTimeout(()=>{
+      // Another tab may have been active meanwhile — only sign out if truly idle
+      const remaining = IDLE_LIMIT_MS - (Date.now() - lastActiveAt(currentUser));
+      if (remaining > 0) scheduleCheck(remaining); else idleSignOut();
+    }, delay);
+  }
+  function recordActivity(){
+    const now = Date.now();
+    if (now - _lastActiveWrite > 15000) { // throttled: mousemove fires constantly
+      localStorage.setItem('twb_last_active', String(now));
+      _lastActiveWrite = now;
+    }
+    scheduleCheck(IDLE_LIMIT_MS);
   }
   ['mousemove','mousedown','keydown','scroll','touchstart','click'].forEach(evt=>{
-    document.addEventListener(evt, resetIdleTimer, {passive:true});
+    document.addEventListener(evt, recordActivity, {passive:true});
   });
-  resetIdleTimer();
+  recordActivity();
 }
 
 // Apply saved theme immediately to avoid flash
@@ -1865,6 +1879,7 @@ applyTheme(null);
 
 sb.auth.getSession().then(async ({data:{session}})=>{
   if(!session){window.location.href='login.html';return;}
+  if(idleExpired(session.user)){idleSignOut();return;}
   currentUser=session.user;
   startIdleTimer();
   const name=currentUser.user_metadata?.full_name?.split(' ')[0]||currentUser.email?.split('@')[0]||'';
@@ -1890,11 +1905,22 @@ sb.auth.getSession().then(async ({data:{session}})=>{
   window.location.href='login.html';
 });
 
+function showLoadErrorBanner(msg,retry){
+  if(document.getElementById('loadErrorBanner'))return;
+  const b=document.createElement('div');
+  b.id='loadErrorBanner';b.setAttribute('role','alert');
+  b.style.cssText='position:fixed;left:16px;right:16px;bottom:16px;z-index:2000;max-width:520px;margin:0 auto;background:#2D2A2E;color:#fff;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;font-family:Outfit,sans-serif;font-size:14px;line-height:1.5;box-shadow:0 12px 32px rgba(45,42,46,.25)';
+  b.innerHTML=`<span style="flex:1">${msg}</span><button onclick="location.reload()" style="background:#fff;color:#2D2A2E;border:none;border-radius:50px;padding:9px 18px;font-family:Outfit,sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;white-space:nowrap">${retry}</button>`;
+  document.body.appendChild(b);
+}
+
 async function loadData(){
-  const [{data:pur},{data:prog}]=await Promise.all([
+  const [{data:pur,error:purErr},{data:prog,error:progErr}]=await Promise.all([
     sb.from('purchases').select('course_id,created_at').eq('user_id',currentUser.id),
     sb.from('lesson_progress').select('course_id,lesson_id,completed_at').eq('user_id',currentUser.id),
   ]);
+  // Don't render as if the user owns nothing — keep the page as is and offer a retry
+  if(purErr||progErr){console.error('Dashboard data load failed:',(purErr||progErr).message);showLoadErrorBanner(t('loadError'),t('retry'));return;}
   _purchasesRaw=pur||[];
   _purchases=new Set(_purchasesRaw.map(p=>p.course_id));
   _lessonProgressRaw=prog||[];
@@ -2847,7 +2873,7 @@ function renderFavs(){
   const sub=(tl.subtitles||{});
   body.innerHTML=favs.map(id=>{
     const c=COURSES[id];if(!c)return'';
-    return`<div class="fav-item" onclick="markInternalNav();window.location.href='course.html?id=${id}'">
+    return`<div class="fav-item" onclick="window.location.href='course.html?id=${id}'">
       <div style="width:10px;height:10px;border-radius:50%;background:${c.color};flex-shrink:0"></div>
       <div style="flex:1"><div style="font-size:15px">${c.title}</div><div style="font-size:12px;color:var(--nude);margin-top:2px">${sub[c.subtitleKey]||c.subtitle}</div></div>
       <button class="fav-remove" onclick="event.stopPropagation();removeFav('${id}')">✕</button>

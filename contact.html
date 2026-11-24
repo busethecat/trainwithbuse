@@ -252,6 +252,24 @@ h1 em { font-style: italic; color: var(--rose); display: block; }
   text-align: center;
 }
 
+/* MESSAGE FORM */
+.message-card { margin-top: 32px; }
+.message-form { display: flex; flex-direction: column; gap: 18px; }
+.message-form[hidden] { display: none; }
+.message-form label { display: flex; flex-direction: column; }
+.message-form input, .message-form textarea {
+  width: 100%; padding: 14px 18px; border-radius: 16px;
+  border: 1px solid rgba(232,180,184,.25); background: var(--warm-white);
+  font-family: 'Outfit', sans-serif; font-size: 16px; color: var(--charcoal);
+  transition: border-color .3s;
+}
+.message-form textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
+.message-form input:focus, .message-form textarea:focus { outline: none; border-color: var(--gold); }
+.message-form button { align-self: flex-start; border: none; cursor: pointer; padding: 14px 28px; }
+.message-form button:disabled { opacity: .6; cursor: default; }
+.message-error { font-size: 13px; color: var(--rose-dark); line-height: 1.6; }
+.message-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
 /* FOOTER */
 footer {
   background: var(--charcoal); padding: 32px 60px;
@@ -431,6 +449,35 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
       </div>
     </div>
 
+    <!-- MESSAGE FORM — always visible; also the Impressum's second contact channel (contact.html#message) -->
+    <div class="contact-reveal visible message-card" id="message">
+      <div class="contact-type-tag">Message</div>
+      <h2 class="contact-title">Or simply <em>write to me.</em></h2>
+      <p class="contact-desc">Any question, in English, Turkish or German — I read every message myself and reply by email.</p>
+      <form class="message-form" id="messageForm" onsubmit="return handleMessageSubmit(event)">
+        <label>
+          <span class="contact-row-label">Name</span>
+          <input type="text" name="name" required maxlength="200" autocomplete="name">
+        </label>
+        <label>
+          <span class="contact-row-label">Email</span>
+          <input type="email" name="email" required maxlength="320" autocomplete="email">
+        </label>
+        <label>
+          <span class="contact-row-label">Message</span>
+          <textarea name="message" required maxlength="5000"></textarea>
+        </label>
+        <!-- Honeypot: hidden from people, bots tend to fill it -->
+        <label class="message-hp" aria-hidden="true">Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        <button type="submit" class="contact-link-btn gold" id="messageSubmitBtn">Send Message →</button>
+        <div class="message-error" id="messageError" role="alert" hidden>Something went wrong. Please try again, or email <a href="mailto:hello@trainwithbuse.com" style="color:inherit">hello@trainwithbuse.com</a> directly.</div>
+      </form>
+      <div id="messageSuccess" hidden>
+        <h3 class="contact-title">Thank <em>you.</em></h3>
+        <p class="contact-desc" style="margin-bottom:0">Your message is on its way. I'll reply by email as soon as I can.</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -445,7 +492,87 @@ footer span { font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 1px
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
+<script src="config.js"></script>
 <script>
+// null if the Supabase script failed to load — the form then falls back to email only
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+function showMessageSuccess() {
+  document.getElementById('messageForm').hidden = true;
+  const success = document.getElementById('messageSuccess');
+  success.hidden = false;
+  success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+async function handleMessageSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('messageForm');
+  const btn = document.getElementById('messageSubmitBtn');
+  const errorEl = document.getElementById('messageError');
+  errorEl.hidden = true;
+
+  const fd = new FormData(form);
+  if (fd.get('website')) { showMessageSuccess(); return false; } // honeypot filled: quietly drop
+  const payload = {
+    name: fd.get('name').trim(),
+    email: fd.get('email').trim(),
+    message: fd.get('message').trim(),
+  };
+  if (!payload.name || !payload.message) { form.reportValidity(); return false; }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  // Persistent record. If this fails, the email below still carries the full message.
+  let dbError = null;
+  try {
+    ({ error: dbError } = await sb.from('contact_messages').insert(payload));
+  } catch (err) {
+    dbError = err;
+  }
+  if (dbError) console.error('Failed to save contact message:', dbError.message);
+
+  // Email alert via booking-notify — always sent, and the only copy if the save above failed.
+  // The user sees an error only if BOTH the save and the email failed.
+  const notes = [
+    dbError ? '⚠ NOT SAVED in Supabase (' + dbError.message + ') — this email is the only copy.\n' : '',
+    `Name: ${payload.name}`,
+    `Email: ${payload.email}`,
+    '',
+    'Message:',
+    payload.message,
+  ].join('\n').trim();
+
+  let emailSent = false;
+  try {
+    const notifyRes = await fetch('https://booking-notify.trainwithbuse.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userEmail: payload.email,
+        sessionType: 'Contact Form Message',
+        slots: [],
+        notes,
+      })
+    });
+    emailSent = notifyRes.ok;
+    if (!notifyRes.ok) console.error('Contact message email alert failed with status ' + notifyRes.status);
+  } catch (err) {
+    console.error('Contact message email alert failed:', err);
+  }
+
+  if (dbError && !emailSent) {
+    btn.disabled = false;
+    btn.textContent = 'Send Message →';
+    errorEl.hidden = false;
+    return false;
+  }
+
+  showMessageSuccess();
+  return false;
+}
+
 function showContact(type) {
   // Reset all buttons
   ['brand','corporate','individual'].forEach(t => {

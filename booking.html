@@ -279,23 +279,10 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script>
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// ── Leave-site sign-out (see dashboard.html for full explanation) ──────
-const INTERNAL_PAGES = ['dashboard.html','programs.html','course.html','booking.html'];
-let _internalNav = false;
-function markInternalNav(){ _internalNav = true; }
-document.addEventListener('click', (e) => {
-  const a = e.target.closest('a[href]');
-  if (!a) return;
-  const path = (a.getAttribute('href') || '').split('?')[0].split('#')[0];
-  if (INTERNAL_PAGES.includes(path)) markInternalNav();
-}, true);
-window.addEventListener('pagehide', () => { if (!_internalNav) sb.auth.signOut(); });
-window.addEventListener('beforeunload', () => { if (!_internalNav) sb.auth.signOut(); });
 
 function openSessionTypeChoice(e){
   if (e) e.preventDefault();
@@ -327,20 +314,67 @@ const PKG_INFO = {
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
+// 30-minute inactivity timeout — signs the user out and sends them back to login.
+// The last activity time is stored as well (twb_last_active), so the rule also
+// applies when a closed tab is reopened later, and activity in another open
+// member tab counts too.
+const IDLE_LIMIT_MS = 30*60*1000;
+let _idleTimer, _lastActiveWrite = 0;
+function lastActiveAt(user){
+  // The later of the stored activity time and the last sign-in, so a fresh
+  // login never trips over an old timestamp from a previous session
+  const stored = Number(localStorage.getItem('twb_last_active')) || 0;
+  return Math.max(stored, Date.parse(user?.last_sign_in_at) || 0);
+}
+function idleExpired(user){
+  // No stored timestamp yet (first visit with this feature) never counts as idle
+  if (!localStorage.getItem('twb_last_active')) return false;
+  return Date.now() - lastActiveAt(user) > IDLE_LIMIT_MS;
+}
+async function idleSignOut(){
+  localStorage.removeItem('twb_last_active');
+  await sb.auth.signOut();
+  window.location.href='login.html';
+}
+function startIdleTimer(){
+  function scheduleCheck(delay){
+    clearTimeout(_idleTimer);
+    _idleTimer=setTimeout(()=>{
+      // Another tab may have been active meanwhile — only sign out if truly idle
+      const remaining = IDLE_LIMIT_MS - (Date.now() - lastActiveAt(currentUser));
+      if (remaining > 0) scheduleCheck(remaining); else idleSignOut();
+    }, delay);
+  }
+  function recordActivity(){
+    const now = Date.now();
+    if (now - _lastActiveWrite > 15000) { // throttled: mousemove fires constantly
+      localStorage.setItem('twb_last_active', String(now));
+      _lastActiveWrite = now;
+    }
+    scheduleCheck(IDLE_LIMIT_MS);
+  }
+  ['mousemove','mousedown','keydown','scroll','touchstart','click'].forEach(evt=>{
+    document.addEventListener(evt, recordActivity, {passive:true});
+  });
+  recordActivity();
+}
+
 // Init
 sb.auth.getSession().then(async ({ data: { session } }) => {
   if (!session) {
     document.getElementById('authGuard').style.display = 'block';
     return;
   }
+  if (idleExpired(session.user)) { idleSignOut(); return; }
   currentUser = session.user;
+  startIdleTimer();
   document.getElementById('mainLayout').style.display = 'grid';
 
   const now = new Date();
   viewYear = now.getFullYear();
   viewMonth = now.getMonth();
 
-  await loadData();
+  if (!(await loadData())) return;
   renderCalendar();
   renderBookingsList();
 }).catch(err => {
@@ -348,11 +382,17 @@ sb.auth.getSession().then(async ({ data: { session } }) => {
   document.getElementById('authGuard').style.display = 'block';
 });
 
+// Returns false if the data couldn't be loaded, so callers skip rendering an empty calendar
 async function loadData() {
-  const [{ data: purchases }, { data: bookings }] = await Promise.all([
+  const [{ data: purchases, error: purchasesError }, { data: bookings, error: bookingsError }] = await Promise.all([
     sb.from('purchases').select('course_id').eq('user_id', currentUser.id),
     sb.from('bookings').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false })
   ]);
+  if (purchasesError || bookingsError) {
+    console.error('Booking data load failed:', (purchasesError || bookingsError).message);
+    showLoadErrorBanner('We couldn\'t load your bookings right now.', 'Try again');
+    return false;
+  }
 
   userPurchases = new Set((purchases || []).map(p => p.course_id));
   allBookings = bookings || [];
@@ -362,6 +402,17 @@ async function loadData() {
   document.getElementById('statTotal').textContent = allBookings.length;
   document.getElementById('statPending').textContent = allBookings.filter(b => b.status === 'pending').length;
   document.getElementById('statConfirmed').textContent = allBookings.filter(b => b.status === 'confirmed').length;
+  return true;
+}
+
+function showLoadErrorBanner(msg, retry) {
+  if (document.getElementById('loadErrorBanner')) return;
+  const b = document.createElement('div');
+  b.id = 'loadErrorBanner';
+  b.setAttribute('role', 'alert');
+  b.style.cssText = 'position:fixed;left:16px;right:16px;bottom:16px;z-index:2000;max-width:520px;margin:0 auto;background:#2D2A2E;color:#fff;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;font-family:Outfit,sans-serif;font-size:14px;line-height:1.5;box-shadow:0 12px 32px rgba(45,42,46,.25)';
+  b.innerHTML = `<span style="flex:1">${msg}</span><button onclick="location.reload()" style="background:#fff;color:#2D2A2E;border:none;border-radius:50px;padding:9px 18px;font-family:Outfit,sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;white-space:nowrap">${retry}</button>`;
+  document.body.appendChild(b);
 }
 
 function renderCalendar() {
@@ -548,7 +599,7 @@ async function submitBooking() {
   slots = [];
   selectedDate = null; selectedType = null;
 
-  await loadData();
+  if (!(await loadData())) return;
   renderCalendar();
   renderBookingsList();
 }

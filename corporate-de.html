@@ -1631,11 +1631,11 @@
   <p>© 2026 Train With Buse. Alle Rechte vorbehalten. · <a href="de.html">Startseite</a> · <a href="plans-de.html">Individuelle Pläne</a> · <a href="policy-de.html">Datenschutz & AGB</a> · <a href="impressum-de.html">Impressum</a></p>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script src="config.js"></script>
 <script>
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// null if the Supabase script failed to load — the submit handler then falls back to email only
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 async function handleCorporateSubmit(e) {
   e.preventDefault();
@@ -1657,23 +1657,54 @@ async function handleCorporateSubmit(e) {
     message: fd.get('message') || null,
   };
 
-  const { error: dbError } = await sb.from('corporate_inquiries').insert(payload);
-  if (dbError) {
-    console.error('Failed to save corporate inquiry:', dbError.message);
+  // Persistent record — the source of truth, visible in the admin Corporate tab.
+  // If this fails, the email below still carries the full inquiry, so the lead is never lost.
+  let dbError = null;
+  try {
+    ({ error: dbError } = await sb.from('corporate_inquiries').insert(payload));
+  } catch (err) {
+    dbError = err;
+  }
+  if (dbError) console.error('Failed to save corporate inquiry:', dbError.message);
+
+  // Email alert via booking-notify — always sent, and the only copy if the save above failed.
+  // The user sees an error only if BOTH the save and the email failed.
+  const notes = [
+    dbError ? '⚠ NOT SAVED in Supabase (' + dbError.message + ') — this email is the only copy.\n' : '',
+    `Name: ${payload.name || ''}`,
+    `Title: ${payload.title || ''}`,
+    `Company: ${payload.company || ''}`,
+    `Email: ${payload.email || ''}`,
+    `Team size: ${payload.team_size || ''}`,
+    `Interest: ${payload.interest || ''}`,
+    '',
+    'Message:',
+    payload.message || '',
+  ].join('\n').trim();
+
+  let emailSent = false;
+  try {
+    const notifyRes = await fetch('https://booking-notify.trainwithbuse.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userEmail: payload.email,
+        sessionType: 'Corporate Inquiry — ' + (payload.company || ''),
+        slots: [],
+        notes,
+      })
+    });
+    emailSent = notifyRes.ok;
+    if (!notifyRes.ok) console.error('Corporate inquiry email alert failed with status ' + notifyRes.status);
+  } catch (err) {
+    console.error('Corporate inquiry email alert failed:', err);
+  }
+
+  if (dbError && !emailSent) {
     btn.disabled = false;
     btn.textContent = 'Anfrage senden →';
     errorEl.style.display = 'block';
     return false;
-  }
-
-  try {
-    await fetch(form.action, {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: fd,
-    });
-  } catch (err) {
-    console.error('Formspree notification failed (inquiry was still saved):', err);
   }
 
   form.style.display = 'none';

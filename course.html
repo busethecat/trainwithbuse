@@ -195,7 +195,7 @@
 </div>
 <div class="confetti-container" id="confettiContainer"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script>
 // ============================================================
 // TRANSLATIONS
@@ -203,6 +203,7 @@
 const T = {
   en: {
     back:'Back', loading:'Loading',
+    loadError:'We couldn\'t load your course right now. Your purchase is safe.', retry:'Try again',
     lessonOf:'Lesson', of:'of',
     completeLesson:'Mark Complete', completed:'✓ Completed',
     nextLesson:'Next Lesson →', backToDashboard:'Back to Dashboard →',
@@ -220,6 +221,7 @@ const T = {
   },
   tr: {
     back:'Geri', loading:'Yükleniyor',
+    loadError:'Kursun şu anda yüklenemedi. Satın alman güvende.', retry:'Tekrar dene',
     lessonOf:'Ders', of:'/',
     completeLesson:'Dersi Tamamla', completed:'✓ Tamamlandı',
     nextLesson:'Sonraki Derse Geç →', backToDashboard:'Dashboard\'a Dön →',
@@ -237,6 +239,7 @@ const T = {
   },
   de: {
     back:'Zurück', loading:'Laden',
+    loadError:'Dein Kurs konnte gerade nicht geladen werden. Dein Kauf ist sicher.', retry:'Erneut versuchen',
     lessonOf:'Lektion', of:'von',
     completeLesson:'Abschließen', completed:'✓ Abgeschlossen',
     nextLesson:'Nächste Lektion →', backToDashboard:'Zurück zum Dashboard →',
@@ -279,19 +282,6 @@ applyStaticTranslations();
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ── Leave-site sign-out (see dashboard.html for full explanation) ──────
-const INTERNAL_PAGES = ['dashboard.html','programs.html','course.html','booking.html'];
-let _internalNav = false;
-function markInternalNav(){ _internalNav = true; }
-document.addEventListener('click', (e) => {
-  const a = e.target.closest('a[href]');
-  if (!a) return;
-  const path = (a.getAttribute('href') || '').split('?')[0].split('#')[0];
-  if (INTERNAL_PAGES.includes(path)) markInternalNav();
-}, true);
-window.addEventListener('pagehide', () => { if (!_internalNav) sb.auth.signOut(); });
-window.addEventListener('beforeunload', () => { if (!_internalNav) sb.auth.signOut(); });
-
 const params = new URLSearchParams(window.location.search);
 const courseId = params.get('id');
 
@@ -300,25 +290,54 @@ let course = null;
 let completedLessons = new Set();
 let currentLessonId = 1;
 
-// 30-minute inactivity timeout — signs the user out and sends them back to login
-let _idleTimer;
+// 30-minute inactivity timeout — signs the user out and sends them back to login.
+// The last activity time is stored as well (twb_last_active), so the rule also
+// applies when a closed tab is reopened later, and activity in another open
+// member tab counts too.
+const IDLE_LIMIT_MS = 30*60*1000;
+let _idleTimer, _lastActiveWrite = 0;
+function lastActiveAt(user){
+  // The later of the stored activity time and the last sign-in, so a fresh
+  // login never trips over an old timestamp from a previous session
+  const stored = Number(localStorage.getItem('twb_last_active')) || 0;
+  return Math.max(stored, Date.parse(user?.last_sign_in_at) || 0);
+}
+function idleExpired(user){
+  // No stored timestamp yet (first visit with this feature) never counts as idle
+  if (!localStorage.getItem('twb_last_active')) return false;
+  return Date.now() - lastActiveAt(user) > IDLE_LIMIT_MS;
+}
+async function idleSignOut(){
+  localStorage.removeItem('twb_last_active');
+  await sb.auth.signOut();
+  window.location.href='login.html';
+}
 function startIdleTimer(){
-  const IDLE_LIMIT_MS = 30*60*1000;
-  function resetIdleTimer(){
+  function scheduleCheck(delay){
     clearTimeout(_idleTimer);
-    _idleTimer=setTimeout(async()=>{
-      await sb.auth.signOut();
-      window.location.href='login.html';
-    }, IDLE_LIMIT_MS);
+    _idleTimer=setTimeout(()=>{
+      // Another tab may have been active meanwhile — only sign out if truly idle
+      const remaining = IDLE_LIMIT_MS - (Date.now() - lastActiveAt(currentUser));
+      if (remaining > 0) scheduleCheck(remaining); else idleSignOut();
+    }, delay);
+  }
+  function recordActivity(){
+    const now = Date.now();
+    if (now - _lastActiveWrite > 15000) { // throttled: mousemove fires constantly
+      localStorage.setItem('twb_last_active', String(now));
+      _lastActiveWrite = now;
+    }
+    scheduleCheck(IDLE_LIMIT_MS);
   }
   ['mousemove','mousedown','keydown','scroll','touchstart','click'].forEach(evt=>{
-    document.addEventListener(evt, resetIdleTimer, {passive:true});
+    document.addEventListener(evt, recordActivity, {passive:true});
   });
-  resetIdleTimer();
+  recordActivity();
 }
 
 sb.auth.getSession().then(({ data: { session } }) => {
   if (!session) { window.location.href = 'login.html'; return; }
+  if (idleExpired(session.user)) { idleSignOut(); return; }
   currentUser = session.user;
   startIdleTimer();
   init();
@@ -327,15 +346,26 @@ sb.auth.getSession().then(({ data: { session } }) => {
   window.location.href = 'login.html';
 });
 
-async function init() {
-  if (!courseId || !COURSES[courseId]) { markInternalNav(); window.location.href = 'dashboard.html'; return; }
+function showLoadError() {
+  const tl = T[lang];
+  document.getElementById('contentArea').innerHTML = `<div class="loading-state">
+    <span>${tl.loadError}</span>
+    <button class="btn-next-lesson" onclick="location.reload()">${tl.retry}</button>
+  </div>`;
+}
 
-  const { data: purchase } = await sb.from('purchases').select('id').eq('user_id', currentUser.id).eq('course_id', courseId).maybeSingle();
-  if (!purchase) { markInternalNav(); window.location.href = 'dashboard.html'; return; }
+async function init() {
+  if (!courseId || !COURSES[courseId]) { window.location.href = 'dashboard.html'; return; }
+
+  // A failed read must never look like "not purchased" — show a retry instead of redirecting
+  const { data: purchase, error: purchaseError } = await sb.from('purchases').select('id').eq('user_id', currentUser.id).eq('course_id', courseId).maybeSingle();
+  if (purchaseError) { console.error('Purchase check failed:', purchaseError.message); showLoadError(); return; }
+  if (!purchase) { window.location.href = 'dashboard.html'; return; }
 
   course = COURSES[courseId];
 
-  const { data: progressData } = await sb.from('lesson_progress').select('lesson_id').eq('user_id', currentUser.id).eq('course_id', courseId);
+  const { data: progressData, error: progressError } = await sb.from('lesson_progress').select('lesson_id').eq('user_id', currentUser.id).eq('course_id', courseId);
+  if (progressError) { console.error('Progress load failed:', progressError.message); showLoadError(); return; }
   completedLessons = new Set((progressData||[]).map(p => p.lesson_id));
 
   const nextIncomplete = course.lessons.find(l => !completedLessons.has(l.id));
@@ -454,7 +484,7 @@ function showCelebration(lessonId, isFinal) {
     document.getElementById('celebTitle').innerHTML = `${tl.celebTitleFinal} <em>${tl.celebTitleFinalSuffix}</em>`;
     document.getElementById('celebText').textContent = tl.celebFinalText;
     nextBtn.textContent = tl.backToDashboard;
-    nextBtn.onclick = () => { markInternalNav(); window.location.href = 'dashboard.html'; };
+    nextBtn.onclick = () => { window.location.href = 'dashboard.html'; };
   } else {
     const msgs = tl.celebMessages;
     const icons = ['<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5z"/></svg>','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>','🌸','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>','<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>'];
@@ -471,7 +501,7 @@ function goToNextLesson() {
   closeCelebration();
   const next = currentLessonId + 1;
   if (next <= course.lessons.length) goToLesson(next);
-  else { markInternalNav(); window.location.href = 'dashboard.html'; }
+  else { window.location.href = 'dashboard.html'; }
 }
 
 function closeCelebration() { document.getElementById('celebration').classList.remove('visible'); }
