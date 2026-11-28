@@ -1,6 +1,23 @@
-// Stripe → Supabase purchases sync — v3
+// Stripe → Supabase purchases sync — v3.2
 // Source of truth: workers/stripe-webhook/worker.js in the site repo.
 // Deployed separately in the Cloudflare dashboard (not part of the site build).
+//
+// Required environment variables (Cloudflare → Worker → Settings → Variables and Secrets).
+// If any is missing, every request is refused with 500 and the log names the missing ones:
+//   STRIPE_SECRET_KEY      Stripe secret key (reads checkout line items, subscriptions, customers)
+//   STRIPE_WEBHOOK_SECRET  signing secret of this webhook endpoint (whsec_…)
+//   SUPABASE_URL           https://<project>.supabase.co, no trailing slash
+//   SUPABASE_SERVICE_KEY   Supabase secret key (sb_secret_…), or a legacy service_role JWT
+//
+// v3.2 vs v3.1: fails fast with a clear log line if a required environment variable is
+// missing (v3.1 only failed at the first Supabase call, with an unclear error).
+//
+// v3.1 vs v3:
+//  - Every Supabase failure throws/logs "Supabase <call> → HTTP <status> <code>: <message>"
+//    (PostgREST/Postgres code such as PGRST202 or 42501), plus which kind of key is
+//    configured (never the key itself), and the URL host if the URL looks wrong.
+//  - The key is sent as apikey; Authorization: Bearer only for legacy JWT keys
+//    (new sb_secret_… keys are not JWTs).
 //
 // v3 vs v2:
 //  - Live Lab Classes memberships are tracked in `class_memberships` (Supabase):
@@ -26,9 +43,6 @@
 // Stripe Dashboard (Founding €59/mo, Annual €499/yr). 'standard' has no
 // live Payment Link yet — add its price_... id once it exists.
 //
-// Environment variables needed (same as before):
-// STRIPE_WEBHOOK_SECRET, STRIPE_SECRET_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY
-//
 // Stripe webhook events this endpoint must receive:
 // checkout.session.completed, customer.subscription.updated, customer.subscription.deleted
 
@@ -53,6 +67,8 @@ const LIVE_LAB_TIER_PRICES = {
 };
 
 const SIGNATURE_TOLERANCE_SEC = 300;
+
+const REQUIRED_ENV = ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'SUPABASE_URL', 'SUPABASE_SERVICE_KEY'];
 
 async function verifyStripeSignature(payload, signature, secret) {
   if (!signature || !secret) return false;
@@ -97,13 +113,54 @@ async function stripeGet(env, path) {
   return res.json();
 }
 
+function isJwt(key) {
+  return typeof key === 'string' && key.split('.').length === 3 && key.startsWith('eyJ');
+}
+
 function supabaseHeaders(env, extra = {}) {
+  const key = env.SUPABASE_SERVICE_KEY;
   return {
-    'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`,
-    'apikey': env.SUPABASE_SERVICE_KEY,
+    'apikey': key,
+    // New sb_secret_… keys go in apikey only; legacy service_role JWTs also as Bearer
+    ...(isJwt(key) ? { 'Authorization': `Bearer ${key}` } : {}),
     'Content-Type': 'application/json',
     ...extra,
   };
+}
+
+// What kind of key is configured, without revealing it: the prefix of new keys,
+// or the role claim of a legacy JWT (e.g. "legacy JWT, role=anon").
+function describeKey(key) {
+  if (!key) return 'SUPABASE_SERVICE_KEY is not set';
+  if (key.startsWith('sb_secret_')) return 'key type: sb_secret (secret key)';
+  if (key.startsWith('sb_publishable_')) return 'key type: sb_publishable (PUBLIC key, cannot write here)';
+  if (isJwt(key)) {
+    try {
+      const claims = JSON.parse(atob(key.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      return `key type: legacy JWT, role=${claims.role}`;
+    } catch {
+      return 'key type: legacy JWT (unreadable)';
+    }
+  }
+  return 'key type: unknown format';
+}
+
+// "Supabase rpc upsert_class_membership → HTTP 401 42501: permission denied for function …"
+async function supabaseError(res, env, what) {
+  let detail;
+  try {
+    const body = await res.json();
+    detail = `${body.code || ''}: ${body.message || body.msg || body.error || JSON.stringify(body)}`.trim();
+    if (body.hint) detail += ` (hint: ${body.hint})`;
+  } catch {
+    detail = '(no JSON error body)';
+  }
+  let message = `Supabase ${what} → HTTP ${res.status} ${detail}`;
+  if (res.status === 401 || res.status === 403) message += ` [${describeKey(env.SUPABASE_SERVICE_KEY)}]`;
+  if (res.status === 404 && !/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(env.SUPABASE_URL || '')) {
+    message += ` [SUPABASE_URL is "${env.SUPABASE_URL || '(not set)'}" — expected https://<project>.supabase.co, no trailing slash]`;
+  }
+  return new Error(message);
 }
 
 async function supabaseRpc(env, fn, args) {
@@ -112,7 +169,7 @@ async function supabaseRpc(env, fn, args) {
     headers: supabaseHeaders(env),
     body: JSON.stringify(args),
   });
-  if (!res.ok) throw new Error(`Supabase rpc ${fn} failed: ${res.status} ${await res.text()}`);
+  if (!res.ok) throw await supabaseError(res, env, `rpc ${fn}`);
   const text = await res.text();
   return text ? JSON.parse(text) : null;
 }
@@ -231,7 +288,8 @@ async function handleCheckoutCompleted(env, event) {
       }),
     });
     if (!participantRes.ok) {
-      console.error('Participant insert error:', await participantRes.text());
+      // Logged only: the membership above is what gives access
+      console.error((await supabaseError(participantRes, env, 'insert participants')).message);
     } else {
       console.log(`✅ Participant captured for ${participantTier}: ${customerEmail}`);
     }
@@ -263,8 +321,7 @@ async function handleCheckoutCompleted(env, event) {
   });
 
   if (!insertRes.ok) {
-    const err = await insertRes.text();
-    console.error('Supabase insert error:', err);
+    console.error((await supabaseError(insertRes, env, 'insert purchases')).message);
     return new Response('DB error', { status: 500 });
   }
 
@@ -283,6 +340,13 @@ export default {
   async fetch(request, env) {
     if (request.method !== 'POST') {
       return new Response('OK', { status: 200 });
+    }
+
+    // 500 (not 400) so Stripe keeps retrying until the configuration is fixed
+    const missing = REQUIRED_ENV.filter(name => !env[name]);
+    if (missing.length) {
+      console.error(`Configuration error: missing environment variable(s) ${missing.join(', ')} — set them in Cloudflare → stripe-webhook → Settings → Variables and Secrets`);
+      return new Response('Server misconfigured', { status: 500 });
     }
 
     const payload = await request.text();
@@ -307,7 +371,9 @@ export default {
       }
     } catch (err) {
       // 500 makes Stripe retry the event later
-      console.error(`Error handling ${event.type} (${event.id}):`, err);
+      // Message first as plain text: Cloudflare's log can drop an Error object's message
+      console.error(`Error handling ${event.type} (${event.id}): ${err?.message || err}`);
+      if (err?.stack) console.error(err.stack);
       return new Response('Error', { status: 500 });
     }
   }
