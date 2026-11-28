@@ -9,7 +9,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Online Classes — Live-Gruppentraining | Train With Buse</title>
-  <meta name="description" content="Drei Live-Online-Classes pro Woche — HIIT, Kraft & Mobility. Coaching in Echtzeit, Community-Energie, ab 59 €/Monat. Von überall dabei sein.">
+  <meta name="description" content="Vier Live-Online-Classes pro Woche — HIIT, Mobility, Pilates & Kraft. Coaching in Echtzeit, Community-Energie, ab 59 €/Monat. Von überall dabei sein.">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -85,7 +85,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 .prose-inner p:last-child { margin-bottom: 0; }
 .format-section { padding: 90px 0; background: var(--cream); }
 .format-inner { max-width: 1100px; margin: 0 auto; padding: 0 60px; }
-.format-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-bottom: 56px; }
+.format-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 28px; margin-bottom: 56px; }
 .format-card { background: white; border-radius: 24px; padding: 40px 32px; border: 1px solid rgba(232,180,184,.15); box-shadow: 0 4px 20px rgba(200,160,155,.06); }
 .format-card h3 { font-size: 28px; color: var(--charcoal); margin-bottom: 14px; }
 .format-card p { font-size: 13.5px; color: var(--charcoal-light); line-height: 1.8; }
@@ -172,6 +172,51 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   .footer-mini { padding: 24px; flex-direction: column; text-align: center; }
 }
 @media (max-width: 600px) { .process-steps { grid-template-columns: 1fr; } }
+
+/* SCHEDULE + RESERVE YOUR SPOT (sales switch: CLASSES_SALES_OPEN in config.js, see classes-sales.js) */
+[hidden] { display: none !important; }
+.hero-start { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--rose-dark); font-weight: 500; margin: -20px 0 32px; }
+.schedule-section { padding: 100px 60px; background: var(--cream); }
+.schedule-inner { max-width: 760px; margin: 0 auto; }
+.schedule-start { text-align: center; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--rose-dark); font-weight: 500; margin: -24px 0 32px; }
+.schedule-table { background: white; border-radius: 24px; padding: 12px 36px; border: 1px solid rgba(232,180,184,.15); box-shadow: 0 4px 20px rgba(200,160,155,.06); }
+.schedule-row { display: grid; grid-template-columns: 1.3fr .7fr 1fr; align-items: center; gap: 16px; padding: 18px 0; border-bottom: 1px solid rgba(232,180,184,.18); }
+.schedule-row:last-child { border-bottom: none; }
+.schedule-day { font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--charcoal-light); }
+.schedule-time { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--charcoal); }
+.schedule-class { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--rose-dark); text-align: right; }
+.schedule-note { text-align: center; font-size: 13px; color: var(--charcoal-light); margin-top: 22px; line-height: 1.8; }
+.reserve-section { padding: 100px 60px; background: var(--warm-white); }
+.reserve-inner { max-width: 620px; margin: 0 auto; }
+.reserve-intro { text-align: center; font-size: 15px; color: var(--charcoal-light); margin-bottom: 36px; }
+.reserve-form { display: flex; flex-direction: column; gap: 18px; background: white; border-radius: 24px; padding: 40px; border: 1px solid rgba(232,180,184,.15); box-shadow: 0 4px 20px rgba(200,160,155,.06); }
+.reserve-form label { display: flex; flex-direction: column; gap: 6px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--charcoal-light); }
+.reserve-form input[type=text], .reserve-form input[type=email] { padding: 13px 16px; border-radius: 12px; border: 1.5px solid rgba(232,180,184,.35); font-family: 'Outfit', sans-serif; font-size: 16px; color: var(--charcoal); background: #fff; }
+.reserve-form input:focus { outline: none; border-color: var(--gold); }
+.reserve-form fieldset { border: none; display: flex; flex-wrap: wrap; gap: 10px; }
+.reserve-form legend { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--charcoal-light); margin-bottom: 10px; }
+.reserve-form legend span { text-transform: none; letter-spacing: 0; opacity: .7; }
+.reserve-form .reserve-check { flex-direction: row; align-items: center; gap: 8px; text-transform: none; letter-spacing: 0; font-size: 14px; color: var(--charcoal); padding: 9px 16px; border-radius: 50px; border: 1.5px solid rgba(232,180,184,.35); cursor: pointer; }
+.reserve-form .reserve-check:has(input:checked) { border-color: var(--rose); background: rgba(193,132,139,.08); }
+.reserve-form .reserve-check input { accent-color: var(--rose-dark); }
+.reserve-form button { align-self: flex-start; border: none; cursor: pointer; }
+.reserve-form button:disabled { opacity: .6; cursor: default; }
+.reserve-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.reserve-error { font-size: 13px; color: #A32D2D; }
+.reserve-privacy { font-size: 12px; color: var(--charcoal-light); opacity: .8; }
+.reserve-privacy a { color: var(--rose-dark); }
+.reserve-success { text-align: center; background: white; border-radius: 24px; padding: 44px 36px; border: 1px solid rgba(200,169,110,.35); }
+.reserve-success h3 { font-size: 32px; color: var(--charcoal); margin-bottom: 10px; }
+.reserve-success p { font-size: 15px; color: var(--charcoal-light); }
+@media (max-width: 700px) {
+  .schedule-section, .reserve-section { padding: 70px 16px; }
+  .schedule-table { padding: 6px 20px; }
+  .schedule-row { grid-template-columns: 1fr auto; gap: 2px 12px; }
+  .schedule-day { grid-column: 1 / -1; font-size: 11px; }
+  .schedule-class { font-size: 21px; }
+  .schedule-time { font-size: 22px; }
+  .reserve-form { padding: 28px 20px; }
+}
 </style>
 </head>
 <body>
@@ -208,9 +253,11 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   <div class="hero-photo">
     <img src="photos/classes-hero.jpg" alt="Buse leitet eine Online-Class">
   </div>
-  <p class="hero-desc">Drei Live-Online-Sessions pro Woche – HIIT, Kraft und Mobility, kombiniert mit Coaching in Echtzeit, durchdachter Trainingsplanung und der Energie einer Gruppe. Das ist kein weiteres Workout-Video, das du speicherst und nie wieder öffnest. Es ist ein fester Termin in deinem Kalender, ein Coach, der dich wirklich sieht, und eine Community, die dich dabei unterstützt, dranzubleiben.</p>
+  <p class="hero-desc">Vier Live-Online-Sessions pro Woche – HIIT, Kraft, Pilates und Mobility, kombiniert mit Coaching in Echtzeit, durchdachter Trainingsplanung und der Energie einer Gruppe. Das ist kein weiteres Workout-Video, das du speicherst und nie wieder öffnest. Es ist ein fester Termin in deinem Kalender, ein Coach, der dich wirklich sieht, und eine Community, die dich dabei unterstützt, dranzubleiben.</p>
   <p class="hero-price">Founding Membership ab <em>59 €</em> pro Monat.</p>
-  <a href="#membership" class="btn-dark">An einer Class teilnehmen →</a>
+  <p class="hero-start" data-classes-sales="closed">Start: Montag, 4. Januar 2027</p>
+  <a href="#reserve" class="btn-dark" data-classes-sales="closed">Platz reservieren →</a>
+  <a data-classes-sales="open" hidden href="#membership" class="btn-dark">An einer Class teilnehmen →</a>
 </section>
 
 <div class="divider"></div>
@@ -231,7 +278,7 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   <div class="format-inner">
     <div class="section-header reveal">
       <div class="section-tag">So funktioniert es</div>
-      <h2 class="section-title">Drei Formate,<br><em>ein wöchentlicher Rhythmus.</em></h2>
+      <h2 class="section-title">Vier Formate,<br><em>ein wöchentlicher Rhythmus.</em></h2>
     </div>
     <div class="format-grid">
       <div class="format-card reveal">
@@ -246,11 +293,15 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
         <h3>Mobility</h3>
         <p>Eine ruhigere, fokussierte Einheit, die aktive Mobilität, Gelenkkontrolle, Atmung und regenerative Bewegung miteinander verbindet. Kein passives Stretching — Training, das dir hilft, dich freier, kontrollierter und bewusster zu bewegen.</p>
       </div>
+      <div class="format-card reveal" style="transition-delay:.3s">
+        <h3>Pilates</h3>
+        <p>Eine kontrollierte, gelenkschonende Einheit mit Fokus auf tiefe Rumpfkraft, Haltung und präzise Bewegung. Präzises, forderndes Training, das Stabilität von innen heraus aufbaut und sich auf alles überträgt, was du sonst tust – ein kraftvoller, ausgeglichener Start in deinen Mittwoch.</p>
+      </div>
     </div>
     <div class="format-list reveal">
       <h4>Das Format</h4>
       <ul>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Drei Live-Classes pro Woche</li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Vier Live-Classes pro Woche (~16 pro Monat)</li>
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>50 Minuten pro Class</li>
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Klare Anleitung und verständliche Demonstrationen</li>
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Varianten für unterschiedliche Trainingslevel</li>
@@ -259,6 +310,24 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Strukturierter Wochenplan mit progressivem Trainingsaufbau</li>
       </ul>
     </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule-section" id="schedule">
+  <div class="schedule-inner">
+    <div class="section-header reveal">
+      <div class="section-tag">Der Stundenplan</div>
+      <h2 class="section-title">Deine Woche,<br><em>live auf Zoom.</em></h2>
+    </div>
+    <p class="schedule-start" data-classes-sales="closed">Start: Montag, 4. Januar 2027</p>
+    <div class="schedule-table reveal">
+      <div class="schedule-row"><span class="schedule-day">Montag</span><span class="schedule-time">18:00</span><span class="schedule-class">HIIT</span></div>
+      <div class="schedule-row"><span class="schedule-day">Montag</span><span class="schedule-time">19:00</span><span class="schedule-class">Mobility</span></div>
+      <div class="schedule-row"><span class="schedule-day">Mittwoch</span><span class="schedule-time">07:00</span><span class="schedule-class">Pilates</span></div>
+      <div class="schedule-row"><span class="schedule-day">Mittwoch</span><span class="schedule-time">18:00</span><span class="schedule-class">Strength</span></div>
+    </div>
+    <p class="schedule-note">Alle Zeiten in Berliner Zeit (MEZ) · 50 Minuten pro Class · Aufzeichnung 24 Stunden nach jeder Class verfügbar</p>
   </div>
 </section>
 
@@ -345,39 +414,71 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
         <h3>59 €<span style="font-size:16px;">/Monat</span></h3>
         <div class="mem-price-sub">Für die ersten Mitglieder der Community</div>
         <ul class="mem-features">
-          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Drei Live-Classes pro Woche</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Vier Live-Classes pro Woche (~16 pro Monat)</li>
           <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Zugang zu allen Class-Formaten</li>
           <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Exklusiver Founding-Member-Preis auf Lebenszeit</li>
           <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Direktes Coaching während der Classes</li>
           <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Vorrangiger Zugang zu künftigen Community-Angeboten</li>
         </ul>
-        <a href="https://buy.stripe.com/6oUcN48pz3Nqbgodr41kA0d" target="_blank" class="mem-cta gold">Founding Member werden</a>
+        <a href="#reserve" class="mem-cta gold" data-classes-sales="closed">Platz reservieren</a>
+        <a href="https://buy.stripe.com/6oUcN48pz3Nqbgodr41kA0d" target="_blank" class="mem-cta gold" data-classes-sales="open" hidden>Founding Member werden</a>
       </div>
       <div class="mem-card reveal" style="transition-delay:.1s">
         <div class="mem-badge">Standard Membership</div>
         <h3>89 €<span style="font-size:16px;">/Monat</span></h3>
         <div class="mem-price-sub">Der reguläre Mitgliedspreis nach Ende der Founding-Phase</div>
         <ul class="mem-features">
-          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Drei Live-Classes pro Woche</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Vier Live-Classes pro Woche (~16 pro Monat)</li>
           <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Zugang zu allen Class-Formaten</li>
           <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Live-Coaching und individuelle Bewegungsvarianten</li>
           <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Strukturierte wöchentliche Trainingsplanung</li>
         </ul>
         <span class="mem-cta disabled">Öffnet nach der Founding-Phase</span>
-        <div class="mem-note">Werde jetzt Founding Member, um dir den Preis von 59 €/Monat zu sichern.</div>
+        <div class="mem-note" data-classes-sales="open" hidden>Werde jetzt Founding Member, um dir den Preis von 59 €/Monat zu sichern.</div>
       </div>
       <div class="mem-card reveal" style="transition-delay:.2s">
         <div class="mem-badge">Annual Membership</div>
         <h3>499 €<span style="font-size:16px;">/Jahr</span></h3>
         <div class="mem-price-sub">Ein Jahr konsequentes Training, der beste Gesamtpreis</div>
         <ul class="mem-features">
-          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Drei Live-Classes pro Woche, das ganze Jahr</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Vier Live-Classes pro Woche, das ganze Jahr</li>
           <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Zugang zu allen Class-Formaten</li>
           <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Bester monatlicher Durchschnittspreis</li>
           <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C8A96E" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Vorrangiger Zugang zu künftigen Community-Angeboten</li>
         </ul>
-        <a href="https://buy.stripe.com/3cIaEW8pzcjW98g1Im1kA0m" target="_blank" class="mem-cta dark">Jahresoptionen ansehen</a>
+        <a href="#reserve" class="mem-cta dark" data-classes-sales="closed">Platz reservieren</a>
+        <a href="https://buy.stripe.com/3cIaEW8pzcjW98g1Im1kA0m" target="_blank" class="mem-cta dark" data-classes-sales="open" hidden>Jahresoptionen ansehen</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVE YOUR SPOT (while CLASSES_SALES_OPEN is false) -->
+<section class="reserve-section" id="reserve" data-classes-sales="closed">
+  <div class="reserve-inner">
+    <div class="section-header">
+      <div class="section-tag">Platz reservieren</div>
+      <h2 class="section-title">Sei von der<br><em>ersten Class an dabei.</em></h2>
+    </div>
+    <p class="reserve-intro">Die Classes starten am Montag, 4. Januar 2027. Hinterlass deinen Namen und deine E-Mail-Adresse – ich melde mich persönlich, sobald die Mitgliedschaft öffnet, damit du von der ersten Class an dabei bist. Keine Zahlung jetzt, ganz unverbindlich.</p>
+    <form class="reserve-form" id="reserveForm" data-lang="de" data-sending="Wird gesendet..." onsubmit="return handleReserveSubmit(event)">
+      <label>Name <input type="text" name="name" required maxlength="200" autocomplete="name"></label>
+      <label>E-Mail <input type="email" name="email" required maxlength="320" autocomplete="email"></label>
+      <fieldset>
+        <legend>Welche Classes interessieren dich? <span>(optional)</span></legend>
+          <label class="reserve-check"><input type="checkbox" name="interests" value="hiit"> HIIT</label>
+          <label class="reserve-check"><input type="checkbox" name="interests" value="mobility"> Mobility</label>
+          <label class="reserve-check"><input type="checkbox" name="interests" value="pilates"> Pilates</label>
+          <label class="reserve-check"><input type="checkbox" name="interests" value="strength"> Strength</label>
+      </fieldset>
+      <input type="text" name="website" class="reserve-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button type="submit" class="btn-dark">Platz reservieren →</button>
+      <p class="reserve-error" role="alert" hidden>Etwas ist schiefgelaufen. Bitte versuch es noch einmal oder schreib an <a href="mailto:hello@trainwithbuse.com">hello@trainwithbuse.com</a>.</p>
+      <p class="reserve-privacy">Ich nutze deine Angaben nur, um dich über den Start der Classes zu informieren. <a href="policy-de.html">Datenschutz</a></p>
+    </form>
+    <div class="reserve-success" id="reserveSuccess" role="status" hidden>
+      <h3>Du stehst auf der Liste!</h3>
+      <p>Danke! Ich schreibe dir, sobald die Mitgliedschaft öffnet – noch vor dem Start am 4. Januar 2027.</p>
     </div>
   </div>
 </section>
@@ -385,7 +486,8 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
 <section class="final-cta">
   <h2>Du brauchst nicht mehr Motivation.<br>Du brauchst ein <em>System.</em></h2>
   <p>Eine gute Trainingsroutine sollte in dein echtes Leben passen – nicht verlangen, dass sich dein ganzes Leben um Fitness dreht. Dein Wohnzimmer reicht. Dein Ausgangspunkt reicht. Lass uns trainieren.</p>
-  <a href="#membership" class="btn-gold">An einer Class teilnehmen →</a>
+  <a href="#reserve" class="btn-gold" data-classes-sales="closed">Platz reservieren →</a>
+  <a data-classes-sales="open" hidden href="#membership" class="btn-gold">An einer Class teilnehmen →</a>
 </section>
 
 <div class="footer-mini">
@@ -399,6 +501,8 @@ nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 60px; d
   </div>
 </div>
 
+<script src="config.js"></script>
+<script src="classes-sales.js"></script>
 <script>
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');

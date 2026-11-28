@@ -395,7 +395,7 @@ function render(){
         <div style="display:flex;flex-direction:column;gap:0">`;
       myLives.forEach(id=>{
         const c=COURSES[id];if(!c)return;
-        const sched=c.schedule?c.schedule[lang]||c.schedule.en:'';
+        const sched=(c.comingSoon&&c.startsOn?(c.startsOn[lang]||c.startsOn.en)+' · ':'')+(c.schedule?c.schedule[lang]||c.schedule.en:'');
         html+=`<div style="display:flex;align-items:center;gap:20px;padding:20px 0;border-bottom:1px solid var(--cream-deep)">
           <div style="width:40px;height:40px;border-radius:12px;background:${c.color}22;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${emojis[id]}</div>
           <div style="flex:1">
@@ -455,12 +455,12 @@ function render(){
       };
 
       const liveDescs={
-        'live-lab-classes':'3 live classes a week — HIIT, Strength & Mobility, rotating through the week. Small-group coaching that actually watches you move.'
+        'live-lab-classes':'4 live classes a week — HIIT, Mobility, Pilates & Strength. Small-group coaching that actually watches you move.'
       };
 
       storeLives.forEach((id,i)=>{
         const c=COURSES[id];if(!c)return;
-        const sched=c.schedule?c.schedule[lang]||c.schedule.en:'';
+        const sched=(c.comingSoon&&c.startsOn?(c.startsOn[lang]||c.startsOn.en)+' · ':'')+(c.schedule?c.schedule[lang]||c.schedule.en:'');
         const icon=liveIcons[id]||'';
         const desc=liveDescs[id]||'';
         html+=`<div class="store-card" style="animation-delay:${(storeCourses.length+i)*.06}s;cursor:pointer;" onclick="openLiveDetail('${id}')">
@@ -542,13 +542,13 @@ async function logout(){await sb.auth.signOut();window.location.href='index.html
 
 <script>
 const liveDescsDetail = {
-  'live-lab-classes': '3 live Zoom classes a week, rotating through HIIT, Strength, and Mobility. Small-group coaching that actually watches you move — real-time form corrections, real coaching, not just a video feed.'
+  'live-lab-classes': '4 live Zoom classes a week: HIIT, Mobility, Pilates and Strength. Small-group coaching that actually watches you move — real-time form corrections, real coaching, not just a video feed.'
 };
 
 function openLiveDetail(id) {
   const c = COURSES[id];
   if (!c) return;
-  const sched = c.schedule ? c.schedule[lang] || c.schedule.en : '';
+  const sched = (c.comingSoon && c.startsOn ? (c.startsOn[lang] || c.startsOn.en) + ' · ' : '') + (c.schedule ? c.schedule[lang] || c.schedule.en : '');
   document.getElementById('liveDetailTitle').textContent = c.title;
   document.getElementById('liveDetailSched').innerHTML = '📅 ' + sched;
   document.getElementById('liveDetailDesc').textContent = liveDescsDetail[id] || '';

@@ -1267,7 +1267,7 @@ loadError:"We couldn't load your programs right now.",retry:'Try again',
   sb_liveTitle:'Live Classes',sb_liveClasses:'Live Classes',sb_liveClassesSub:'Join Live Lab Classes',
   m_liveTag:'Live',m_liveTitle:'Live Classes',
   liveJoin:'Join Now ->',livePurchase:'Join This Lab ->',livePerMonth:'/mo',
-  liveLabDesc:'3 live classes a week — HIIT, Strength & Mobility, rotating through the week. Small-group coaching that actually watches you move.',
+  liveLabDesc:'4 live classes a week (~16 a month) — HIIT, Mobility, Pilates & Strength. Small-group coaching that actually watches you move.',
   liveSchedule:'Schedule',
   m_purchasesTag:'The Lab',m_purchasesTitle:'My Lab Purchases',
   noLabsYet:'No labs yet.',noLabsBtn:'Get Your First Lab ->',noLabsSub:'Step into the Lab and start your science-backed transformation.',labPurchasedOn:'Purchased on',labActive:'Active',
@@ -1451,7 +1451,7 @@ loadError:'Programların şu anda yüklenemedi.',retry:'Tekrar dene',
   sb_liveTitle:'Canli Dersler',sb_liveClasses:'Canli Dersler',sb_liveClassesSub:'Live Lab Classes\'a katil',
   m_liveTag:'Canli',m_liveTitle:'Canli Dersler',
   liveJoin:'Katil ->',livePurchase:'Bu Laba Katil ->',livePerMonth:'/ay',
-  liveLabDesc:'Haftada 3 canli ders — HIIT, Kuvvet ve Mobilite dönüsümlü olarak islenir. Hareketini gercekten takip eden kücük grup koclugu.',
+  liveLabDesc:'Haftada 4 canlı ders (ayda ~16) — HIIT, Mobilite, Pilates ve Kuvvet. Hareketini gerçekten takip eden küçük grup koçluğu.',
   liveSchedule:'Takvim',
   sb_upcoming:'Gelecek Derslerim',sb_upcomingSub:'Canli ders takvimi',
   sb_support:'Destek',sb_faqSub:'Sik sorulan sorular',
@@ -1621,7 +1621,7 @@ loadError:'Deine Programme konnten gerade nicht geladen werden.',retry:'Erneut v
   sb_liveTitle:'Live-Kurse',sb_liveClasses:'Live-Kurse',sb_liveClassesSub:'Live Lab Classes beitreten',
   m_liveTag:'Live',m_liveTitle:'Live-Kurse',
   liveJoin:'Beitreten ->',livePurchase:'Diesem Lab beitreten ->',livePerMonth:'/Mo.',
-  liveLabDesc:'3 Live-Kurse pro Woche — HIIT, Kraft & Mobilitat im wochentlichen Wechsel. Kleingruppen-Coaching, das wirklich hinschaut.',
+  liveLabDesc:'4 Live-Kurse pro Woche (~16 im Monat) — HIIT, Mobility, Pilates & Kraft. Kleingruppen-Coaching, das wirklich hinschaut.',
   liveSchedule:'Stundenplan',
   m_purchasesTag:'The Lab',m_purchasesTitle:'Meine Lab-Kaufe',
   noLabsYet:'Noch keine Labs.',noLabsBtn:'Dein erstes Lab holen ->',noLabsSub:'Betritt das Lab und starte deine wissenschaftlich fundierte Transformation.',labPurchasedOn:'Gekauft am',labActive:'Aktiv',
@@ -2913,7 +2913,7 @@ function renderLiveClasses(){
   body.innerHTML=liveIds.map(id=>{
     const c=COURSES[id];if(!c)return'';
     const owned=_purchases.has(id);
-    const sched=c.schedule?c.schedule[lang]||c.schedule.en:'';
+    const sched=(c.comingSoon&&c.startsOn?(c.startsOn[lang]||c.startsOn.en)+' · ':'')+(c.schedule?c.schedule[lang]||c.schedule.en:'');
     const desc=tl[descKeys[id]]||'';
     return`<div style="padding:24px 0;border-bottom:1px solid var(--cream-deep)">
       <div style="display:flex;align-items:flex-start;gap:16px;margin-bottom:12px">

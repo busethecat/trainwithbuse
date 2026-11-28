@@ -56,6 +56,7 @@
 
     /* STATS */
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; }
+    .stats.stats-6 { grid-template-columns: repeat(6, 1fr); }
     .stat-card { background: #fff; border-radius: 14px; padding: 16px; border: 1px solid rgba(232,180,184,.12); text-align: center; }
     .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; color: var(--charcoal); line-height: 1; margin-bottom: 4px; }
     .stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-light); }
@@ -148,6 +149,7 @@
 
     @media (max-width: 600px) {
       .stats { grid-template-columns: repeat(2, 1fr); }
+      .stats.stats-6 { grid-template-columns: repeat(3, 1fr); }
       .topbar { padding: 0 16px; }
       .layout { padding: 16px; }
       .iq-fields { grid-template-columns: 1fr; }
@@ -200,6 +202,7 @@
       <button class="tab-btn active" id="tabBookingsBtn" onclick="switchTab('bookings')">Bookings<span class="tab-badge" id="badge-bookings" hidden></span></button>
       <button class="tab-btn" id="tabInquiriesBtn" onclick="switchTab('inquiries')">Inquiries<span class="tab-badge" id="badge-inquiries" hidden></span></button>
       <button class="tab-btn" id="tabCorporateBtn" onclick="switchTab('corporate')">Corporate<span class="tab-badge" id="badge-corporate" hidden></span></button>
+      <button class="tab-btn" id="tabClassWaitlistBtn" onclick="switchTab('classwaitlist')">Class waitlist<span class="tab-badge" id="badge-classwaitlist" hidden></span></button>
       <button class="tab-btn" id="tabParticipantsBtn" onclick="switchTab('participants')">Participants</button>
       <button class="tab-btn" id="tabBadgesBtn" onclick="switchTab('badges')">Badges</button>
       <button class="tab-btn" id="tabAssessmentsBtn" onclick="switchTab('assessments')">Assessments</button>
@@ -239,6 +242,16 @@
         <button class="filter-btn" onclick="setCorporateFilter('rejected',this)">Rejected</button>
       </div>
       <div id="corporateList"></div>
+    </div>
+
+    <div id="classWaitlistPanel" style="display:none;">
+      <div class="stats stats-6" id="classWaitlistStatsRow"></div>
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="setClassWaitlistFilter('new',this)">New</button>
+        <button class="filter-btn" onclick="setClassWaitlistFilter('contacted',this)">Contacted</button>
+        <button class="btn-alt" style="margin-left:auto;" onclick="copyClassWaitlistEmails()">Copy emails in this list</button>
+      </div>
+      <div id="classWaitlistList"></div>
     </div>
 
     <div id="participantsPanel" style="display:none;">
@@ -368,13 +381,14 @@ function showPanel() {
   loadBookings();
   loadInquiries();
   loadCorporateInquiries();
+  loadClassWaitlist();
   loadDeletionRequests();
 }
 
 // Count pills on the tabs for items that need attention, plus the total in the
 // browser tab title. Called after every load, so it updates after every action.
 const ADMIN_TITLE = document.title;
-const attentionCounts = { bookings: 0, inquiries: 0, corporate: 0, deletions: 0 };
+const attentionCounts = { bookings: 0, inquiries: 0, corporate: 0, classwaitlist: 0, deletions: 0 };
 function updateBadges(tab, count) {
   attentionCounts[tab] = count;
   const el = document.getElementById('badge-' + tab);
@@ -536,6 +550,7 @@ function switchTab(tab) {
   document.getElementById('tabBookingsBtn').classList.toggle('active', tab === 'bookings');
   document.getElementById('tabInquiriesBtn').classList.toggle('active', tab === 'inquiries');
   document.getElementById('tabCorporateBtn').classList.toggle('active', tab === 'corporate');
+  document.getElementById('tabClassWaitlistBtn').classList.toggle('active', tab === 'classwaitlist');
   document.getElementById('tabParticipantsBtn').classList.toggle('active', tab === 'participants');
   document.getElementById('tabBadgesBtn').classList.toggle('active', tab === 'badges');
   document.getElementById('tabAssessmentsBtn').classList.toggle('active', tab === 'assessments');
@@ -543,12 +558,14 @@ function switchTab(tab) {
   document.getElementById('bookingsPanel').style.display = tab === 'bookings' ? 'block' : 'none';
   document.getElementById('inquiriesPanel').style.display = tab === 'inquiries' ? 'block' : 'none';
   document.getElementById('corporatePanel').style.display = tab === 'corporate' ? 'block' : 'none';
+  document.getElementById('classWaitlistPanel').style.display = tab === 'classwaitlist' ? 'block' : 'none';
   document.getElementById('participantsPanel').style.display = tab === 'participants' ? 'block' : 'none';
   document.getElementById('badgesPanel').style.display = tab === 'badges' ? 'block' : 'none';
   document.getElementById('assessmentsPanel').style.display = tab === 'assessments' ? 'block' : 'none';
   document.getElementById('deletionsPanel').style.display = tab === 'deletions' ? 'block' : 'none';
   if (tab === 'inquiries' && !inquiriesLoaded) loadInquiries();
   if (tab === 'corporate' && !corporateLoaded) loadCorporateInquiries();
+  if (tab === 'classwaitlist' && !classWaitlistLoaded) loadClassWaitlist();
   if (tab === 'participants' && !participantsLoaded) loadParticipants();
   if (tab === 'badges' && !badgesLoaded) initBadgesTab();
   if (tab === 'deletions' && !deletionsLoaded) loadDeletionRequests();
@@ -750,6 +767,97 @@ function corporateCard(c) {
     ${c.message ? `<div class="iq-note-label">Message</div><div class="iq-note">${escapeHtml(c.message)}</div>` : ''}
     <div class="bc-actions" style="margin-top:14px;">${workflowActionsHtml('corporate_inquiries', c.id, status, !!c.contacted, 'loadCorporateInquiries')}</div>
   </div>`;
+}
+
+// ============================================================
+// CLASS WAITLIST TAB ("Reserve your spot" on classes*.html, table: class_waitlist)
+// status: 'new' | 'contacted'. "Copy emails" gives a BCC list for launch day.
+// ============================================================
+let allClassWaitlist = [];
+let classWaitlistLoaded = false;
+let currentClassWaitlistFilter = 'new';
+const CLASS_INTEREST_LABELS = { hiit: 'HIIT', mobility: 'Mobility', pilates: 'Pilates', strength: 'Strength' };
+
+function setClassWaitlistFilter(filter, btn) {
+  currentClassWaitlistFilter = filter;
+  btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderClassWaitlistList();
+}
+
+async function loadClassWaitlist() {
+  const { data, error } = await sb
+    .from('class_waitlist')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Failed to load class waitlist:', error.message);
+    document.getElementById('classWaitlistList').innerHTML = `<div class="empty">Could not load the class waitlist: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+  classWaitlistLoaded = true;
+  allClassWaitlist = data || [];
+  updateBadges('classwaitlist', allClassWaitlist.filter(w => w.status === 'new').length);
+  renderClassWaitlistStats();
+  renderClassWaitlistList();
+}
+
+function renderClassWaitlistStats() {
+  const count = key => allClassWaitlist.filter(w => (w.interests || []).includes(key)).length;
+  document.getElementById('classWaitlistStatsRow').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${allClassWaitlist.length}</div><div class="stat-label">Total</div></div>
+    <div class="stat-card"><div class="stat-num">${allClassWaitlist.filter(w => w.status === 'new').length}</div><div class="stat-label">New</div></div>
+    ${Object.entries(CLASS_INTEREST_LABELS).map(([key, label]) =>
+      `<div class="stat-card"><div class="stat-num">${count(key)}</div><div class="stat-label">${label}</div></div>`).join('')}
+  `;
+}
+
+function classWaitlistItems() {
+  return allClassWaitlist.filter(w => w.status === currentClassWaitlistFilter);
+}
+
+function renderClassWaitlistList() {
+  const list = document.getElementById('classWaitlistList');
+  const items = classWaitlistItems();
+  if (items.length === 0) {
+    list.innerHTML = `<div class="empty">No ${currentClassWaitlistFilter} signups.</div>`;
+    return;
+  }
+  list.innerHTML = items.map(w => {
+    const dateStr = new Date(w.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const interests = (w.interests || []).map(k => CLASS_INTEREST_LABELS[k] || k).join(', ');
+    const actions = w.status === 'new'
+      ? `<button class="btn-confirm" onclick="setEntryStatus('class_waitlist','${w.id}','contacted',loadClassWaitlist)">Mark contacted</button>`
+      : `<button class="btn-alt" onclick="setEntryStatus('class_waitlist','${w.id}','new',loadClassWaitlist)">Move back to New</button>`;
+    return `<div class="inquiry-card">
+      <div class="iq-top">
+        <div>
+          <div class="iq-name">${escapeHtml(w.name)}</div>
+          <div class="iq-contact">${escapeHtml(w.email)}</div>
+        </div>
+        <div class="iq-date">${dateStr}</div>
+      </div>
+      <div class="iq-fields">
+        <div><div class="iq-field-label">Interested In</div><div class="iq-field-value">${escapeHtml(interests || 'Not specified')}</div></div>
+        <div><div class="iq-field-label">Language</div><div class="iq-field-value">${LANG_NAMES[w.language] || '—'}</div></div>
+      </div>
+      <div class="bc-actions" style="margin-top:14px;">${actions}
+        <button class="btn-delete" onclick="deleteEntry('class_waitlist','${w.id}','signup',loadClassWaitlist)">Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function copyClassWaitlistEmails() {
+  const emails = classWaitlistItems().map(w => w.email);
+  if (!emails.length) { notify('No email addresses in this list.', 'info'); return; }
+  try {
+    await navigator.clipboard.writeText(emails.join(', '));
+    notify(`Copied ${emails.length} email address${emails.length === 1 ? '' : 'es'} — paste them into BCC.`);
+  } catch (err) {
+    prompt('Copy these email addresses:', emails.join(', '));
+  }
 }
 
 function bookingCard(b) {

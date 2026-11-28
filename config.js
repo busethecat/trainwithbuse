@@ -201,14 +201,18 @@ const COURSES = {
   },
   'live-lab-classes': {
     title: 'Live Lab Classes',
-    subtitle: 'Mon · Wed · Fri — Coming Soon',
+    subtitle: 'Starts 4 Jan 2027 — Coming Soon',
     subtitleKey: 'live',
     category: 'live',
     price: 59,
     comingSoon: true,
     color: '#C1848B',
     zoomLink: 'https://zoom.us/j/YOUR_LIVELAB_ZOOM_LINK',
-    schedule: { en: 'Mon · Wed · Fri · 18:00', tr: 'Pzt · Çar · Cum · 18:00', de: 'Mo · Mi · Fr · 18:00' },
+    // Berlin time. startsOn is shown with the schedule while comingSoon is true.
+    schedule: { en: 'Mon 18:00 HIIT · 19:00 Mobility · Wed 07:00 Pilates · 18:00 Strength',
+                tr: 'Pzt 18:00 HIIT · 19:00 Mobility · Çar 07:00 Pilates · 18:00 Strength',
+                de: 'Mo 18:00 HIIT · 19:00 Mobility · Mi 07:00 Pilates · 18:00 Strength' },
+    startsOn: { en: 'Starts Monday, 4 January 2027', tr: '4 Ocak 2027 Pazartesi başlıyor', de: 'Start: Montag, 4. Januar 2027' },
     descKey: 'liveLabDesc',
     lessons: []
   }

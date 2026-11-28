@@ -626,6 +626,7 @@
   .plan-card:nth-child(4) { animation: fadeUp 0.6s ease 0.4s both; }
   .back-home{font-family:'Outfit',sans-serif;font-size:15px;font-weight:400;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--charcoal-light,#4A4548);opacity:.85;transition:all .3s}
   .back-home:hover{opacity:1;text-decoration:underline}
+[hidden] { display: none !important; } /* classes sales switch, see classes-sales.js */
 </style>
 </head>
 <body>
@@ -765,7 +766,7 @@
       <div class="plan-badge founding">Founding Member</div>
       <div class="plan-icon group"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
       <div class="plan-name">Live Lab Classes</div>
-      <div class="plan-desc">3 live Zoom classes a week — HIIT, Strength & Mobility. Small-group coaching that actually watches you move.</div>
+      <div class="plan-desc">4 live Zoom classes a week (~16 a month) — HIIT, Mobility, Pilates & Strength. Small-group coaching that actually watches you move.</div>
       <div class="plan-price" style="flex-direction:column;align-items:flex-start;gap:12px;">
         <div style="display:flex;flex-direction:column;gap:4px;">
           <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);font-weight:600;">🌸 Founding Member — First 50 Only</div>
@@ -783,15 +784,18 @@
         </div>
       </div>
       <ul class="plan-features">
-        <li>Mon · Wed · Fri evenings via Zoom</li>
-        <li>HIIT · Strength · Mobility</li>
+        <li data-classes-sales="closed"><strong>Starts Monday, 4 January 2027</strong></li>
+        <li>Mon 18:00 HIIT · 19:00 Mobility</li>
+        <li>Wed 07:00 Pilates · 18:00 Strength</li>
+        <li>Live via Zoom, Berlin time (CET)</li>
         <li>Recording available for 24h after each class</li>
         <li>Dashboard access included</li>
         <li>Price locked for founding members</li>
       </ul>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <a href="https://buy.stripe.com/6oUcN48pz3Nqbgodr41kA0d" target="_blank" class="plan-cta primary" style="flex:1;min-width:140px;text-align:center;">Monthly €59 →</a>
-        <a href="https://buy.stripe.com/3cIaEW8pzcjW98g1Im1kA0m" target="_blank" class="plan-cta primary" style="flex:1;min-width:140px;text-align:center;">Annual €499 →</a>
+        <a href="classes.html#reserve" class="plan-cta primary" data-classes-sales="closed" style="flex:1;min-width:140px;text-align:center;">Reserve your spot →</a>
+        <a href="https://buy.stripe.com/6oUcN48pz3Nqbgodr41kA0d" target="_blank" class="plan-cta primary" data-classes-sales="open" hidden style="flex:1;min-width:140px;text-align:center;">Monthly €59 →</a>
+        <a href="https://buy.stripe.com/3cIaEW8pzcjW98g1Im1kA0m" target="_blank" class="plan-cta primary" data-classes-sales="open" hidden style="flex:1;min-width:140px;text-align:center;">Annual €499 →</a>
       </div>
       <div class="plan-ideal"><strong>Founding price ends when 50 members join.</strong></div>
     </div>
@@ -909,6 +913,8 @@
   <p>© 2026 Train With Buse. All rights reserved. · <a href="index.html">Back to Home</a> · <a href="quiz.html">Take the Quiz</a></p>
 </div>
 
+<script src="config.js"></script>
+<script src="classes-sales.js"></script>
 <script>
 function toggleFaq(btn) {
   const item = btn.parentElement;
