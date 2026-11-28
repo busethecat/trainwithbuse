@@ -1952,6 +1952,13 @@ async function loadData(){
   if(purErr||progErr){console.error('Dashboard data load failed:',(purErr||progErr).message);showLoadErrorBanner(t('loadError'),t('retry'));return;}
   _purchasesRaw=pur||[];
   _purchases=new Set(_purchasesRaw.map(p=>p.course_id));
+  // Live classes: the membership decides (active or paid period, matched by email), not "ever bought"
+  try{
+    const {data:liveAccess,error:liveErr}=await sb.rpc('my_live_classes_access');
+    if(liveErr)console.error('Class access check failed:',liveErr.message);
+    else if(liveAccess)_purchases.add('live-lab-classes');
+    else _purchases.delete('live-lab-classes');
+  }catch(e){console.error('Class access check failed:',e);}
   _lessonProgressRaw=prog||[];
   _progress={};
   (prog||[]).forEach(p=>{if(!_progress[p.course_id])_progress[p.course_id]=new Set();_progress[p.course_id].add(p.lesson_id);});
