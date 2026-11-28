@@ -151,14 +151,22 @@
       .topbar { padding: 0 16px; }
       .layout { padding: 16px; }
       .iq-fields { grid-template-columns: 1fr; }
-      .tabs-row { gap: 4px; }
+      .tabs-row { gap: 4px; flex-wrap: wrap; }
       .tab-btn { margin-right: 12px; font-size: 12px; }
       .iq-top { flex-direction: column; gap: 6px; }
     }
-    .admin-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 3000; max-width: calc(100% - 32px);
-      background: var(--charcoal); color: #fff; padding: 12px 20px; border-radius: 14px; font-size: 14px; line-height: 1.5;
-      box-shadow: 0 12px 32px rgba(45,42,46,.25); opacity: 0; transition: opacity .25s; pointer-events: none; }
-    .admin-toast.show { opacity: 1; }
+    .admin-toast { position: fixed; left: 50%; top: 24px; transform: translate(-50%, -12px); z-index: 3000; width: 480px; max-width: calc(100% - 32px);
+      display: flex; align-items: flex-start; gap: 12px; background: var(--charcoal); color: #fff; padding: 18px 22px;
+      border-radius: 16px; border: 1px solid rgba(200,169,110,.6); font-size: 16px; line-height: 1.5; cursor: pointer;
+      box-shadow: 0 16px 40px rgba(45,42,46,.35); opacity: 0; visibility: hidden; transition: opacity .25s, transform .25s, visibility .25s; }
+    .admin-toast.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    .admin-toast-icon { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--charcoal);
+      display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; }
+    .admin-toast-msg { flex: 1; padding-top: 1px; }
+    .admin-toast-close { flex: none; background: none; border: none; color: rgba(255,255,255,.7); font-size: 22px; line-height: 1; cursor: pointer; padding: 0 0 0 4px; }
+    .tab-badge { display: inline-block; min-width: 20px; height: 20px; margin-left: 6px; padding: 0 6px; border-radius: 10px;
+      background: var(--rose-dark); color: #fff; font-size: 11px; font-weight: 600; line-height: 20px; text-align: center; vertical-align: 1px; }
+    .tab-badge[hidden] { display: none; }
   </style>
 </head>
 <body>
@@ -189,13 +197,13 @@
 
   <div class="layout">
     <div class="tabs-row">
-      <button class="tab-btn active" id="tabBookingsBtn" onclick="switchTab('bookings')">Bookings</button>
-      <button class="tab-btn" id="tabInquiriesBtn" onclick="switchTab('inquiries')">Inquiries</button>
-      <button class="tab-btn" id="tabCorporateBtn" onclick="switchTab('corporate')">Corporate</button>
+      <button class="tab-btn active" id="tabBookingsBtn" onclick="switchTab('bookings')">Bookings<span class="tab-badge" id="badge-bookings" hidden></span></button>
+      <button class="tab-btn" id="tabInquiriesBtn" onclick="switchTab('inquiries')">Inquiries<span class="tab-badge" id="badge-inquiries" hidden></span></button>
+      <button class="tab-btn" id="tabCorporateBtn" onclick="switchTab('corporate')">Corporate<span class="tab-badge" id="badge-corporate" hidden></span></button>
       <button class="tab-btn" id="tabParticipantsBtn" onclick="switchTab('participants')">Participants</button>
       <button class="tab-btn" id="tabBadgesBtn" onclick="switchTab('badges')">Badges</button>
       <button class="tab-btn" id="tabAssessmentsBtn" onclick="switchTab('assessments')">Assessments</button>
-      <button class="tab-btn" id="tabDeletionsBtn" onclick="switchTab('deletions')">Deletions</button>
+      <button class="tab-btn" id="tabDeletionsBtn" onclick="switchTab('deletions')">Deletions<span class="tab-badge" id="badge-deletions" hidden></span></button>
     </div>
 
     <div id="bookingsPanel">
@@ -287,28 +295,34 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script src="config.js"></script>
 <script>
-// ▼▼▼ FILL THIS IN ▼▼▼ Private Calendly link for the free 15-minute intro call.
+// Private Calendly link for the free 30-minute intro call.
 // It goes only into acceptance emails for approved Buse Method applicants.
-// Accepting an application is blocked until this is a real https:// link.
-const CALENDLY_URL = 'BURAYA_CALENDLY_LINKI';
+// Accepting an application is blocked unless this is a real https:// link.
+const CALENDLY_URL = 'https://calendly.com/trainwithbuse/intro-call';
 
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Short visible confirmation for actions that worked (errors still use alert())
-function notify(msg) {
+// Visible confirmation for every action that worked (errors still use alert()).
+// Stays at least 6 seconds (longer while hovered); click anywhere on it to close.
+function notify(msg, kind = 'success') {
   let el = document.getElementById('adminToast');
   if (!el) {
     el = document.createElement('div');
     el.id = 'adminToast';
     el.className = 'admin-toast';
     el.setAttribute('role', 'status');
+    el.innerHTML = '<span class="admin-toast-icon" aria-hidden="true">✓</span><span class="admin-toast-msg"></span><button class="admin-toast-close" aria-label="Close">×</button>';
+    el.addEventListener('click', () => el.classList.remove('show'));
+    el.addEventListener('mouseenter', () => clearTimeout(notify._timer));
+    el.addEventListener('mouseleave', () => { notify._timer = setTimeout(() => el.classList.remove('show'), 3000); });
     document.body.appendChild(el);
   }
-  el.textContent = msg;
+  el.querySelector('.admin-toast-icon').textContent = kind === 'info' ? 'i' : '✓';
+  el.querySelector('.admin-toast-msg').textContent = msg;
   el.classList.add('show');
   clearTimeout(notify._timer);
-  notify._timer = setTimeout(() => el.classList.remove('show'), 4500);
+  notify._timer = setTimeout(() => el.classList.remove('show'), 6000);
 }
 const NOT_FOUND_MSG = 'This entry is no longer in the list — please reload the page. Nothing was changed or sent.';
 
@@ -350,7 +364,24 @@ async function checkPass() {
 function showPanel() {
   document.getElementById('loginWrap').style.display = 'none';
   document.getElementById('adminPanel').style.display = 'block';
+  // Load every tab that has a badge now, so the counts are right before it is opened
   loadBookings();
+  loadInquiries();
+  loadCorporateInquiries();
+  loadDeletionRequests();
+}
+
+// Count pills on the tabs for items that need attention, plus the total in the
+// browser tab title. Called after every load, so it updates after every action.
+const ADMIN_TITLE = document.title;
+const attentionCounts = { bookings: 0, inquiries: 0, corporate: 0, deletions: 0 };
+function updateBadges(tab, count) {
+  attentionCounts[tab] = count;
+  const el = document.getElementById('badge-' + tab);
+  el.textContent = count;
+  el.hidden = count === 0;
+  const total = Object.values(attentionCounts).reduce((a, b) => a + b, 0);
+  document.title = total ? `(${total}) ${ADMIN_TITLE}` : ADMIN_TITLE;
 }
 
 async function signOut() {
@@ -382,6 +413,7 @@ async function loadBookings() {
 
   if (error) { console.error('Failed to load bookings:', error.message); alert('Could not load bookings: ' + error.message); return; }
   allBookings = data || [];
+  updateBadges('bookings', allBookings.filter(b => b.status === 'pending').length);
   renderStats();
   renderList();
 }
@@ -462,6 +494,7 @@ async function setEntryStatus(table, id, status, reloadFn) {
 async function toggleEntryContacted(table, id, current, reloadFn) {
   const { error } = await sb.from(table).update({ contacted: !current }).eq('id', id);
   if (error) { alert('Error: ' + error.message); return; }
+  notify(current ? 'Marked as not yet contacted.' : 'Marked as contacted.');
   await reloadFn();
 }
 async function deleteEntry(table, id, label, reloadFn) {
@@ -541,6 +574,7 @@ async function loadInquiries() {
   }
   inquiriesLoaded = true;
   allInquiries = data || [];
+  updateBadges('inquiries', allInquiries.filter(i => (i.status || 'new') === 'new').length);
   renderInquiriesStats();
   renderInquiriesList();
 }
@@ -610,6 +644,12 @@ function inquiryCard(i) {
 
 const LANG_NAMES = { en: 'English', de: 'German', tr: 'Turkish' };
 
+// What the waitlist email suggests, from the shared switches in config.js
+function waitlistAlternatives() {
+  return (CLASSES_SALES_OPEN ? 'join the group classes' : 'reserve a spot in the group classes starting 4 January')
+    + (LAB_SALES_OPEN ? ' or start The Lab System' : '; The Lab System "coming very soon"');
+}
+
 // Accept or waitlist a Buse Method application and email the applicant in their language.
 // (Plain "Reject (no email)" goes through setEntryStatus instead.)
 async function decideApplication(id, decision) {
@@ -625,14 +665,15 @@ async function decideApplication(id, decision) {
   const who = `${i.full_name || '(no name)'} <${i.email}>`;
   const question = accepted
     ? `Accept and email the applicant?\n\n${who} will get the acceptance email in ${LANG_NAMES[lang]} with your intro-call link.\n\nOK = accept and send · Cancel = do nothing`
-    : `Waitlist and email the applicant?\n\n${who} will get the waitlist email in ${LANG_NAMES[lang]} (no spot yet; you'll email them when one opens; meanwhile 1:1 Online Coaching).\n\nOK = waitlist and send · Cancel = do nothing`;
-  if (!confirm(question)) { notify('Nothing changed — no email was sent.'); return; }
+    : `Waitlist and email the applicant?\n\n${who} will get the waitlist email in ${LANG_NAMES[lang]} (no spot yet; you'll email them when one opens; meanwhile ${waitlistAlternatives()}).\n\nOK = waitlist and send · Cancel = do nothing`;
+  if (!confirm(question)) { notify('Nothing changed — no email was sent.', 'info'); return; }
 
   const { error } = await sb.from('inquiries').update({ status: decision }).eq('id', id);
   if (error) { alert('Could not update the application: ' + error.message + '\nNo email was sent.'); return; }
 
   await sendEmail(i.email, accepted ? 'application_accepted' : 'application_waitlist',
-    accepted ? { name: i.full_name || '', callUrl: CALENDLY_URL } : { name: i.full_name || '' }, lang);
+    accepted ? { name: i.full_name || '', callUrl: CALENDLY_URL }
+             : { name: i.full_name || '', classesOpen: CLASSES_SALES_OPEN, labOpen: LAB_SALES_OPEN }, lang);
   await loadInquiries();
 }
 
@@ -663,6 +704,7 @@ async function loadCorporateInquiries() {
   }
   corporateLoaded = true;
   allCorporate = data || [];
+  updateBadges('corporate', allCorporate.filter(c => (c.status || 'new') === 'new').length);
   renderCorporateStats();
   renderCorporateList();
 }
@@ -823,7 +865,7 @@ async function declineBooking(id) {
   const b = allBookings.find(x => String(x.id) === String(id));
   if (!b) { alert(NOT_FOUND_MSG); return; }
   if (!confirm(`Decline this booking and email the client?\n\n${b.user_email} will be told the slot isn't available.\n\nOK = decline and send · Cancel = do nothing`)) {
-    notify('Not declined — no email was sent.');
+    notify('Not declined — no email was sent.', 'info');
     return;
   }
 
@@ -840,7 +882,7 @@ async function cancelConfirmedBooking(id) {
   const date = b.confirmed_date || b.requested_date;
   const time = b.confirmed_time || b.requested_time;
   if (!confirm(`Cancel this confirmed session and email the client?\n\n${b.user_email} will be told their session on ${date} at ${time} is cancelled.\n\nOK = cancel and send · Cancel = do nothing`)) {
-    notify('Session not cancelled — no email was sent.');
+    notify('Session not cancelled — no email was sent.', 'info');
     return;
   }
   const { error } = await sb.from('bookings').update({ status: 'cancelled' }).eq('id', id);
@@ -984,6 +1026,7 @@ async function awardBadge() {
 
   msgEl.textContent = `Awarded "${BADGES[badgeId].name}" to ${email}.`;
   msgEl.classList.add('ok');
+  notify(msgEl.textContent);
   emailEl.value = '';
   loadAwardedBadges();
 }
@@ -1060,6 +1103,7 @@ async function submitAssessment() {
 
   msgEl.textContent = `Logged for ${email} — ${LAB_LABELS[lab]}.`;
   msgEl.classList.add('ok');
+  notify(msgEl.textContent);
   document.getElementById('assessMobility').value = '';
   document.getElementById('assessStrength').value = '';
   document.getElementById('assessBalance').value = '';
@@ -1128,6 +1172,7 @@ async function loadDeletionRequests() {
     return;
   }
   deletionsLoaded = true;
+  updateBadges('deletions', (data || []).length);
   if (!data || data.length === 0) {
     list.innerHTML = `<div class="empty">No pending deletion requests.</div>`;
     return;

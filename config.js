@@ -7,6 +7,11 @@
 const SUPABASE_URL = 'https://jgrnqqvmxqvfbxgvxuom.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_xNmBmtMoxeeYsrtohlookw_yadawA3q';
 
+// Sales switches, shared by the site and admin.html (the admin's waitlist emails
+// suggest group classes / The Lab System based on these). Flip to true at launch.
+const CLASSES_SALES_OPEN = false;
+const LAB_SALES_OPEN = false;
+
 // Stripe pricing (get from Stripe Dashboard)
 const STRIPE_PRICES = {
   'movement-lab-1': 'price_MOVEMENT1',

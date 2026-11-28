@@ -1,6 +1,11 @@
-// Booking Notification Worker — v5
+// Booking Notification Worker — v6
 // Source of truth: workers/booking-notify/worker.js in the site repo.
 // Deployed separately in the Cloudflare dashboard (not part of the site build).
+//
+// v6 vs v5: the intro call is 30 minutes; waitlist emails suggest group classes
+// and The Lab System based on data.classesOpen / data.labOpen (from config.js's
+// CLASSES_SALES_OPEN / LAB_SALES_OPEN, sent by admin.html); the applicant's
+// first name starts with a capital letter.
 //
 // v5 vs v4: new /admin email types — session_cancelled (a confirmed session is
 // cancelled), application_accepted / application_waitlist (Buse Method
@@ -266,8 +271,9 @@ function emailShell(inner) {
 }
 
 // Buse Method application emails. Copy lives here so all three languages stay side by side.
-// Waitlist emails point only to what has actually started: 1:1 Online Coaching
-// (not Live Lab Classes or The Lab System until they launch).
+// The waitlist email's alternatives depend on what is on sale: the group classes
+// sentence changes once classes are open, and The Lab System is linked only when
+// it is open (otherwise it is announced as "coming soon").
 const link = (href, label) => `<a href="${href}" style="color:#9B6B6F;text-decoration:underline;">${label}</a>`;
 
 const APPLICATION_COPY = {
@@ -277,7 +283,7 @@ const APPLICATION_COPY = {
       heading: name => name ? `Good news, ${name}: I have a spot for you!` : 'Good news: I have a spot for you!',
       paragraphs: [
         'I\'ve gone through your application, and I\'m sure we\'ll do great work together.',
-        'The next step is a free 15-minute intro call. We\'ll talk about your goals, answer your questions and look at how we\'ll move forward together. No strings attached.',
+        'The next step is a free 30-minute intro call. We\'ll talk about your goals, answer your questions and look at how we\'ll move forward together. No strings attached.',
       ],
       button: 'Book your intro call →',
       after: 'If none of the times work for you, just reply to this email and we\'ll find one that does. I can\'t wait to start working with you!',
@@ -287,8 +293,14 @@ const APPLICATION_COPY = {
       heading: name => name ? `Thank you for your application, ${name}.` : 'Thank you for your application.',
       paragraphs: [
         'I work with a limited number of people in The Buse Method so that every client gets my full attention. Unfortunately I don\'t have an open spot right now — but as soon as one opens up, I\'ll let you know by email.',
-        `If you\'d rather not wait, you can start working with me right away through ${link('https://trainwithbuse.com/online-coaching', '1:1 Online Coaching')}.`,
       ],
+      alternatives: (classesOpen, labOpen) =>
+        (classesOpen
+          ? `If you\'d rather not wait, you can join my ${link('https://trainwithbuse.com/classes', 'live online group classes')}`
+          : `If you\'d rather not wait, you can already reserve your spot in my ${link('https://trainwithbuse.com/classes', 'live online group classes')}, starting January 4`) +
+        (labOpen
+          ? `, or start at your own pace with my ${link('https://trainwithbuse.com/lab-system', 'Lab System video programs')}.`
+          : '. My Lab System video programs are also launching very soon.'),
       closing: 'Hope to see you soon!',
       signoff: 'Warmly,',
     },
@@ -299,7 +311,7 @@ const APPLICATION_COPY = {
       heading: name => name ? `Gute Nachrichten, ${name}: Ich habe einen Platz für dich!` : 'Gute Nachrichten: Ich habe einen Platz für dich!',
       paragraphs: [
         'Ich habe mir deine Bewerbung angesehen und bin mir sicher, dass wir gemeinsam richtig gute Arbeit leisten werden.',
-        'Als Nächstes folgt ein kostenloses 15-minütiges Kennenlerngespräch. Wir sprechen über deine Ziele, klären deine Fragen und schauen, wie wir gemeinsam vorgehen. Ganz unverbindlich.',
+        'Als Nächstes folgt ein kostenloses 30-minütiges Kennenlerngespräch. Wir sprechen über deine Ziele, klären deine Fragen und schauen, wie wir gemeinsam vorgehen. Ganz unverbindlich.',
       ],
       button: 'Kennenlerngespräch buchen →',
       after: 'Wenn keiner der Termine passt, antworte einfach auf diese E-Mail – wir finden einen. Ich freue mich schon sehr darauf, mit dir zu arbeiten!',
@@ -309,8 +321,14 @@ const APPLICATION_COPY = {
       heading: name => name ? `Danke für deine Bewerbung, ${name}.` : 'Danke für deine Bewerbung.',
       paragraphs: [
         'Bei The Buse Method arbeite ich bewusst mit wenigen Menschen, damit jede Person meine volle Aufmerksamkeit bekommt. Im Moment ist leider kein Platz frei – aber sobald einer frei wird, melde ich mich per E-Mail bei dir.',
-        `Wenn du nicht warten möchtest, kannst du mit dem ${link('https://trainwithbuse.com/online-coaching-de', '1:1 Online Coaching')} sofort mit mir starten.`,
       ],
+      alternatives: (classesOpen, labOpen) =>
+        (classesOpen
+          ? `Wenn du nicht warten möchtest, kannst du an meinen ${link('https://trainwithbuse.com/classes-de', 'Live-Online-Gruppenkursen')} teilnehmen`
+          : `Wenn du nicht warten möchtest, kannst du dir schon jetzt einen Platz in meinen ${link('https://trainwithbuse.com/classes-de', 'Live-Online-Gruppenkursen')} ab dem 4. Januar sichern`) +
+        (labOpen
+          ? ` – oder mit meinen ${link('https://trainwithbuse.com/lab-system-de', 'Lab System Videoprogrammen')} in deinem eigenen Tempo starten.`
+          : '. Auch meine Lab System Videoprogramme sind schon bald verfügbar.'),
       closing: 'Ich hoffe, wir sehen uns bald!',
       signoff: 'Herzliche Grüße,',
     },
@@ -321,7 +339,7 @@ const APPLICATION_COPY = {
       heading: name => name ? `Güzel haber, ${name}: senin için yerim var!` : 'Güzel haber: senin için yerim var!',
       paragraphs: [
         'Başvurunu inceledim ve birlikte güzel bir iş çıkaracağımıza eminim.',
-        'Sıradaki adım ücretsiz, 15 dakikalık bir ön görüşme. Hedeflerini konuşur, sorularını yanıtlar, birlikte nasıl ilerleyebileceğimize bakarız. Hiçbir bağlayıcılığı yok.',
+        'Sıradaki adım ücretsiz, 30 dakikalık bir ön görüşme. Hedeflerini konuşur, sorularını yanıtlar, birlikte nasıl ilerleyebileceğimize bakarız. Hiçbir bağlayıcılığı yok.',
       ],
       button: 'Tanışma görüşmeni ayarla →',
       after: 'Uygun bir saat bulamazsan bu e-postayı yanıtlaman yeterli, birlikte bir zaman buluruz. Seninle çalışmayı sabırsızlıkla bekliyorum!',
@@ -331,8 +349,14 @@ const APPLICATION_COPY = {
       heading: name => name ? `Başvurun için teşekkür ederim, ${name}.` : 'Başvurun için teşekkür ederim.',
       paragraphs: [
         'The Buse Method\'da her danışana tüm dikkatimi verebilmek için sınırlı sayıda kişiyle çalışıyorum. Ne yazık ki şu anda açık bir kontenjanım yok, ama ilk yer açıldığında sana e-postayla ulaşacağım.',
-        `Bu arada beklemek istemezsen ${link('https://trainwithbuse.com/online-coaching-tr', '1:1 Online Koçluk')} ile benimle hemen çalışmaya başlayabilirsin.`,
       ],
+      alternatives: (classesOpen, labOpen) =>
+        (classesOpen
+          ? `Bu arada beklemek istemezsen, ${link('https://trainwithbuse.com/classes-tr', 'canlı online grup derslerime')} katılabilirsin`
+          : `Bu arada beklemek istemezsen, 4 Ocak\'ta başlayan ${link('https://trainwithbuse.com/classes-tr', 'canlı online grup derslerime')} şimdiden yerini ayırtabilirsin`) +
+        (labOpen
+          ? ` ya da ${link('https://trainwithbuse.com/lab-system-tr', 'Lab System video programlarımla')} kendi temponda başlayabilirsin.`
+          : '. Lab System video programlarım da çok yakında yayında olacak.'),
       closing: 'Yakında görüşmek dileğiyle!',
       signoff: 'Sevgiler,',
     },
@@ -344,7 +368,7 @@ function applicationEmail(type, lang, data) {
   const copy = APPLICATION_COPY[lang] || APPLICATION_COPY.en;
   const accepted = type === 'application_accepted';
   const c = accepted ? copy.accepted : copy.waitlist;
-  const name = escapeHtml(String(data.name || '').trim().split(/\s+/)[0] || '');
+  const name = escapeHtml(firstName(data.name, lang));
   if (accepted && !/^https:\/\/\S+$/.test(data.callUrl || '')) return null;
 
   const p = text => `<p style="font-size:14px;color:#4A4548;line-height:1.7;margin-bottom:16px;">${text}</p>`;
@@ -357,9 +381,17 @@ function applicationEmail(type, lang, data) {
     subject: copy.subject,
     html: emailShell(`
         <div style="font-family:Georgia,serif;font-size:26px;color:#2D2A2E;margin-bottom:20px;">${c.heading(name)}</div>
-        ${c.paragraphs.map(p).join('')}${button}${c.closing ? p(c.closing) : ''}
+        ${c.paragraphs.map(p).join('')}${c.alternatives ? p(c.alternatives(data.classesOpen === true, data.labOpen === true)) : ''}${button}${c.closing ? p(c.closing) : ''}
         <p style="font-size:14px;color:#4A4548;line-height:1.7;margin-top:24px;">${c.signoff}<br>Buse</p>`),
   };
+}
+
+// First word of the full name with only its first letter capitalized
+// ("buse kaya" → "Buse", "de la Cruz" → "De"); Turkish rules for tr (i → İ)
+function firstName(fullName, lang) {
+  const [first = ''] = String(fullName || '').trim().split(/\s+/);
+  const [initial = '', ...rest] = [...first];
+  return initial.toLocaleUpperCase(lang === 'tr' ? 'tr' : 'en') + rest.join('');
 }
 
 async function sendResend(env, payload) {
