@@ -180,7 +180,7 @@ const T={
     whyThisLab:'Why this Lab',
     perMonth:'/mo', buy:'Purchase',
     groupTitle:'Group Classes', groupDesc:'Live sessions twice a week via Zoom.',
-    joinZoom:'Join Zoom →',
+    joinZoom:'Join in your dashboard →',
     liveTitle:'Live Classes',liveLabel:'Live',
     subtitles:{foundation:'Foundation Series',intermediate:'Intermediate Series',advanced:'Advanced Series',live:'Live Sessions'},
     catLabels:{movement:'Movement',sculpt:'Sculpt',strength:'Strength',group:'Live'},
@@ -198,7 +198,7 @@ const T={
     whyThisLab:'Bu Lab neden önemli',
     perMonth:'/ay', buy:'Satın Al',
     groupTitle:'Grup Dersleri', groupDesc:'Haftada 2 kez canlı ders, Zoom üzerinden.',
-    joinZoom:'Zoom\'a Katıl →',
+    joinZoom:'Dashboard\'dan katıl →',
     liveTitle:'Canlı Dersler',liveLabel:'Canlı',
     subtitles:{foundation:'Başlangıç Serisi',intermediate:'Orta Seviye',advanced:'İleri Seviye',live:'Canlı Dersler'},
     catLabels:{movement:'Movement',sculpt:'Sculpt',strength:'Strength',group:'Canlı'},
@@ -216,7 +216,7 @@ const T={
     whyThisLab:'Warum dieses Lab',
     perMonth:'/Mo.', buy:'Kaufen',
     groupTitle:'Gruppenklassen', groupDesc:'Live-Kurse zweimal pro Woche via Zoom.',
-    joinZoom:'Zoom beitreten →',
+    joinZoom:'Im Dashboard beitreten →',
     liveTitle:'Live-Kurse',liveLabel:'Live',
     subtitles:{foundation:'Einsteiger-Serie',intermediate:'Mittelstufe',advanced:'Fortgeschrittene',live:'Live-Kurse'},
     catLabels:{movement:'Movement',sculpt:'Sculpt',strength:'Strength',group:'Live'},
@@ -402,7 +402,7 @@ function render(){
             <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;margin-bottom:2px">${c.title}</div>
             <div style="font-size:11px;color:${c.color};letter-spacing:1px">${sched}</div>
           </div>
-          <a href="${c.zoomLink}" target="_blank" class="btn-zoom" style="padding:10px 22px;font-size:11px">${tl.joinZoom}</a>
+          <a href="dashboard.html" class="btn-zoom" style="padding:10px 22px;font-size:11px">${tl.joinZoom}</a>
         </div>`;
       });
       html+=`</div></div>`;

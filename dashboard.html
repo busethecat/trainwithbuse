@@ -203,6 +203,14 @@ body.theme-male .inbox-modal-title{color:#F0EBE4}
 .upcoming-right{position:relative;z-index:1;flex-shrink:0}
 .btn-zoom{background:white;color:var(--rose);border:none;padding:14px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:500;text-decoration:none;display:inline-block;transition:all .3s}
 .btn-zoom:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.3)}
+.btn-zoom[hidden]{display:none}
+.btn-zoom:disabled{opacity:.65;cursor:default;transform:none;box-shadow:none}
+.session-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid var(--cream-deep)}
+.session-row:last-child{border-bottom:none}
+.session-when{font-size:13px;color:var(--charcoal-light)}
+.session-format{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--charcoal)}
+.session-join{background:var(--charcoal);color:#fff;border:none;padding:9px 18px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;flex-shrink:0}
+.session-tag{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--nude);flex-shrink:0}
 .upcoming-pulse{display:inline-block;width:8px;height:8px;background:rgba(255,255,255,.9);border-radius:50%;margin-right:8px;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
@@ -843,7 +851,7 @@ body.theme-male .buse-msg-full{border-top-color:#2A2420}
       <div class="upcoming-sub" id="upcomingSub">Check your email for the Zoom link and schedule</div>
     </div>
     <div class="upcoming-right">
-      <a class="btn-zoom" id="zoomBtn" href="#" target="_blank">Join Zoom →</a>
+      <button type="button" class="btn-zoom" id="zoomBtn" hidden>Join class →</button>
     </div>
   </div>
 
@@ -1256,7 +1264,14 @@ loadError:"We couldn't load your programs right now.",retry:'Try again',
   counterLabel:'people are training with Buse right now',counterLive:'Live',
   progEyebrow:'My Space',progTitle:'My Programs',progSub:'Continue where you left off',
   upcomingEyebrow:'Live Class',upcomingTitle:'You have a class - join now',
-  upcomingSub:'Check your email for today\'s Zoom link and schedule',zoomBtn:'Join Zoom ->',
+  upcomingSub:'Join every class from here',zoomBtn:'Join class ->',
+  liveJoinOpen:'Live now — join with the button',liveJoinOpensAt:time=>`The Join button opens at ${time} (10 minutes before the start). All times Berlin time.`,
+  liveJoinSoonBtn:'Opens 10 min before',liveNoSessions:'No upcoming classes scheduled yet.',liveScheduleBtn:'Schedule & join ->',
+  liveCancelled:'Cancelled',liveSessionsLoadError:'Could not load the class schedule. Please reload the page.',
+  joinErrors:{not_signed_in:'Your session has expired. Please sign in again.',no_membership:'Joining needs an active Live Lab Classes membership.',
+    no_such_class:'This class no longer exists. Please reload the page.',class_cancelled:'This class has been cancelled.',
+    not_open_yet:'Joining opens 10 minutes before the start.',join_closed:'Joining closes 15 minutes after the start: coming in late means missing the warm-up, which raises the risk of injury. Please watch the recording instead, it stays available for 24 hours.',
+    no_zoom_link:'The Zoom room for this class is not set up yet. Please email hello@trainwithbuse.com.',other:'Could not join right now. Please try again in a moment.'},
   workoutEyebrow:'Continue Your Program',workoutGoBtn:'Go ->',
   sb_myAccount:'My Account',sb_profile:'Personal Info',sb_profileSub:'Age, height, weight, goals',
   sb_notes:'My Notes',sb_notesSub:'Journal & body tracking',
@@ -1431,7 +1446,14 @@ loadError:'Programların şu anda yüklenemedi.',retry:'Tekrar dene',
   counterLabel:'kisi su an Buse ile antrenman yapiyor',counterLive:'Canli',
   progEyebrow:'Alanim',progTitle:'Programlarim',progSub:'Kaldigin yerden devam et',
   upcomingEyebrow:'Canli Ders',upcomingTitle:'Bugun bir dersin var',
-  upcomingSub:'Bugunun Zoom linki icin e-postani kontrol et',zoomBtn:"Zoom'a Katil ->",
+  upcomingSub:'Tüm derslere buradan katılırsın',zoomBtn:'Derse katıl ->',
+  liveJoinOpen:'Şu an canlı — butonla katıl',liveJoinOpensAt:time=>`Katıl butonu ${time}'da açılır (başlangıçtan 10 dakika önce). Tüm saatler Berlin saatiyle.`,
+  liveJoinSoonBtn:'10 dk önce açılır',liveNoSessions:'Henüz planlanmış bir ders yok.',liveScheduleBtn:'Program & katıl ->',
+  liveCancelled:'İptal edildi',liveSessionsLoadError:'Ders programı yüklenemedi. Lütfen sayfayı yenile.',
+  joinErrors:{not_signed_in:'Oturumunun süresi doldu. Lütfen tekrar giriş yap.',no_membership:'Katılmak için aktif bir Canlı Lab Dersleri üyeliği gerekiyor.',
+    no_such_class:'Bu ders artık mevcut değil. Lütfen sayfayı yenile.',class_cancelled:'Bu ders iptal edildi.',
+    not_open_yet:'Katılım, dersin başlamasından 10 dakika önce açılır.',join_closed:'Katılım, dersin başlamasından 15 dakika sonra kapanır: geç katılmak ısınmayı kaçırmak demek ve bu sakatlanma riskini artırır. Bunun yerine kaydı izleyebilirsin, 24 saat boyunca erişilebilir.',
+    no_zoom_link:'Bu dersin Zoom odası henüz hazır değil. Lütfen hello@trainwithbuse.com adresine yaz.',other:'Şu an katılınamadı. Lütfen biraz sonra tekrar dene.'},
   workoutEyebrow:'Programa Devam Et',workoutGoBtn:'Git ->',
   sb_myAccount:'Hesabim',sb_profile:'Kisisel Bilgiler',sb_profileSub:'Yas, boy, kilo, hedefler',
   sb_notes:'Notlarim',sb_notesSub:'Gunluk & vucut takibi',
@@ -1610,7 +1632,14 @@ loadError:'Deine Programme konnten gerade nicht geladen werden.',retry:'Erneut v
   counterLabel:'Personen trainieren gerade mit Buse',counterLive:'Live',
   progEyebrow:'Mein Bereich',progTitle:'Meine Programme',progSub:'Weitermachen wo du aufgehort hast',
   upcomingEyebrow:'Live-Kurs',upcomingTitle:'Du hast heute einen Kurs',
-  upcomingSub:'Uberprufe deine E-Mails fur den Zoom-Link',zoomBtn:'Zoom beitreten ->',
+  upcomingSub:'Allen Kursen trittst du von hier aus bei',zoomBtn:'Kurs beitreten ->',
+  liveJoinOpen:'Jetzt live — tritt über den Button bei',liveJoinOpensAt:time=>`Der Beitreten-Button öffnet um ${time} (10 Minuten vor Beginn). Alle Zeiten in Berliner Zeit.`,
+  liveJoinSoonBtn:'Öffnet 10 Min. vorher',liveNoSessions:'Noch keine Kurse geplant.',liveScheduleBtn:'Stundenplan & beitreten ->',
+  liveCancelled:'Abgesagt',liveSessionsLoadError:'Der Stundenplan konnte nicht geladen werden. Bitte lade die Seite neu.',
+  joinErrors:{not_signed_in:'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.',no_membership:'Zum Beitreten brauchst du eine aktive Live Lab Classes Mitgliedschaft.',
+    no_such_class:'Diesen Kurs gibt es nicht mehr. Bitte lade die Seite neu.',class_cancelled:'Dieser Kurs wurde abgesagt.',
+    not_open_yet:'Beitreten ist ab 10 Minuten vor Beginn möglich.',join_closed:'Beitreten ist nur bis 15 Minuten nach Beginn möglich: Wer später kommt, verpasst das Aufwärmen, und das erhöht das Verletzungsrisiko. Nutze stattdessen die Aufzeichnung, sie ist 24 Stunden verfügbar.',
+    no_zoom_link:'Der Zoom-Raum für diesen Kurs ist noch nicht eingerichtet. Bitte schreib an hello@trainwithbuse.com.',other:'Beitreten hat gerade nicht geklappt. Bitte versuch es gleich noch einmal.'},
   workoutEyebrow:'Programm fortsetzen',workoutGoBtn:'Los ->',
   sb_myAccount:'Mein Konto',sb_profile:'Personliche Daten',sb_profileSub:'Alter, Grosse, Gewicht, Ziele',
   sb_notes:'Meine Notizen',sb_notesSub:'Tagebuch & Korpertracking',
@@ -1816,7 +1845,7 @@ function openModal(id){
   if(id==='referralModal')renderReferralModal();
   if(id==='rulesModal')document.getElementById('rulesText').innerHTML=T[lang].rules;
   if(id==='privacyModal')document.getElementById('privacyText').innerHTML=T[lang].privacy;
-  if(id==='upcomingModal')document.getElementById('upcomingText').textContent=t('upcomingModalText');
+  if(id==='upcomingModal')renderUpcomingModal();
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
 document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)closeModal(el.id);}));
@@ -1932,7 +1961,10 @@ async function loadData(){
   _purchases.forEach(id=>{if(!liveIds.includes(id)&&COURSES[id]&&COURSES[id].lessons.length>0){const d=_progress[id]?_progress[id].size:0;totalLeft+=COURSES[id].lessons.length-d;}});
   document.getElementById('sbCompletedSub').textContent=t('completedSub')(totalDone);
   document.getElementById('sbRemainingSub').textContent=t('remainingSub')(totalLeft);
-  if(liveIds.some(id=>_purchases.has(id)))document.getElementById('upcomingItem').style.display='flex';
+  if(liveIds.some(id=>_purchases.has(id))){
+    document.getElementById('upcomingItem').style.display='flex';
+    await loadClassSessions();
+  }
   window._loaded=true;
   renderAll();
   checkBirthday();
@@ -2681,21 +2713,94 @@ function renderWorkout(){
 }
 
 // ══════════════════════════════
-// UPCOMING BANNER
+// LIVE CLASSES — schedule + Join (records attendance)
+// The Join button is the only way into a class: join_class() in Supabase checks
+// the membership and the window (10 min before → 15 min after the start),
+// records attendance and only then returns the Zoom link.
 // ══════════════════════════════
+const JOIN_OPENS_MIN=10,JOIN_CLOSES_MIN=15;
+const CLASS_FORMAT_NAMES={hiit:'HIIT',mobility:'Mobility',pilates:'Pilates',strength:'Strength'};
+let _sessions=null; // upcoming class_sessions, soonest first (null = could not load)
+let _sessionsTimer=null;
+
+async function loadClassSessions(){
+  const since=new Date(Date.now()-JOIN_CLOSES_MIN*60000).toISOString();
+  const {data,error}=await sb.from('class_sessions').select('id,starts_at,format,cancelled')
+    .gte('starts_at',since).order('starts_at').limit(12);
+  if(error){console.error('Failed to load class sessions:',error.message);_sessions=null;return;}
+  _sessions=data||[];
+}
+
+function sessionState(s){
+  const start=new Date(s.starts_at).getTime(),now=Date.now();
+  if(s.cancelled)return'cancelled';
+  if(now<start-JOIN_OPENS_MIN*60000)return'upcoming';
+  if(now<=start+JOIN_CLOSES_MIN*60000)return'open';
+  return'closed';
+}
+
+// Class times are always shown in Berlin time, the time the classes are scheduled in
+function formatSessionTime(date,opts){
+  return date.toLocaleString(lang==='tr'?'tr-TR':lang==='de'?'de-DE':'en-GB',{timeZone:'Europe/Berlin',hour12:false,...opts});
+}
+function sessionLabel(s){
+  return `${CLASS_FORMAT_NAMES[s.format]||s.format} · ${formatSessionTime(new Date(s.starts_at),{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'})}`;
+}
+
 function renderUpcomingBanner(){
-  const _lIds=['live-lab-classes'];
-  const ownedLive=_lIds.find(id=>_purchases.has(id));
-  if(!ownedLive)return;
-  const banner=document.getElementById('upcomingBanner');
-  banner.style.display='flex';
-  const tl=T[lang];
-  const c=COURSES[ownedLive];
-  document.getElementById('upcomingEyebrow').textContent=tl.upcomingEyebrow;
-  document.getElementById('upcomingTitle').textContent=c?c.title:tl.upcomingTitle;
-  document.getElementById('upcomingSub').textContent=c&&c.schedule?c.schedule[lang]||c.schedule.en:tl.upcomingSub;
-  document.getElementById('zoomBtn').textContent=tl.zoomBtn;
-  document.getElementById('zoomBtn').href=c&&c.zoomLink?c.zoomLink:'#';
+  if(!_purchases.has('live-lab-classes'))return;
+  document.getElementById('upcomingBanner').style.display='flex';
+  document.getElementById('upcomingEyebrow').textContent=t('upcomingEyebrow');
+  const title=document.getElementById('upcomingTitle'),sub=document.getElementById('upcomingSub'),btn=document.getElementById('zoomBtn');
+  btn.hidden=true;
+  if(_sessions===null){title.textContent=t('upcomingTitle');sub.textContent=t('liveSessionsLoadError');return;}
+  const next=_sessions.find(s=>{const st=sessionState(s);return st==='upcoming'||st==='open';});
+  if(!next){title.textContent=t('upcomingTitle');sub.textContent=t('liveNoSessions');return;}
+  const state=sessionState(next);
+  title.textContent=sessionLabel(next);
+  btn.hidden=false;
+  btn.disabled=state!=='open';
+  btn.textContent=state==='open'?t('zoomBtn'):t('liveJoinSoonBtn');
+  btn.onclick=()=>joinClass(next.id,btn);
+  sub.textContent=state==='open'?t('liveJoinOpen')
+    :t('liveJoinOpensAt')(formatSessionTime(new Date(new Date(next.starts_at).getTime()-JOIN_OPENS_MIN*60000),{hour:'2-digit',minute:'2-digit'}));
+  // Re-check every 30 s so the button opens (and later moves on) without a reload
+  if(!_sessionsTimer)_sessionsTimer=setInterval(renderUpcomingBanner,30000);
+}
+
+function renderUpcomingModal(){
+  const box=document.getElementById('upcomingText');
+  if(!_purchases.has('live-lab-classes')){box.textContent=t('upcomingModalText');return;}
+  if(_sessions===null){box.textContent=t('liveSessionsLoadError');return;}
+  const list=_sessions.filter(s=>sessionState(s)!=='closed').slice(0,8);
+  if(!list.length){box.textContent=t('liveNoSessions');return;}
+  box.innerHTML=list.map(s=>{
+    const state=sessionState(s);
+    const action=state==='open'?`<button type="button" class="session-join" onclick="joinClass('${s.id}',this)">${t('zoomBtn')}</button>`
+      :`<span class="session-tag">${state==='cancelled'?t('liveCancelled'):t('liveJoinSoonBtn')}</span>`;
+    return`<div class="session-row"><div><div class="session-format">${CLASS_FORMAT_NAMES[s.format]||s.format}</div>
+      <div class="session-when">${formatSessionTime(new Date(s.starts_at),{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'})}</div></div>${action}</div>`;
+  }).join('');
+}
+
+async function joinClass(sessionId,btn){
+  // Open the tab inside the click so popup blockers allow it; send it to Zoom once join_class says yes
+  const win=window.open('','_blank');
+  if(btn)btn.disabled=true;
+  let url=null,code='other';
+  try{
+    const {data,error}=await sb.rpc('join_class',{p_session_id:sessionId});
+    if(error)code=(error.message||'').trim();else url=data;
+  }catch(e){console.error('join_class failed:',e);}
+  if(btn)btn.disabled=false;
+  if(!url){
+    if(win)win.close();
+    const errors=t('joinErrors');
+    alert(errors[code]||errors.other);
+    renderUpcomingBanner();
+    return;
+  }
+  if(win){win.opener=null;win.location.href=url;}else{location.href=url;}
 }
 
 // ══════════════════════════════
@@ -2928,7 +3033,7 @@ function renderLiveClasses(){
           ${c.comingSoon
             ?`<button disabled style="background:var(--nude);color:white;border:none;padding:10px 22px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:not-allowed;opacity:.7">Coming Soon</button>`
             :owned
-            ?`<a href="${c.zoomLink}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--charcoal);color:white;padding:10px 22px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none">${tl.liveJoin}</a>`
+            ?`<button type="button" onclick="openModal('upcomingModal')" style="display:inline-flex;align-items:center;gap:8px;background:var(--charcoal);color:white;border:none;padding:10px 22px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">${tl.liveScheduleBtn}</button>`
             :`<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
                 <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300">€${c.price}<span style="font-size:14px;color:var(--nude)">${tl.livePerMonth}</span></div>
                 <button onclick="buyLive('${id}')" style="background:var(--charcoal);color:white;border:none;padding:10px 22px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">${tl.livePurchase}</button>
@@ -3462,7 +3567,7 @@ async function renderMyBookings() {
     .order('created_at', { ascending: false });
 
   if (error || !data || data.length === 0) {
-    body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--charcoal-light);font-size:14px;">No booking requests yet.<br><br><button onclick="closeModal('myBookingsModal');openModal('bookingModal');" style="margin-top:8px;padding:12px 24px;border-radius:50px;background:var(--charcoal);color:var(--cream);font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;letter-spacing:1px;border:none;cursor:pointer;">Book a Session →</button></div>';
+    body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--charcoal-light);font-size:14px;">No booking requests yet.<br><br><button onclick="closeModal(\'myBookingsModal\');openModal(\'bookingModal\');" style="margin-top:8px;padding:12px 24px;border-radius:50px;background:var(--charcoal);color:var(--cream);font-family:\'Outfit\',sans-serif;font-size:12px;font-weight:500;letter-spacing:1px;border:none;cursor:pointer;">Book a Session →</button></div>';
     return;
   }
 

@@ -89,6 +89,19 @@
 </div>
 
 <script>
+// How joining live classes works. The rest of this page is English; this note follows the
+// language saved on the site (or the browser's), because it explains a safety rule.
+const LIVE_CLASS_NOTE = {
+  en: `Join every class with the Join button in your dashboard — it opens 10 minutes before the start and closes 15 minutes after. Joining later means missing the warm-up, which raises the risk of injury; if you can't make it on time, watch the recording instead (available for 24 hours).<br>All times are Berlin time (CET). Classes start on Monday, 4 January 2027.`,
+  de: `Du trittst jedem Kurs über den Beitreten-Button in deinem Dashboard bei – er öffnet 10 Minuten vor Beginn und schließt 15 Minuten danach. Wer später kommt, verpasst das Aufwärmen, und das erhöht das Verletzungsrisiko; wenn du es nicht pünktlich schaffst, nutze stattdessen die Aufzeichnung (24 Stunden verfügbar).<br>Alle Zeiten in Berliner Zeit (MEZ). Die Kurse starten am Montag, 4. Januar 2027.`,
+  tr: `Her derse dashboard'daki Katıl butonuyla katılırsın — buton dersten 10 dakika önce açılır, başladıktan 15 dakika sonra kapanır. Geç katılmak ısınmayı kaçırmak demek ve bu sakatlanma riskini artırır; zamanında yetişemezsen bunun yerine kaydı izle (24 saat boyunca erişilebilir).<br>Tüm saatler Berlin saatiyle (CET). Dersler 4 Ocak 2027 Pazartesi başlıyor.`,
+};
+function liveClassNote() {
+  let lang = 'en';
+  try { lang = localStorage.getItem('twb_lang') || (navigator.language || 'en').slice(0, 2); } catch (e) {}
+  return LIVE_CLASS_NOTE[lang] || LIVE_CLASS_NOTE.en;
+}
+
 const PRODUCTS = {
   // Online Coaching
   'online-single': {
@@ -269,10 +282,7 @@ function render() {
         </div>
       </div>
 
-      <div class="zoom-note">
-        Zoom links will be sent to your email before each class.<br>
-        A recording of each live class is available for 24 hours after the class.<br>All times are Berlin time (CET). Classes start on Monday, 4 January 2027.
-      </div>
+      <div class="zoom-note">${liveClassNote()}</div>
 
       <div class="divider"></div>
 

@@ -207,7 +207,6 @@ const COURSES = {
     price: 59,
     comingSoon: true,
     color: '#C1848B',
-    zoomLink: 'https://zoom.us/j/YOUR_LIVELAB_ZOOM_LINK',
     // Berlin time. startsOn is shown with the schedule while comingSoon is true.
     schedule: { en: 'Mon 18:00 HIIT · 19:00 Mobility · Wed 07:00 Pilates · 18:00 Strength',
                 tr: 'Pzt 18:00 HIIT · 19:00 Mobility · Çar 07:00 Pilates · 18:00 Strength',
